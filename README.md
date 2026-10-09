@@ -1,6 +1,6 @@
 # Space Media Studio
 
-Sito dello studio creativo di Gabriele Capponi e Mattia Tanzi, Parma. Strategia, design e comunicazione in un’esperienza originale con sculture 3D interattive, colori accesi e una trasformazione iniziale da totem a composizione aperta a nodo intrecciato.
+Sito dello studio creativo di Gabriele Capponi e Mattia Tanzi, Parma. Strategia, design e comunicazione in un’esperienza originale con sculture 3D interattive, colori accesi e una trasformazione iniziale che separa e ricompone quattro moduli nel segno dello studio. Lampadina, diaframma fotografico e bersaglio rappresentano intuizione, messa a fuoco e connessione.
 
 [Apri il sito](https://gabrielecapponi-ux.github.io/space-media-studio/)
 
@@ -46,7 +46,7 @@ Il comando richiede accesso Git al repository, costruisce il sito e aggiorna il 
 
 Contenuti disponibili anche senza JavaScript, navigazione da tastiera, dialog nativi con gestione del focus, controlli pausa e preferenza di movimento ridotto aggiornata in tempo reale. Se WebGL non è disponibile, resta visibile un poster vettoriale.
 
-La trasformazione iniziale viene eseguita una volta. Il rendering si sospende fuori schermo e quando la pagina non è visibile. Risoluzione e ombre sono limitate per contenere il carico grafico; geometrie instanziate nel percorso 3D, font locali e immagini differite riducono le richieste.
+La trasformazione iniziale viene eseguita una volta. Su schermi compatti il percorso 3D viene inizializzato solo quando entra in vista, per alleggerire l’apertura. Il rendering si sospende fuori schermo e quando la pagina non è visibile. Su touch e formati compatti il rendering è limitato a 30 fps e DPR 1,5, con ombre da 512 pixel. Il percorso si assesta dopo scroll o interazione e interrompe il loop a riposo; geometrie instanziate nel percorso 3D, font locali e immagini differite riducono le richieste.
 
 Il sito non include form, analytics o cookie di profilazione. Telefono, WhatsApp e mappa si aprono su richiesta dell’utente. I concept sono etichettati come **progetti possibili**, con immagini stock su licenza: non rappresentano lavori commissionati.
 

@@ -561,38 +561,6 @@ h3 {
   }
 }
 
-@media (max-width: 700px) {
-  .hero-cinematic h1 em {
-    font-size: 1.25em;
-  }
-
-  .cinematic-home .header,
-  .hero.hero-cinematic {
-    padding-left: max(var(--gutter), env(safe-area-inset-left));
-    padding-right: max(var(--gutter), env(safe-area-inset-right));
-  }
-
-  .hero-cinematic .hero-director {
-    bottom: calc(86px + env(safe-area-inset-bottom));
-  }
-
-  .hero-cinematic .hero-bottom {
-    bottom: calc(17px + env(safe-area-inset-bottom));
-  }
-
-  .world-controls {
-    bottom: calc(58px + env(safe-area-inset-bottom));
-  }
-
-  .world-progress {
-    bottom: calc(37px + env(safe-area-inset-bottom));
-  }
-
-  .world-scroll-label {
-    bottom: calc(13px + env(safe-area-inset-bottom));
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .hero-cinematic .hero-mode-buttons button,
   .hero-cinematic .hero-mode-buttons button::after,
@@ -641,4 +609,24 @@ h3 {
 }
 @media (max-width: 700px) {
   .art-digital .portal-scene { inset: 3% -10% 17%; }
+}
+
+/* Full-bleed colour fields retain a comfortable edge around an iPhone notch. */
+@media (max-width: 1100px) and (pointer: coarse), (max-width: 760px) {
+  .section-pad,
+  .footer {
+    padding-left: max(var(--gutter), env(safe-area-inset-left, 0px));
+    padding-right: max(var(--gutter), env(safe-area-inset-right, 0px));
+  }
+  dialog {
+    max-height: calc(100vh - max(24px, env(safe-area-inset-top, 0px)) - max(24px, env(safe-area-inset-bottom, 0px)));
+    max-height: calc(100svh - max(24px, env(safe-area-inset-top, 0px)) - max(24px, env(safe-area-inset-bottom, 0px)));
+    scroll-padding-block: 24px;
+  }
+  .menu-dialog,
+  .concept-dialog {
+    width: calc(100% - max(24px, env(safe-area-inset-left, 0px)) - max(24px, env(safe-area-inset-right, 0px)));
+  }
+  .menu-dialog { padding: 24px; }
+  .concept-dialog { padding-left: 24px; padding-right: 24px; }
 }

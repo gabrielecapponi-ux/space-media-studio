@@ -6,6 +6,7 @@ export function createExperience({ getHero, getPaused, onTogglePause }) {
   const copies = [...section.querySelectorAll("[data-world-copy]")];
   const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
   const finePointer = window.matchMedia("(pointer: fine)");
+  const compactViewport = window.matchMedia("(max-width: 760px), (pointer: coarse)");
   const worldPause = document.querySelector("#world-motion");
   const status = document.querySelector("#world-status");
   const abort = new AbortController();
@@ -128,7 +129,9 @@ export function createExperience({ getHero, getPaused, onTogglePause }) {
         lazyObserver.disconnect();
       }
     },
-    { rootMargin: "600px 0px" },
+    // On phones, keep the second WebGL context out of the opening sequence.
+    // Chapter controls can still request it directly before it enters view.
+    { rootMargin: compactViewport.matches ? "0px" : "300px 0px" },
   );
   lazyObserver.observe(section);
 

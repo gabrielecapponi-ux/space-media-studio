@@ -29,4 +29,4 @@ Sono stati scaricati JPEG a larghezza 1600px dal CDN ufficiale `images.pexels.co
 
 ## Hero cinematografica
 
-I tubi morph, le capsule, i cubi morbidi, gli archi e i loop del playground sono geometrie procedurali originali generate nel progetto. Nessun modello 3D esterno. Il poster di ripiego `public/images/hero-sculpture.svg` è un disegno vettoriale originale, senza risorse stock. Il manuale 3D WEB LAB fornito dall’utente è un riferimento tecnico interno e non viene distribuito con il sito.
+Il segno a quattro moduli della hero, la lampadina, il diaframma fotografico e il bersaglio sono geometrie procedurali originali generate nel progetto. Nessun modello 3D esterno. Il poster di ripiego `public/images/hero-sculpture.svg` è un disegno vettoriale originale, senza risorse stock. Il manuale 3D WEB LAB fornito dall’utente è un riferimento tecnico interno e non viene distribuito con il sito.

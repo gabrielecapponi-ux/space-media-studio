@@ -13,19 +13,19 @@ export function createHeroUI({ getScene, getPaused, onTogglePause }) {
   const phases = [
     {
       name: "idea",
-      label: "Il primo impulso.",
-      announcement: "Prima fase: un totem di forme e colori.",
+      label: "Tutto parte da un’idea.",
+      announcement: "Prima fase, Idea: quattro moduli raccolgono un’intuizione.",
     },
     {
       name: "fragments",
-      label: "Fuori dagli schemi.",
-      announcement: "Seconda fase: le forme si aprono in una nuova composizione.",
+      label: "Ogni parte trova il suo senso.",
+      announcement: "Seconda fase, Struttura: i quattro moduli si separano in una vista esplosa ordinata.",
     },
     {
       name: "form",
-      label: "Le idee fanno connessione.",
+      label: "Un’idea. Un’identità.",
       announcement:
-        "Terza fase: tubi e colori si intrecciano in una nuova connessione.",
+        "Terza fase, Identità: i moduli si uniscono nella scintilla di Space Media Studio.",
     },
   ];
   let lastPhase = -1;
