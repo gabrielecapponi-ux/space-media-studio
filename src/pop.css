@@ -1,0 +1,644 @@
+/* Space Media Studio — Creative Playground.
+   Flat electric fields frame the moving objects; typography stays deliberately calm. */
+:root {
+  --paper: #f6f4ee;
+  --ink: #15151c;
+  --muted: #51515c;
+  --orange: #2536ff;
+  --orange-ink: #2536ff;
+  --line: #d4d2cf;
+  --pop-lime: #dfff45;
+  --pop-blue: #2536ff;
+  --pop-pink: #ff63a5;
+  --pop-blush: #ffc7d9;
+  --pop-orange: #ff6530;
+  color: var(--ink);
+  background: var(--paper);
+  color-scheme: light;
+}
+
+/* Type keeps its rhythm when names or contact details wrap on narrow screens. */
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+.studio-description p,
+.service-body p,
+.process-step p,
+.concept-dialog > p {
+  text-wrap: pretty;
+}
+
+.founder > div,
+.service summary h3,
+.contact-details,
+.concept-meta {
+  min-width: 0;
+}
+
+.founder h3,
+.concept-meta h3,
+.address-link {
+  overflow-wrap: break-word;
+}
+
+.desktop-nav a,
+.studio-bottom a,
+.footer-bottom a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+.studio-bottom a,
+.footer-bottom a {
+  gap: 8px;
+}
+
+.address-link {
+  display: inline-block;
+  min-height: 44px;
+}
+
+.concept-credit a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+::selection {
+  color: var(--ink);
+  background: var(--pop-pink);
+}
+
+:focus-visible {
+  outline-color: var(--pop-blue);
+}
+
+.cinematic-home .header {
+  color: var(--ink);
+  background: var(--pop-lime);
+}
+
+.cinematic-home .header .brand-symbol circle {
+  fill: var(--pop-lime);
+}
+
+.cinematic-home .header .desktop-nav {
+  color: var(--ink);
+}
+
+.cinematic-home .header .desktop-nav a::after {
+  height: 2px;
+  background: var(--pop-blue);
+}
+
+.cinematic-home .header .header-cta {
+  color: #fff;
+  background: var(--pop-blue);
+}
+
+.cinematic-home .header .header-cta:hover {
+  color: #fff;
+  background: #1524d8;
+}
+
+.cinematic-home .header .menu-toggle {
+  border-color: #15151c55;
+  background: transparent;
+}
+
+.cinematic-home .header .menu-toggle span {
+  background: var(--ink);
+}
+
+.cinematic-home .header .menu-toggle:hover {
+  border-color: var(--ink);
+  background: #15151c0d;
+}
+
+.cinematic-home .header :focus-visible,
+.hero-cinematic :focus-visible {
+  outline-color: var(--pop-blue);
+}
+
+.hero.hero-cinematic,
+.hero.hero-cinematic::before {
+  color: var(--ink);
+  background: var(--pop-lime);
+}
+
+.hero-cinematic .hero-topline,
+.hero-cinematic .hero-coordinate {
+  color: #414333;
+}
+
+.hero-cinematic .status-dot {
+  background: var(--pop-blue);
+  box-shadow: none;
+}
+
+.hero-cinematic h1 {
+  font-weight: 700;
+  letter-spacing: -0.075em;
+}
+
+.hero-cinematic h1 em {
+  font-weight: 400;
+  font-size: 1.27em;
+  letter-spacing: -0.055em;
+}
+
+.hero-cinematic h1 .orange {
+  color: var(--pop-blue);
+}
+
+.hero-cinematic .little-cross {
+  color: var(--pop-blue);
+}
+
+.hero-cinematic .hero-description p {
+  color: #393b31;
+}
+
+.hero-cinematic .hero-copy .text-link {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.hero-cinematic .circle-arrow {
+  border-color: var(--ink);
+  color: var(--pop-pink);
+  background: var(--ink);
+}
+
+.hero-cinematic .text-link:hover .circle-arrow {
+  border-color: var(--pop-blue);
+  color: #fff;
+  background: var(--pop-blue);
+}
+
+.hero-cinematic .hero-art-caption,
+.hero-cinematic #hero-phase-number {
+  color: #34372b;
+}
+
+.hero-cinematic .hero-art-cross {
+  color: var(--pop-blue);
+}
+
+.hero-cinematic .hero-mode-label {
+  color: #4c4f3c;
+}
+
+.hero-cinematic .hero-mode-buttons button,
+.hero-cinematic .hero-mode-buttons button span {
+  color: #4a4d3a;
+}
+
+.hero-cinematic .hero-mode-buttons button::after {
+  height: 2px;
+  background: var(--pop-blue);
+}
+
+.hero-cinematic .hero-mode-buttons button[aria-pressed="true"],
+.hero-cinematic .hero-mode-buttons button[aria-pressed="true"] span {
+  color: var(--pop-blue);
+}
+
+.hero-cinematic .hero-mode-buttons button[aria-pressed="true"] {
+  font-weight: 700;
+}
+
+.hero-cinematic .hero-timeline {
+  background: #15151c35;
+}
+
+.hero-cinematic .hero-timeline-fill {
+  background: var(--pop-blue);
+}
+
+.hero-cinematic .hero-motion-note,
+.hero-cinematic .scroll-cue,
+.hero-cinematic .hero-replay,
+.hero-cinematic .motion-toggle {
+  color: #3e4132;
+}
+
+.hero-cinematic .scroll-cue > span,
+.hero-cinematic .hero-replay > span {
+  color: var(--ink);
+}
+
+.hero-cinematic .motion-icon {
+  border-color: #15151c88;
+  color: var(--ink);
+}
+
+.hero-strip {
+  color: var(--ink);
+  border-color: var(--line);
+}
+
+/* A second, deliberately different colour field carries the scroll experience. */
+.immersive-story,
+.world-stage {
+  color: #fff;
+  background: var(--pop-blue);
+}
+
+.world-stage::after {
+  background: none;
+}
+
+.world-topline,
+.world-copy p,
+.world-annotation,
+.world-scroll-label,
+.world-motion {
+  color: #e4e5ff;
+}
+
+.world-topline .status-dot,
+.world-progress > span {
+  background: var(--pop-lime);
+}
+
+.world-copy h3 {
+  color: #fff;
+}
+
+.world-kicker,
+.world-copy h3 em,
+.world-annotation-cross,
+.world-skip:hover {
+  color: var(--pop-lime);
+}
+
+.world-chapters {
+  border-color: #ffffff70;
+  background: #1524c9;
+  backdrop-filter: none;
+}
+
+.world-chapters button,
+.world-chapters button > span {
+  color: #fff;
+}
+
+.world-chapters button:hover {
+  background: #fff2;
+}
+
+.world-chapters button[aria-pressed="true"],
+.world-chapters button[aria-pressed="true"] > span {
+  color: var(--ink);
+  background: var(--pop-lime);
+}
+
+.world-motion-icon {
+  border-color: #ffffff90;
+}
+
+.world-motion:hover .world-motion-icon {
+  color: var(--ink);
+  border-color: var(--pop-lime);
+  background: var(--pop-lime);
+}
+
+.world-progress {
+  background: #ffffff40;
+}
+
+.immersive-story :focus-visible {
+  outline-color: var(--pop-lime);
+}
+
+.world-fallback span {
+  border-color: var(--pop-pink);
+  box-shadow: inset 5px 12px 16px #ffd5e7, 12px 20px 30px #101ba650;
+}
+
+.world-fallback span:nth-child(2) {
+  border-color: var(--pop-lime);
+}
+
+.world-fallback span:nth-child(3) {
+  border-color: var(--pop-orange);
+}
+
+/* Editorial sections use one colour each, with no decorative overlay. */
+.vision,
+.process {
+  color: var(--ink);
+  background: var(--paper);
+}
+
+.vision .large-asterisk {
+  color: var(--pop-pink);
+}
+
+.vision .underlined::after {
+  background: var(--pop-blue);
+}
+
+.vision .circle-arrow,
+.services .circle-arrow {
+  color: #fff;
+  border-color: var(--pop-blue);
+  background: var(--pop-blue);
+}
+
+.possibilities {
+  color: var(--ink);
+  background: var(--pop-blush);
+}
+
+.possibilities .section-eyebrow,
+.possibilities .section-intro p,
+.possibilities .concept-meta .mono,
+.possibilities .concept-disclaimer {
+  color: #4d3543;
+}
+
+.possibilities .concept-meta h3 {
+  color: var(--ink);
+}
+
+.possibilities .concept-card:focus-visible {
+  outline-offset: 8px;
+}
+
+.art-aura > img,
+.art-reverie > img {
+  filter: none;
+}
+
+.art-forma {
+  color: var(--ink);
+  background: #c1cbff;
+}
+
+.art-digital {
+  color: #fff;
+  background: var(--pop-blue);
+}
+
+.art-digital .portal-ring {
+  border-color: var(--pop-pink);
+  box-shadow: inset 0 5px 10px #ffd9ec, 7px 15px 15px #111bb866;
+}
+
+.art-digital .ring-two {
+  border-color: var(--pop-orange);
+}
+
+.art-digital .ring-three {
+  border-color: var(--pop-lime);
+}
+
+.art-digital .portal-core {
+  color: var(--ink);
+  background: var(--pop-lime);
+}
+
+.services {
+  --line: #15151c40;
+  --muted: #444835;
+  color: var(--ink);
+  background: var(--pop-lime);
+}
+
+.service summary:hover h3 {
+  color: var(--pop-blue);
+}
+
+.service summary:focus-visible {
+  outline-offset: 3px;
+}
+
+.service .tags span {
+  border-color: #15151c55;
+  color: #343829;
+}
+
+.studio {
+  margin: 0;
+  padding-left: var(--gutter);
+  padding-right: var(--gutter);
+  border-radius: 0;
+  color: var(--ink);
+  background: var(--pop-pink);
+}
+
+.studio .section-eyebrow,
+.studio-description p + p,
+.founder .mono,
+.studio-bottom {
+  color: #44223a;
+}
+
+.studio .orange,
+.founder-plus,
+.founder-monogram > span {
+  color: var(--pop-blue);
+}
+
+.founder {
+  border-color: #15151c55;
+}
+
+.founder-monogram {
+  color: var(--ink);
+  background: var(--pop-lime);
+}
+
+.founder:nth-child(2) .founder-monogram {
+  color: #fff;
+  background: var(--pop-blue);
+}
+
+.founder:nth-child(2) .founder-monogram > span {
+  color: var(--pop-lime);
+}
+
+.studio-bottom a {
+  color: var(--ink);
+}
+
+.studio-bottom a:hover {
+  color: #172080;
+}
+
+.studio :focus-visible {
+  outline-color: var(--ink);
+}
+
+.process .step-number {
+  color: var(--pop-blue);
+}
+
+.process-step {
+  border-top-color: #15151c45;
+}
+
+.contact {
+  color: #fff;
+  background: var(--pop-blue);
+}
+
+.contact-headline h2 > span,
+.contact-star,
+.contact-arrow {
+  color: var(--pop-lime);
+}
+
+.contact-bottom {
+  border-top-color: #ffffff60;
+}
+
+.contact .pill-dark {
+  color: var(--ink);
+  background: var(--pop-lime);
+}
+
+.contact .pill-dark:hover {
+  color: var(--ink);
+  background: #eeff9d;
+}
+
+.contact :focus-visible {
+  outline-color: var(--pop-lime);
+}
+
+.footer {
+  color: var(--ink);
+  background: var(--paper);
+}
+
+.footer-brand > span:last-child {
+  color: var(--pop-blue);
+}
+
+.menu-dialog {
+  --line: #15151c40;
+  --muted: #3e4132;
+  color: var(--ink);
+  background: var(--pop-lime);
+}
+
+.menu-dialog nav > a:hover {
+  color: var(--pop-blue);
+}
+
+.dialog-close {
+  color: var(--ink);
+  background: var(--pop-blush);
+}
+
+.dialog-close:hover {
+  color: #fff;
+  background: var(--pop-blue);
+}
+
+.concept-dialog > .orange {
+  color: var(--pop-blue);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .hero-cinematic .hero-mode-buttons button:hover,
+  .hero-cinematic .hero-mode-buttons button:hover span,
+  .hero-cinematic .hero-replay:not(:disabled):hover,
+  .hero-cinematic .scroll-cue:hover,
+  .hero-cinematic .motion-toggle:not(:disabled):hover {
+    color: var(--pop-blue);
+  }
+
+  .hero-cinematic .motion-toggle:not(:disabled):hover .motion-icon {
+    color: #fff;
+    border-color: var(--pop-blue);
+    background: var(--pop-blue);
+  }
+}
+
+@media (max-width: 700px) {
+  .hero-cinematic h1 em {
+    font-size: 1.25em;
+  }
+
+  .cinematic-home .header,
+  .hero.hero-cinematic {
+    padding-left: max(var(--gutter), env(safe-area-inset-left));
+    padding-right: max(var(--gutter), env(safe-area-inset-right));
+  }
+
+  .hero-cinematic .hero-director {
+    bottom: calc(86px + env(safe-area-inset-bottom));
+  }
+
+  .hero-cinematic .hero-bottom {
+    bottom: calc(17px + env(safe-area-inset-bottom));
+  }
+
+  .world-controls {
+    bottom: calc(58px + env(safe-area-inset-bottom));
+  }
+
+  .world-progress {
+    bottom: calc(37px + env(safe-area-inset-bottom));
+  }
+
+  .world-scroll-label {
+    bottom: calc(13px + env(safe-area-inset-bottom));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-cinematic .hero-mode-buttons button,
+  .hero-cinematic .hero-mode-buttons button::after,
+  .hero-cinematic .hero-mode-buttons button span {
+    transition: none;
+  }
+}
+
+/* Play: a new object study replaces the old ring portal in the concept card. */
+.art-digital .portal-scene { transform: rotate(-12deg); }
+.art-digital .portal-ring {
+  width: 126px; height: 234px;
+  left: calc(50% - 63px); top: calc(50% - 117px);
+  border: 0; border-radius: 65px;
+  background: #ff48b6;
+  box-shadow: inset 9px 10px 15px #ffbde5, inset -10px -12px 18px #bb157c,
+    15px 22px 20px #080e8560;
+  transform: translate(-75px, -18px) rotate(33deg);
+}
+.art-digital .ring-two {
+  background: #ff6138;
+  box-shadow: inset 9px 10px 15px #ffb98a, inset -10px -12px 18px #d62d19,
+    15px 22px 20px #080e8560;
+  transform: translate(53px, -12px) rotate(-41deg);
+}
+.art-digital .ring-three {
+  width: 114px; height: 210px;
+  background: #dfff45;
+  box-shadow: inset 9px 10px 15px #f6ffbc, inset -10px -12px 18px #91af10,
+    15px 22px 20px #080e8560;
+  transform: translate(2px, 53px) rotate(89deg);
+}
+.art-digital .portal-core {
+  top: calc(50% - 39px); left: calc(50% - 39px);
+  width: 78px; height: 78px;
+  color: #2536ff; background: #f6f4ee;
+  border-radius: 22px;
+  box-shadow: inset -6px -7px 9px #d1cfc9, 9px 12px 16px #080e8540;
+  font-size: 62px; font-weight: 700;
+  transform: rotate(12deg);
+}
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .concept-card:hover .ring-three { transform: translate(7px, 67px) rotate(102deg); }
+  .concept-card:hover .ring-one { transform: translate(-83px, -28px) rotate(26deg); }
+  .concept-card:hover .ring-two { transform: translate(60px, -25px) rotate(-34deg); }
+}
+@media (max-width: 700px) {
+  .art-digital .portal-scene { inset: 3% -10% 17%; }
+}

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 720" fill="none">
+  <defs>
+    <linearGradient id="blue" x1="150" y1="180" x2="530" y2="560" gradientUnits="userSpaceOnUse"><stop stop-color="#6777ff"/><stop offset=".36" stop-color="#3545ff"/><stop offset=".8" stop-color="#1d22d7"/><stop offset="1" stop-color="#5b6aff"/></linearGradient>
+    <linearGradient id="pink" x1="255" y1="180" x2="450" y2="570" gradientUnits="userSpaceOnUse"><stop stop-color="#ff9bd9"/><stop offset=".3" stop-color="#ff48b6"/><stop offset=".78" stop-color="#dc278e"/><stop offset="1" stop-color="#ff73cc"/></linearGradient>
+    <linearGradient id="orange" x1="500" y1="270" x2="620" y2="400" gradientUnits="userSpaceOnUse"><stop stop-color="#ffb179"/><stop offset=".4" stop-color="#ff6138"/><stop offset="1" stop-color="#e53b19"/></linearGradient>
+    <linearGradient id="lime" x1="105" y1="420" x2="230" y2="530" gradientUnits="userSpaceOnUse"><stop stop-color="#f8ffaf"/><stop offset=".5" stop-color="#c3ed26"/><stop offset="1" stop-color="#84af07"/></linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="180%"><feDropShadow dx="5" dy="15" stdDeviation="12" flood-color="#294e00" flood-opacity=".15"/></filter>
+  </defs>
+  <g filter="url(#shadow)" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M369 173C471 142 541 205 538 313C535 420 451 532 345 549C230 567 166 487 178 382C191 273 264 205 369 173Z" stroke="url(#blue)" stroke-width="76"/>
+    <path d="M354 193C288 197 268 289 299 398C331 511 404 564 451 515C494 471 463 377 415 296C386 247 369 213 354 193Z" stroke="url(#pink)" stroke-width="63"/>
+    <path d="M179 381C191 276 265 204 366 174" stroke="url(#blue)" stroke-width="76"/>
+    <path d="M312 437C348 520 410 558 451 515" stroke="url(#pink)" stroke-width="63"/>
+  </g>
+  <g transform="translate(566 305) rotate(29)" filter="url(#shadow)"><rect x="-38" y="-68" width="76" height="136" rx="38" fill="url(#orange)"/><path d="M-17-43C-22-55-4-58 5-55" stroke="#ffd0ad" stroke-width="7" stroke-linecap="round" opacity=".8"/></g>
+  <g transform="translate(163 512) rotate(-22)" filter="url(#shadow)"><rect x="-49" y="-43" width="98" height="86" rx="25" fill="url(#lime)"/><path d="M-27-23H13" stroke="#fbffd8" stroke-width="8" stroke-linecap="round" opacity=".7"/></g>
+  <path d="M584 171V201M569 186H599" stroke="#2536ff" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="118" cy="282" r="13" fill="#ff48b6"/>
+</svg>

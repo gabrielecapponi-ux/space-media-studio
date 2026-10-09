@@ -1,0 +1,22 @@
+{
+  "name": "space-media-studio",
+  "version": "1.0.0",
+  "description": "Space Media Studio — Creative marketing agency, Parma",
+  "private": true,
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "deploy": "node scripts/deploy-pages.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "UNLICENSED",
+  "type": "module",
+  "dependencies": {
+    "three": "^0.186.1"
+  },
+  "devDependencies": {
+    "vite": "^8.3.4"
+  }
+}
