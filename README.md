@@ -17,6 +17,8 @@ npm run dev
 
 Anteprima locale su `http://127.0.0.1:5174`.
 
+Aprire il sorgente `index.html` con `file://` reindirizza alla versione pubblicata: per lavorare in locale usare il server Vite, che risolve moduli e risorse.
+
 ```sh
 npm run build
 npm run preview
@@ -56,6 +58,8 @@ L’introduzione assembla pareti, postazioni, computer, superfici colorate e il 
 
 Il contatore segue il completamento ponderato di font locali, immagini, modulo della stanza, film responsive e preparazione GPU della scena dei servizi. Per il video, quando il server comunica la dimensione, viene misurato anche l’avanzamento del trasferimento. La visualizzazione del numero viene smorzata per rendere leggibile l’assemblaggio e **non supera l’avanzamento effettivo**, fino al 99%. Con le risorse elaborate, lo studio completo resta brevemente visibile al 99%; il 100% avvia il movimento della camera dentro il monitor e il raccordo al documento HTML.
 
+L’assemblaggio ha un ritmo più breve alle aperture successive nella stessa sessione. La scelta è salvata solo in `sessionStorage`; la preparazione effettiva delle risorse resta necessaria anche quando l’introduzione è abbreviata.
+
 In condizioni normali il film selezionato viene scaricato interamente prima dell’apertura, decodificato fino al primo fotogramma e conservato come URL Blob per playback e replay. Il download viene effettuato una volta; il film non parte dietro l’introduzione. Il formato desktop è **Full HD 1920×1080**; il formato mobile è un ritaglio verticale **640×900**. La preparazione anticipata include la compilazione e un primo rendering della scena dei servizi, così il cambio verso la sezione non dipende soltanto da un’importazione tardiva.
 
 **Entra subito** ed **Esc** interrompono l’attesa e rendono accessibile il sito. La preferenza di movimento ridotto usa branding e avanzamento statici, senza stanza animata o movimento della camera; movimento ridotto e risparmio dati escludono il video dal download automatico. Un errore di una risorsa attiva il relativo ripiego; un limite massimo di **20 secondi** fa uscire dall’introduzione anche se una richiesta non termina. Il 100% indica il completamento della preparazione prevista, non garantisce il download riuscito di una risorsa che ha prodotto un errore. All’uscita vengono liberate le risorse GPU della stanza; il Blob del film resta disponibile fino alla chiusura della pagina.
@@ -79,13 +83,15 @@ I testi e i contatti restano nel documento HTML. La navigazione funziona da tast
 
 Il browser prepara un solo formato del film durante l’introduzione. Movimento ridotto e risparmio dati evitano il download automatico iniziale; un problema di autoplay o di caricamento mantiene una presentazione statica e consente di riprovare. Dopo l’apertura, playback e aggiornamenti si fermano fuori schermo o quando la pagina è nascosta. Durante l’introduzione lo sfondo è `inert`, il focus resta nei controlli del caricamento e viene ripristinato all’uscita.
 
-Il modulo 3D dei servizi viene importato e preparato durante l’introduzione. Un unico canvas serve tutti i capitoli della sezione; la stanza iniziale usa un canvas separato, rimosso al termine dell’apertura. Il disegno dei servizi avviene su richiesta e termina dopo l’assestamento dello scroll; il DPR è limitato a 1.35 sui formati compatti/touch e a 1.6 sugli altri, con ombre da 512 o 1024 pixel. Se WebGL non è disponibile o il contesto viene perso, rimangono l’illustrazione CSS dello studio e i mockup HTML/CSS corrispondenti al capitolo selezionato. Immagini, font e video sono serviti localmente.
+Il modulo 3D dei servizi viene importato e preparato durante l’introduzione. Un unico canvas serve tutti i capitoli della sezione; la stanza iniziale usa un canvas separato, rimosso al termine dell’apertura. Il disegno dei servizi avviene su richiesta e termina dopo l’assestamento dello scroll; il DPR è limitato a 1.35 sui formati compatti/touch e a 1.6 sugli altri. I dispositivi usano un’ombra morbida precalcolata, senza passaggi aggiuntivi per mappe o blur. La stanza mantiene ombre architettoniche da 512/1024 pixel e riusa la mappa durante il movimento finale della sola camera. Geometrie condivise e dettagli proporzionati alla dimensione visibile riducono il carico 3D. Se WebGL non è disponibile o il contesto viene perso, rimangono l’illustrazione CSS dello studio e i mockup HTML/CSS corrispondenti al capitolo selezionato. Immagini, font e video sono serviti localmente.
 
 ## Progetti possibili e diritti
 
 Aura, FORMA e REVERIE sono **concept dimostrativi**, esplicitamente etichettati come progetti possibili. Presentano direzioni che lo studio potrebbe sviluppare: non sono clienti, lavori commissionati o risultati ottenuti. Le fotografie stock mantengono autore e licenza; lo studio firma testi, composizioni, mockup e geometrie originali. I nomi non implicano un rapporto commerciale con marchi esistenti.
 
 I crediti completi sono in [ASSET-SOURCES.md](./ASSET-SOURCES.md). Le precedenti scene e la pipeline CGI `spark`, conservate nella cronologia del progetto, non fanno parte del percorso attuale.
+
+I sorgenti delle iterazioni precedenti e i relativi script inutilizzati sono stati rimossi dal checkout corrente; restano recuperabili dalla cronologia Git. La build contiene solo il percorso attuale.
 
 Il sito non include form, analytics o cookie di profilazione. Telefono, WhatsApp e mappa si aprono su richiesta dell’utente.
 

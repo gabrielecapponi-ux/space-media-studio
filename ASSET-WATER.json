@@ -21,8 +21,20 @@
     "motion": "natural forward chronology; no interpolation or reversal"
   },
   "exports": {
-    "desktop": { "file": "public/films/water-desktop.mp4", "width": 1920, "height": 1080 },
-    "mobile": { "file": "public/films/water-mobile.mp4", "width": 640, "height": 900 }
+    "desktop": {
+      "file": "public/films/water-desktop.mp4",
+      "width": 1920,
+      "height": 1080,
+      "bytes": 2819899,
+      "sha256": "b6484bb03e73abfbba221f826343a10b5d39dfd09617300c387661efd2cb1f23"
+    },
+    "mobile": {
+      "file": "public/films/water-mobile.mp4",
+      "width": 640,
+      "height": 900,
+      "bytes": 1424906,
+      "sha256": "116d3166149715df48847f749ab1bd184dfd93a553cbd4e3f891fab00c6c4930"
+    }
   },
   "posters": {
     "playback": {
@@ -37,11 +49,57 @@
     }
   },
   "editorialCues": [
-    { "name": "falling-drop", "fromSeconds": 0.5, "toSeconds": 1 },
-    { "name": "first-impact", "atSeconds": 1.5 },
-    { "name": "crown", "fromSeconds": 2, "toSeconds": 3 },
-    { "name": "rebound-column", "fromSeconds": 3.5, "toSeconds": 5.5 },
-    { "name": "expanding-ripples", "fromSeconds": 6, "toSeconds": 11.5 }
+    {
+      "name": "falling-drop",
+      "fromSeconds": 0.5,
+      "toSeconds": 1
+    },
+    {
+      "name": "first-impact",
+      "atSeconds": 1.5
+    },
+    {
+      "name": "crown",
+      "fromSeconds": 2,
+      "toSeconds": 3
+    },
+    {
+      "name": "rebound-column",
+      "fromSeconds": 3.5,
+      "toSeconds": 5.5
+    },
+    {
+      "name": "expanding-ripples",
+      "fromSeconds": 6,
+      "toSeconds": 11.5
+    }
   ],
-  "timingNote": "Approximate visual editorial cues within the website edit, measured in seconds."
+  "timingNote": "Approximate visual editorial cues within the website edit, measured in seconds.",
+  "deliveryEncoding": {
+    "codec": "H.264 High Level 4.1",
+    "pixelFormat": "yuv420p",
+    "preset": "veryslow",
+    "crf": 20,
+    "keyframeIntervalFrames": 48,
+    "fastStart": true,
+    "audio": false,
+    "source": "preserved 4K master, not a transcode of the preceding web export"
+  },
+  "deliveryValidation": {
+    "comparison": "preceding CRF 19 / 12-frame-GOP web exports",
+    "ssim": {
+      "desktop": {
+        "overall": 0.996992,
+        "luma": 0.995488
+      },
+      "mobile": {
+        "overall": 0.996052,
+        "luma": 0.994078
+      }
+    },
+    "combinedBytesSaved": 1326780,
+    "allFramesDecode": true,
+    "moovBeforeMdat": true,
+    "postersReExtractedFromFinalFrameZero": true
+  }
 }

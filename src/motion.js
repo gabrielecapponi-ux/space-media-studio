@@ -45,7 +45,7 @@ export function createMotion({ initiallyBlocked = false } = {}) {
     const path = still
       ? mobile ? "./images/water-mobile.jpg" : "./images/water-desktop.jpg"
       : mobile ? "./images/water-start-mobile.jpg" : "./images/water-start-desktop.jpg";
-    video.poster = url(`${path}?v=fluid-20261010`);
+    video.poster = url(`${path}?v=refined-20261010`);
   }
   function controls() {
     const reduced = preference.matches;

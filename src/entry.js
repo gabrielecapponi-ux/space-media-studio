@@ -24,6 +24,11 @@ export function createEntry(motion) {
   const ownedURLs = new Set();
   const images = [];
   const records = new Map();
+  // Reopening the studio keeps the real asset check, with a shorter assembly.
+  let returning = false;
+  try { returning = sessionStorage.getItem("space-studio-ready") === "1"; } catch {}
+  const assemblyRate = returning ? 0.055 : 0.022;
+  const zoomDuration = returning ? 1050 : 1450;
   let room;
   let finished = false;
   let disposed = false;
@@ -78,6 +83,9 @@ export function createEntry(motion) {
     abort.abort();
     shell.setState("exiting");
     html.dataset.entryState = result;
+    if (result === "ready") {
+      try { sessionStorage.setItem("space-studio-ready", "1"); } catch {}
+    }
     exitTimer = setTimeout(() => {
       if (disposed) return;
       room?.dispose();
@@ -98,7 +106,7 @@ export function createEntry(motion) {
     const dt = lastTime ? Math.min(200, time - lastTime) : 16;
     lastTime = time;
     if (phase === "loading") {
-      displayed = preference.matches ? target : Math.min(target, displayed + dt * 0.015);
+      displayed = preference.matches ? target : Math.min(target, displayed + dt * assemblyRate);
       if (settled && displayed > 98.98) displayed = 99;
       shell.update(displayed, label(displayed));
       room?.setProgress(displayed / 99);
@@ -115,7 +123,7 @@ export function createEntry(motion) {
       shell.setState("zoom");
       html.dataset.entryState = "zoom";
     } else if (phase === "zoom") {
-      const progress = clamp((time - zoomStart) / 1650);
+      const progress = clamp((time - zoomStart) / zoomDuration);
       room?.setZoom(progress);
       shell.root.style.setProperty("--entry-zoom", progress.toFixed(4));
       if (progress === 1) return release("ready");
@@ -173,7 +181,7 @@ export function createEntry(motion) {
   const imagePaths = ["./images/muse-skincare.jpg", "./images/forma-architecture.jpg", "./images/aura-perfume.jpg"];
   const mobile = matchMedia("(max-width: 760px) and (orientation: portrait)").matches;
   const still = preference.matches || navigator.connection?.saveData;
-  imagePaths.push(`./images/water-${still ? "" : "start-"}${mobile ? "mobile" : "desktop"}.jpg?v=fluid-20261010`);
+  imagePaths.push(`./images/water-${still ? "" : "start-"}${mobile ? "mobile" : "desktop"}.jpg?v=refined-20261010`);
   const pictures = Promise.all(imagePaths.map((path, index) => task(`image-${index}`, 4, () => preloadImage(path))));
   const roomTask = task("room", 12, async () => {
     if (preference.matches) return;

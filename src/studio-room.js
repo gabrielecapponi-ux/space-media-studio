@@ -153,6 +153,7 @@ export function createStudioRoom(container, { reduced = false } = {}) {
   if (!container?.appendChild) return noop;
   const compact = window.matchMedia("(max-width: 760px)").matches;
   const geometries = new Set(), materials = new Set(), textures = new Set();
+  const boxGeometries = new Map();
   const tracks = [];
   let scene, camera, renderer, environment, resizeObserver;
   let room, floor, backWall, sideWall, wallPanel, logo, lights, screens;
@@ -166,6 +167,7 @@ export function createStudioRoom(container, { reduced = false } = {}) {
   const cameraTarget = new THREE.Vector3(0, 1.55, -0.1);
   const activeTarget = new THREE.Vector3();
   const direction = new THREE.Vector3(0.91, 0.73, 1.52).normalize();
+  const wallStartColor = new THREE.Color(0x777c76), wallFinishColor = new THREE.Color(0xe3e6df);
   const ownGeometry = (value) => { geometries.add(value); return value; };
   const ownMaterial = (value) => { materials.add(value); return value; };
   const ownTexture = (value) => { textures.add(value); return value; };
@@ -183,8 +185,19 @@ export function createStudioRoom(container, { reduced = false } = {}) {
   }
 
   function box(w, h, d, material, parent, x = 0, y = 0, z = 0, radius = 0.035, cast = true) {
-    const geometry = ownGeometry(new RoundedBoxGeometry(w, h, d, compact ? 2 : 3,
-      Math.min(radius, w / 2, h / 2, d / 2)));
+    const bevel = Math.min(radius, w / 2, h / 2, d / 2);
+    // Millimetre strips and fittings have no visible curved silhouette. Keep
+    // the smooth bevels on furniture and display housings, rather than
+    // subdividing every tiny piece of the architecture into hundreds of faces.
+    const detail = bevel <= 0.016 || Math.min(w, h, d) <= 0.045 ? 0
+      : compact ? 1 : 2;
+    const key = [w, h, d, bevel, detail].join(":");
+    let geometry = boxGeometries.get(key);
+    if (!geometry) {
+      geometry = ownGeometry(detail ? new RoundedBoxGeometry(w, h, d, detail, bevel)
+        : new THREE.BoxGeometry(w, h, d));
+      boxGeometries.set(key, geometry);
+    }
     const mesh = new THREE.Mesh(geometry, material);
     mesh.position.set(x, y, z); mesh.castShadow = cast; mesh.receiveShadow = true;
     parent.add(mesh); return mesh;
@@ -239,18 +252,17 @@ export function createStudioRoom(container, { reduced = false } = {}) {
       ctx.putImageData(pixels, 0, 0);
     }, false);
     grain.wrapS = grain.wrapT = THREE.RepeatWrapping; grain.repeat.set(8, 8);
-    const white = ownMaterial(new THREE.MeshStandardMaterial({ color: PAPER, roughness: 0.52,
-      metalness: 0, bumpMap: grain, bumpScale: 0.016 }));
-    wallMaterial = ownMaterial(new THREE.MeshStandardMaterial({ color: 0x777c76, roughness: 0.73,
-      metalness: 0, bumpMap: grain, bumpScale: 0.025 }));
-    const graphite = ownMaterial(new THREE.MeshStandardMaterial({ color: 0x171b1e, roughness: 0.44,
-      metalness: 0.08, bumpMap: grain, bumpScale: 0.013 }));
-    const black = ownMaterial(new THREE.MeshStandardMaterial({ color: 0x080a0c, roughness: 0.34, metalness: 0.02 }));
+    const white = ownMaterial(new THREE.MeshStandardMaterial({ color: 0xeceee8, roughness: 0.38,
+      metalness: 0, bumpMap: grain, bumpScale: 0.004 }));
+    wallMaterial = ownMaterial(new THREE.MeshStandardMaterial({ color: 0x777c76, roughness: 0.86,
+      metalness: 0, bumpMap: grain, bumpScale: 0.012 }));
+    const graphite = ownMaterial(new THREE.MeshStandardMaterial({ color: 0x202527, roughness: 0.57,
+      metalness: 0, bumpMap: grain, bumpScale: 0.008 }));
+    const black = ownMaterial(new THREE.MeshStandardMaterial({ color: 0x101315, roughness: 0.41, metalness: 0 }));
     const aluminium = ownMaterial(new THREE.MeshStandardMaterial({ color: 0xbfc3c2, metalness: 1, roughness: 0.27 }));
     const darkMetal = ownMaterial(new THREE.MeshStandardMaterial({ color: 0x454b4d, metalness: 1, roughness: 0.31 }));
     const fabric = ownMaterial(new THREE.MeshStandardMaterial({ color: 0x151a1b, metalness: 0,
-      roughness: 0.91, bumpMap: grain, bumpScale: 0.035 }));
-    const lime = ownMaterial(new THREE.MeshStandardMaterial({ color: LIME, metalness: 0, roughness: 0.36 }));
+      roughness: 0.93, bumpMap: grain, bumpScale: 0.016 }));
     const displayBlack = ownMaterial(new THREE.MeshPhysicalMaterial({ color: 0x080a0c, metalness: 0.1,
       roughness: 0.18, clearcoat: 0.65, clearcoatRoughness: 0.17 }));
     glowMaterial = ownMaterial(new THREE.MeshStandardMaterial({ color: LIME, emissive: LIME,
@@ -264,7 +276,21 @@ export function createStudioRoom(container, { reduced = false } = {}) {
     // walls. The missing front/right walls let the entire assembly stay legible.
     floor = new THREE.Group(); room.add(floor);
     box(9.7, 0.28, 6.6, graphite, floor, 0, -0.18, 0, 0.13);
-    box(9.35, 0.085, 6.25, white, floor, 0, 0.003, 0, 0.045);
+    const floorMap = texture(512, 512, (ctx, w, h) => {
+      ctx.fillStyle = "#d9dcd5"; ctx.fillRect(0, 0, w, h);
+      // Large resin panels: nearly invisible joints give the surface a human
+      // scale without adding geometry or a downloaded texture.
+      ctx.strokeStyle = "rgba(92,104,94,0.15)"; ctx.lineWidth = 1;
+      for (let x = 1; x < 4; x++) {
+        ctx.beginPath(); ctx.moveTo(x * w / 4, 0); ctx.lineTo(x * w / 4, h); ctx.stroke();
+      }
+      for (let y = 1; y < 3; y++) {
+        ctx.beginPath(); ctx.moveTo(0, y * h / 3); ctx.lineTo(w, y * h / 3); ctx.stroke();
+      }
+    });
+    const floorMaterial = ownMaterial(new THREE.MeshStandardMaterial({ map: floorMap,
+      roughness: 0.47, metalness: 0, bumpMap: grain, bumpScale: 0.006 }));
+    box(9.35, 0.085, 6.25, floorMaterial, floor, 0, 0.003, 0, 0.045);
     box(9.05, 0.018, 0.032, darkMetal, floor, 0, 0.054, 2.81, 0.008, false);
     box(0.032, 0.018, 5.66, darkMetal, floor, 4.31, 0.054, 0, 0.008, false);
     box(9.15, 0.032, 0.038, glowMaterial, floor, 0, -0.15, 3.292, 0.01, false);
@@ -322,7 +348,8 @@ export function createStudioRoom(container, { reduced = false } = {}) {
       track(monitor, 0.53 + delay, 0.75 + delay, new THREE.Vector3(0, 0.6, -0.24));
       const input = new THREE.Group(); input.position.set(x, 1.275, z + 0.40); room.add(input);
       box(1.3, 0.038, 0.46, aluminium, input, -0.13, 0, 0, 0.018);
-      const keyGeometry = ownGeometry(new THREE.BoxGeometry(0.058, 0.015, 0.068));
+      const keyGeometry = boxGeometries.get("keycap") || ownGeometry(new THREE.BoxGeometry(0.058, 0.015, 0.068));
+      boxGeometries.set("keycap", keyGeometry);
       const keys = new THREE.InstancedMesh(keyGeometry, black, 64);
       for (let row = 0; row < 4; row++) {
         for (let column = 0; column < 16; column++) {
@@ -338,13 +365,27 @@ export function createStudioRoom(container, { reduced = false } = {}) {
       const chair = new THREE.Group(); chair.position.set(x + (main ? 0.52 : -0.2), 0, z + 1.65);
       chair.rotation.y = main ? -0.17 : 0.16; room.add(chair);
       cylinder(0.065, 0.075, 0.62, aluminium, chair, 0, 0.36, 0, 12);
-      // Five spokes, rather than a floating chair or a solid pedestal.
+      // Five slim spokes and paired castors share static geometry. Their
+      // separate instances preserve the construction while drawing one batch.
+      const spokeGeometry = boxGeometries.get("chair-spoke") || ownGeometry(new THREE.BoxGeometry(0.085, 0.045, 0.49));
+      boxGeometries.set("chair-spoke", spokeGeometry);
+      const spokes = new THREE.InstancedMesh(spokeGeometry, darkMetal, 5);
+      const castorGeometry = boxGeometries.get("chair-castor") || ownGeometry(new THREE.CylinderGeometry(0.045, 0.045, 0.065, 8));
+      boxGeometries.set("chair-castor", castorGeometry);
+      const castors = new THREE.InstancedMesh(castorGeometry, black, 5);
+      const fitting = new THREE.Object3D();
       for (let i = 0; i < 5; i++) {
         const angle = i / 5 * Math.PI * 2;
-        const spoke = box(0.09, 0.045, 0.50, darkMetal, chair,
-          Math.sin(angle) * 0.19, 0.075, Math.cos(angle) * 0.19, 0.02);
-        spoke.rotation.y = angle;
+        fitting.position.set(Math.sin(angle) * 0.19, 0.10, Math.cos(angle) * 0.19);
+        fitting.rotation.set(0, angle, 0); fitting.updateMatrix();
+        spokes.setMatrixAt(i, fitting.matrix);
+        fitting.position.set(Math.sin(angle) * 0.41, 0.057, Math.cos(angle) * 0.41);
+        fitting.rotation.set(0, angle, Math.PI / 2); fitting.updateMatrix();
+        castors.setMatrixAt(i, fitting.matrix);
       }
+      spokes.castShadow = spokes.receiveShadow = true;
+      castors.castShadow = castors.receiveShadow = true;
+      chair.add(spokes, castors);
       box(0.79, 0.14, 0.72, fabric, chair, 0, 0.78, 0, 0.065);
       const back = box(0.76, 1.00, 0.14, fabric, chair, 0, 1.26, 0.35, 0.065);
       back.rotation.x = -0.10;
@@ -438,6 +479,9 @@ export function createStudioRoom(container, { reduced = false } = {}) {
   function pose(force = false) {
     if (!initialized || disposed || failed) return;
     if (!force && Math.abs(appliedProgress - progress) < 0.00001 && Math.abs(appliedZoom - zoom) < 0.00001) return;
+    // Furniture casts new shadows while assembling. The final camera dolly
+    // only changes the view, so reuse the completed shadow map throughout it.
+    if (force || Math.abs(appliedProgress - progress) > 0.00001) renderer.shadowMap.needsUpdate = true;
     appliedProgress = progress; appliedZoom = zoom;
     const p = progress;
     const slab = phase(p, 0.0, 0.18);
@@ -447,7 +491,7 @@ export function createStudioRoom(container, { reduced = false } = {}) {
     const wall = phase(p, 0.12, 0.36), side = phase(p, 0.16, 0.39);
     backWall.visible = wall > 0.0001; backWall.scale.y = Math.max(0.001, wall);
     sideWall.visible = side > 0.0001; sideWall.scale.y = Math.max(0.001, side);
-    wallMaterial.color.copy(new THREE.Color(0x777c76)).lerp(new THREE.Color(PAPER), phase(p, 0.16, 0.52));
+    wallMaterial.color.copy(wallStartColor).lerp(wallFinishColor, phase(p, 0.16, 0.52));
     const panel = phase(p, 0.25, 0.47);
     wallPanel.visible = panel > 0.0001; wallPanel.scale.x = Math.max(0.001, panel);
     for (const item of tracks) {
@@ -533,7 +577,7 @@ export function createStudioRoom(container, { reduced = false } = {}) {
     if (pendingFrame) cancelAnimationFrame(pendingFrame);
     pendingFrame = 0;
     scene?.traverse((object) => { if (object.isLight) object.shadow?.dispose(); });
-    geometries.forEach((item) => item.dispose());
+    geometries.forEach((item) => item.dispose()); boxGeometries.clear();
     materials.forEach((item) => item.dispose());
     textures.forEach((item) => item.dispose());
     environment?.dispose();
@@ -551,6 +595,7 @@ export function createStudioRoom(container, { reduced = false } = {}) {
     renderer.toneMapping = THREE.NeutralToneMapping; renderer.toneMappingExposure = 1;
     renderer.setClearColor(INK, 0);
     renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFShadowMap;
+    renderer.shadowMap.autoUpdate = false;
     renderer.domElement.className = "studio-room-canvas";
     renderer.domElement.setAttribute("aria-hidden", "true");
     renderer.domElement.style.cssText = "position:absolute;inset:0;width:100%;height:100%;pointer-events:none;visibility:hidden";
@@ -559,9 +604,9 @@ export function createStudioRoom(container, { reduced = false } = {}) {
     container.appendChild(renderer.domElement);
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(39, 1, 0.035, 100);
-    environment = makeEnvironment(); scene.environment = environment.texture; scene.environmentIntensity = 0.75;
-    scene.add(new THREE.HemisphereLight(0xffffff, 0x202725, 1.45));
-    const key = new THREE.DirectionalLight(0xffffff, 3.1);
+    environment = makeEnvironment(); scene.environment = environment.texture; scene.environmentIntensity = 0.6;
+    scene.add(new THREE.HemisphereLight(0xeaf0f3, 0x34382c, 0.72));
+    const key = new THREE.DirectionalLight(0xfff9ee, 2.6);
     key.position.set(-3.8, 8, 7.5); key.target.position.set(0, 0.8, -0.4);
     key.castShadow = true; key.shadow.mapSize.set(compact ? 512 : 1024, compact ? 512 : 1024);
     key.shadow.camera.left = -7; key.shadow.camera.right = 7;
@@ -570,7 +615,7 @@ export function createStudioRoom(container, { reduced = false } = {}) {
     key.shadow.normalBias = 0.035; key.shadow.bias = -0.0001;
     key.shadow.radius = compact ? 2.5 : 3.5;
     scene.add(key, key.target);
-    const fill = new THREE.DirectionalLight(0xffffff, 0.9); fill.position.set(6, 4, -2); scene.add(fill);
+    const fill = new THREE.DirectionalLight(0xcadced, 0.65); fill.position.set(6, 4, -2); scene.add(fill);
     build(); initialized = true; resize(); pose(true);
     resizeObserver = new ResizeObserver(resize); resizeObserver.observe(container);
     document.addEventListener("visibilitychange", visibility);

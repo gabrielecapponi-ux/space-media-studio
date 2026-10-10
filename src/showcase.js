@@ -151,7 +151,7 @@ function roundedSolid(width, height, depth, radius, segments = 10, bevel = 0.015
   const geometry = new THREE.ExtrudeGeometry(roundedShape(width - bevel * 2, height - bevel * 2,
     Math.max(0.01, radius - bevel)), {
     depth: depth - bevel * 2, steps: 1, curveSegments: segments,
-    bevelEnabled: true, bevelSegments: 3, bevelSize: bevel, bevelThickness: bevel,
+    bevelEnabled: true, bevelSegments: 2, bevelSize: bevel, bevelThickness: bevel,
   });
   geometry.translate(0, 0, -depth / 2 + bevel);
   geometry.computeBoundingSphere();
@@ -183,7 +183,7 @@ export function createShowcase(container) {
   const geometries = new Set(), materials = new Set(), textures = new Set();
   let renderer, scene, camera, environment, group, display, phone, social;
   let identityMaterial, websiteMaterial, phoneScreen, socialScreen;
-  let shadow, floor, initialized = false, disposed = false, failed = false;
+  let shadow, initialized = false, disposed = false, failed = false;
   let visible = false, paused = false, reduced = motionQuery.matches;
   let progress = 0, appliedProgress = -1, renderFrame = 0, frames = 0;
   let architectureImage = null, campaignImage = null;
@@ -207,15 +207,17 @@ export function createShowcase(container) {
 
   function makeEnvironment() {
     const studio = new THREE.Scene();
-    studio.background = new THREE.Color(0x252723);
+    studio.background = new THREE.Color(0x202329);
     const boxes = [
       [-4, 5, 5, 4.5, 6, 5.2], [5, 2.2, 3, 1.2, 5.8, 4.6],
       [0, 6, -3, 5, 2.2, 4], [-3, -2, 4, 5.5, 1, 1.25],
       [2.5, 0, -5, 3, 5, 2.8],
     ];
-    boxes.forEach(([x, y, z, w, h, intensity]) => {
+    boxes.forEach(([x, y, z, w, h, intensity], index) => {
       const geometry = new THREE.PlaneGeometry(w, h);
-      const material = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide });
+      const material = new THREE.MeshBasicMaterial({
+        color: index === 1 ? 0xe7eeff : 0xfffbf3, side: THREE.DoubleSide,
+      });
       material.color.multiplyScalar(intensity);
       const card = new THREE.Mesh(geometry, material);
       card.position.set(x, y, z);
@@ -271,8 +273,6 @@ export function createShowcase(container) {
       renderer.toneMapping = THREE.NeutralToneMapping;
       renderer.toneMappingExposure = 1;
       renderer.setClearColor(0x000000, 0);
-      renderer.shadowMap.enabled = true;
-      renderer.shadowMap.type = THREE.VSMShadowMap;
       renderer.domElement.className = "showcase-canvas";
       renderer.domElement.setAttribute("aria-hidden", "true");
       renderer.domElement.style.cssText = "position:absolute;inset:0;width:100%;height:100%;pointer-events:none;visibility:hidden";
@@ -283,30 +283,21 @@ export function createShowcase(container) {
       camera = new THREE.PerspectiveCamera(32, 1, 0.1, 70);
       environment = makeEnvironment();
       scene.environment = environment.texture;
-      scene.environmentIntensity = 0.85;
-      scene.add(new THREE.HemisphereLight(0xffffff, 0x55564d, 2));
-      const key = new THREE.DirectionalLight(0xffffff, 3.8);
+      scene.environmentIntensity = 0.8;
+      scene.add(new THREE.HemisphereLight(0xf6f8ff, 0x303640, 0.7));
+      const key = new THREE.DirectionalLight(0xfffbf4, 3.4);
       key.position.set(-4, 7, 6);
-      key.castShadow = true;
-      key.shadow.mapSize.set(lowDetail ? 512 : 1024, lowDetail ? 512 : 1024);
-      key.shadow.camera.left = -7; key.shadow.camera.right = 7;
-      key.shadow.camera.top = 6; key.shadow.camera.bottom = -5;
-      key.shadow.camera.near = 0.5; key.shadow.camera.far = 20;
-      key.shadow.normalBias = 0.025; key.shadow.bias = -0.0001;
-      key.shadow.radius = lowDetail ? 9 : 18;
-      key.shadow.blurSamples = 8;
       scene.add(key);
-      const fill = new THREE.DirectionalLight(0xffffff, 1.6);
+      const fill = new THREE.DirectionalLight(0xe2ebff, 0.7);
       fill.position.set(5, 0, 3); scene.add(fill);
 
-      const metal = ownMaterial(new THREE.MeshStandardMaterial({ color: 0x252722, metalness: 1, roughness: 0.28 }));
-      const edge = ownMaterial(new THREE.MeshStandardMaterial({ color: 0x85887e, metalness: 1, roughness: 0.22 }));
-      const bezel = ownMaterial(new THREE.MeshPhysicalMaterial({ color: 0x070807, metalness: 0, roughness: 0.2,
-        clearcoat: 0.8, clearcoatRoughness: 0.14 }));
-      const black = ownMaterial(new THREE.MeshStandardMaterial({ color: 0x050604, roughness: 0.46, metalness: 0 }));
-      const lens = ownMaterial(new THREE.MeshPhysicalMaterial({ color: 0x171b15, metalness: 0.15, roughness: 0.1,
-        clearcoat: 1, clearcoatRoughness: 0.08 }));
-      const button = ownMaterial(new THREE.MeshStandardMaterial({ color: 0xd4d8be, metalness: 0.8, roughness: 0.25 }));
+      const metal = ownMaterial(new THREE.MeshStandardMaterial({ color: 0x41454c, metalness: 1, roughness: 0.31 }));
+      const edge = ownMaterial(new THREE.MeshStandardMaterial({ color: 0xb7bec7, metalness: 1, roughness: 0.24 }));
+      const bezel = ownMaterial(new THREE.MeshPhysicalMaterial({ color: 0x080a0e, metalness: 0, roughness: 0.24,
+        clearcoat: 0.65, clearcoatRoughness: 0.18 }));
+      const black = ownMaterial(new THREE.MeshStandardMaterial({ color: 0x050609, roughness: 0.48, metalness: 0 }));
+      const lens = ownMaterial(new THREE.MeshStandardMaterial({ color: 0x111a24, metalness: 0, roughness: 0.1 }));
+      const button = ownMaterial(new THREE.MeshStandardMaterial({ color: 0xaeb6c0, metalness: 1, roughness: 0.28 }));
       textureBrand = canvasTexture(1280, 800, brandArtwork);
       textureWebsite = canvasTexture(1280, 800, (context, w, h) => websiteArtwork(context, w, h, architectureImage));
       texturePhone = canvasTexture(512, 1100, (context, w, h) => campaignArtwork(context, w, h, campaignImage));
@@ -318,15 +309,16 @@ export function createShowcase(container) {
       socialScreen = ownMaterial(new THREE.MeshBasicMaterial({ map: textureSocial, toneMapped: false }));
       group = new THREE.Group(); scene.add(group);
       display = new THREE.Group(); group.add(display);
-      const corners = lowDetail ? 3 : 5;
+      const corners = lowDetail ? 2 : 3;
       mesh(new RoundedBoxGeometry(6.12, 3.92, 0.21, corners, 0.095), metal, display, 0, 0, 0);
       mesh(new RoundedBoxGeometry(6.09, 3.89, 0.058, corners, 0.028), edge, display, 0, 0, 0.083);
       mesh(new RoundedBoxGeometry(6.04, 3.84, 0.055, corners, 0.026), bezel, display, 0, 0, 0.11);
-      mesh(roundedSurface(5.82, 3.64, 0.13, 10), identityMaterial, display, 0, 0, 0.142, false);
-      mesh(roundedSurface(5.82, 3.64, 0.13, 10), websiteMaterial, display, 0, 0, 0.144, false);
+      const displaySurface = roundedSurface(5.82, 3.64, 0.13, 10);
+      mesh(displaySurface, identityMaterial, display, 0, 0, 0.142, false);
+      mesh(displaySurface, websiteMaterial, display, 0, 0, 0.144, false);
       mesh(new THREE.CylinderGeometry(0.025, 0.025, 0.008, 12), lens, display, 0, 1.875, 0.145, false)
         .rotation.x = Math.PI / 2;
-      mesh(new RoundedBoxGeometry(0.22, 0.025, 0.012, 2, 0.006), black, display, 0, -1.875, 0.143, false);
+      mesh(new RoundedBoxGeometry(0.22, 0.025, 0.012, 1, 0.006), black, display, 0, -1.875, 0.143, false);
 
       phone = new THREE.Group(); group.add(phone);
       mesh(roundedSolid(1.57, 3.2, 0.19, 0.225, 10, 0.025), metal, phone);
@@ -336,22 +328,22 @@ export function createShowcase(container) {
       mesh(roundedSurface(0.41, 0.1, 0.05, 8), black, phone, 0, 1.39, 0.137, false);
       mesh(new THREE.CylinderGeometry(0.024, 0.024, 0.008, 12), lens, phone, 0.145, 1.39, 0.145, false)
         .rotation.x = Math.PI / 2;
-      mesh(new RoundedBoxGeometry(0.029, 0.33, 0.058, 2, 0.012), button, phone, 0.787, 0.58, -0.005, false);
-      mesh(new RoundedBoxGeometry(0.029, 0.21, 0.058, 2, 0.012), button, phone, -0.787, 0.6, -0.005, false);
+      mesh(new RoundedBoxGeometry(0.029, 0.33, 0.058, 1, 0.012), button, phone, 0.787, 0.58, -0.005, false);
+      mesh(new RoundedBoxGeometry(0.029, 0.21, 0.058, 1, 0.012), button, phone, -0.787, 0.6, -0.005, false);
       social = new THREE.Group(); group.add(social);
       mesh(new RoundedBoxGeometry(1.83, 2.31, 0.085, corners, 0.04), metal, social);
       mesh(roundedSurface(1.75, 2.23, 0.075, 8), socialScreen, social, 0, 0, 0.046, false);
 
-      const shadowMaterial = ownMaterial(new THREE.ShadowMaterial({ color: 0x15190a, transparent: true, opacity: 0.11 }));
-      floor = mesh(new THREE.PlaneGeometry(45, 45), shadowMaterial, scene, 0, -2.3, 0, false);
-      floor.rotation.x = -Math.PI / 2; floor.receiveShadow = true;
-      // A soft, bounded contact shade also reads on dark sections, without an
-      // extra camera, framebuffer, or permanently running blur pass.
+      // A broad studio softbox produces a diffuse footprint beneath these
+      // floating devices. The bounded gradient avoids hard planar silhouettes
+      // and needs no additional shadow camera or blur framebuffer.
       const shadowTexture = canvasTexture(128, 128, (context, w, h) => {
         const gradient = context.createRadialGradient(w / 2, h / 2, 0, w / 2, h / 2, w / 2);
-        gradient.addColorStop(0, "rgba(18,21,9,0.2)");
-        gradient.addColorStop(0.52, "rgba(18,21,9,0.08)");
-        gradient.addColorStop(1, "rgba(18,21,9,0)");
+        gradient.addColorStop(0, "rgba(9,11,16,0.2)");
+        gradient.addColorStop(0.24, "rgba(9,11,16,0.13)");
+        gradient.addColorStop(0.48, "rgba(9,11,16,0.065)");
+        gradient.addColorStop(0.7, "rgba(9,11,16,0.022)");
+        gradient.addColorStop(1, "rgba(9,11,16,0)");
         context.fillStyle = gradient; context.fillRect(0, 0, w, h);
       });
       shadow = mesh(new THREE.PlaneGeometry(8.5, 2.4), ownMaterial(new THREE.MeshBasicMaterial({
@@ -397,7 +389,10 @@ export function createShowcase(container) {
     // Camera movement stays restrained and shares the scroll clock. No idle
     // spin, independent sine motion, or cumulative position changes.
     group.rotation.y = mix(0.035, -0.02, campaign);
-    shadow.scale.set(mix(0.72, 1, expand), 1, 1);
+    shadow.scale.set(mix(mix(0.58, 0.93, expand), 1, campaign),
+      mix(mix(1.1, 0.72, expand), 0.85, campaign), 1);
+    shadow.material.opacity = mix(mix(0.5, 0.78, expand), 0.68, campaign);
+    shadow.position.x = mix(0.05, 0.14, campaign);
     diagnostics.progress = pose;
     container.dataset.progress = pose.toFixed(4);
     updateCamera();

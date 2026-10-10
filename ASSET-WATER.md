@@ -28,18 +28,26 @@ Both exports retain the native 24 fps and the natural direction of motion. Sourc
 
 | File | Dimensions | Codec | Bytes |
 | --- | --- | --- | --- |
-| `public/films/water-desktop.mp4` | 1920 × 1080 | H.264 / YUV420P | 3,792,538 |
-| `public/films/water-mobile.mp4` | 640 × 900 | H.264 / YUV420P | 1,779,047 |
-| `public/images/water-desktop.jpg` | 1600 × 900 | JPEG | 57,435 |
-| `public/images/water-mobile.jpg` | 640 × 900 | JPEG | 36,562 |
-| `public/images/water-start-desktop.jpg` | 1920 × 1080 | JPEG | 24,052 |
-| `public/images/water-start-mobile.jpg` | 640 × 900 | JPEG | 7,144 |
+| `public/films/water-desktop.mp4` | 1920 × 1080 | H.264 / YUV420P | 2,819,899 |
+| `public/films/water-mobile.mp4` | 640 × 900 | H.264 / YUV420P | 1,424,906 |
+| `public/images/water-desktop.jpg` | 1600 × 900 | JPEG | 56,803 |
+| `public/images/water-mobile.jpg` | 640 × 900 | JPEG | 36,023 |
+| `public/images/water-start-desktop.jpg` | 1920 × 1080 | JPEG | 24,317 |
+| `public/images/water-start-mobile.jpg` | 640 × 900 | JPEG | 7,169 |
 
-Video exports are silent, use MP4 fast-start, and have a keyframe every 12 frames (0.5 seconds) to keep deliberate seeking responsive. Mobile has an independently encoded central portrait crop of the 4K source, preserving the drop and rebound column. Posters show the source at 5.6 seconds, with matching monochrome grade/crop.
+Video exports are silent, use MP4 fast-start and H.264 High Level 4.1, and have a keyframe every 48 frames (2 seconds). This cadence is intended for the current natural forward playback and explicit replay, rather than frequent scroll seeking. Mobile has an independently encoded central portrait crop of the 4K source, preserving the drop and rebound column. Posters show the source at 5.6 seconds, with matching monochrome grade/crop.
 
 The `water-start-*` posters are extracted directly from **frame 0 of each final website MP4**, at that MP4's native dimensions and without any further crop, scale or grade. Use these for a continuous poster-to-playback entrance. Keep the more dramatic `water-desktop.jpg` and `water-mobile.jpg` for static, reduced-motion and data-saving presentations. Source and chapter timings are also recorded in `ASSET-WATER.json`; chapter boundaries are approximate editorial cues, not exact scientific measurements.
 
-For continuous storytelling, play through the natural sequence or seek through it with scroll. Avoid a ping-pong loop: reversing the impact would make the water behave incorrectly. The site can hold the final ripple frame or hide a replay transition behind the next chapter.
+For continuous storytelling, the current site plays the natural sequence once, holds the final ripple frame and offers an explicit replay. Avoid a ping-pong loop: reversing the impact would make the water behave incorrectly.
+
+## Delivery optimization — 10 October 2026
+
+The current MP4s were re-encoded directly from the preserved 4K master using libx264 `veryslow`, CRF 20 and a 48-frame GOP. Dimensions, edit points, frame rate, frame count, natural motion and duration are unchanged. The desktop video is 972,639 bytes smaller (25.65%); mobile is 354,141 bytes smaller (19.91%). Together they save 1,326,780 bytes (23.81%) compared with the preceding CRF 19 / 12-frame-GOP exports.
+
+FFmpeg SSIM comparisons against those preceding decoded exports measured **0.996992 overall / 0.995488 luma** on desktop and **0.996052 overall / 0.994078 luma** on mobile. These are similarity measurements, not a claim of lossless video compression. Side-by-side full-detail impact and rebound frames were visually checked; water contours and fine reflections remain intact. Both files were decoded fully without errors. MP4 atom inspection confirmed `moov` before `mdat`, and FFprobe confirmed one silent video stream, the exact dimensions, 24 fps, 276 frames and 11.5 seconds. Playback posters were re-extracted from frame 0 of these final optimized files.
+
+The two static water JPEGs received lossless progressive Huffman optimization with `jpegtran`; their decoded RGB pixels and dimensions remain identical. The three concept photographs received the same lossless optimization. The entirely monochrome architecture image also drops its redundant chroma planes without changing any decoded RGB pixel. No WebP replacement is shipped: high-quality WebP trials were larger for this grainy photograph.
 
 ## Reproduction
 
@@ -48,9 +56,9 @@ Requirements: FFmpeg with libx264. The following commands were executed locally;
 ```sh
 curl --fail --location --retry 2 --output outputs/water-stock/pexels-film-composite-16392049-4k.mp4 'https://videos.pexels.com/video-files/16392049/16392049-uhd_3840_2160_24fps.mp4'
 
-ffmpeg -ss 1 -t 11.5 -i outputs/water-stock/pexels-film-composite-16392049-4k.mp4 -map 0:v:0 -an -vf 'scale=1920:1080:flags=lanczos,eq=saturation=0,setsar=1' -c:v libx264 -preset slow -crf 19 -pix_fmt yuv420p -r 24 -g 12 -keyint_min 12 -sc_threshold 0 -movflags +faststart public/films/water-desktop.mp4
+ffmpeg -ss 1 -t 11.5 -i outputs/water-stock/pexels-film-composite-16392049-4k.mp4 -map 0:v:0 -an -vf 'scale=1920:1080:flags=lanczos,eq=saturation=0,setsar=1' -c:v libx264 -preset veryslow -crf 20 -pix_fmt yuv420p -r 24 -g 48 -keyint_min 48 -sc_threshold 0 -profile:v high -level:v 4.1 -threads 4 -movflags +faststart -metadata title='Water macro — Film Composite / Pexels 16392049' -metadata comment='Licensed Pexels stock; monochrome crop/edit for Space Media Studio' public/films/water-desktop.mp4
 
-ffmpeg -ss 1 -t 11.5 -i outputs/water-stock/pexels-film-composite-16392049-4k.mp4 -map 0:v:0 -an -vf 'crop=1536:2160:1152:0,scale=640:900:flags=lanczos,eq=saturation=0,setsar=1' -c:v libx264 -preset slow -crf 19 -pix_fmt yuv420p -r 24 -g 12 -keyint_min 12 -sc_threshold 0 -movflags +faststart public/films/water-mobile.mp4
+ffmpeg -ss 1 -t 11.5 -i outputs/water-stock/pexels-film-composite-16392049-4k.mp4 -map 0:v:0 -an -vf 'crop=1536:2160:1152:0,scale=640:900:flags=lanczos,eq=saturation=0,setsar=1' -c:v libx264 -preset veryslow -crf 20 -pix_fmt yuv420p -r 24 -g 48 -keyint_min 48 -sc_threshold 0 -profile:v high -level:v 4.1 -threads 4 -movflags +faststart -metadata title='Water macro — Film Composite / Pexels 16392049' -metadata comment='Licensed Pexels stock; monochrome portrait crop/edit for Space Media Studio' public/films/water-mobile.mp4
 
 ffmpeg -ss 5.6 -i outputs/water-stock/pexels-film-composite-16392049-4k.mp4 -frames:v 1 -vf 'scale=1600:900:flags=lanczos,eq=saturation=0,setsar=1' -q:v 2 public/images/water-desktop.jpg
 
@@ -61,4 +69,4 @@ ffmpeg -i public/films/water-desktop.mp4 -frames:v 1 -q:v 2 public/images/water-
 ffmpeg -i public/films/water-mobile.mp4 -frames:v 1 -q:v 2 public/images/water-start-mobile.jpg
 ```
 
-Validation: both MP4 files decoded without errors; FFprobe confirmed codec, dimensions, 276 frames, 24 fps, 11.5 seconds and no audio. JPEG dimensions were checked and the portrait poster was visually inspected.
+The static JPEG sizes in the table reflect subsequent lossless `jpegtran -copy all -optimize -progressive` optimization. Validation: both MP4 files decoded without errors; FFprobe confirmed codec, dimensions, 276 frames, 24 fps, 11.5 seconds and no audio. JPEG dimensions were checked and the portrait poster was visually inspected.
