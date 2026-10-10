@@ -37,6 +37,6 @@ Il giroscopio cromato è un filmato originale generato il 10 ottobre 2026 con **
 
 - `public/films/portal-desktop.mp4` e `portal-mobile.mp4`: apertura singola, 1600×900 e 640×640.
 - `public/films/portal-loop-desktop.mp4` e `portal-loop-mobile.mp4`: lo stesso film montato avanti/indietro per un ciclo continuo di circa 16 secondi.
-- `public/images/hero-film.jpg` e `portal-film.jpg`: fotogrammi del film usati come poster statici.
+- `public/images/hero-film.jpg`, `portal-film.jpg` e le varianti `-mobile.jpg`: primo fotogramma del film, con la stessa inquadratura della rispettiva versione video.
 
 Il master rimane negli artefatti locali del progetto. `scripts/prepare-films.mjs` documenta le conversioni FFmpeg. Le quattro sculture del canvas condiviso (sistema ottico, nastro continuo, orbite, anelli collegati) sono geometrie procedurali originali del progetto, separate dai filmati.

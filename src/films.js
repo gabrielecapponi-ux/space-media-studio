@@ -94,6 +94,7 @@ export function createFilms({ getPaused, onTogglePause }) {
     const { video } = record;
     video.muted = true;
     video.playsInline = true;
+    if (portrait.matches && video.dataset.posterMobile) video.poster = new URL(video.dataset.posterMobile, document.baseURI).href;
     video.loop = !record.hero;
     video.dataset.state = "idle";
     video.addEventListener("canplay", () => {

@@ -21,5 +21,6 @@ for (const [format, filter, crf] of [
   ffmpeg(["-filter_complex", `[0:v]${filter},fps=24,split[a][b];[b]reverse[back];[a][back]concat=n=2:v=1:a=0[loop]`, "-map", "[loop]", ...codec, resolve(root, `public/films/portal-loop-${format}.mp4`)]);
 }
 for (const name of ["hero-film", "portal-film"]) {
-  ffmpeg(["-ss", "2.4", "-frames:v", "1", "-vf", "scale=1280:-2", "-q:v", "3", "-update", "1", resolve(root, `public/images/${name}.jpg`)]);
+  ffmpeg(["-ss", "0", "-frames:v", "1", "-vf", "scale=1280:-2", "-q:v", "3", "-update", "1", resolve(root, `public/images/${name}.jpg`)]);
+  ffmpeg(["-ss", "0", "-frames:v", "1", "-vf", "crop=min(iw\\,ih):min(iw\\,ih),scale=640:640", "-q:v", "3", "-update", "1", resolve(root, `public/images/${name}-mobile.jpg`)]);
 }
