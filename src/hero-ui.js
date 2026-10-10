@@ -60,7 +60,7 @@ export function createHeroUI({ getScene, getPaused, onTogglePause }) {
       button.disabled = !sceneReady;
     });
     hero.classList.toggle("is-hero-ready", sceneReady);
-    if (sceneReady) setPhase({ progress: Number(container.dataset.progress || 0) });
+    if (sceneReady || container.dataset.clock === "media") setPhase({ progress: Number(container.dataset.progress || 0) });
     else setPhase({ index: 2, progress: 1 });
   };
   container.addEventListener(

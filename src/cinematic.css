@@ -156,18 +156,18 @@
   padding: 90px var(--gutter);
   overflow: hidden;
   color: #f6f7ef;
-  background: #07090e;
+  background: #090b10;
 }
-.idea-film-stage { position: absolute; inset: 0; z-index: -2; pointer-events: none; }
-.portal-film { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 68% 50%; opacity: 0.86; }
+.idea-film-stage { position: absolute; inset: 0 0 0 38%; z-index: -2; pointer-events: none; }
+.portal-film { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%; opacity: 1; }
 .idea-film::before {
   content: "";
   position: absolute;
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background: linear-gradient(90deg, #07090ef2 0%, #07090ecc 26%, #07090e15 68%),
-    linear-gradient(0deg, #07090e 0%, #07090e00 25%);
+  background: linear-gradient(90deg, #090b10f2 0%, #090b10cc 26%, #090b1015 68%),
+    linear-gradient(0deg, #090b10 0%, #090b1000 25%);
 }
 .idea-film-copy { width: 48%; position: relative; z-index: 3; }
 .idea-film-copy > .mono { color: var(--pop-lime); font-size: 11px; }
@@ -243,7 +243,7 @@
   .idea-film-copy .text-link { margin-top: 18px; font-size: 12px; }
   .idea-film-stage { inset: 245px 0 54px; }
   .portal-film { object-fit: contain; object-position: center; opacity: 1; }
-  .idea-film::before { background: linear-gradient(0deg, #07090e 0%, #07090e00 22%, #07090e00 54%, #07090ef0 67%, #07090e 100%); }
+  .idea-film::before { background: linear-gradient(0deg, #090b10 0%, #090b1000 22%, #090b1000 54%, #090b10f0 67%, #090b10 100%); }
   .idea-film-bottom {
     left: max(var(--gutter), env(safe-area-inset-left, 0px));
     right: max(var(--gutter), env(safe-area-inset-right, 0px));
@@ -263,7 +263,7 @@
   .idea-film-copy p { font-size: 12px; line-height: 1.5; }
   .idea-film-copy .text-link { margin-top: 14px; font-size: 12px; }
   .idea-film-stage { inset: 0 0 0 42%; }
-  .idea-film::before { background: linear-gradient(90deg, #07090e 0%, #07090ee0 34%, #07090e00 65%); }
+  .idea-film::before { background: linear-gradient(90deg, #090b10 0%, #090b10e0 34%, #090b1000 65%); }
   .idea-film-bottom { bottom: calc(12px + env(safe-area-inset-bottom, 0px)); }
 }
 @media (prefers-reduced-motion: reduce) {

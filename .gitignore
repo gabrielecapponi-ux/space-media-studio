@@ -4,6 +4,7 @@ dist/
 .vite/
 tmp/
 artifacts/
+outputs/
 MOTION-DIRECTION.md
 STUDIO-SKILLS.md
 .env

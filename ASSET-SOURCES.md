@@ -29,14 +29,16 @@ Sono stati scaricati JPEG a larghezza 1600px dal CDN ufficiale `images.pexels.co
 
 ## Hero cinematografica
 
-Il segno a quattro moduli della hero, la lampadina, il diaframma fotografico e il bersaglio sono geometrie procedurali originali generate nel progetto. Nessun modello 3D esterno. Il poster di ripiego `public/images/hero-sculpture.svg` è un disegno vettoriale originale, senza risorse stock. Il manuale 3D WEB LAB fornito dall’utente è un riferimento tecnico interno e non viene distribuito con il sito.
+Il segno a quattro moduli della hero, la lampadina, il diaframma fotografico e il bersaglio sono geometrie procedurali originali generate nel progetto. Nessun modello 3D esterno. Il poster di ripiego `public/images/hero-static-spark.jpg` è un fotogramma della posa finale renderizzata in locale, senza risorse stock. Il manuale 3D WEB LAB fornito dall’utente è un riferimento tecnico interno e non viene distribuito con il sito.
 
-## Film CGI Higgsfield
+## Film CGI locale — La scintilla prende forma
 
-Il giroscopio cromato è un filmato originale generato il 10 ottobre 2026 con **Higgsfield Cinema Studio Video 3.0**, su direzione creativa realizzata per il sito. Il master restituito è H.264, 1920×1080, 24 fps, circa 8 secondi, senza audio. Non sono stati usati filmati stock, marchi o immagini di riferimento di terzi. Si tratta di immagini CGI generate, non di un modello 3D modificabile o di una ripresa reale.
+Film originale renderizzato il 10 ottobre 2026 con **Blender 5.2.1 LTS / Cycles Metal**, composto attraverso i nodi video nativi di **ComfyUI locale**. La geometria viene estratta direttamente dalle funzioni Three.js del progetto: quattro petali laccati, quattro chassis cromati e due elementi del nucleo, per 35.044 triangoli. La trasformazione usa le stesse equazioni assolute della scena interattiva, con seed di rendering 61739. Si tratta di CGI da geometria reale, non di riprese fotografiche o di generazione con modelli video AI.
 
-- `public/films/portal-desktop.mp4` e `portal-mobile.mp4`: apertura singola, 1600×900 e 640×640.
-- `public/films/portal-loop-desktop.mp4` e `portal-loop-mobile.mp4`: lo stesso film montato avanti/indietro per un ciclo continuo di circa 16 secondi.
-- `public/images/hero-film.jpg`, `portal-film.jpg` e le varianti `-mobile.jpg`: primo fotogramma del film, con la stessa inquadratura della rispettiva versione video.
+- `public/films/spark-desktop.mp4` e `spark-mobile.mp4`: apertura singola di 11 secondi, 264 fotogrammi a 24 fps, 1600×900 e 640×640.
+- `public/films/spark-loop-desktop.mp4` e `spark-loop-mobile.mp4`: lo stesso film montato avanti/indietro per un ciclo continuo di 22 secondi.
+- `public/images/hero-spark.jpg`, `portal-spark.jpg` e le varianti `-mobile.jpg`: primo fotogramma del film, con la stessa inquadratura della rispettiva versione video.
 
-Il master rimane negli artefatti locali del progetto. `scripts/prepare-films.mjs` documenta le conversioni FFmpeg. Le quattro sculture del canvas condiviso (sistema ottico, nastro continuo, orbite, anelli collegati) sono geometrie procedurali originali del progetto, separate dai filmati.
+Non vengono utilizzati modelli, texture, filmati stock o marchi esterni. La scena modificabile `.blend`, il master, i fotogrammi, il manifest e il workflow ComfyUI con la cronologia del job rimangono in `outputs/`, esclusa dal repository. `scripts/render-spark.py`, `scripts/compose-local-film.mjs` e `scripts/prepare-films.mjs` documentano il flusso riproducibile. Il precedente film del giroscopio Higgsfield è sostituito nella versione corrente; il suo master rimane negli artefatti locali e la versione precedente è conservata nella cronologia Git.
+
+Le quattro sculture del canvas condiviso (sistema ottico, nastro continuo, orbite, anelli collegati) sono geometrie procedurali originali del progetto, separate dai filmati.

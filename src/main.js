@@ -71,8 +71,9 @@ sceneStateObserver.observe(sceneContainer, {
 import("./scene.js")
   .then(({ createScene }) => {
     if (destroyed) return;
-    scene = createScene(sceneContainer);
+    scene = createScene(sceneContainer, { mediaTime: films?.heroTime });
     scene.setPaused(userPaused);
+    films?.syncScene();
     heroUI.ready();
     updateMotionControl();
   })
@@ -87,7 +88,7 @@ experience = createExperience({
   getPaused: () => userPaused,
   onTogglePause: toggleMotion,
 });
-films = createFilms({ getPaused: () => userPaused, onTogglePause: toggleMotion });
+films = createFilms({ getScene: () => scene, getPaused: () => userPaused, onTogglePause: toggleMotion });
 import("./continuum.js").then(({ createContinuum }) => {
   if (destroyed) return;
   continuum = createContinuum({ paused: userPaused });

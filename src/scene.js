@@ -93,8 +93,8 @@ function makeChassisGeometry(compact) {
   return geometry;
 }
 
-export function createScene(container) {
-  if (!container) return { setMode() {}, setPaused() {}, playIntro() {}, dispose() {} };
+export function createScene(container, { mediaTime = null } = {}) {
+  if (!container) return { setMode() {}, setPaused() {}, playIntro() {}, setMediaTime() {}, releaseMediaClock() {}, dispose() {} };
   const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
   const touchDevice = window.matchMedia("(pointer: coarse)").matches || navigator.maxTouchPoints > 0;
   const economicalGeometry = touchDevice || window.innerWidth <= 760;
@@ -103,6 +103,10 @@ export function createScene(container) {
   let phaseIndex = reducedMotion ? 2 : 0;
   let playing = !reducedMotion;
   let introTime = reducedMotion ? DURATION : 0;
+  // The prerendered film and the live sculpture share one absolute timeline.
+  // While media owns it, native decoding drives the UI without a hidden GL loop.
+  let mediaClock = !reducedMotion && Number.isFinite(mediaTime);
+  if (mediaClock) introTime = THREE.MathUtils.clamp(mediaTime, 0, DURATION);
   let lastAnnouncement = "";
   const emitMode = () => {
     container.dataset.mode = mode;
@@ -113,6 +117,7 @@ export function createScene(container) {
     container.dataset.phase = PHASES[phaseIndex];
     container.dataset.progress = progress.toFixed(4);
     container.dataset.playing = String(playing);
+    container.dataset.clock = mediaClock ? "media" : "live";
     const state = `${phaseIndex}:${playing}`;
     if (force || state !== lastAnnouncement) {
       lastAnnouncement = state;
@@ -138,7 +143,36 @@ export function createScene(container) {
     introTime = DURATION;
     emitMode();
     announce(true);
-    return { setMode() {}, setPaused() {}, playIntro() {}, dispose() {} };
+    return {
+      setMode() {}, setPaused() {}, playIntro() {}, dispose() {},
+      setMediaTime(seconds) {
+        if (motionPreference.matches || !Number.isFinite(seconds)) return;
+        mediaClock = true;
+        introTime = THREE.MathUtils.clamp(seconds, 0, DURATION);
+        playing = introTime < DURATION;
+        phaseIndex = introTime < 1.5 ? 0 : introTime < 5.1 ? 1 : 2;
+        mode = MODES[phaseIndex];
+        emitMode();
+        announce();
+        container.dispatchEvent(new CustomEvent("heroprogress", {
+          detail: { progress: introTime / DURATION }, bubbles: true,
+        }));
+      },
+      releaseMediaClock() {
+        if (!mediaClock) return;
+        mediaClock = false;
+        // Without a GL context the existing illustration is the final identity.
+        playing = false;
+        introTime = DURATION;
+        phaseIndex = 2;
+        mode = "wave";
+        emitMode();
+        announce(true);
+        container.dispatchEvent(new CustomEvent("heroprogress", {
+          detail: { progress: 1 }, bubbles: true,
+        }));
+      },
+    };
   }
   const canvas = renderer.domElement;
   canvas.setAttribute("aria-hidden", "true");
@@ -293,13 +327,13 @@ export function createScene(container) {
   const pointer = { x: 0, y: 0 };
   const easedPointer = { x: 0, y: 0 };
   const surface = container.closest(".hero") || container.parentElement;
-  const canRender = () => !disposed && !contextLost && inView && !document.hidden;
+  const canRender = () => !disposed && !contextLost && !mediaClock && inView && !document.hidden;
   const canAnimate = () => canRender() && !paused && !reducedMotion;
   const wantsFrame = () => playing || transition ||
     Math.abs(pointer.x - easedPointer.x) + Math.abs(pointer.y - easedPointer.y) > 0.001;
 
   const updatePose = () => {
-    if (playing) {
+    if (playing || mediaClock) {
       // The camera first studies the folded object, then its construction,
       // then the finished mark. A finite final hold lets the last image breathe.
       pose.explore = smooth((introTime - 1.5) / 2.3);
@@ -471,6 +505,7 @@ export function createScene(container) {
   };
   const setMode = (nextMode) => {
     if (disposed || !MODES.includes(nextMode)) return;
+    mediaClock = false;
     playing = false;
     mode = nextMode;
     phaseIndex = MODES.indexOf(mode);
@@ -491,6 +526,7 @@ export function createScene(container) {
   };
   const playIntro = () => {
     if (disposed) return;
+    mediaClock = false;
     transition = null;
     introTime = reducedMotion ? DURATION : 0;
     activeTime = 0;
@@ -512,7 +548,7 @@ export function createScene(container) {
     syncLoop();
   };
   const onPointer = (event) => {
-    if (compact || touchDevice || reducedMotion || paused || event.pointerType === "touch") return;
+    if (compact || touchDevice || reducedMotion || paused || mediaClock || event.pointerType === "touch") return;
     const rect = container.getBoundingClientRect();
     if (event.clientX < rect.left + width * 0.42 || event.target.closest?.("a, button, input, textarea")) {
       resetPointer();
@@ -525,6 +561,7 @@ export function createScene(container) {
   const onMotion = (event) => {
     reducedMotion = event.matches;
     if (reducedMotion) {
+      mediaClock = false;
       playing = false;
       introTime = DURATION;
       mode = "wave";
@@ -578,6 +615,40 @@ export function createScene(container) {
   return {
     setMode,
     playIntro,
+    setMediaTime(seconds) {
+      if (disposed || reducedMotion || !Number.isFinite(seconds)) return;
+      mediaClock = true;
+      cancelAnimationFrame(frame);
+      frame = 0;
+      lastTime = 0;
+      transition = null;
+      pointer.x = pointer.y = easedPointer.x = easedPointer.y = 0;
+      introTime = THREE.MathUtils.clamp(seconds, 0, DURATION);
+      playing = introTime < DURATION;
+      updatePose();
+      container.dispatchEvent(new CustomEvent("heroprogress", {
+        detail: { progress: introTime / DURATION }, bubbles: true,
+      }));
+    },
+    releaseMediaClock({ complete = false } = {}) {
+      if (disposed || !mediaClock) return;
+      mediaClock = false;
+      lastTime = 0;
+      if (complete) {
+        introTime = DURATION;
+        playing = false;
+        phaseIndex = 2;
+        mode = "wave";
+        transition = null;
+        Object.assign(pose, { explore: 0, connect: 1 });
+        emitMode();
+      }
+      announce(true);
+      container.dispatchEvent(new CustomEvent("heroprogress", {
+        detail: { progress: introTime / DURATION }, bubbles: true,
+      }));
+      syncLoop();
+    },
     setPaused(value) {
       paused = Boolean(value);
       if (paused) pointer.x = pointer.y = easedPointer.x = easedPointer.y = 0;

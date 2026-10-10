@@ -15,12 +15,13 @@ for (const [format, filter, crf] of [
   ["mobile", "crop=min(iw\\,ih):min(iw\\,ih),scale=640:640", "24"],
 ]) {
   const codec = ["-an", "-c:v", "libx264", "-preset", "slow", "-crf", crf, "-pix_fmt", "yuv420p", "-movflags", "+faststart", "-map_metadata", "-1"];
-  ffmpeg(["-vf", `${filter},fps=24`, ...codec, resolve(root, `public/films/portal-${format}.mp4`)]);
-  // The exhibition loop returns along its original motion path. Its two
-  // endpoints match exactly, avoiding a jump from the portal to the gyroscope.
-  ffmpeg(["-filter_complex", `[0:v]${filter},fps=24,split[a][b];[b]reverse[back];[a][back]concat=n=2:v=1:a=0[loop]`, "-map", "[loop]", ...codec, resolve(root, `public/films/portal-loop-${format}.mp4`)]);
+  ffmpeg(["-vf", `${filter},fps=24`, ...codec, resolve(root, `public/films/spark-${format}.mp4`)]);
+  // The exhibition returns through the same construction path. Matched
+  // endpoints keep the repeated study of the sculpture continuous.
+  ffmpeg(["-filter_complex", `[0:v]${filter},fps=24,split[a][b];[b]reverse[back];[a][back]concat=n=2:v=1:a=0[loop]`, "-map", "[loop]", ...codec, resolve(root, `public/films/spark-loop-${format}.mp4`)]);
 }
-for (const name of ["hero-film", "portal-film"]) {
+for (const name of ["hero-spark", "portal-spark"]) {
   ffmpeg(["-ss", "0", "-frames:v", "1", "-vf", "scale=1280:-2", "-q:v", "3", "-update", "1", resolve(root, `public/images/${name}.jpg`)]);
   ffmpeg(["-ss", "0", "-frames:v", "1", "-vf", "crop=min(iw\\,ih):min(iw\\,ih),scale=640:640", "-q:v", "3", "-update", "1", resolve(root, `public/images/${name}-mobile.jpg`)]);
 }
+ffmpeg(["-ss", "10.9", "-frames:v", "1", "-vf", "crop=min(iw\\,ih):min(iw\\,ih),scale=720:720", "-q:v", "3", "-update", "1", resolve(root, "public/images/hero-static-spark.jpg")]);
