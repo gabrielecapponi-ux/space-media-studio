@@ -1,44 +1,58 @@
 # Provenienza dei materiali
 
-Aggiornato il 10 ottobre 2026. Immagini e filmati sono salvati in locale: la navigazione del sito non richiede servizi di generazione o CDN fotografici esterni.
+Aggiornato il 10 ottobre 2026 per il percorso corrente di Space Media Studio. Filmati, fotografie e font sono salvati in locale: la navigazione del sito non richiede servizi di generazione o CDN fotografici esterni.
+
+## Film d’acqua
+
+Il film in apertura è **fotografia stock in slow motion**, non un render 3D, una ripresa realizzata dallo studio o un video generato con AI.
+
+- Autore: **Film Composite**.
+- Fonte: [A drop of water in a bowl with a black background — Pexels 16392049](https://www.pexels.com/video/a-drop-of-water-in-a-bowl-with-a-black-background-16392049/).
+- Licenza: [Pexels License](https://www.pexels.com/license/), verificata sul sito ufficiale. Consente download, modifiche e uso commerciale sul sito; non è una dichiarazione di pubblico dominio. Restano applicabili i divieti di rivendita di copie inalterate, redistribuzione come stock e falsa approvazione da parte degli autori.
+- Master scaricato dal CDN ufficiale: **3840×2160, 24 fps, 18.791667 secondi**. Conservato in `outputs/water-stock/`, esclusa dal repository.
+- Esportazioni web: `public/films/water-desktop.mp4` (**1920×1080**) e `water-mobile.mp4` (**640×900**), entrambe 11.5 secondi / 276 fotogrammi, H.264/YUV420P senza audio.
+- Interventi: selezione dell’intervallo 1.0–12.5 secondi, ridimensionamento/ritaglio per dispositivo, grade monocromatico, compressione e MP4 fast-start. Nessuna interpolazione del movimento, risalita inversa dell’acqua o falsa conversione in geometria 3D.
+- I poster `water-start-desktop.jpg` e `water-start-mobile.jpg` sono estratti dal primo fotogramma degli export finali. `water-desktop.jpg` e `water-mobile.jpg` sono estratti dal momento della colonna d’acqua e usati come presentazione statica.
+
+Provenienza completa, URL del download, hash, dimensioni, comandi e verifiche sono documentati in [ASSET-WATER.md](./ASSET-WATER.md). [ASSET-WATER.json](./ASSET-WATER.json) conserva le specifiche e i tempi editoriali indicativi della sequenza. Il film viene integrato nella dimostrazione creativa del sito, senza attribuire la produzione fotografica a Space Media Studio.
 
 ## Fotografie
 
 Le fotografie seguenti sono protette da copyright e distribuite con la [licenza Pexels](https://www.pexels.com/license/), che permette download, modifica e utilizzo gratuito anche commerciale su siti e campagne. Non sono dichiarate di pubblico dominio. Non vengono rivendute come stock né attribuite allo studio come produzione fotografica.
 
-| File                                   | Autore e pagina fonte                                                                                                                                    | Uso                           |
-| -------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
-| `public/images/muse-skincare.jpg`      | [Polina — Cosmetic Containers on Gray Textile](https://www.pexels.com/photo/cosmetic-containers-on-gray-textile-8101525/)                                | Concept dimostrativo Aura     |
-| `public/images/forma-architecture.jpg` | [Alec Doualetas — Modern Architectural Concrete Structure Detail](https://www.pexels.com/photo/modern-architectural-concrete-structure-detail-31851512/) | Mockup web dimostrativo Forma |
-| `public/images/aura-perfume.jpg`       | [Daria Liudnaya — Blank Perfume Bottles](https://www.pexels.com/photo/blank-perfume-bottles-8166611/)                                                    | Concept dimostrativo Reverie  |
+| File | Autore e pagina fonte | Uso |
+| --- | --- | --- |
+| `public/images/muse-skincare.jpg` | [Polina — Cosmetic Containers on Gray Textile](https://www.pexels.com/photo/cosmetic-containers-on-gray-textile-8101525/) | Concept dimostrativo Aura |
+| `public/images/forma-architecture.jpg` | [Alec Doualetas — Modern Architectural Concrete Structure Detail](https://www.pexels.com/photo/modern-architectural-concrete-structure-detail-31851512/) | Mockup FORMA nel percorso 3D e concept web |
+| `public/images/aura-perfume.jpg` | [Daria Liudnaya — Blank Perfume Bottles](https://www.pexels.com/photo/blank-perfume-bottles-8166611/) | Creatività REVERIE nei dispositivi 3D e concept di campagna |
 
-Sono stati scaricati JPEG a larghezza 1600px dal CDN ufficiale `images.pexels.com`. Autori e pagine fonte sono collegati anche nei dettagli dei concept sul sito. Le composizioni, i testi e il mockup browser sono realizzati per questo progetto. I nomi Aura, Forma, Reverie e Play sono nomi illustrativi di concept, non clienti né marchi registrati dallo studio.
+Sono stati scaricati JPEG a larghezza 1600 px dal CDN ufficiale `images.pexels.com`. Autori e pagine fonte sono collegati anche nei dettagli dei concept sul sito. Le composizioni grafiche, i testi e i mockup sono realizzati per questo progetto; le fotografie conservano i diritti dei rispettivi autori.
 
-## 3D, grafica e font
+Aura, FORMA e REVERIE sono nomi illustrativi di **progetti possibili**, non clienti dello studio. Questi concept non sono presentati come incarichi commissionati, case study o risultati commerciali. Non viene rivendicata una registrazione dei relativi nomi da parte dello studio.
 
-- Sculture hero, percorso scroll e concept Play: geometrie procedurali originali, nessun modello o render scaricato.
-- Three.js: pacchetto ufficiale Three.js (MIT), avviso di licenza incluso in `public/licenses/three-MIT.txt`. Gli ambienti di riflessione sono softbox originali costruiti nel progetto.
-- Space Grotesk: font variabile WOFF2 dal [repository ufficiale di Florian Karsten](https://github.com/floriankarsten/space-grotesk), SIL Open Font License 1.1, copia della licenza in `public/fonts/SpaceGrotesk-OFL.txt`. DM Mono: font del pacchetto skill fornito dall’utente, SIL Open Font License conservata in `public/fonts/DMMono-OFL.txt`. Tutti i font sono serviti localmente.
-- Logo e segno orbitale: composizione SVG realizzata nel progetto.
+## 3D e grafica originali
 
-## Fonti valutate
+Il percorso corrente utilizza **un’unica scena Three.js** in `src/showcase.js`. Un pannello con l’identità Space Media Studio si espande nella presenza web FORMA; telefono e creatività social introducono poi la campagna REVERIE. Le pose dipendono dalla progressione assoluta dello scroll e rimangono coerenti anche tornando indietro.
 
-- [Mockups Design](https://mockups-design.com/license/): utilizzabile per mockup commerciali dopo sostituzione del design di esempio ed esportazione piatta; file sorgente non redistribuibili. Nessun loro file è incluso.
-- [Poly Haven](https://polyhaven.com/license/): HDRI, texture e modelli CC0; i render di esempio e le immagini inviate dagli utenti non sono coperti automaticamente da CC0. Nessun loro asset è incluso.
-- [Lusion](https://lusion.co/): riferimento di composizione e immersività; nessun codice, asset o progetto copiato.
+Pannello, display, telefono, cornici, dettagli, superfici e geometrie sono costruiti proceduralmente nel progetto; non sono modelli 3D scaricati. Le superfici grafiche sono composizioni Canvas 2D originali che utilizzano le fotografie Pexels indicate sopra. Gli ambienti di riflessione sono softbox originali costruiti nel codice. Il film d’acqua e la scena WebGL sono risorse distinte: il film non viene descritto come una simulazione realizzata dallo studio.
 
-## Hero cinematografica
+- **Three.js**: pacchetto ufficiale, licenza MIT; avviso incluso in `public/licenses/three-MIT.txt`.
+- **Logo**: composizione SVG realizzata nel progetto.
+- **Palette**: bianco caldo `#f5f5f2`, nero `#090b10`, giallo acido `#dfff00`, applicata anche alle composizioni sui dispositivi 3D.
+- Le interfacce dei concept sono dimostrazioni visive; non implicano approvazione o collaborazione con produttori di dispositivi o marchi esterni.
 
-Il segno a quattro moduli della hero, la lampadina, il diaframma fotografico e il bersaglio sono geometrie procedurali originali generate nel progetto. Nessun modello 3D esterno. Il poster di ripiego `public/images/hero-static-spark.jpg` è un fotogramma della posa finale renderizzata in locale, senza risorse stock. Il manuale 3D WEB LAB fornito dall’utente è un riferimento tecnico interno e non viene distribuito con il sito.
+## Font
 
-## Film CGI locale — La scintilla prende forma
+- **Space Grotesk**: font variabile WOFF2 dal [repository ufficiale di Florian Karsten](https://github.com/floriankarsten/space-grotesk), SIL Open Font License 1.1. Copia della licenza: `public/fonts/SpaceGrotesk-OFL.txt`.
+- **DM Mono**: font del pacchetto skill fornito dall’utente, SIL Open Font License conservata in `public/fonts/DMMono-OFL.txt`.
 
-Film originale renderizzato il 10 ottobre 2026 con **Blender 5.2.1 LTS / Cycles Metal**, composto attraverso i nodi video nativi di **ComfyUI locale**. La geometria viene estratta direttamente dalle funzioni Three.js del progetto: quattro pannelli smaltati a sezione smussata, quattro chassis metallici, quattro perni con incisioni e due elementi del nucleo, per 35.412 triangoli. Il render impiega 64 campioni Cycles, microvariazioni di rugosità e motion blur fisico con otturatore 0,24. La trasformazione usa le stesse equazioni assolute della scena interattiva, con seed di rendering 61739. Si tratta di CGI da geometria reale, non di riprese fotografiche o di generazione con modelli video AI.
+Tutti i font sono serviti localmente. Non vengono chiamate API di font esterne durante la visita.
 
-- `public/films/spark-desktop.mp4` e `spark-mobile.mp4`: apertura singola di 11 secondi, 264 fotogrammi a 24 fps, 1600×900 e 640×640.
-- `public/films/spark-loop-desktop.mp4` e `spark-loop-mobile.mp4`: lo stesso film montato avanti/indietro per un ciclo continuo di 22 secondi.
-- `public/images/hero-spark.jpg`, `portal-spark.jpg` e le varianti `-mobile.jpg`: primo fotogramma del film, con la stessa inquadratura della rispettiva versione video.
+## Riferimenti e storia
 
-Non vengono utilizzati modelli, texture, filmati stock o marchi esterni. La scena modificabile `.blend`, il master, i fotogrammi, il manifest e il workflow ComfyUI con la cronologia del job rimangono in `outputs/`, esclusa dal repository. `scripts/render-spark.py`, `scripts/compose-local-film.mjs` e `scripts/prepare-films.mjs` documentano il flusso riproducibile. Il precedente film del giroscopio Higgsfield è sostituito nella versione corrente; il suo master rimane negli artefatti locali e la versione precedente è conservata nella cronologia Git.
+- [Lusion](https://lusion.co/) è stato un riferimento iniziale per composizione e immersività. Il linguaggio essenziale richiesto successivamente dall’utente guida la versione corrente; nessun codice, asset o progetto di Lusion o Apple è copiato.
+- [Mockups Design](https://mockups-design.com/license/) e [Poly Haven](https://polyhaven.com/license/) sono stati valutati nelle fasi precedenti. Nessun loro asset è incluso nel percorso corrente.
+- Il manuale 3D WEB LAB fornito dall’utente è un riferimento tecnico interno e non viene distribuito con il sito.
+- Le precedenti sculture e il film CGI `spark` appartengono alle iterazioni conservate nella cronologia Git. La pipeline Blender/ComfyUI di quelle versioni non produce il film d’acqua attuale e non viene eseguita dal sito corrente.
 
-Le quattro sculture del canvas condiviso (sistema ottico, nastro continuo, orbite, anelli collegati) sono geometrie procedurali originali del progetto, separate dai filmati.
+Codice, identità visiva e composizioni originali restano soggetti ai diritti del progetto. La pubblicazione dei sorgenti non modifica le licenze dei materiali di terze parti né concede una licenza generale di riutilizzo.

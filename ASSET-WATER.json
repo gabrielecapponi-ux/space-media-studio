@@ -1,0 +1,47 @@
+{
+  "asset": "water-macro",
+  "provenance": "licensed photographic slow-motion stock",
+  "creator": "Film Composite",
+  "sourcePage": "https://www.pexels.com/video/a-drop-of-water-in-a-bowl-with-a-black-background-16392049/",
+  "license": "https://www.pexels.com/license/",
+  "original": {
+    "width": 3840,
+    "height": 2160,
+    "fps": 24,
+    "durationSeconds": 18.791667,
+    "sha256": "564f001b84bc027847e7bfa26a1850e7e5a714bc2df0d6a5295d98e8c40dfe6a"
+  },
+  "edit": {
+    "sourceInSeconds": 1,
+    "sourceOutSeconds": 12.5,
+    "durationSeconds": 11.5,
+    "frameCount": 276,
+    "fps": 24,
+    "grade": "monochrome",
+    "motion": "natural forward chronology; no interpolation or reversal"
+  },
+  "exports": {
+    "desktop": { "file": "public/films/water-desktop.mp4", "width": 1920, "height": 1080 },
+    "mobile": { "file": "public/films/water-mobile.mp4", "width": 640, "height": 900 }
+  },
+  "posters": {
+    "playback": {
+      "frameIndex": 0,
+      "desktop": "public/images/water-start-desktop.jpg",
+      "mobile": "public/images/water-start-mobile.jpg"
+    },
+    "static": {
+      "editTimeSeconds": 4.6,
+      "desktop": "public/images/water-desktop.jpg",
+      "mobile": "public/images/water-mobile.jpg"
+    }
+  },
+  "editorialCues": [
+    { "name": "falling-drop", "fromSeconds": 0.5, "toSeconds": 1 },
+    { "name": "first-impact", "atSeconds": 1.5 },
+    { "name": "crown", "fromSeconds": 2, "toSeconds": 3 },
+    { "name": "rebound-column", "fromSeconds": 3.5, "toSeconds": 5.5 },
+    { "name": "expanding-ripples", "fromSeconds": 6, "toSeconds": 11.5 }
+  ],
+  "timingNote": "Approximate visual editorial cues within the website edit, measured in seconds."
+}

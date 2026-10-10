@@ -1,6 +1,8 @@
 # Space Media Studio
 
-Sito dello studio creativo di Gabriele Capponi e Mattia Tanzi, Parma. Strategia, design e comunicazione in un’esperienza con film CGI originale renderizzato in locale e sculture 3D interattive. Quattro elementi si aprono, si separano e costruiscono il segno dello studio. Il film e il finale interattivo condividono geometrie, camera e movimento. Smalto su alluminio, vetro ottico e dettagli meccanici danno alle forme una scala credibile. La tipografia Space Grotesk, con etichette DM Mono, definisce il nuovo linguaggio tecnico.
+Sito dello studio creativo di **Gabriele Capponi e Mattia Tanzi**, a Parma. Branding, siti web, contenuti e campagne vengono presentati attraverso una sequenza visiva continua: una goccia crea un’onda; un’identità diventa un sito FORMA e poi una campagna REVERIE.
+
+Il film d’acqua è una ripresa stock in slow motion, acquisita da un master **4K** con licenza Pexels. La successiva trasformazione di pannello, schermo e dispositivi è una scena **WebGL originale** costruita nel progetto. Le due tecniche hanno provenienze distinte e dichiarate. Il linguaggio visivo usa bianco caldo, nero e giallo acido, con **Space Grotesk** e dettagli **DM Mono** serviti localmente.
 
 [Apri il sito](https://gabrielecapponi-ux.github.io/space-media-studio/)
 
@@ -24,58 +26,56 @@ La build statica è in `dist/`; l’anteprima della build è su `http://127.0.0.
 
 ## Pubblicazione
 
-Il ramo `main` contiene i sorgenti. GitHub Pages pubblica il ramo `gh-pages`, composto esclusivamente dalla build di produzione.
+Il ramo `main` contiene i sorgenti. GitHub Pages pubblica il ramo `gh-pages`, composto dalla build di produzione.
 
 ```sh
 npm run deploy
 ```
 
-Il comando richiede accesso Git al repository, costruisce il sito e aggiorna il ramo di pubblicazione da una cartella temporanea, mantenendo la cronologia e il checkout dei sorgenti. La configurazione Vite usa percorsi relativi per funzionare anche nel sottopercorso GitHub Pages.
+Il comando richiede accesso Git al repository, costruisce il sito e aggiorna il ramo di pubblicazione da una cartella temporanea, mantenendo la cronologia e il checkout dei sorgenti. La configurazione Vite usa percorsi relativi per funzionare nel sottopercorso GitHub Pages.
 
-## Struttura
+## Architettura corrente
 
-- `index.html`: contenuti, metadati, contatti e dati strutturati.
-- `src/scene.js`: trasformazione della hero, materiali fisici, illuminazione e controlli delle pose.
-- `src/world.js`: percorso 3D con lampadina, diaframma fotografico e bersaglio.
-- `src/continuum.js`: unico canvas condiviso dalle sculture di portfolio, servizi, studio e contatti.
-- `src/films.js`: caricamento differito, playback, pausa e preferenze dei filmati.
-- `src/main.js`, `src/hero-ui.js`, `src/experience.js`: navigazione, dialog dei concept, controlli e stato delle animazioni.
-- `src/*.css`: identità visiva, layout responsive e movimento dell’interfaccia.
-- `public/`: filmati H.264, immagini, poster, font locali e licenze.
-- `ASSET-SOURCES.md`: provenienza, autori e licenze delle risorse.
+| File | Responsabilità |
+| --- | --- |
+| `index.html` | Contenuti, tre capitoli, controlli, contatti e dati strutturati |
+| `src/main.js` | Navigazione, dialog nativi dei concept, servizi e ciclo di vita della pagina |
+| `src/motion.js` | Playback del film, pausa/ripresa, replay, progressione dello scroll e cambio dei capitoli |
+| `src/showcase.js` | Unica scena Three.js: identità → sito FORMA → dispositivi e campagna REVERIE |
+| `src/editorial.css` | Palette, tipografia, layout responsive, stati di ripiego e transizioni |
+| `public/` | Esportazioni video, immagini, poster, font locali e licenze |
+
+La scena 3D evolve lungo una progressione assoluta da 0 a 1, smorzata durante lo scroll. Scorrendo indietro si ritrovano le stesse pose; le trasformazioni non si accumulano e gli oggetti non ruotano a riposo. Il pannello iniziale si espande nella presenza web FORMA, quindi viene affiancato da telefono e creatività social REVERIE. Le immagini dei dispositivi sono composizioni Canvas 2D applicate a geometrie originali, con dettagli metallici, vetro, illuminazione da studio e ombre.
+
+## Film d’acqua
+
+Fonte: **Film Composite / Pexels 16392049**, master fotografico 3840×2160, 24 fps, 18.791667 secondi. Per il sito è stato estratto l’intervallo 1.0–12.5 secondi e applicato un trattamento monocromatico.
+
+- Desktop: `public/films/water-desktop.mp4`, **1920×1080**.
+- Mobile: `public/films/water-mobile.mp4`, **640×900**, ritaglio verticale indipendente dal master.
+- Durata di entrambi: **11.5 secondi**, 276 fotogrammi a 24 fps, H.264/YUV420P, senza audio e con avvio progressivo MP4.
+- `water-start-*` sono poster del primo fotogramma effettivo degli export, per il raccordo all’avvio. `water-desktop.jpg` e `water-mobile.jpg` mostrano il momento della colonna d’acqua per la presentazione statica.
+
+Il film mantiene l’ordine fisico naturale: caduta, impatto, corona, colonna e onde. Viene riprodotto una volta e conserva il finale; il pulsante **Rivedi** riavvia la sequenza. Non è montato al contrario per creare un loop. Il master 4K non viene caricato dal browser e il film non viene presentato come simulazione 3D realizzata dallo studio.
+
+Fonte, licenza, hash del master, esportazioni e comandi FFmpeg sono in [ASSET-WATER.md](./ASSET-WATER.md). I tempi indicativi dei passaggi sono disponibili anche in [ASSET-WATER.json](./ASSET-WATER.json). Il flusso locale di preparazione non utilizza Higgsfield, modelli AI, account o servizi a pagamento.
 
 ## Accessibilità e prestazioni
 
-Contenuti disponibili anche senza JavaScript, navigazione da tastiera, dialog nativi con gestione del focus, controlli pausa e preferenza di movimento ridotto aggiornata in tempo reale. Se WebGL non è disponibile, il film resta riproducibile e il finale usa un poster della stessa scultura.
+I testi e i contatti restano nel documento HTML. La navigazione funziona da tastiera; i concept usano dialog nativi e i capitoli inattivi diventano `inert`. I controlli permettono pausa e replay. La preferenza di movimento ridotto viene rispettata anche quando cambia durante la visita: il film si ferma e le tre competenze restano selezionabili come pose statiche.
 
-La trasformazione iniziale viene eseguita una volta. Su schermi compatti il percorso 3D viene inizializzato solo quando entra in vista, per alleggerire l’apertura. Il rendering si sospende fuori schermo e quando la pagina non è visibile. Su touch e formati compatti il rendering è limitato a 30 fps e DPR 1,5, con ombre da 512 pixel. Il percorso si assesta dopo scroll o interazione e interrompe il loop a riposo; geometrie instanziate nel percorso 3D, font locali e immagini differite riducono le richieste.
+Il browser carica un solo formato del film quando entra in vista. Movimento ridotto e risparmio dati evitano il download automatico iniziale; un problema di autoplay o di caricamento mantiene una presentazione statica e consente di riprovare. Playback e aggiornamenti si fermano fuori schermo o quando la pagina è nascosta.
 
-Il film iniziale dura 11 secondi. La versione espositiva torna lungo la stessa traiettoria per un loop continuo di 22 secondi. Il tempo del video guida la timeline e la posa 3D; il canvas nascosto non esegue rendering durante il film. Il fotogramma finale rimane fermo fino all’interazione: il passaggio al 3D avviene con una dissolvenza senza zoom, nella stessa inquadratura. Il rapporto video reale viene mantenuto anche cambiando orientamento. Il browser carica solo il formato desktop o mobile necessario, quando entra in vista; tutti i filmati sono silenziosi, `playsinline`, H.264/yuv420p e ottimizzati per l’avvio progressivo. Movimento ridotto e risparmio dati evitano il caricamento automatico. Il canvas delle sezioni viene inizializzato solo al primo spazio visibile, usa DPR massimo 1,15 su mobile e si ferma dopo l’assestamento.
+Il modulo 3D viene importato avvicinandosi alla sezione e il renderer viene creato quando la scena entra in vista. Un unico canvas serve tutti i capitoli. Il disegno avviene su richiesta e termina dopo l’assestamento dello scroll; il DPR è limitato a 1.35 sui formati compatti/touch e a 1.6 sugli altri, con ombre da 512 o 1024 pixel. Se WebGL non è disponibile o il contesto viene perso, rimangono mockup HTML/CSS corrispondenti al capitolo selezionato. Immagini dei concept differite, font locali e video silenziosi riducono le richieste esterne.
 
-## Produzione video locale
+## Progetti possibili e diritti
 
-Le skill Studio guidano forme, materiali, luci e animazione. Il flusso `video-non-higgsfield` usa ComfyUI locale per comporre i capitoli renderizzati con Blender. Questa versione è CGI 3D deterministica: non utilizza modelli video AI, crediti o servizi di generazione remoti.
+Aura, FORMA e REVERIE sono **concept dimostrativi**, esplicitamente etichettati come progetti possibili. Presentano direzioni che lo studio potrebbe sviluppare: non sono clienti, lavori commissionati o risultati ottenuti. Le fotografie stock mantengono autore e licenza; lo studio firma testi, composizioni, mockup e geometrie originali. I nomi non implicano un rapporto commerciale con marchi esistenti.
 
-Richiede Blender con Cycles, Node.js, FFmpeg e ComfyUI già avviato su `127.0.0.1:8188` con i nodi nativi `LoadVideo`, `ConcatenateVideo`, `SaveVideo`. Il renderer legge le geometrie reali di `src/scene.js`; salva scena `.blend`, manifest, seed 61739 e 264 fotogrammi a 24 fps. Il compositore conserva il workflow API, l’identificatore del job, la cronologia e il master in `outputs/`, esclusa dal repository.
+I crediti completi sono in [ASSET-SOURCES.md](./ASSET-SOURCES.md). Le precedenti scene e la pipeline CGI `spark`, conservate nella cronologia del progetto, non fanno parte del percorso attuale.
 
-```sh
-blender --background --python scripts/render-spark.py -- --output outputs/spark-render --samples 64 --size 1600x900
-node scripts/compose-local-film.mjs --frames outputs/spark-render/frames
-node scripts/prepare-films.mjs outputs/spark-master.mp4
-```
+Il sito non include form, analytics o cookie di profilazione. Telefono, WhatsApp e mappa si aprono su richiesta dell’utente.
 
-Per controllare prima un singolo fotogramma:
+Space Media Studio — Stradello Conrad Marca Relli 1, Parma, Italia. Telefono: **+39 347 962 3498**.
 
-```sh
-blender --background --python scripts/render-spark.py -- --preview --frame 103 --output outputs/preview
-```
-
-Le esportazioni pubbliche sono 1600×900 per desktop e 640×640 per iPhone; i poster provengono dal primo fotogramma del formato corrispondente. La posa finale lascia spazio al controllo interattivo. Il render usa 64 campioni Cycles, microvariazioni dei materiali, quattro perni di assemblaggio e un otturatore breve per il motion blur fisico. I sorgenti non contengono pesi modello o credenziali.
-
-Il sito non include form, analytics o cookie di profilazione. Telefono, WhatsApp e mappa si aprono su richiesta dell’utente. I concept sono etichettati come **progetti possibili**, con immagini stock su licenza: non rappresentano lavori commissionati.
-
-## Contatti e diritti
-
-Space Media Studio — Stradello Conrad Marca Relli 1, Parma, Italia. Telefono: +39 347 962 3498.
-
-Codice, identità visiva e composizioni originali: tutti i diritti riservati. La pubblicazione dei sorgenti non concede una licenza di riutilizzo. Le risorse di terze parti conservano le rispettive licenze, indicate in `ASSET-SOURCES.md` e nei file allegati.
+Codice, identità visiva e composizioni originali: tutti i diritti riservati. La pubblicazione dei sorgenti non concede una licenza di riutilizzo. Le risorse di terze parti conservano le rispettive licenze, indicate nella documentazione e nei file allegati.
