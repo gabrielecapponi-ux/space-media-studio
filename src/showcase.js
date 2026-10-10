@@ -173,7 +173,7 @@ function roundedSurface(width, height, radius, segments) {
  * The caller owns scroll damping: every transform here is an absolute pose.
  */
 export function createShowcase(container) {
-  const empty = { setProgress() {}, setPaused() {}, dispose() {} };
+  const empty = { setProgress() {}, setPaused() {}, cancelPrepare() {}, prepare: async () => ({ state: "fallback" }), dispose() {} };
   if (!container?.appendChild) return empty;
   container.dataset.scene = "loading";
   const fallback = container.querySelector(".showcase-fallback");
@@ -189,6 +189,9 @@ export function createShowcase(container) {
   let architectureImage = null, campaignImage = null;
   let width = 1, height = 1;
   let textureBrand, textureWebsite, texturePhone, textureSocial;
+  let preparing = false, preparationCancelled = false, preparationPromise, cancelPreparation;
+  const imageTasks = [], imageWaiters = new Set();
+  const fontReady = document.fonts?.load('500 32px "Space Grotesk"').catch(() => []) ?? Promise.resolve([]);
   const ownGeometry = (value) => { geometries.add(value); return value; };
   const ownMaterial = (value) => { materials.add(value); return value; };
   const ownTexture = (value) => { textures.add(value); return value; };
@@ -359,7 +362,7 @@ export function createShowcase(container) {
       applyPose(true);
       setState("ready");
       requestPaint();
-      document.fonts?.load('500 32px "Space Grotesk"').then(() => buildArtwork()).catch(() => {});
+      fontReady.then(() => { if (!preparing) buildArtwork(); });
     } catch (error) {
       failed = true;
       setState("fallback");
@@ -367,9 +370,9 @@ export function createShowcase(container) {
     }
   }
 
-  function applyPose(force = false) {
+  function applyPose(force = false, requestedProgress = progress) {
     if (!group || disposed || failed) return;
-    const pose = reduced ? (progress < 0.3 ? 0 : progress < 0.72 ? 0.5 : 1) : progress;
+    const pose = reduced ? (requestedProgress < 0.3 ? 0 : requestedProgress < 0.72 ? 0.5 : 1) : requestedProgress;
     if (!force && Math.abs(pose - appliedProgress) < 0.00001) return;
     appliedProgress = pose;
     const expand = phase(pose, 0.12, 0.47);
@@ -431,7 +434,11 @@ export function createShowcase(container) {
 
   function paint() {
     renderFrame = 0;
-    if (!renderer || !scene || disposed || failed || !visible || document.hidden) return;
+    if (!renderer || !scene || disposed || failed || preparing || !visible || document.hidden) return;
+    drawFrame();
+  }
+
+  function drawFrame() {
     renderer.render(scene, camera);
     frames++;
     diagnostics.draws = renderer.info.render.calls;
@@ -444,7 +451,7 @@ export function createShowcase(container) {
   }
 
   function requestPaint() {
-    if (!renderFrame && renderer && !disposed && !failed && visible && !document.hidden) {
+    if (!renderFrame && renderer && !disposed && !failed && !preparing && visible && !document.hidden) {
       renderFrame = requestAnimationFrame(paint);
     }
   }
@@ -478,25 +485,38 @@ export function createShowcase(container) {
 
   function onMotionChange() {
     reduced = motionQuery.matches;
-    if (!paused) { applyPose(true); requestPaint(); }
+    if (!paused && !preparing) { applyPose(true); requestPaint(); }
   }
 
   function onVisibilityChange() {
     if (document.hidden) {
       if (renderFrame) cancelAnimationFrame(renderFrame);
       renderFrame = 0;
-    } else if (visible) { applyPose(true); requestPaint(); }
+    } else if (visible && !preparing) { applyPose(true); requestPaint(); }
   }
 
   function loadImage(path, assign) {
     const image = new Image();
     image.decoding = "async";
-    image.onload = () => {
-      if (disposed) return;
-      assign(image);
-      buildArtwork();
-    };
-    image.onerror = () => {};
+    imageTasks.push(new Promise((resolve) => {
+      let settled = false;
+      const cancel = () => finish(false);
+      const finish = (ok) => {
+        if (settled) return;
+        settled = true;
+        imageWaiters.delete(cancel);
+        resolve(ok);
+      };
+      imageWaiters.add(cancel);
+      image.onload = async () => {
+        try { await image.decode?.(); } catch { /* A loaded image can still be drawn when decode() rejects. */ }
+        if (disposed) { finish(false); return; }
+        assign(image);
+        buildArtwork();
+        finish(true);
+      };
+      image.onerror = () => finish(false);
+    }));
     image.src = `${import.meta.env.BASE_URL}${path}`;
     return image;
   }
@@ -504,7 +524,7 @@ export function createShowcase(container) {
   const campaign = loadImage("images/aura-perfume.jpg", (image) => { campaignImage = image; });
   const intersection = new IntersectionObserver((entries) => {
     visible = entries.some((entry) => entry.isIntersecting);
-    if (visible) { initialize(); if (!paused) applyPose(true); requestPaint(); }
+    if (visible) { initialize(); if (!paused && !preparing) applyPose(true); requestPaint(); }
     else if (renderFrame) { cancelAnimationFrame(renderFrame); renderFrame = 0; }
   }, { threshold: 0.01 });
   intersection.observe(container);
@@ -512,6 +532,77 @@ export function createShowcase(container) {
   resizeObserver.observe(container);
   motionQuery.addEventListener("change", onMotionChange);
   document.addEventListener("visibilitychange", onVisibilityChange);
+
+  function prepare() {
+    if (disposed) return Promise.resolve({ state: "disposed" });
+    if (preparationPromise) return preparationPromise;
+    preparing = true;
+    container.dataset.prewarm = "loading";
+    if (renderFrame) cancelAnimationFrame(renderFrame);
+    renderFrame = 0;
+    const cancelled = new Promise((resolve) => { cancelPreparation = (state = "disposed") => resolve({ state }); });
+    const work = (async () => {
+      try {
+        await Promise.allSettled([...imageTasks, fontReady]);
+        if (disposed) return { state: "disposed" };
+        if (preparationCancelled) return { state: "cancelled" };
+        initialize();
+        if (!renderer || failed) {
+          container.dataset.prewarm = "fallback";
+          return { state: "fallback" };
+        }
+        buildArtwork();
+        // Prepare all screen and device variants without changing the caller's
+        // absolute progress. A scroll or pause arriving during compilation is
+        // retained and becomes the final pose when preparation finishes.
+        for (const pose of [0, 0.5, 1]) {
+          if (disposed) return { state: "disposed" };
+          if (preparationCancelled) return { state: "cancelled" };
+          if (failed) throw new Error("Showcase context unavailable");
+          applyPose(true, pose);
+          if (renderer.compileAsync) await renderer.compileAsync(scene, camera);
+          else renderer.compile(scene, camera);
+          if (disposed) return { state: "disposed" };
+          if (preparationCancelled) return { state: "cancelled" };
+          if (failed) throw new Error("Showcase context unavailable");
+          drawFrame();
+        }
+        applyPose(true);
+        drawFrame();
+        container.dataset.prewarm = "ready";
+        return { state: "ready" };
+      } catch {
+        if (disposed) return { state: "disposed" };
+        if (preparationCancelled) return { state: "cancelled" };
+        failed = true;
+        setState("fallback");
+        container.dataset.prewarm = "fallback";
+        return { state: "fallback" };
+      } finally {
+        if (!preparationCancelled) {
+          preparing = false;
+          if (!disposed && !failed) {
+            applyPose(true);
+            if (!paused) requestPaint();
+          }
+        }
+      }
+    })();
+    preparationPromise = Promise.race([work, cancelled]);
+    return preparationPromise;
+  }
+
+  function cancelPrepare() {
+    if (!preparing || disposed) return;
+    preparationCancelled = true;
+    preparing = false;
+    cancelPreparation?.("cancelled");
+    container.dataset.prewarm = "cancelled";
+    // Cancellation can happen while compileAsync is pending. Restore the
+    // user's actual pose now; its eventual completion never draws a warmup.
+    applyPose(true);
+    requestPaint();
+  }
 
   function cleanupGPU() {
     if (renderFrame) cancelAnimationFrame(renderFrame);
@@ -530,11 +621,13 @@ export function createShowcase(container) {
   }
 
   return {
+    prepare,
+    cancelPrepare,
     setProgress(value) {
       const next = clamp(Number.isFinite(value) ? value : 0);
       if (Math.abs(next - progress) < 0.00001) return;
       progress = next;
-      if (paused || disposed || failed) return;
+      if (paused || disposed || failed || preparing) return;
       applyPose();
       requestPaint();
     },
@@ -542,11 +635,14 @@ export function createShowcase(container) {
       const next = Boolean(value);
       if (paused === next || disposed) return;
       paused = next;
-      if (!paused) { applyPose(true); requestPaint(); }
+      if (!paused && !preparing) { applyPose(true); requestPaint(); }
     },
     dispose() {
       if (disposed) return;
       disposed = true;
+      cancelPreparation?.();
+      imageWaiters.forEach((cancel) => cancel());
+      imageWaiters.clear();
       intersection.disconnect();
       resizeObserver.disconnect();
       motionQuery.removeEventListener("change", onMotionChange);

@@ -1,10 +1,12 @@
 import { createMotion } from "./motion.js";
+import { createEntry } from "./entry.js";
 
 document.documentElement.classList.add("js", "motion-ready");
 const abort = new AbortController();
 const { signal } = abort;
 const preference = matchMedia("(prefers-reduced-motion: reduce)");
-const motion = createMotion();
+const motion = createMotion({ initiallyBlocked: true });
+const entry = createEntry(motion);
 let disposed = false;
 document.fonts.ready.then(() => {
   if (!disposed) document.documentElement.classList.add("is-ready");
@@ -124,6 +126,7 @@ function dispose() {
   abort.abort();
   reveal.disconnect();
   motion.dispose();
+  entry.dispose();
 }
 window.addEventListener("pagehide", (event) => { if (!event.persisted) dispose(); }, { signal });
 if (import.meta.hot) import.meta.hot.dispose(dispose);

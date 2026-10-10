@@ -4,7 +4,7 @@ Aggiornato il 10 ottobre 2026 per il percorso corrente di Space Media Studio. Fi
 
 ## Film d’acqua
 
-Il film in apertura è **fotografia stock in slow motion**, non un render 3D, una ripresa realizzata dallo studio o un video generato con AI.
+Il film d’acqua, visibile dopo l’introduzione dello studio, è **fotografia stock in slow motion**, non un render 3D, una ripresa realizzata dallo studio o un video generato con AI.
 
 - Autore: **Film Composite**.
 - Fonte: [A drop of water in a bowl with a black background — Pexels 16392049](https://www.pexels.com/video/a-drop-of-water-in-a-bowl-with-a-black-background-16392049/).
@@ -32,7 +32,11 @@ Aura, FORMA e REVERIE sono nomi illustrativi di **progetti possibili**, non clie
 
 ## 3D e grafica originali
 
-Il percorso corrente utilizza **un’unica scena Three.js** in `src/showcase.js`. Un pannello con l’identità Space Media Studio si espande nella presenza web FORMA; telefono e creatività social introducono poi la campagna REVERIE. Le pose dipendono dalla progressione assoluta dello scroll e rimangono coerenti anche tornando indietro.
+L’introduzione utilizza una **stanza Three.js originale** in `src/studio-room.js`: pareti, postazioni, computer, superfici colorate e logo SPACE vengono assemblati durante la preparazione del sito, prima dell’ingresso della camera nello schermo. La stanza futuristica è un’illustrazione di uno spazio immaginario, non una fotografia, una ricostruzione documentaria o un rilievo della sede reale di Parma. Non usa modelli 3D, immagini architettoniche o video esterni. L’alternativa senza WebGL è un’illustrazione CSS originale in `src/entry-shell.js` e `src/entry.css`.
+
+Il controller `src/entry.js` prepara i font e le immagini già elencati in questo documento, un solo formato responsive del film d’acqua e la scena dei servizi. Il contatore è legato al completamento ponderato delle attività e, ove disponibile, ai byte del video trasferiti; il numero visualizzato viene smorzato e non supera il valore effettivo fino al 99%. Dopo il completamento, il 100% introduce il raccordo attraverso il monitor. Il video viene conservato in un Blob per playback e replay; non si avvia dietro l’overlay. Desktop usa 1920×1080, mobile 640×900. Movimento ridotto e risparmio dati escludono il video dal caricamento automatico; uscita immediata e limite di 20 secondi mantengono accessibile il sito anche in caso di errore o attesa eccessiva. Le risorse GPU della stanza vengono rilasciate al termine dell’introduzione.
+
+Il percorso dei servizi utilizza una seconda scena Three.js in `src/showcase.js`, preparata prima dell’apertura. Un pannello con l’identità Space Media Studio si espande nella presenza web FORMA; telefono e creatività social introducono poi la campagna REVERIE. Le pose dipendono dalla progressione assoluta dello scroll e rimangono coerenti anche tornando indietro.
 
 Pannello, display, telefono, cornici, dettagli, superfici e geometrie sono costruiti proceduralmente nel progetto; non sono modelli 3D scaricati. Le superfici grafiche sono composizioni Canvas 2D originali che utilizzano le fotografie Pexels indicate sopra. Gli ambienti di riflessione sono softbox originali costruiti nel codice. Il film d’acqua e la scena WebGL sono risorse distinte: il film non viene descritto come una simulazione realizzata dallo studio.
 

@@ -1,5 +1,5 @@
 // Absolute scroll owns the product. Native video decoding owns the water.
-export function createMotion() {
+export function createMotion({ initiallyBlocked = false } = {}) {
   const abort = new AbortController();
   const { signal } = abort;
   const preference = matchMedia("(prefers-reduced-motion: reduce)");
@@ -14,6 +14,7 @@ export function createMotion() {
   const copies = [...document.querySelectorAll("[data-showcase-copy]")];
   const connection = navigator.connection;
   let paused = false;
+  let blocked = Boolean(initiallyBlocked);
   let disposed = false;
   let movieVisible = false;
   let storyVisible = false;
@@ -63,7 +64,7 @@ export function createMotion() {
     }
     document.documentElement.dataset.motion = reduced ? "reduced" : paused ? "paused" : "running";
   }
-  const canPlay = () => !disposed && !paused && !preference.matches && !document.hidden && movieVisible && !movieComplete && !movieFailed;
+  const canPlay = () => !disposed && !blocked && !paused && !preference.matches && !document.hidden && movieVisible && !movieComplete && !movieFailed;
   function updateFilmProgress() {
     if (filmProgress && video && Number.isFinite(video.duration) && video.duration > 0) {
       filmProgress.style.transform = `scaleX(${clamp(video.currentTime / video.duration)})`;
@@ -154,7 +155,7 @@ export function createMotion() {
     playPending = false;
     video.currentTime = 0;
     stage?.classList.remove("is-complete");
-    scene?.setPaused(false);
+    scene?.setPaused(blocked);
     syncMovie();
     readScroll();
     controls();
@@ -180,14 +181,14 @@ export function createMotion() {
       if (disposed) return;
       scene = createShowcase(sceneContainer);
       scene.setProgress(progress);
-      scene.setPaused(paused);
+      scene.setPaused(paused || blocked);
       return scene;
     }).catch(() => { if (!disposed) sceneContainer.dataset.scene = "fallback"; });
     return scenePromise;
   }
   function render(time) {
     frame = 0;
-    if (disposed || paused || document.hidden || !storyVisible || preference.matches) return;
+    if (disposed || blocked || paused || document.hidden || !storyVisible || preference.matches) return;
     const dt = previous ? Math.min(48, time - previous) : 16;
     previous = time;
     progress += (target - progress) * (1 - Math.exp(-dt / 115));
@@ -199,11 +200,11 @@ export function createMotion() {
     else previous = 0;
   }
   function request() {
-    if (!frame && storyVisible && !paused && !preference.matches && !document.hidden) frame = requestAnimationFrame(render);
+    if (!frame && storyVisible && !blocked && !paused && !preference.matches && !document.hidden) frame = requestAnimationFrame(render);
   }
   function readScroll() {
     scrollFrame = 0;
-    if (disposed) return;
+    if (disposed || blocked) return;
     if (story && !preference.matches && !paused) {
       const rect = story.getBoundingClientRect();
       target = clamp(-rect.top / Math.max(1, rect.height - innerHeight));
@@ -245,7 +246,7 @@ export function createMotion() {
   toggle?.addEventListener("click", () => {
     if (preference.matches) return;
     paused = !paused;
-    scene?.setPaused(paused);
+    scene?.setPaused(paused || blocked);
     if (paused) { cancelAnimationFrame(frame); frame = 0; previous = 0; }
     syncMovie();
     controls();
@@ -259,14 +260,14 @@ export function createMotion() {
     }
     if (element === story) {
       storyVisible = isIntersecting;
-      if (isIntersecting) { ensureScene(); readScroll(); }
+      if (isIntersecting && !blocked) { ensureScene(); readScroll(); }
       else { cancelAnimationFrame(frame); frame = 0; previous = 0; }
     }
   }), { threshold: 0.08 });
   if (video) visibility.observe(video);
   if (story) visibility.observe(story);
   const lazy = new IntersectionObserver((entries) => {
-    if (entries.some((e) => e.isIntersecting)) { ensureScene(); lazy.disconnect(); }
+    if (!blocked && entries.some((e) => e.isIntersecting)) { ensureScene(); lazy.disconnect(); }
   }, { rootMargin: "350px 0px" });
   if (story) lazy.observe(story);
   function preferenceChange() {
@@ -295,16 +296,61 @@ export function createMotion() {
   controls();
   updatePoster();
   readScroll();
-  return { dispose() {
-    if (disposed) return;
-    disposed = true;
-    abort.abort();
-    cancelAnimationFrame(frame);
-    cancelAnimationFrame(scrollFrame);
-    visibility.disconnect();
-    lazy.disconnect();
-    cancelVideoFrame();
-    video?.pause();
-    scene?.dispose();
-  } };
+  return {
+    setBlocked(value) {
+      if (disposed) return;
+      blocked = Boolean(value);
+      if (!blocked) scene?.cancelPrepare?.();
+      scene?.setPaused(paused || blocked);
+      if (blocked) {
+        cancelAnimationFrame(frame);
+        cancelAnimationFrame(scrollFrame);
+        frame = scrollFrame = previous = 0;
+      } else {
+        readScroll();
+        if (storyVisible) ensureScene();
+      }
+      syncMovie();
+    },
+    adoptPreparedVideo({ url: sourceUrl, aspect, poster } = {}) {
+      if (!video || disposed || !sourceUrl) return false;
+      attempt += 1;
+      playPending = false;
+      movieLoaded = true;
+      movieComplete = movieFailed = false;
+      video.pause();
+      cancelVideoFrame();
+      stage?.classList.remove("is-complete", "is-playing");
+      video.dataset.aspect = aspect === "portrait" ? "portrait" : "wide";
+      if (poster) video.poster = url(poster);
+      const absoluteSource = url(sourceUrl);
+      video.preload = "auto";
+      if (video.src !== absoluteSource) {
+        video.src = absoluteSource;
+        video.load();
+      }
+      video.dataset.state = "prepared";
+      updateFilmProgress();
+      return true;
+    },
+    async prepareShowcase() {
+      const startedBlocked = blocked;
+      const preparedScene = await ensureScene();
+      if (disposed || !preparedScene) return { state: "fallback" };
+      if (startedBlocked && !blocked) return { state: "cancelled" };
+      return preparedScene.prepare?.() ?? { state: sceneContainer?.dataset.scene ?? "fallback" };
+    },
+    dispose() {
+      if (disposed) return;
+      disposed = true;
+      abort.abort();
+      cancelAnimationFrame(frame);
+      cancelAnimationFrame(scrollFrame);
+      visibility.disconnect();
+      lazy.disconnect();
+      cancelVideoFrame();
+      video?.pause();
+      scene?.dispose();
+    },
+  };
 }
