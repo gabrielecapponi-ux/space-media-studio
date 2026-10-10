@@ -48,6 +48,7 @@ export function createMotion({ initiallyBlocked = false } = {}) {
   }
   function updatePoster() {
     if (!video || movieLoaded) return;
+    video.dataset.aspect = portrait() ? "portrait" : "wide";
     video.poster = url(posterPath(preference.matches || (connection?.saveData && !explicitPlay)));
   }
   function controls() {

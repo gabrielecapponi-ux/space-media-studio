@@ -21,6 +21,13 @@
   .studio-cinema .water-copy h2 { font-size: 40px; }
   .studio-cinema .water-film { object-fit: contain; }
 }
+@media (max-width: 800px) and (orientation: portrait) {
+  .studio-cinema .water-film[data-aspect=wide] { object-fit: contain; }
+  .studio-cinema .water-film[data-aspect=portrait] {
+    mask-image: linear-gradient(to bottom,#000 72%,transparent 80%);
+    -webkit-mask-image: linear-gradient(to bottom,#000 72%,transparent 80%);
+  }
+}
 @media (max-width: 600px) and (orientation: portrait) {
   .studio-cinema .water-stage { height: 92svh; min-height: 590px; max-height: 1000px; }
   .studio-cinema .water-film { object-fit: cover; }
