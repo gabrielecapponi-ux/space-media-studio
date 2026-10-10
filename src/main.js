@@ -112,11 +112,6 @@ document.querySelectorAll("[data-concept]").forEach((card) => card.addEventListe
   openDialog(conceptDialog);
 }, { signal }));
 
-document.querySelectorAll(".service").forEach((detail) => detail.addEventListener("toggle", () => {
-  if (detail.open) document.querySelectorAll(".service").forEach((other) => {
-    if (other !== detail) other.open = false;
-  });
-}, { signal }));
 const year = document.querySelector("#year");
 if (year) year.textContent = new Date().getFullYear();
 

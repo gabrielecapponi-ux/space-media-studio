@@ -181,7 +181,9 @@ export function createEntry(motion) {
   const imagePaths = ["./images/muse-skincare.jpg", "./images/forma-architecture.jpg", "./images/aura-perfume.jpg"];
   const mobile = matchMedia("(max-width: 760px) and (orientation: portrait)").matches;
   const still = preference.matches || navigator.connection?.saveData;
-  imagePaths.push(`./images/water-${still ? "" : "start-"}${mobile ? "mobile" : "desktop"}.jpg?v=refined-20261010`);
+  const film = document.querySelector("#water-film");
+  const poster = film?.dataset[`${still ? "still" : "poster"}${mobile ? "Mobile" : "Desktop"}`];
+  if (poster) imagePaths.push(poster);
   const pictures = Promise.all(imagePaths.map((path, index) => task(`image-${index}`, 4, () => preloadImage(path))));
   const roomTask = task("room", 8, async () => {
     if (preference.matches) return;

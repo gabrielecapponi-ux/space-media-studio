@@ -1,0 +1,115 @@
+{
+  "title": "Space / Motion study 02",
+  "source": "Original procedural Blender geometry, materials, lighting, camera and choreography",
+  "render": {
+    "title": "Space / Motion study 02",
+    "source": "Original procedural Blender geometry, materials, lighting and camera",
+    "blender": "5.2.1 LTS",
+    "engine": "CYCLES",
+    "samples": 32,
+    "device": "GPU",
+    "fps": 24,
+    "frames": 144,
+    "width": 1920,
+    "height": 1080,
+    "preview": false,
+    "loop": "Periodically authored absolute poses; six seconds, no reversed footage"
+  },
+  "render_script_sha256": "9d3a8be48d76d0f6e1e166fdd5a314b8d4d3c1b45d39ecc0ff06134283955b15",
+  "composition": {
+    "tool": "Local ComfyUI native video nodes, CPU",
+    "nodes": [
+      "LoadVideo",
+      "LoadVideo",
+      "ConcatenateVideo",
+      "SaveVideo"
+    ],
+    "job_id": "7f77b4d0-e9ac-47c2-9459-745591dae9c1",
+    "status": "success",
+    "commit": "0df64eb242b7c5759c3e86afd5d1846d923b1033",
+    "model_weights_used": false,
+    "paid_api_used": false
+  },
+  "master_sha256": "aa6b7fe249a4a21e85a3f30cf88901ff1bc2afa4ed871f52e25e4a1ea7a96d9a",
+  "mobile_filter": "crop=1280:1080,scale=640:540:flags=lanczos,pad=640:900:0:180:color=0x090b10,setsar=1",
+  "exports": {
+    "desktop": {
+      "file": "public/films/studio-orbit-desktop.mp4",
+      "bytes": 1222112,
+      "sha256": "4c35315cb7cf2e368db5bde98255b9b334ad18d19b3ef2111d8e54dffc7b48de",
+      "validation": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 1920,
+            "height": 1080,
+            "pix_fmt": "yuv420p",
+            "color_range": "tv",
+            "color_space": "bt709",
+            "color_transfer": "iec61966-2-1",
+            "color_primaries": "bt709",
+            "r_frame_rate": "24/1",
+            "nb_frames": "144"
+          }
+        ],
+        "format": {
+          "duration": "6.000000"
+        }
+      }
+    },
+    "mobile": {
+      "file": "public/films/studio-orbit-mobile.mp4",
+      "bytes": 262813,
+      "sha256": "34a0c3168f6a93e726dd3bb4420fdc4c371d4aac9e0e8df9e80937c755c1beb3",
+      "validation": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 640,
+            "height": 900,
+            "pix_fmt": "yuv420p",
+            "color_range": "tv",
+            "color_space": "bt709",
+            "color_transfer": "iec61966-2-1",
+            "color_primaries": "bt709",
+            "r_frame_rate": "24/1",
+            "nb_frames": "144"
+          }
+        ],
+        "format": {
+          "duration": "6.000000"
+        }
+      }
+    }
+  },
+  "posters": {
+    "studio-orbit-start-desktop.jpg": {
+      "frame": 1,
+      "bytes": 49811,
+      "sha256": "89bf6452a6af35eaac4209167f4b28100bc59f9974f95409f2b4057be7bae873"
+    },
+    "studio-orbit-desktop.jpg": {
+      "frame": 73,
+      "bytes": 49133,
+      "sha256": "a8af740395ac5e24b9cf7ba0823e40ee1814c0abc026c19f0f62683f35bce30c"
+    },
+    "studio-orbit-start-mobile.jpg": {
+      "frame": 1,
+      "bytes": 19570,
+      "sha256": "07439e34ce44c64f7d09729b2fd1f0dd3853df281a10520027180eb63b19ce97"
+    },
+    "studio-orbit-mobile.jpg": {
+      "frame": 73,
+      "bytes": 19264,
+      "sha256": "d72622800467412589b64abdc775dedbfce6e2026f1a6c86b15f6eae9814801a"
+    }
+  },
+  "ffmpeg": "ffmpeg version 8.1.2 Copyright (c) 2000-2026 the FFmpeg developers",
+  "loop": "Periodic absolute poses. Frame145 matches frame1; frames1–144 exported in chronological order."
+}

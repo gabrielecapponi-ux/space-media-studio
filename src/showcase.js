@@ -154,7 +154,7 @@ function roundedSurface(width, height, radius, segments) {
 }
 
 /** A single physical identity grows into a website, then into a campaign.
- * The caller owns scroll damping: every transform here is an absolute pose.
+ * Scroll owns the absolute poses. A separate, bounded clock adds studio motion.
  */
 export function createShowcase(container) {
   const empty = { setProgress() {}, setPaused() {}, cancelPrepare() {}, prepare: async () => ({ state: "fallback" }), dispose() {} };
@@ -165,12 +165,16 @@ export function createShowcase(container) {
   const compactQuery = window.matchMedia("(max-width: 760px)");
   const lowDetail = compactQuery.matches || navigator.maxTouchPoints > 0;
   const geometries = new Set(), materials = new Set(), textures = new Set();
-  let renderer, scene, camera, environment, group, display, phone, social, product, pedestal;
+  let renderer, scene, camera, environment, group, display, phone, social, product, pedestal, keyLight, rimLight;
   const fragments = [];
+  const baseTransforms = new Map();
   let identityMaterial, websiteMaterial, phoneScreen, socialScreen;
   let shadow, initialized = false, disposed = false, failed = false;
   let visible = false, paused = false, reduced = motionQuery.matches;
   let progress = 0, appliedProgress = -1, renderFrame = 0, frames = 0;
+  let motionTime = 0, previousTick = 0, nextDraw = 0, arrivalStart = -10, arrivalDirection = 1;
+  let renderWindowStart = 0, renderWindowFrames = 0;
+  const frameInterval = 1000 / (lowDetail ? 30 : 45);
   let width = 1, height = 1;
   let textureBrand, textureWebsite, texturePhone, textureSocial, textureLabel;
   let preparing = false, preparationCancelled = false, preparationPromise, cancelPreparation;
@@ -178,8 +182,24 @@ export function createShowcase(container) {
   const ownGeometry = (value) => { geometries.add(value); return value; };
   const ownMaterial = (value) => { materials.add(value); return value; };
   const ownTexture = (value) => { textures.add(value); return value; };
-  const diagnostics = { draws: 0, drawCalls: 0, triangles: 0, frames: 0, progress: 0, dpr: 1, state: "loading" };
+  const diagnostics = { draws: 0, drawCalls: 0, triangles: 0, frames: 0, progress: 0, dpr: 1,
+    state: "loading", animation: "stopped", targetFps: lowDetail ? 30 : 45, cpuRenderMs: 0, motionTime: 0 };
   container.showcaseDiagnostics = diagnostics;
+  container.dataset.targetFps = String(diagnostics.targetFps);
+  container.dataset.frameBudgetMs = frameInterval.toFixed(1);
+
+  function animationState(state) {
+    if (diagnostics.animation === state && container.dataset.animation === state) return;
+    diagnostics.animation = state;
+    container.dataset.animation = state;
+  }
+
+  function stopLoop(state) {
+    if (renderFrame) cancelAnimationFrame(renderFrame);
+    renderFrame = previousTick = nextDraw = 0;
+    renderWindowStart = renderWindowFrames = 0;
+    animationState(state);
+  }
 
   function setState(state) {
     container.dataset.scene = state;
@@ -271,11 +291,13 @@ export function createShowcase(container) {
       scene.add(new THREE.HemisphereLight(0xf6f8ff, 0x303640, 0.7));
       const key = new THREE.DirectionalLight(0xfffbf4, 3.4);
       key.position.set(-4, 7, 6);
+      keyLight = key;
       scene.add(key);
       const fill = new THREE.DirectionalLight(0xe2ebff, 0.7);
       fill.position.set(5, 0, 3); scene.add(fill);
       const rim = new THREE.DirectionalLight(0xe3ff80, 2.2);
       rim.position.set(3, 4, -4); scene.add(rim);
+      rimLight = rim;
 
       const metal = ownMaterial(new THREE.MeshStandardMaterial({ color: 0x41454c, metalness: 1, roughness: 0.31 }));
       const edge = ownMaterial(new THREE.MeshStandardMaterial({ color: 0xb7bec7, metalness: 1, roughness: 0.24 }));
@@ -420,11 +442,14 @@ export function createShowcase(container) {
     social.rotation.set(0.025, -0.22, mix(0.12, -0.1, campaign));
     social.scale.setScalar(mix(0.4, 0.76, campaign));
 
-    const burst = Math.sin(expand * Math.PI);
     const turn = new THREE.Euler();
     const target = new THREE.Vector3();
     const mobileTarget = new THREE.Vector3();
     fragments.forEach((fragment, index) => {
+      const fragmentExpand = phase(pose, 0.08 + index * 0.004, 0.455 + index * 0.004);
+      const fragmentCampaign = phase(pose, 0.63 + index * 0.004, 0.91 + index * 0.004);
+      const burst = Math.sin(fragmentExpand * Math.PI);
+      const transfer = Math.sin(fragmentCampaign * Math.PI);
       const angle = index / fragments.length * Math.PI * 2 + 0.12;
       const side = Math.floor(index / 3), slot = index % 3 - 1;
       const horizontal = side < 2;
@@ -437,21 +462,21 @@ export function createShowcase(container) {
       const phoneY = horizontal ? (side === 0 ? 1.72 : -1.72) : slot * 1.145;
       mobileTarget.set(phoneX * phoneScale, phoneY * phoneScale, 0.04)
         .applyEuler(phone.rotation).add(phone.position);
-      target.lerp(mobileTarget, campaign);
+      target.lerp(mobileTarget, fragmentCampaign);
       const ringX = Math.cos(angle) * 2.31;
       const ringY = Math.sin(angle) * 2.25 + 0.12;
       const ringZ = Math.sin(angle * 2) * 0.62;
-      fragment.position.set(mix(ringX, target.x, expand) + Math.cos(angle) * burst * 0.6,
-        mix(ringY, target.y, expand) + Math.sin(angle) * burst * 0.52,
-        mix(ringZ, target.z, expand) + Math.sin(angle * 2) * burst * 1.1);
-      const frameAngle = (horizontal ? Math.PI / 2 : 0) + mix(display.rotation.z, phone.rotation.z, campaign);
-      turn.set(mix(Math.sin(angle) * 0.52, mix(display.rotation.x, phone.rotation.x, campaign), expand),
-        mix(Math.cos(angle) * 0.58, mix(display.rotation.y, phone.rotation.y, campaign), expand),
-        mix(angle, frameAngle, expand) + burst * 0.38);
+      fragment.position.set(mix(ringX, target.x, fragmentExpand) + Math.cos(angle) * burst * 0.72,
+        mix(ringY, target.y, fragmentExpand) + Math.sin(angle) * burst * 0.62 + transfer * Math.sin(angle) * 0.18,
+        mix(ringZ, target.z, fragmentExpand) + Math.sin(angle * 2) * burst * 1.45 + transfer * Math.cos(angle) * 0.72);
+      const frameAngle = (horizontal ? Math.PI / 2 : 0) + mix(display.rotation.z, phone.rotation.z, fragmentCampaign);
+      turn.set(mix(Math.sin(angle) * 0.52, mix(display.rotation.x, phone.rotation.x, fragmentCampaign), fragmentExpand),
+        mix(Math.cos(angle) * 0.58, mix(display.rotation.y, phone.rotation.y, fragmentCampaign), fragmentExpand) + transfer * 0.24,
+        mix(angle, frameAngle, fragmentExpand) + burst * 0.58);
       fragment.rotation.copy(turn);
       const length = mix((horizontal ? 2.04 : 1.28) * displayScale,
-        (horizontal ? 0.55 : 1.08) * phoneScale, campaign);
-      fragment.scale.set(mix(1, mix(0.65, 0.42, campaign), expand), mix(1, length / 1.04, expand), 1);
+        (horizontal ? 0.55 : 1.08) * phoneScale, fragmentCampaign);
+      fragment.scale.set(mix(1, mix(0.65, 0.42, fragmentCampaign), fragmentExpand), mix(1, length / 1.04, fragmentExpand), 1);
     });
     group.rotation.y = mix(0.035, -0.02, campaign);
     shadow.scale.set(mix(mix(0.58, 0.93, expand), 1, campaign),
@@ -460,7 +485,55 @@ export function createShowcase(container) {
     shadow.position.x = mix(0.05, 0.14, campaign);
     diagnostics.progress = pose;
     container.dataset.progress = pose.toFixed(4);
+    rememberBasePose();
     updateCamera();
+  }
+
+  function rememberBasePose() {
+    for (const object of [group, product, display, phone, social, ...fragments]) {
+      let base = baseTransforms.get(object);
+      if (!base) {
+        base = { position: object.position.clone(), rotation: object.rotation.clone(), scale: object.scale.clone() };
+        baseTransforms.set(object, base);
+      } else {
+        base.position.copy(object.position); base.rotation.copy(object.rotation); base.scale.copy(object.scale);
+      }
+    }
+  }
+
+  function applyStudioMotion(time) {
+    for (const [object, base] of baseTransforms) {
+      object.position.copy(base.position); object.rotation.copy(base.rotation); object.scale.copy(base.scale);
+    }
+    scene.environmentRotation.y = 0;
+    keyLight.position.set(-4, 7, 6);
+    rimLight.position.set(3, 4, -4);
+    if (reduced || preparing) return;
+    const expand = phase(Math.max(0, appliedProgress), 0.1, 0.52);
+    const arrivalProgress = clamp((time - arrivalStart) / 1.25);
+    const arrival = Math.sin(arrivalProgress * Math.PI) * (1 - arrivalProgress) ** 2;
+    const float = Math.sin(time * 0.86);
+    product.position.y += float * 0.07 + arrival * 0.1;
+    product.position.z += arrival * 0.13;
+    product.rotation.y += Math.sin(time * 0.48) * 0.055 + arrival * arrivalDirection * 0.03;
+    product.rotation.z += Math.sin(time * 0.63) * 0.012;
+    // Interface orientation remains fixed; only its height breathes slightly.
+    display.position.y += Math.sin(time * 0.74 + 0.7) * 0.018;
+    phone.position.y += Math.sin(time * 0.74 + 1.5) * 0.022;
+    social.position.y += Math.sin(time * 0.74 + 2.1) * 0.025;
+    fragments.forEach((fragment, index) => {
+      const angle = index / fragments.length * Math.PI * 2 + 0.12;
+      const wave = Math.sin(time * 0.9 + index * 0.48);
+      const freedom = mix(1, 0.14, expand);
+      fragment.position.x += Math.cos(angle) * wave * 0.075 * freedom;
+      fragment.position.y += Math.sin(angle) * wave * 0.075 * freedom;
+      fragment.position.z += Math.sin(time * 0.68 + index * 0.62) * 0.11 * freedom;
+      fragment.rotation.y += wave * 0.055 * freedom;
+      fragment.rotation.z += Math.sin(time * 0.55 + index * 0.4) * 0.045 * freedom;
+    });
+    scene.environmentRotation.y = Math.sin(time * 0.22) * 0.06;
+    keyLight.position.x += Math.sin(time * 0.32) * 1.15;
+    rimLight.position.x += Math.sin(time * 0.41 + 0.3) * 0.75;
   }
 
   function updateCamera() {
@@ -491,22 +564,52 @@ export function createShowcase(container) {
     requestPaint();
   }
 
-  function paint() {
+  function paint(timestamp) {
     renderFrame = 0;
     if (!renderer || !scene || disposed || failed || preparing || !visible || document.hidden) return;
-    drawFrame();
+    const animated = !paused && !reduced;
+    if (animated) {
+      const elapsed = previousTick ? Math.min(80, timestamp - previousTick) : 0;
+      previousTick = timestamp;
+      motionTime += elapsed / 1000;
+      animationState("running");
+    } else {
+      previousTick = nextDraw = 0;
+      animationState(reduced ? "reduced" : "paused");
+    }
+    if (!animated || timestamp >= nextDraw) {
+      applyStudioMotion(motionTime);
+      drawFrame();
+      const overrun = nextDraw ? Math.max(0, timestamp - nextDraw) % frameInterval : 0;
+      nextDraw = timestamp + frameInterval - overrun;
+    }
+    if (animated) requestPaint();
   }
 
   function drawFrame() {
+    const started = performance.now();
     renderer.render(scene, camera);
+    const renderMs = performance.now() - started;
     frames++;
     diagnostics.draws = renderer.info.render.calls;
     diagnostics.drawCalls = diagnostics.draws;
     diagnostics.triangles = renderer.info.render.triangles;
     diagnostics.frames = frames;
+    diagnostics.cpuRenderMs = Number(((diagnostics.cpuRenderMs || renderMs) * 0.85 + renderMs * 0.15).toFixed(2));
+    diagnostics.motionTime = Number(motionTime.toFixed(2));
+    if (!renderWindowStart) renderWindowStart = started;
+    renderWindowFrames++;
+    if (started - renderWindowStart >= 1000) {
+      diagnostics.observedFps = Number(((renderWindowFrames - 1) * 1000 / (started - renderWindowStart)).toFixed(1));
+      renderWindowStart = started;
+      renderWindowFrames = 1;
+      container.dataset.observedFps = String(diagnostics.observedFps);
+    }
     container.dataset.drawCalls = String(diagnostics.draws);
     container.dataset.triangles = String(diagnostics.triangles);
     container.dataset.renderedFrames = String(frames);
+    container.dataset.cpuRenderMs = String(diagnostics.cpuRenderMs);
+    container.dataset.motionTime = String(diagnostics.motionTime);
   }
 
   function requestPaint() {
@@ -518,8 +621,7 @@ export function createShowcase(container) {
   function onContextLost(event) {
     event.preventDefault();
     if (disposed) return;
-    if (renderFrame) cancelAnimationFrame(renderFrame);
-    renderFrame = 0;
+    stopLoop("context-lost");
     failed = true;
     setState("fallback");
   }
@@ -544,20 +646,20 @@ export function createShowcase(container) {
 
   function onMotionChange() {
     reduced = motionQuery.matches;
+    stopLoop(reduced ? "reduced" : paused ? "paused" : "stopped");
     if (!paused && !preparing) { applyPose(true); requestPaint(); }
   }
 
   function onVisibilityChange() {
     if (document.hidden) {
-      if (renderFrame) cancelAnimationFrame(renderFrame);
-      renderFrame = 0;
+      stopLoop("hidden");
     } else if (visible && !preparing) { applyPose(true); requestPaint(); }
   }
 
   const intersection = new IntersectionObserver((entries) => {
     visible = entries.some((entry) => entry.isIntersecting);
     if (visible) { initialize(); if (!paused && !preparing) applyPose(true); requestPaint(); }
-    else if (renderFrame) { cancelAnimationFrame(renderFrame); renderFrame = 0; }
+    else stopLoop("offscreen");
   }, { threshold: 0.01 });
   intersection.observe(container);
   const resizeObserver = new ResizeObserver(resize);
@@ -570,8 +672,7 @@ export function createShowcase(container) {
     if (preparationPromise) return preparationPromise;
     preparing = true;
     container.dataset.prewarm = "loading";
-    if (renderFrame) cancelAnimationFrame(renderFrame);
-    renderFrame = 0;
+    stopLoop("preparing");
     const cancelled = new Promise((resolve) => { cancelPreparation = (state = "disposed") => resolve({ state }); });
     const work = (async () => {
       try {
@@ -613,6 +714,7 @@ export function createShowcase(container) {
       } finally {
         if (!preparationCancelled) {
           preparing = false;
+          previousTick = nextDraw = renderWindowStart = renderWindowFrames = 0;
           if (!disposed && !failed) {
             applyPose(true);
             if (!paused) requestPaint();
@@ -637,8 +739,8 @@ export function createShowcase(container) {
   }
 
   function cleanupGPU() {
-    if (renderFrame) cancelAnimationFrame(renderFrame);
-    renderFrame = 0;
+    stopLoop("disposed");
+    baseTransforms.clear();
     scene?.traverse((object) => { if (object.isLight) object.shadow?.dispose(); });
     geometries.forEach((geometry) => geometry.dispose());
     materials.forEach((material) => material.dispose());
@@ -658,6 +760,12 @@ export function createShowcase(container) {
     setProgress(value) {
       const next = clamp(Number.isFinite(value) ? value : 0);
       if (Math.abs(next - progress) < 0.00001) return;
+      const previousChapter = progress < 0.25 ? 0 : progress < 0.75 ? 1 : 2;
+      const nextChapter = next < 0.25 ? 0 : next < 0.75 ? 1 : 2;
+      if (previousChapter !== nextChapter && !paused && !reduced && !preparing) {
+        arrivalStart = motionTime;
+        arrivalDirection = nextChapter > previousChapter ? 1 : -1;
+      }
       progress = next;
       if (paused || disposed || failed || preparing) return;
       applyPose();
@@ -667,7 +775,14 @@ export function createShowcase(container) {
       const next = Boolean(value);
       if (paused === next || disposed) return;
       paused = next;
-      if (!paused && !preparing) { applyPose(true); requestPaint(); }
+      if (paused) {
+        stopLoop("paused");
+        if (renderer && !failed && !preparing && visible && !document.hidden) {
+          applyPose(true);
+          applyStudioMotion(motionTime);
+          drawFrame();
+        }
+      } else if (!preparing) { previousTick = nextDraw = 0; applyPose(true); requestPaint(); }
     },
     dispose() {
       if (disposed) return;

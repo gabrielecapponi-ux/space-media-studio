@@ -1,64 +1,58 @@
 # Provenienza dei materiali
 
-Aggiornato il 10 ottobre 2026 per il percorso corrente di Space Media Studio. Filmati, fotografie e font sono salvati in locale: la navigazione del sito non richiede servizi di generazione o CDN fotografici esterni.
+Aggiornato il 10 ottobre 2026. Il percorso corrente usa scene WebGL e un film CGI originali; le sole fotografie stock compaiono nelle tre card dei concept. Media e font sono serviti localmente, senza CDN fotografici o servizi di generazione durante la visita.
 
-## Film d’acqua
+## Film CGI originale — Studio Orbit
 
-Il film d’acqua, collocato dopo le tre card dei progetti possibili, è **fotografia stock in slow motion**, non un render 3D, una ripresa realizzata dallo studio o un video generato con AI.
+**Space / Motion study 02** è creato per Space Media Studio con `scripts/render-studio-orbit.py`: otto segmenti ad arco, superfici cromo/grafite/lime, nucleo, palco, luci, camera e coreografia procedurale. Non utilizza modelli scaricati, fotografie stock o filmati AI.
 
-- Autore: **Film Composite**.
-- Fonte: [A drop of water in a bowl with a black background — Pexels 16392049](https://www.pexels.com/video/a-drop-of-water-in-a-bowl-with-a-black-background-16392049/).
-- Licenza: [Pexels License](https://www.pexels.com/license/), verificata sul sito ufficiale. Consente download, modifiche e uso commerciale sul sito; non è una dichiarazione di pubblico dominio. Restano applicabili i divieti di rivendita di copie inalterate, redistribuzione come stock e falsa approvazione da parte degli autori.
-- Master scaricato dal CDN ufficiale: **3840×2160, 24 fps, 18.791667 secondi**. Conservato in `outputs/water-stock/`, esclusa dal repository.
-- Esportazioni web: `public/films/water-desktop.mp4` (**1920×1080**) e `water-mobile.mp4` (**640×900**), entrambe 11.5 secondi / 276 fotogrammi, H.264/YUV420P senza audio.
-- Interventi: selezione dell’intervallo 1.0–12.5 secondi, ridimensionamento/ritaglio per dispositivo, grade monocromatico, compressione H.264 High Level 4.1 / CRF 20 e MP4 fast-start. L’ottimizzazione corrente è esportata direttamente dal master 4K, con keyframe ogni 2 secondi, e riduce i due filmati complessivamente di 1.326.780 byte (23,81%) mantenendo formato, durata e numero di fotogrammi. Nessuna interpolazione del movimento, risalita inversa dell’acqua o falsa conversione in geometria 3D.
-- I poster `water-start-desktop.jpg` e `water-start-mobile.jpg` sono estratti dal primo fotogramma degli export finali. `water-desktop.jpg` e `water-mobile.jpg` sono estratti dal momento della colonna d’acqua e usati come presentazione statica.
+- Render: **Blender 5.2.1, Cycles GPU**, 32 campioni e denoising, **1920×1080**, **144 fotogrammi / 24 fps / 6 secondi**.
+- Montaggio locale: due capitoli caricati e concatenati con i nodi nativi ComfyUI **LoadVideo → ConcatenateVideo → SaveVideo**, su CPU. Nessun peso AI, account Higgsfield o servizio di generazione a pagamento.
+- Desktop: `public/films/studio-orbit-desktop.mp4`, **1920×1080**.
+- Mobile: `public/films/studio-orbit-mobile.mp4`, **640×900**. Finestra centrale 1280×1080, riduzione a 640×540, margini verticali da 180 pixel per mantenere visibile la scultura.
+- `public/images/studio-orbit-start-desktop.jpg` e `studio-orbit-start-mobile.jpg`: primo fotogramma degli export. `studio-orbit-desktop.jpg` e `studio-orbit-mobile.jpg`: fotogramma 73 per il ripiego statico.
 
-Provenienza completa, URL del download, hash, dimensioni, comandi e verifiche sono documentati in [ASSET-WATER.md](./ASSET-WATER.md). [ASSET-WATER.json](./ASSET-WATER.json) conserva le specifiche e i tempi editoriali indicativi della sequenza. Il film viene integrato nella dimostrazione creativa del sito, senza attribuire la produzione fotografica a Space Media Studio.
+Hash, dimensioni, verifica completa degli export e job ComfyUI riuscito sono in [ASSET-STUDIO-ORBIT.json](./ASSET-STUDIO-ORBIT.json). La pipeline riproducibile è in `scripts/render-studio-orbit.py`, `scripts/comfy-studio-orbit.py` e `scripts/export-studio-orbit.py`.
 
-## Fotografie
+Il movimento è progettato come gesto periodico; il loop non usa una riproduzione al contrario. Scena Blender, render e manifest di lavorazione sono conservati in `outputs/studio-orbit/`, esclusa dal repository e dalla build. Il sito distribuisce gli export web e i poster.
 
-Le fotografie seguenti sono protette da copyright e distribuite con la [licenza Pexels](https://www.pexels.com/license/), che permette download, modifica e utilizzo gratuito anche commerciale su siti e campagne. Non sono dichiarate di pubblico dominio. Non vengono rivendute come stock né attribuite allo studio come produzione fotografica.
+Il precedente film fotografico d’acqua e i suoi poster non sono usati dal percorso corrente. [ASSET-WATER.md](./ASSET-WATER.md) e [ASSET-WATER.json](./ASSET-WATER.json) conservano fonte, licenza e specifiche storiche; non descrivono Studio Orbit.
+
+## Scene WebGL e grafica originali
+
+- **Introduzione:** `src/studio-room.js` costruisce pareti, postazioni, computer e logo SPACE. È uno studio immaginario, non una fotografia o un rilievo della sede di Parma. `src/entry-shell.js` e `src/entry.css` forniscono il ripiego CSS originale.
+- **Hero:** `src/kinetic-hero.js` riutilizza una geometria originale in 24 segmenti lime/cromo. La coreografia passa da forma orbitale a struttura elicoidale, scomposizione e prodotto AURA; superfici, etichetta e ambienti di riflessione sono creati nel progetto.
+- **Showcase:** `src/showcase.js` costruisce flacone AURA, tappo, etichetta, piedistallo, display e telefono. Dodici frammenti condividono la geometria e si ricompongono tra branding, e-commerce e campagna. Le pose assolute dello scroll hanno un livello temporale separato di movimento contenuto, senza accumulo delle trasformazioni. Il rendering è limitato a 45 fps desktop / 30 fps compatto o touch e si ferma in pausa, fuori schermo, durante la preparazione, con pagina nascosta o movimento ridotto.
+- **Interfacce:** texture Canvas 2D originali, con illustrazioni AURA coerenti con il flacone 3D. Non contengono fotografie Pexels, prezzi o acquisti attivi. Sono concept visivi di esperienze che lo studio potrebbe sviluppare.
+- **Identità:** logo SVG e composizioni realizzati nel progetto; palette bianco caldo `#f5f5f2`, nero `#090b10`, giallo acido `#dfff00`.
+
+Queste scene sono rendering WebGL in tempo reale. Studio Orbit è invece un render Blender preparato e distribuito come video. Non viene attribuita al sito una ricostruzione geometrica delle fotografie stock né una collaborazione con produttori di dispositivi o marchi esterni.
+
+**Three.js** è distribuito con licenza MIT; avviso in `public/licenses/three-MIT.txt`.
+
+## Fotografie delle card concept
+
+Le fotografie mantengono il copyright degli autori e sono distribuite con la [licenza Pexels](https://www.pexels.com/license/), che consente uso e modifica anche commerciale. Non sono dichiarate di pubblico dominio, rivendute come stock o attribuite allo studio come produzione fotografica.
 
 | File | Autore e pagina fonte | Uso |
 | --- | --- | --- |
-| `public/images/muse-skincare.jpg` | [Polina — Cosmetic Containers on Gray Textile](https://www.pexels.com/photo/cosmetic-containers-on-gray-textile-8101525/) | Solo card HTML del concept dimostrativo Aura |
-| `public/images/forma-architecture.jpg` | [Alec Doualetas — Modern Architectural Concrete Structure Detail](https://www.pexels.com/photo/modern-architectural-concrete-structure-detail-31851512/) | Solo mockup nella card HTML del concept web FORMA |
-| `public/images/aura-perfume.jpg` | [Daria Liudnaya — Blank Perfume Bottles](https://www.pexels.com/photo/blank-perfume-bottles-8166611/) | Solo card HTML del concept di campagna REVERIE |
+| `public/images/muse-skincare.jpg` | [Polina — Cosmetic Containers on Gray Textile](https://www.pexels.com/photo/cosmetic-containers-on-gray-textile-8101525/) | Card del concept Aura |
+| `public/images/forma-architecture.jpg` | [Alec Doualetas — Modern Architectural Concrete Structure Detail](https://www.pexels.com/photo/modern-architectural-concrete-structure-detail-31851512/) | Card del concept web FORMA |
+| `public/images/aura-perfume.jpg` | [Daria Liudnaya — Blank Perfume Bottles](https://www.pexels.com/photo/blank-perfume-bottles-8166611/) | Card del concept di campagna REVERIE |
 
-Le tre fotografie sono usate esclusivamente nelle card HTML dei concept; non fanno parte delle texture dell’hero, del prodotto AURA o dei dispositivi nel percorso 3D. Sono stati scaricati JPEG a larghezza 1600 px dal CDN ufficiale `images.pexels.com`. Gli export correnti mantengono le stesse dimensioni e gli stessi pixel RGB decodificati, con ottimizzazione JPEG progressiva senza perdita; per la foto architettonica interamente monocromatica vengono eliminate anche le componenti cromatiche ridondanti. Questa ottimizzazione riduce il trasferimento senza ricampionare le immagini. Le prove WebP ad alta qualità risultavano più grandi e non sono distribuite. Autori e pagine fonte sono collegati anche nei dettagli dei concept sul sito. Le composizioni grafiche, i testi e i mockup sono realizzati per questo progetto; le fotografie conservano i diritti dei rispettivi autori.
+I JPEG a larghezza 1600 px provengono dal CDN ufficiale `images.pexels.com`. Gli export hanno un’ottimizzazione progressiva senza ricampionamento; la foto architettonica monocromatica elimina anche le componenti cromatiche ridondanti. Autori e fonti sono collegati nei dettagli dei concept. Testi, composizioni e mockup sono originali; le fotografie conservano i diritti dei rispettivi autori.
 
-Aura, FORMA e REVERIE sono nomi illustrativi di **progetti possibili**, non clienti dello studio. Questi concept non sono presentati come incarichi commissionati, case study o risultati commerciali. Non viene rivendicata una registrazione dei relativi nomi da parte dello studio.
-
-## 3D e grafica originali
-
-L’introduzione utilizza una **stanza Three.js originale** in `src/studio-room.js`: pareti, postazioni, computer, superfici colorate e logo SPACE vengono assemblati durante la preparazione del sito, prima dell’ingresso della camera nello schermo. La stanza futuristica è un’illustrazione di uno spazio immaginario, non una fotografia, una ricostruzione documentaria o un rilievo della sede reale di Parma. Non usa modelli 3D, immagini architettoniche o video esterni. L’alternativa senza WebGL è un’illustrazione CSS originale in `src/entry-shell.js` e `src/entry.css`.
-
-Il controller `src/entry.js` prepara i font e le immagini già elencati in questo documento, un solo formato responsive del film d’acqua, l’hero e la scena dei servizi. Il contatore è legato al completamento ponderato delle attività e, ove disponibile, ai byte del video trasferiti; il numero visualizzato viene smorzato e non supera il valore effettivo fino al 99%. Dopo il completamento, il 100% introduce il raccordo attraverso il monitor. Il video viene conservato in un Blob per playback e replay; non si avvia dietro l’overlay. Desktop usa 1920×1080, mobile 640×900. Movimento ridotto e risparmio dati escludono il video dal caricamento automatico; uscita immediata e limite di 20 secondi mantengono accessibile il sito anche in caso di errore o attesa eccessiva. Le risorse GPU della stanza vengono rilasciate al termine dell’introduzione.
-
-L’hero utilizza una scena Three.js originale in `src/kinetic-hero.js`, con il layout nero, i servizi espliciti e le regole responsive in `src/kinetic.css`. Una geometria ad arco creata nel progetto è riutilizzata per 24 segmenti lime e cromo: la scultura orbitale si separa e si ricompone nella bottiglia AURA. Bottiglia, tappo, etichetta, superfici e coreografia sono originali; non derivano da un modello o da una fotografia stock. Il monitor dell’introduzione mostra una composizione Canvas 2D originale coerente con questo hero.
-
-Il percorso dei servizi utilizza un’altra scena Three.js in `src/showcase.js`, preparata prima dell’apertura. Lo stesso concept AURA collega bottiglia, e-commerce e campagna su telefono e social. Dodici frammenti con geometria condivisa accompagnano la trasformazione tra i capitoli. Le pose dipendono dalla progressione assoluta dello scroll e rimangono coerenti anche tornando indietro.
-
-Prodotto, display, telefono, cornici, dettagli, superfici e geometrie sono costruiti proceduralmente nel progetto; non sono modelli 3D scaricati. Le superfici dei dispositivi sono composizioni Canvas 2D originali con illustrazioni del prodotto AURA: non contengono le fotografie Pexels elencate sopra e non mostrano prezzi. Le interfacce sono dimostrazioni visive, senza acquisti attivi. Gli ambienti di riflessione sono softbox originali costruiti nel codice. Hero, stanza e percorso dei servizi sono rendering WebGL in tempo reale. Il film d’acqua è una risorsa fotografica distinta e non viene descritto come una simulazione realizzata dallo studio.
-
-- **Three.js**: pacchetto ufficiale, licenza MIT; avviso incluso in `public/licenses/three-MIT.txt`.
-- **Logo**: composizione SVG realizzata nel progetto.
-- **Palette**: bianco caldo `#f5f5f2`, nero `#090b10`, giallo acido `#dfff00`, applicata anche alle composizioni sui dispositivi 3D.
-- Le interfacce dei concept sono dimostrazioni visive; non implicano approvazione o collaborazione con produttori di dispositivi o marchi esterni.
+Aura, FORMA e REVERIE sono **progetti possibili**, non clienti, incarichi commissionati, case study o risultati commerciali. I nomi hanno scopo illustrativo e non implicano una registrazione da parte dello studio.
 
 ## Font
 
-- **Space Grotesk**: font variabile WOFF2 dal [repository ufficiale di Florian Karsten](https://github.com/floriankarsten/space-grotesk), SIL Open Font License 1.1. Copia della licenza: `public/fonts/SpaceGrotesk-OFL.txt`.
-- **DM Mono**: font del pacchetto skill fornito dall’utente, SIL Open Font License conservata in `public/fonts/DMMono-OFL.txt`.
+- **Space Grotesk:** WOFF2 variabile dal [repository ufficiale di Florian Karsten](https://github.com/floriankarsten/space-grotesk), SIL Open Font License 1.1; copia in `public/fonts/SpaceGrotesk-OFL.txt`.
+- **DM Mono:** dal pacchetto skill fornito dall’utente, SIL Open Font License; copia in `public/fonts/DMMono-OFL.txt`.
 
-Tutti i font sono serviti localmente. Non vengono chiamate API di font esterne durante la visita.
+I font sono serviti localmente, senza API esterne.
 
 ## Riferimenti e storia
 
-- [Lusion](https://lusion.co/) è stato un riferimento iniziale per composizione e immersività. Il linguaggio essenziale richiesto successivamente dall’utente guida la versione corrente; nessun codice, asset o progetto di Lusion o Apple è copiato.
-- [Mockups Design](https://mockups-design.com/license/) e [Poly Haven](https://polyhaven.com/license/) sono stati valutati nelle fasi precedenti. Nessun loro asset è incluso nel percorso corrente.
-- Il manuale 3D WEB LAB fornito dall’utente è un riferimento tecnico interno e non viene distribuito con il sito.
-- Le sculture delle iterazioni precedenti e il film CGI `spark` appartengono alle iterazioni conservate nella cronologia Git. La pipeline Blender/ComfyUI di quelle versioni non produce il film d’acqua attuale e non viene eseguita dal sito corrente.
+[Lusion](https://lusion.co/) e il linguaggio di presentazione Apple sono riferimenti di composizione e movimento; codice, asset e progetti non sono copiati. Il manuale 3D WEB LAB fornito dall’utente è un riferimento tecnico interno, escluso dalla distribuzione. Mockups Design e Poly Haven sono stati valutati in precedenza; nessun loro asset fa parte del percorso corrente. Le iterazioni precedenti, comprese la pipeline CGI `spark` e il film d’acqua, restano documentazione storica e non sono caricate dal sito.
 
-Codice, identità visiva e composizioni originali restano soggetti ai diritti del progetto. La pubblicazione dei sorgenti non modifica le licenze dei materiali di terze parti né concede una licenza generale di riutilizzo.
+Codice, identità visiva e composizioni originali conservano i diritti del progetto. La pubblicazione dei sorgenti non modifica le licenze di terze parti né concede una licenza generale di riutilizzo.

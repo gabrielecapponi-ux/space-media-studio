@@ -41,14 +41,14 @@ export function createMotion({ initiallyBlocked = false } = {}) {
   const clamp = (v) => Math.max(0, Math.min(1, v));
   const portrait = () => matchMedia("(max-width: 760px) and (orientation: portrait)").matches;
   const url = (path) => new URL(path, document.baseURI).href;
+  function posterPath(still = false) {
+    if (!video) return "";
+    const variant = portrait() ? "Mobile" : "Desktop";
+    return video.dataset[`${still ? "still" : "poster"}${variant}`] || video.getAttribute("poster");
+  }
   function updatePoster() {
     if (!video || movieLoaded) return;
-    const mobile = portrait();
-    const still = preference.matches || (connection?.saveData && !explicitPlay);
-    const path = still
-      ? mobile ? "./images/water-mobile.jpg" : "./images/water-desktop.jpg"
-      : mobile ? "./images/water-start-mobile.jpg" : "./images/water-start-desktop.jpg";
-    video.poster = url(`${path}?v=refined-20261010`);
+    video.poster = url(posterPath(preference.matches || (connection?.saveData && !explicitPlay)));
   }
   function controls() {
     const reduced = preference.matches;
@@ -121,7 +121,7 @@ export function createMotion({ initiallyBlocked = false } = {}) {
       if (token !== attempt || disposed || !canPlay()) return;
       playPending = false;
       video.dataset.state = "blocked";
-      video.poster = url(portrait() ? "./images/water-mobile.jpg" : "./images/water-desktop.jpg");
+      video.poster = url(posterPath(true));
     });
   }
   video?.addEventListener("ended", () => {
@@ -134,7 +134,7 @@ export function createMotion({ initiallyBlocked = false } = {}) {
   video?.addEventListener("error", () => {
     movieFailed = true;
     video.dataset.state = "fallback";
-    video.poster = url(portrait() ? "./images/water-mobile.jpg" : "./images/water-desktop.jpg");
+    video.poster = url(posterPath(true));
     controls();
   }, { signal });
   video?.addEventListener("canplay", syncMovie, { signal });
@@ -145,7 +145,7 @@ export function createMotion({ initiallyBlocked = false } = {}) {
   if (video) {
     video.muted = true;
     video.playsInline = true;
-    video.loop = false;
+    video.loop = video.dataset.loop === "true";
     video.dataset.state = "idle";
   }
   replay?.addEventListener("click", () => {

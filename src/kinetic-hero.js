@@ -90,14 +90,31 @@ function roundedLabelShape(width, height, radius) {
   return shape;
 }
 
+// One complete sequence: an orbital idea becomes a woven structure, then a product.
+// Every boundary shares its endpoint pose; looping never resets an object's transform.
 function choreography(time) {
-  const phase = ((time + 10.4) % 12.8 + 12.8) % 12.8;
-  if (phase < 2.6) return { from: 'orbit', to: 'orbit', progress: 0, product: 0 };
-  if (phase < 4) return { from: 'orbit', to: 'spread', progress: (phase - 2.6) / 1.4, product: 0 };
-  if (phase < 6.1) { const progress = (phase - 4) / 2.1; return { from: 'spread', to: 'product', progress, product: smooth(progress) }; }
-  if (phase < 8.8) return { from: 'product', to: 'product', progress: 0, product: 1 };
-  if (phase < 10.4) { const progress = (phase - 8.8) / 1.6; return { from: 'product', to: 'spread', progress, product: 1 - smooth(progress) }; }
-  return { from: 'spread', to: 'orbit', progress: (phase - 10.4) / 2.4, product: 0 };
+  const phase = ((time + 15.55) % 18 + 18) % 18;
+  const hold = (form) => ({ from: form, to: form, progress: 0, product: form === 'product' ? 1 : 0 });
+  const transition = (from, to, progress) => ({
+    from, to, progress,
+    product: to === 'product' ? smooth(progress) : from === 'product' ? 1 - smooth(progress) : 0,
+  });
+  if (phase < 2.2) return hold('orbit');
+  if (phase < 3.65) return transition('orbit', 'spread', (phase - 2.2) / 1.45);
+  if (phase < 5.6) return transition('spread', 'helix', (phase - 3.65) / 1.95);
+  if (phase < 7.75) return hold('helix');
+  if (phase < 9.15) return transition('helix', 'spread', (phase - 7.75) / 1.4);
+  if (phase < 11.2) return transition('spread', 'product', (phase - 9.15) / 2.05);
+  if (phase < 13.95) return hold('product');
+  if (phase < 15.55) return transition('product', 'spread', (phase - 13.95) / 1.6);
+  return transition('spread', 'orbit', (phase - 15.55) / 2.45);
+}
+
+function formAmount(state, form) {
+  if (state.from === form && state.to === form) return 1;
+  if (state.to === form) return smooth(state.progress);
+  if (state.from === form) return 1 - smooth(state.progress);
+  return 0;
 }
 
 export function createKineticHero(container) {
@@ -119,8 +136,8 @@ export function createKineticHero(container) {
   const ownGeometry = (geometry) => { geometries.add(geometry); return geometry; };
   const ownMaterial = (material) => { materials.add(material); return material; };
   const ownTexture = (texture) => { textures.add(texture); return texture; };
-  const chrome = ownMaterial(new THREE.MeshStandardMaterial({ color: '#e3e7e9', metalness: 1, roughness: 0.18, envMapIntensity: 1.05 }));
-  const satin = ownMaterial(new THREE.MeshStandardMaterial({ color: LIME, metalness: 0.12, roughness: 0.27, envMapIntensity: 0.8 }));
+  const chrome = ownMaterial(new THREE.MeshStandardMaterial({ color: '#e3e7e9', metalness: 1, roughness: 0.15, envMapIntensity: 1.05 }));
+  const satin = ownMaterial(new THREE.MeshStandardMaterial({ color: '#cfff00', metalness: 0, roughness: 0.32, envMapIntensity: 0.32 }));
   const darkChrome = ownMaterial(new THREE.MeshStandardMaterial({ color: '#3c4143', metalness: 1, roughness: 0.21, envMapIntensity: 1.0 }));
   const arcGeometry = ownGeometry(createArc());
   const sectorRotation = new THREE.Quaternion();
@@ -137,6 +154,14 @@ export function createKineticHero(container) {
     const spreadQuaternion = new THREE.Quaternion().setFromEuler(new THREE.Euler(
       Math.sin(angle * 2) * 0.4 + 0.65, -angle + 0.4, Math.cos(angle) * 0.7,
     ));
+    // Two continuous, interleaved ribbons wind upward through four complete turns.
+    // Local tilt lifts each curved segment's end to the next segment's starting height.
+    const strand = Math.floor(index / 12), helixStep = index % 12;
+    const helixProgress = helixStep / 11;
+    const helixAngle = helixStep * TAU / 3 + strand * Math.PI;
+    const helixQuaternion = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), -helixAngle);
+    helixQuaternion.multiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), -0.27));
+    const helixRadius = 0.84 + Math.sin(helixProgress * Math.PI) * 0.18;
     const productQuaternion = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), sector * TAU / 3 + 0.025);
     const radius = layer < 6 ? 0.9 : layer === 6 ? 0.64 : 0.44;
     const productY = layer < 6 ? -1.1 + layer * 0.27 : layer === 6 ? 0.55 : 1.04;
@@ -145,6 +170,9 @@ export function createKineticHero(container) {
         scale: new THREE.Vector3(1.28 + layer * 0.035, 1, 1.28 + layer * 0.035) },
       spread: { position: new THREE.Vector3(Math.cos(angle) * 1.58, Math.sin(angle) * 1.52,
         Math.sin(angle * 3 + 0.3) * 0.72), quaternion: spreadQuaternion, scale: new THREE.Vector3(0.63, 0.9, 0.63) },
+      helix: { position: new THREE.Vector3(Math.sin(helixProgress * TAU) * 0.18,
+        -1.4 + helixStep * 0.24, Math.cos(helixProgress * TAU) * 0.14),
+        quaternion: helixQuaternion, scale: new THREE.Vector3(helixRadius, 0.88, helixRadius) },
       product: { position: new THREE.Vector3(0, productY, 0), quaternion: productQuaternion,
         scale: new THREE.Vector3(radius, layer === 7 ? 1.7 : 1, radius) },
     });
@@ -183,13 +211,15 @@ export function createKineticHero(container) {
   const pedestal = new THREE.Mesh(ownGeometry(new THREE.CylinderGeometry(1.28, 1.32, 0.08, 64)),
     ownMaterial(new THREE.MeshStandardMaterial({ color: '#202622', metalness: 0.65, roughness: 0.35, transparent: true, opacity: 0 })));
   pedestal.position.y = -1.29; root.add(pedestal);
-  scene.add(new THREE.HemisphereLight('#eef4ff', '#101714', 1.1));
-  const key = new THREE.DirectionalLight('#ffffff', 2.7); key.position.set(-3.5, 6, 5); scene.add(key);
+  scene.add(new THREE.HemisphereLight('#eef4ff', '#101714', 0.9));
+  const key = new THREE.DirectionalLight('#ffffff', 2.2); key.position.set(-3.5, 6, 5); scene.add(key);
   const rim = new THREE.DirectionalLight('#e8f4ff', 1.6); rim.position.set(4, 1, -3); scene.add(rim);
-  const limeLight = new THREE.PointLight(LIME, 1.1, 6, 2); limeLight.position.set(3, -0.7, 1); scene.add(limeLight);
+  const limeLight = new THREE.PointLight(LIME, 1.4, 6, 2); limeLight.position.set(3, -0.7, 1); scene.add(limeLight);
 
   function formName(state) {
-    return state.product > 0.8 ? 'product' : state.from === 'orbit' && state.to === 'orbit' ? 'sculpture' : 'assembly';
+    if (state.product > 0.8) return 'product';
+    if (state.from === state.to) return state.from === 'helix' ? 'helix' : 'sculpture';
+    return 'assembly';
   }
 
   function pose(time) {
@@ -200,19 +230,27 @@ export function createKineticHero(container) {
       const stagger = (part.index % 6) / 5 * 0.12;
       const amount = smooth((state.progress - stagger) / (1 - stagger));
       part.mesh.position.copy(from.position).lerp(to.position, amount);
+      // A shallow, authored flight arc makes reassembly read as a single gesture.
+      const flight = Math.sin(amount * Math.PI);
+      part.mesh.position.x += Math.sin(part.index * 0.73) * 0.15 * flight;
+      part.mesh.position.y += Math.cos(part.index * 0.67) * 0.1 * flight;
+      part.mesh.position.z += Math.sin(part.index * 0.61) * 0.28 * flight;
       part.mesh.quaternion.copy(from.quaternion).slerp(to.quaternion, amount);
       part.mesh.scale.copy(from.scale).lerp(to.scale, amount);
     }
     const orbitAmount = 1 - productAmount;
-    root.rotation.x = lerp(0.16, 0.04, productAmount) + easedPointer.y * 0.08;
-    root.rotation.y = lerp(0.55 + Math.sin(time * 0.24) * 0.7 + scrollProgress * 0.6, Math.sin(time * 0.28) * 0.12, productAmount) + easedPointer.x * 0.12;
-    root.rotation.z = Math.sin(time * 0.28) * 0.05 * orbitAmount;
+    const helixAmount = formAmount(state, 'helix');
+    const spreadAmount = formAmount(state, 'spread');
+    root.rotation.x = lerp(0.16, 0.04, productAmount) - helixAmount * 0.07 + easedPointer.y * 0.08;
+    const orbitalTurn = 0.55 + Math.sin(time * 0.24) * 0.7 + scrollProgress * 0.6;
+    const sculpturalTurn = lerp(orbitalTurn, 0.28 + Math.sin(time * 0.22) * 0.32, helixAmount);
+    root.rotation.y = lerp(sculpturalTurn, Math.sin(time * 0.28) * 0.12, productAmount) + easedPointer.x * 0.12;
+    root.rotation.z = Math.sin(time * 0.28) * 0.05 * orbitAmount + helixAmount * 0.12;
     root.position.x = phone ? 0 : camera.aspect * 4.95 * 0.23;
-    root.position.y = phone ? (height < 700 ? -1.65 : -1.45) : -0.05;
-    const spreadAmount = state.from === 'spread' && state.to === 'spread' ? 1
-      : state.to === 'spread' ? smooth(state.progress)
-      : state.from === 'spread' ? 1 - smooth(state.progress) : 0;
-    root.scale.setScalar(phone ? lerp(height < 700 ? 0.87 : 0.94, height < 700 ? 0.75 : 0.79, spreadAmount) : 1);
+    root.position.y = (phone ? (height < 700 ? -1.65 : -1.45) : -0.05)
+      + Math.sin(time * 0.58) * 0.025 * orbitAmount;
+    const fitScale = phone ? lerp(height < 700 ? 0.87 : 0.94, height < 700 ? 0.75 : 0.79, spreadAmount) : 1;
+    root.scale.setScalar(fitScale * (1 + Math.sin(time * 0.65) * 0.009 * orbitAmount));
     product.visible = productAmount > 0.002;
     const solid = smooth((productAmount - 0.12) / 0.76);
     bodyMaterial.opacity = solid;
@@ -253,7 +291,7 @@ export function createKineticHero(container) {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, phone ? 1.4 : 1.6));
     renderer.setSize(width, height, false);
     camera.aspect = width / height;
-    const viewHeight = phone ? (height < 700 ? 9 : 8.2) : 4.95;
+    const viewHeight = phone ? (height < 700 ? 9 : 8.2) : Math.max(4.95, 8.8 / camera.aspect);
     camera.position.set(0, 0.24, viewHeight / (2 * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2))));
     camera.lookAt(0, 0, 0); camera.updateProjectionMatrix();
     paint();
@@ -293,7 +331,7 @@ export function createKineticHero(container) {
         renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
         renderer.outputColorSpace = THREE.SRGBColorSpace;
         renderer.toneMapping = THREE.ACESFilmicToneMapping;
-        renderer.toneMappingExposure = 1.1;
+        renderer.toneMappingExposure = 1.02;
         renderer.setClearColor('#090b10', 0);
         renderer.domElement.setAttribute('aria-hidden', 'true');
         renderer.domElement.className = 'kinetic-canvas';
@@ -309,7 +347,7 @@ export function createKineticHero(container) {
         labelMaterial.map = texture; labelMaterial.needsUpdate = true;
         textures.delete(currentLabelTexture); currentLabelTexture.dispose(); currentLabelTexture = texture;
         // Compile both product and abstract materials while the entry scene is on screen.
-        pose(7.8); product.visible = true;
+        pose(14); product.visible = true;
         if (renderer.compileAsync) await renderer.compileAsync(scene, camera);
         if (disposed) return { cancelled: true };
         if (lost) return { fallback: true };
