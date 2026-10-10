@@ -59,7 +59,7 @@ export function createFilms({ getScene, getPaused, onTogglePause }) {
   }
   const completeHero = (record, complete = false) => {
     if (record) releaseHeroClock(record, complete);
-    hero?.classList.remove("is-film-playing", "is-film-loading");
+    hero?.classList.remove("is-film-playing", "is-film-loading", "is-film-held");
     hero?.classList.add("is-film-complete");
   };
   function syncControls() {
@@ -78,6 +78,7 @@ export function createFilms({ getScene, getPaused, onTogglePause }) {
     if (record.loaded || record.failed || !source(record.video)) return;
     if (connection?.saveData && !explicitPlay) return;
     record.loaded = true;
+    record.video.dataset.aspect = portrait.matches ? "square" : "wide";
     record.video.dataset.state = "loading";
     if (record.hero) {
       holdHeroClock(record);
@@ -173,7 +174,14 @@ export function createFilms({ getScene, getPaused, onTogglePause }) {
     video.addEventListener("ended", () => {
       record.complete = true;
       video.dataset.state = "ended";
-      if (record.hero) completeHero(record, true);
+      if (record.hero) {
+        // Hold the exact path-traced final frame until someone interacts.
+        // There is no automatic visual jump between two rendering engines.
+        cancelMediaFrame(record);
+        holdHeroClock(record);
+        syncHeroClock(record, video.duration);
+        hero?.classList.add("is-film-held");
+      }
     }, { signal });
     video.addEventListener("error", () => {
       record.failed = true;
@@ -193,7 +201,7 @@ export function createFilms({ getScene, getPaused, onTogglePause }) {
     record.playAttempt += 1;
     record.playPending = false;
     record.video.currentTime = 0;
-    hero?.classList.remove("is-film-complete");
+    hero?.classList.remove("is-film-complete", "is-film-held");
     sync(record);
   }, { signal });
   document.querySelectorAll("[data-hero-mode]").forEach((button) => button.addEventListener("click", () => {
@@ -209,6 +217,18 @@ export function createFilms({ getScene, getPaused, onTogglePause }) {
     record.video.dataset.state = "ended";
     completeHero(record);
   }, { signal }));
+  hero?.addEventListener("pointermove", (event) => {
+    if (!hero.classList.contains("is-film-held") || event.pointerType === "touch" ||
+        navigator.maxTouchPoints > 0 || !matchMedia("(min-width: 761px) and (pointer: fine)").matches ||
+        getPaused() || preference.matches || event.target.closest?.("a, button")) return;
+    const sceneContainer = document.querySelector("#hero-scene");
+    if (sceneContainer.dataset.scene !== "ready") return;
+    const artwork = sceneContainer.getBoundingClientRect();
+    if (event.clientX < artwork.left || event.clientX > artwork.right ||
+        event.clientY < artwork.top || event.clientY > artwork.bottom) return;
+    const record = records.find((item) => item.hero);
+    if (record) completeHero(record, true);
+  }, { signal });
   controls.forEach((button) => button.addEventListener("click", () => {
     const deferred = connection?.saveData && !explicitPlay && !getPaused();
     explicitPlay = true;

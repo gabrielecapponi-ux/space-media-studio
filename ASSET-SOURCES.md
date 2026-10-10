@@ -17,8 +17,8 @@ Sono stati scaricati JPEG a larghezza 1600px dal CDN ufficiale `images.pexels.co
 ## 3D, grafica e font
 
 - Sculture hero, percorso scroll e concept Play: geometrie procedurali originali, nessun modello o render scaricato.
-- Three.js e RoomEnvironment: pacchetto ufficiale Three.js (MIT), avviso di licenza incluso in `public/licenses/three-MIT.txt`.
-- Instrument Sans, Instrument Serif e DM Mono: SIL Open Font License; copie delle licenze in `public/fonts/`. Font estratti dal pacchetto skill fornito dall’utente. La licenza Instrument Serif mancante nello ZIP è stata recuperata dal [repository ufficiale Google Fonts](https://github.com/google/fonts/blob/main/ofl/instrumentserif/OFL.txt).
+- Three.js: pacchetto ufficiale Three.js (MIT), avviso di licenza incluso in `public/licenses/three-MIT.txt`. Gli ambienti di riflessione sono softbox originali costruiti nel progetto.
+- Space Grotesk: font variabile WOFF2 dal [repository ufficiale di Florian Karsten](https://github.com/floriankarsten/space-grotesk), SIL Open Font License 1.1, copia della licenza in `public/fonts/SpaceGrotesk-OFL.txt`. DM Mono: font del pacchetto skill fornito dall’utente, SIL Open Font License conservata in `public/fonts/DMMono-OFL.txt`. Tutti i font sono serviti localmente.
 - Logo e segno orbitale: composizione SVG realizzata nel progetto.
 
 ## Fonti valutate
@@ -33,7 +33,7 @@ Il segno a quattro moduli della hero, la lampadina, il diaframma fotografico e i
 
 ## Film CGI locale — La scintilla prende forma
 
-Film originale renderizzato il 10 ottobre 2026 con **Blender 5.2.1 LTS / Cycles Metal**, composto attraverso i nodi video nativi di **ComfyUI locale**. La geometria viene estratta direttamente dalle funzioni Three.js del progetto: quattro petali laccati, quattro chassis cromati e due elementi del nucleo, per 35.044 triangoli. La trasformazione usa le stesse equazioni assolute della scena interattiva, con seed di rendering 61739. Si tratta di CGI da geometria reale, non di riprese fotografiche o di generazione con modelli video AI.
+Film originale renderizzato il 10 ottobre 2026 con **Blender 5.2.1 LTS / Cycles Metal**, composto attraverso i nodi video nativi di **ComfyUI locale**. La geometria viene estratta direttamente dalle funzioni Three.js del progetto: quattro pannelli smaltati a sezione smussata, quattro chassis metallici, quattro perni con incisioni e due elementi del nucleo, per 35.412 triangoli. Il render impiega 64 campioni Cycles, microvariazioni di rugosità e motion blur fisico con otturatore 0,24. La trasformazione usa le stesse equazioni assolute della scena interattiva, con seed di rendering 61739. Si tratta di CGI da geometria reale, non di riprese fotografiche o di generazione con modelli video AI.
 
 - `public/films/spark-desktop.mp4` e `spark-mobile.mp4`: apertura singola di 11 secondi, 264 fotogrammi a 24 fps, 1600×900 e 640×640.
 - `public/films/spark-loop-desktop.mp4` e `spark-loop-mobile.mp4`: lo stesso film montato avanti/indietro per un ciclo continuo di 22 secondi.

@@ -128,10 +128,10 @@
 
 .hero-cinematic h1 {
   max-width: none;
-  font-size: clamp(74px, 7.4vw, 130px);
-  font-weight: 400;
-  line-height: 0.96;
-  letter-spacing: -0.065em;
+  font-size: clamp(70px, 7.2vw, 126px);
+  font-weight: 500;
+  line-height: 0.98;
+  letter-spacing: -0.055em;
   white-space: normal;
 }
 
@@ -142,12 +142,12 @@
 .hero-cinematic h1 em {
   display: inline-block;
   padding-right: 0.06em;
-  font-family: InstrumentSerif, Georgia, serif;
-  font-size: 1.24em;
+  font-family: var(--font-display);
+  font-size: 1em;
   font-style: normal;
-  font-weight: 400;
-  line-height: 0.88;
-  letter-spacing: -0.055em;
+  font-weight: 600;
+  line-height: inherit;
+  letter-spacing: inherit;
 }
 
 .hero-cinematic .hero-description {
@@ -211,7 +211,7 @@
 
 .hero-cinematic .hero-art-cross {
   color: var(--orange);
-  font-family: Instrument, Arial, sans-serif;
+  font-family: var(--font-sans);
   font-size: 30px;
   line-height: 1;
 }
@@ -379,7 +379,7 @@
 
 .hero-cinematic .hero-replay > span {
   color: #f4f3ef;
-  font-family: Instrument, Arial, sans-serif;
+  font-family: var(--font-sans);
   font-size: 23px;
   line-height: 1;
 }
@@ -540,10 +540,10 @@ html:not(.js) .hero-cinematic .hero-copy {
   .hero-cinematic .hero-coordinate { display: none; }
   .hero-cinematic .hero-copy { width: 100%; margin-top: 18px; }
   .hero-cinematic h1 {
-    font-size: clamp(46px, 12.2vw, 54px);
-    line-height: 0.94; letter-spacing: -0.065em;
+    font-size: clamp(44px, 12.3vw, 54px);
+    line-height: 0.98; letter-spacing: -0.055em;
   }
-  .hero.hero-cinematic h1 em { font-size: 1.13em; line-height: 0.94; }
+  .hero.hero-cinematic h1 em { font-size: 1em; line-height: inherit; }
   .hero-cinematic .hero-description { margin: 14px 0 0 2px; gap: 12px; }
   .hero-cinematic .hero-description p { max-width: none; font-size: 13px; line-height: 1.5; }
   .hero-cinematic .little-cross { font-size: 18px; }
@@ -633,7 +633,7 @@ html:not(.js) .hero-cinematic .hero-copy {
   .hero-cinematic .hero-coordinate { display: none; }
   .hero-cinematic .hero-copy { width: 43%; margin-top: 16px; }
   .hero-cinematic h1 { font-size: clamp(42px, 5.7vw, 50px); line-height: 0.92; }
-  .hero.hero-cinematic h1 em { font-size: 1.1em; line-height: 0.94; }
+  .hero.hero-cinematic h1 em { font-size: 1em; line-height: inherit; }
   .hero-cinematic .hero-description { margin-top: 10px; gap: 12px; }
   .hero-cinematic .hero-description p { font-size: 12px; line-height: 1.5; }
   .hero-cinematic .hero-copy .text-link { margin-top: 8px; min-height: 44px; font-size: 12px; gap: 14px; }

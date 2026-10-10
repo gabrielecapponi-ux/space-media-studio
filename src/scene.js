@@ -6,7 +6,7 @@ const MODES = ["orbit", "explode", "wave"];
 // These identifiers belong to the public HTML timeline API.
 const PHASES = ["idea", "fragments", "form"];
 const DURATION = 11;
-const ENVELOPE = 5.9;
+const CAMERA_DISTANCE = 12.8;
 const smooth = (value) => {
   const t = THREE.MathUtils.clamp(value, 0, 1);
   return t * t * t * (t * (t * 6 - 15) + 10);
@@ -17,9 +17,9 @@ const smooth = (value) => {
 // their continuous normals catch softbox reflections without cap triangulation.
 function makePetalGeometry(compact) {
   const profile = new THREE.CatmullRomCurve3([
-    [0.12, 0.22, 0.10], [0.22, 0.31, 0.19], [0.37, 0.44, 0.25],
-    [0.50, 0.57, 0.28], [0.34, 0.74, 0.28], [0.215, 1.02, 0.25],
-    [0.145, 1.35, 0.20], [0.10, 1.65, 0.145], [0.054, 1.87, 0.075],
+    [0.12, 0.22, 0.065], [0.22, 0.31, 0.105], [0.37, 0.44, 0.12],
+    [0.50, 0.57, 0.125], [0.34, 0.74, 0.12], [0.215, 1.02, 0.105],
+    [0.145, 1.35, 0.085], [0.10, 1.65, 0.065], [0.054, 1.87, 0.035],
     [0, 1.96, 0],
   ].map((point) => new THREE.Vector3(...point)), false, "centripetal");
   const rows = compact ? 56 : 80;
@@ -32,7 +32,12 @@ function makePetalGeometry(compact) {
     const section = samples[row];
     for (let side = 0; side < radial; side += 1) {
       const angle = side / radial * Math.PI * 2;
-      positions.push(section.x * Math.cos(angle), section.y, section.z * Math.sin(angle));
+      // A softened rectangular section reads as a milled, enamelled panel.
+      // Keep a continuous closed profile, rather than an inflated oval skin.
+      const cos = Math.cos(angle);
+      const sin = Math.sin(angle);
+      positions.push(section.x * Math.sign(cos) * Math.abs(cos) ** 0.72,
+        section.y, section.z * Math.sign(sin) * Math.abs(sin) ** 0.72);
       uvs.push(side / radial, row / rows);
       if (row < rows - 1) {
         const a = row * radial + side;
@@ -78,7 +83,7 @@ function makeChassisGeometry(compact) {
     bevelEnabled: true, bevelSize: 0.025, bevelThickness: 0.025,
     bevelSegments: compact ? 4 : 6,
   });
-  geometry.translate(0, 0, -0.36);
+  geometry.translate(0, 0, -0.19);
   toCreasedNormals(geometry, Math.PI / 3);
   // Chassis caps are truly planar. Preserve their normals instead of averaging
   // a long triangulated cap with the small radius of the surrounding bevel.
@@ -192,20 +197,20 @@ export function createScene(container, { mediaTime = null } = {}) {
   renderer.shadowMap.autoUpdate = false;
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 40);
-  camera.position.set(0, 0, 10);
+  camera.position.set(0, 0, CAMERA_DISTANCE);
   const makeEnvironment = () => {
     // A photographic studio authored for this sculpture: broad key card,
     // narrow edge card and overhead card. These are only baked into PMREM,
     // never additional live draw calls or fetched HDR assets.
     const studio = new THREE.Scene();
-    studio.background = new THREE.Color(0x252937);
+    studio.background = new THREE.Color(0x181c25);
     const cardGeometry = new THREE.PlaneGeometry(1, 1);
     const cardMaterials = [];
     const cards = [
-      { at: [-3, 4, 5], size: [3.5, 5], power: 4 },
-      { at: [-5, 0, 2], size: [0.9, 6], power: 3.5 },
-      { at: [4, 1, -2], size: [1.5, 5], power: 3.2 },
-      { at: [0, 5, 0], size: [3, 2], power: 2.5 },
+      { at: [-4.2, 6.2, 8], size: [3, 4.5], power: 3.5 },
+      { at: [-5, 0, 2], size: [0.55, 5], power: 2.5 },
+      { at: [2, 5, -4], size: [1, 5], power: 3.2 },
+      { at: [5, 0.5, 4], size: [0.8, 4], power: 1.8 },
     ];
     cards.forEach(({ at, size, power }) => {
       const material = new THREE.MeshBasicMaterial({
@@ -232,39 +237,43 @@ export function createScene(container, { mediaTime = null } = {}) {
   scene.environmentIntensity = 0.95;
   const ceramic = new THREE.MeshPhysicalMaterial({
     color: 0x2536ff,
-    metalness: 0,
-    roughness: 0.21,
-    clearcoat: 0.9,
-    clearcoatRoughness: 0.13,
-    envMapIntensity: 0.85,
+    roughness: 0.3,
+    metalness: 0.18,
+    clearcoat: 0.7,
+    clearcoatRoughness: 0.19,
+    envMapIntensity: 0.75,
     dithering: true,
   });
   const lacquer = new THREE.MeshPhysicalMaterial({
     color: 0xff48b6,
-    metalness: 0,
-    roughness: 0.19,
-    clearcoat: 1,
-    clearcoatRoughness: 0.1,
-    envMapIntensity: 0.85,
+    roughness: 0.28,
+    metalness: 0.18,
+    clearcoat: 0.7,
+    clearcoatRoughness: 0.19,
+    envMapIntensity: 0.75,
     dithering: true,
   });
   const chrome = new THREE.MeshStandardMaterial({
     color: 0xf0f2f6,
     metalness: 1,
-    roughness: 0.24,
+    roughness: 0.3,
     envMapIntensity: 1.2,
     dithering: true,
   });
   const orange = new THREE.MeshPhysicalMaterial({
-    color: 0xff6138, metalness: 0, roughness: 0.19,
-    clearcoat: 1, clearcoatRoughness: 0.1, dithering: true,
+    color: 0xff6138, metalness: 0.1, roughness: 0.25,
+    clearcoat: 0.7, clearcoatRoughness: 0.16, dithering: true,
   });
-  const materials = [ceramic, lacquer, chrome, orange];
+  const graphite = new THREE.MeshStandardMaterial({ color: 0x202735, metalness: 0.65, roughness: 0.4 });
+  const materials = [ceramic, lacquer, chrome, orange, graphite];
   const petalGeometry = makePetalGeometry(economicalGeometry);
   const chassisGeometry = makeChassisGeometry(economicalGeometry);
   const coreGeometry = new RoundedBoxGeometry(0.24, 0.24, 0.32, 4, 0.075);
   const insetGeometry = new THREE.SphereGeometry(0.085, economicalGeometry ? 20 : 28, 16);
-  const geometries = [petalGeometry, chassisGeometry, coreGeometry, insetGeometry];
+  const pinGeometry = new THREE.CylinderGeometry(0.055, 0.055, 0.07, economicalGeometry ? 12 : 20);
+  pinGeometry.rotateX(Math.PI / 2);
+  const pinSlotGeometry = new THREE.BoxGeometry(0.068, 0.014, 0.006);
+  const geometries = [petalGeometry, chassisGeometry, coreGeometry, insetGeometry, pinGeometry, pinSlotGeometry];
   const position = new THREE.Group();
   const rig = new THREE.Group();
   scene.add(position);
@@ -275,7 +284,11 @@ export function createScene(container, { mediaTime = null } = {}) {
     const component = new THREE.Group();
     const body = new THREE.Mesh(petalGeometry, index % 2 ? lacquer : ceramic);
     const chassis = new THREE.Mesh(chassisGeometry, chrome);
-    [body, chassis].forEach((mesh) => {
+    const pin = new THREE.Mesh(pinGeometry, chrome);
+    pin.position.set(0, 0.33, 0.11);
+    const pinSlot = new THREE.Mesh(pinSlotGeometry, graphite);
+    pinSlot.position.set(0, 0.33, 0.147);
+    [body, chassis, pin, pinSlot].forEach((mesh) => {
       mesh.castShadow = mesh.receiveShadow = true;
       mesh.frustumCulled = false;
       component.add(mesh);
@@ -327,6 +340,7 @@ export function createScene(container, { mediaTime = null } = {}) {
   const pointer = { x: 0, y: 0 };
   const easedPointer = { x: 0, y: 0 };
   const surface = container.closest(".hero") || container.parentElement;
+  const film = document.querySelector("#hero-film");
   const canRender = () => !disposed && !contextLost && !mediaClock && inView && !document.hidden;
   const canAnimate = () => canRender() && !paused && !reducedMotion;
   const wantsFrame = () => playing || transition ||
@@ -380,7 +394,7 @@ export function createScene(container, { mediaTime = null } = {}) {
       -0.28 + open * 0.22 + pose.connect * 0.21,
     );
     camera.position.set(easedPointer.x * 0.035, easedPointer.y * 0.02,
-      10 + open * 0.3 - pose.connect * 0.16);
+      CAMERA_DISTANCE + open * 0.3 - pose.connect * 0.16);
     position.position.set(centerX + easedPointer.x * 0.02, centerY - easedPointer.y * 0.015, 0);
     position.scale.setScalar(sceneScale);
     const sweep = smooth((introTime - 8.6) / 2.4);
@@ -471,21 +485,20 @@ export function createScene(container, { mediaTime = null } = {}) {
     const rect = container.getBoundingClientRect();
     width = Math.max(1, rect.width);
     height = Math.max(1, rect.height);
-    compact = width < 760;
+    compact = window.matchMedia("(max-width: 760px)").matches;
     fpsLimit = compact || touchDevice ? 30 : 60;
     camera.aspect = width / height;
+    // Match the film's actual object-fit projection. Both renderers share the
+    // same camera, object scale and origin at every responsive artwork size.
+    const portraitFilm = window.matchMedia("(max-width: 760px) and (orientation: portrait)").matches;
+    const filmAspect = film?.videoWidth && film?.videoHeight ? film.videoWidth / film.videoHeight : portraitFilm ? 1 : 16 / 9;
+    const fit = film ? getComputedStyle(film).objectFit : portraitFilm ? "contain" : "cover";
+    const filmHeight = fit === "contain" ? Math.min(height, width / filmAspect) : Math.max(height, width / filmAspect);
+    camera.fov = THREE.MathUtils.radToDeg(2 * Math.atan(Math.tan(THREE.MathUtils.degToRad(34) / 2) * height / filmHeight));
     camera.updateProjectionMatrix();
     applyPixelRatio();
-    const visibleHeight = 2 * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * 10;
-    const visibleWidth = visibleHeight * camera.aspect;
-    // Portrait and short landscape CSS provide a dedicated artwork box. Its
-    // own center is the composition origin, with no text-area offset inside it.
-    centerX = compact ? 0 : visibleWidth * 0.23;
-    centerY = compact ? 0 : visibleHeight * 0.015;
-    const diameter = compact
-      ? Math.min(height * 0.98, width * 0.98)
-      : Math.min(height * 0.84, width * 0.55);
-    sceneScale = (diameter * visibleHeight) / (height * ENVELOPE);
+    centerX = centerY = 0;
+    sceneScale = 1;
     const shadowSize = compact || touchDevice || qualityScale < 1 ? 512 : 1024;
     if (key.shadow.mapSize.x !== shadowSize) {
       key.shadow.map?.dispose();
@@ -550,11 +563,12 @@ export function createScene(container, { mediaTime = null } = {}) {
   const onPointer = (event) => {
     if (compact || touchDevice || reducedMotion || paused || mediaClock || event.pointerType === "touch") return;
     const rect = container.getBoundingClientRect();
-    if (event.clientX < rect.left + width * 0.42 || event.target.closest?.("a, button, input, textarea")) {
+    if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top ||
+        event.clientY > rect.bottom || event.target.closest?.("a, button, input, textarea")) {
       resetPointer();
       return;
     }
-    pointer.x = THREE.MathUtils.clamp(((event.clientX - rect.left) / width - 0.73) * 3, -1, 1);
+    pointer.x = THREE.MathUtils.clamp(((event.clientX - rect.left) / width - 0.5) * 2, -1, 1);
     pointer.y = THREE.MathUtils.clamp(((event.clientY - rect.top) / height - 0.5) * 2, -1, 1);
     syncLoop();
   };
@@ -602,6 +616,7 @@ export function createScene(container, { mediaTime = null } = {}) {
     }, { rootMargin: "30px" }) : null;
   intersectionObserver?.observe(container);
   window.addEventListener("resize", resize, { passive: true });
+  film?.addEventListener("loadedmetadata", resize);
   surface?.addEventListener("pointermove", onPointer, { passive: true });
   surface?.addEventListener("pointerleave", resetPointer, { passive: true });
   document.addEventListener("visibilitychange", syncLoop);
@@ -661,6 +676,7 @@ export function createScene(container, { mediaTime = null } = {}) {
       resizeObserver?.disconnect();
       intersectionObserver?.disconnect();
       window.removeEventListener("resize", resize);
+      film?.removeEventListener("loadedmetadata", resize);
       surface?.removeEventListener("pointermove", onPointer);
       surface?.removeEventListener("pointerleave", resetPointer);
       document.removeEventListener("visibilitychange", syncLoop);

@@ -103,6 +103,8 @@ console.log(JSON.stringify({
   chassis: pack(factories.makeChassisGeometry(false)),
   core: pack(new RoundedBoxGeometry(0.24, 0.24, 0.32, 4, 0.075)),
   inset: pack(new THREE.SphereGeometry(0.085, 28, 16)),
+  pin: pack(new THREE.CylinderGeometry(0.055, 0.055, 0.07, 20).rotateX(Math.PI / 2)),
+  pinSlot: pack(new THREE.BoxGeometry(0.068, 0.014, 0.006)),
 }));
 '''
     result = subprocess.run([node, "--input-type=module", "--eval", source],
@@ -121,7 +123,28 @@ def material(name, hex_value, roughness, metallic=0.0, coat=0.0):
     shader.inputs["Roughness"].default_value = roughness
     shader.inputs["IOR"].default_value = 1.48
     shader.inputs["Coat Weight"].default_value = coat
-    shader.inputs["Coat Roughness"].default_value = 0.11
+    shader.inputs["Coat Roughness"].default_value = 0.19
+    # Tiny manufacturing variation breaks the perfectly synthetic highlight.
+    # These details stay below silhouette scale and remain stable over time.
+    noise = mat.node_tree.nodes.new("ShaderNodeTexNoise")
+    noise.inputs["Scale"].default_value = 180
+    noise.inputs["Detail"].default_value = 2
+    noise.inputs["Roughness"].default_value = 0.55
+    variation = mat.node_tree.nodes.new("ShaderNodeMapRange")
+    variation.inputs["From Min"].default_value = 0
+    variation.inputs["From Max"].default_value = 1
+    variation.inputs["To Min"].default_value = roughness - 0.025
+    variation.inputs["To Max"].default_value = roughness + 0.025
+    mat.node_tree.links.new(noise.outputs["Fac"], variation.inputs["Value"])
+    mat.node_tree.links.new(variation.outputs["Result"], shader.inputs["Roughness"])
+    bump = mat.node_tree.nodes.new("ShaderNodeBump")
+    bump.inputs["Strength"].default_value = 0.08
+    bump.inputs["Distance"].default_value = 0.003
+    mat.node_tree.links.new(noise.outputs["Fac"], bump.inputs["Height"])
+    mat.node_tree.links.new(bump.outputs["Normal"], shader.inputs["Normal"])
+    anisotropy = shader.inputs.get("Anisotropic IOR Level")
+    if anisotropy and metallic > 0.9:
+        anisotropy.default_value = 0.35
     return mat
 
 
@@ -212,14 +235,16 @@ def configure_renderer(scene, args):
     scene.render.image_settings.color_depth = "8"
     scene.render.image_settings.compression = 25
     scene.render.film_transparent = False
+    scene.render.use_motion_blur = True
+    scene.render.motion_blur_shutter = 0.24
     # Retain compiled shaders, mesh data and BVHs between animation frames.
     # Geometry/topology is static: only the existing transforms and key move.
     scene.render.use_persistent_data = True
     scene.render.use_overwrite = not args.resume
     scene.render.use_placeholder = False
-    # Standard preserves the agency's electric brand colors and the exact
-    # near-black sRGB background. Light power keeps specular peaks controlled.
-    scene.view_settings.view_transform = "Standard"
+    # Match Three.js NeutralToneMapping: highlights roll off rather than clip,
+    # while the saturated enamel keeps its hue across the film/live handoff.
+    scene.view_settings.view_transform = "Khronos PBR Neutral"
     scene.view_settings.look = "None"
     scene.view_settings.exposure = 0.0
     if args.engine == "CYCLES":
@@ -281,7 +306,11 @@ def main():
     environment.inputs["Color"].default_value = color("404754")
     environment.inputs["Strength"].default_value = 0.35
     backdrop = nodes.new("ShaderNodeBackground")
-    backdrop.inputs["Color"].default_value = color("090b10")
+    # Invert Neutral's dark offset for camera rays only. This renders the exact
+    # CSS #090b10 backdrop after the view transform, without a visible rectangle.
+    background = color("090b10")
+    offset = math.sqrt(min(background[:3]) / 6.25) - min(background[:3])
+    backdrop.inputs["Color"].default_value = tuple(v + offset for v in background[:3]) + (1,)
     backdrop.inputs["Strength"].default_value = 1
     links.new(paths.outputs["Is Camera Ray"], blend.inputs[0])
     links.new(environment.outputs[0], blend.inputs[1])
@@ -294,10 +323,13 @@ def main():
     chassis = mesh_data("Exact web chrome chassis / flat cap", geometry["chassis"], planar_caps=True)
     housing = mesh_data("Exact web core housing", geometry["core"])
     inset = mesh_data("Exact web orange inset", geometry["inset"])
-    cobalt = material("Cobalt ceramic #2536ff", "2536ff", 0.21, coat=0.9)
-    pink = material("Pink lacquer #ff48b6", "ff48b6", 0.19, coat=1)
-    chrome = material("Polished silver #f0f2f6", "f0f2f6", 0.24, metallic=1)
-    orange = material("Warm ignition #ff6138", "ff6138", 0.19, coat=1)
+    pin = mesh_data("Precision assembly pin", geometry["pin"])
+    pin_slot = mesh_data("Recessed screw slot", geometry["pinSlot"], planar_caps=True)
+    cobalt = material("Cobalt enamel #2536ff", "2536ff", 0.3, metallic=0.18, coat=0.7)
+    pink = material("Pink enamel #ff48b6", "ff48b6", 0.28, metallic=0.18, coat=0.7)
+    chrome = material("Brushed silver #f0f2f6", "f0f2f6", 0.3, metallic=1)
+    orange = material("Warm ignition #ff6138", "ff6138", 0.25, metallic=0.1, coat=0.7)
+    graphite = material("Graphite screw slots #202735", "202735", 0.4, metallic=0.65)
     rig = empty("SPACE / kinetic identity")
     components = []
     for index in range(4):
@@ -306,6 +338,10 @@ def main():
         component = empty(f"Module {index + 1}", pivot)
         instance(f"Petal {index + 1}", petal, pink if index % 2 else cobalt, component)
         instance(f"Chassis {index + 1}", chassis, chrome, component)
+        assembly_pin = instance(f"Assembly pin {index + 1}", pin, chrome, component)
+        assembly_pin.location = (0, 0.33, 0.11)
+        slot = instance(f"Screw slot {index + 1}", pin_slot, graphite, component)
+        slot.location = (0, 0.33, 0.147)
         components.append(component)
     core = empty("Ignition core", rig)
     core_shell = instance("Chrome core housing", housing, chrome, core)
@@ -326,11 +362,10 @@ def main():
     camera.rotation_euler = (0, 0, 0)
     scene.camera = camera
 
-    key = softbox("Key / tall softbox", (-4.2, 6.2, 8), 900, (3.5, 5.0), (1.0, 0.97, 0.93))
-    softbox("Fill / cool card", (5, 0.5, 4), 450, (1.5, 5.0), (0.83, 0.89, 1.0))
-    softbox("Edge / silver outline", (2, 5, -4), 1000, (1.5, 5.0))
-    softbox("Left strip / definition", (-5, 0, 2), 350, (0.9, 6.0))
-    softbox("Overhead / broad reflection", (0, 5, 0), 400, (3.0, 2.0))
+    key = softbox("Key / tall softbox", (-4.2, 6.2, 8), 750, (3.0, 4.5), (1.0, 0.97, 0.93))
+    softbox("Fill / cool strip", (5, 0.5, 4), 320, (0.8, 4.0), (0.83, 0.89, 1.0))
+    softbox("Edge / silver outline", (2, 5, -4), 900, (1.0, 5.0))
+    softbox("Left strip / definition", (-5, 0, 2), 260, (0.55, 5.0))
 
     # Every frame stores absolute state. Random access, reverse playback, and
     # rerenders reproduce the same pose without simulation or accumulated deltas.
@@ -387,6 +422,8 @@ def main():
         "persistent_data": scene.render.use_persistent_data,
         "denoising_gpu": scene.cycles.denoising_use_gpu if args.engine == "CYCLES" else None,
         "denoising_quality": scene.cycles.denoising_quality if args.engine == "CYCLES" else None,
+        "motion_blur_shutter": scene.render.motion_blur_shutter,
+        "view_transform": scene.view_settings.view_transform,
         "mesh_source_sha256": scene["mesh_source_sha256"],
         "mesh_objects": len([obj for obj in scene.objects if obj.type == "MESH"]),
         "triangles": sum(len(obj.data.polygons) for obj in scene.objects if obj.type == "MESH"),

@@ -1,5 +1,4 @@
 import * as THREE from "three";
-import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 
 const SECTION_IDS = ["universo", "servizi", "studio", "contatti"];
 const SUBJECTS = ["optical-system", "continuous-ribbon", "shared-orbits", "connected-links"];
@@ -10,6 +9,44 @@ class EllipsePath extends THREE.Curve {
   getPoint(t, target = new THREE.Vector3()) {
     return target.set(Math.cos(t * TAU) * this.rx, Math.sin(t * TAU) * this.ry, 0);
   }
+}
+
+// A revolved, filleted rectangular section reads as a manufactured component;
+// a torus alone tends to make every subject look like an inflated toy.
+function machinedRingGeometry(outer, inner, depth, bevel, segments) {
+  const points = [];
+  const corners = [
+    [outer - bevel, depth / 2 - bevel, 0],
+    [inner + bevel, depth / 2 - bevel, Math.PI / 2],
+    [inner + bevel, -depth / 2 + bevel, Math.PI],
+    [outer - bevel, -depth / 2 + bevel, Math.PI * 1.5],
+  ];
+  corners.forEach(([x, y, angle]) => {
+    for (let step = 0; step <= 4; step++) {
+      const a = angle + step / 4 * Math.PI / 2;
+      points.push(new THREE.Vector2(x + Math.cos(a) * bevel, y + Math.sin(a) * bevel));
+    }
+  });
+  points.push(points[0].clone());
+  const geometry = new THREE.LatheGeometry(points, segments);
+  geometry.rotateX(Math.PI / 2);
+  geometry.computeBoundingSphere();
+  return geometry;
+}
+
+function forgedLinkGeometry(segments) {
+  const shape = new THREE.Shape();
+  shape.absellipse(0, 0, 1.02, 0.76, 0, TAU, false, 0);
+  const hole = new THREE.Path();
+  hole.absellipse(0, 0, 0.76, 0.5, 0, TAU, true, 0);
+  shape.holes.push(hole);
+  const geometry = new THREE.ExtrudeGeometry(shape, {
+    depth: 0.17, steps: 1, curveSegments: segments / 2,
+    bevelEnabled: true, bevelSegments: 4, bevelSize: 0.055, bevelThickness: 0.055,
+  });
+  geometry.translate(0, 0, -0.085);
+  geometry.computeBoundingSphere();
+  return geometry;
 }
 
 // A closed solid ribbon with one complete, orientable twist. The elliptical
@@ -96,8 +133,9 @@ export function createContinuum({ root = document.querySelector("main") || docum
   const segments = lowDetail ? 48 : 72;
   const geometries = new Set();
   const materials = new Set();
+  const textures = new Set();
   let renderer = null, scene = null, camera = null, environment = null, rig = null;
-  let groups = [], nodes = [];
+  let groups = [], nodes = [], opticalParts = [], processDetails = [], sharedParts = [], links = [];
   let active = null, activeIndex = -1, visible = false;
   let disposed = false, contextLost = false, failed = false;
   let isPaused = Boolean(paused), reducedMotion = motionQuery.matches;
@@ -111,14 +149,61 @@ export function createContinuum({ root = document.querySelector("main") || docum
   const ownMaterial = (material) => { materials.add(material); return material; };
 
   function makeEnvironment() {
-    const room = new RoomEnvironment();
+    // A consistent photographic light tent gives all four objects the same
+    // reflection language, independent of their section's background colour.
+    const studio = new THREE.Scene();
+    studio.background = new THREE.Color(0x282b35);
+    const cards = [
+      [-4, 4, 4, 4, 6, 0xfff9f2, 5.8],
+      [4, 2, 2, 1.1, 6, 0xe7edff, 3.4],
+      [0, 6, -2, 6, 2, 0xffffff, 4.4],
+      [-2, -4, 3, 5, 2, 0xdce1ef, 1.15],
+      [2, 1, -5, 3, 4, 0xffffff, 3.2],
+    ];
+    cards.forEach(([x, y, z, w, h, color, intensity]) => {
+      const panel = new THREE.Mesh(
+        new THREE.PlaneGeometry(w, h),
+        new THREE.MeshBasicMaterial({ color, side: THREE.DoubleSide }),
+      );
+      panel.material.color.multiplyScalar(intensity);
+      panel.position.set(x, y, z);
+      panel.lookAt(0, 0, 0);
+      studio.add(panel);
+    });
     const pmrem = new THREE.PMREMGenerator(renderer);
     try {
-      return pmrem.fromScene(room, 0.06, 0.1, 100, { size: 128 });
+      return pmrem.fromScene(studio, 0.04, 0.1, 100, { size: 128 });
     } finally {
-      room.dispose();
+      studio.traverse((object) => {
+        object.geometry?.dispose();
+        object.material?.dispose();
+      });
       pmrem.dispose();
     }
+  }
+
+  function machiningTexture() {
+    const size = 128;
+    const bytes = new Uint8Array(size * size * 4);
+    for (let y = 0; y < size; y++) {
+      for (let x = 0; x < size; x++) {
+        // Concentric lathe marks appear through roughness, never as painted
+        // colour stripes. The deterministic, very fine variation stays quiet.
+        const value = Math.round(228 + 11 * Math.sin(y * 2.7) + 5 * Math.sin(x * 1.3 + y * 0.2));
+        const offset = (y * size + x) * 4;
+        bytes[offset] = bytes[offset + 1] = bytes[offset + 2] = value;
+        bytes[offset + 3] = 255;
+      }
+    }
+    const texture = new THREE.DataTexture(bytes, size, size);
+    texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+    texture.minFilter = THREE.LinearMipmapLinearFilter;
+    texture.magFilter = THREE.LinearFilter;
+    texture.generateMipmaps = true;
+    texture.repeat.set(3, 2);
+    texture.needsUpdate = true;
+    textures.add(texture);
+    return texture;
   }
   function initialize() {
     if (renderer || failed || disposed) return;
@@ -134,29 +219,42 @@ export function createContinuum({ root = document.querySelector("main") || docum
       renderer.setClearColor(0x000000, 0);
       renderer.outputColorSpace = THREE.SRGBColorSpace;
       renderer.toneMapping = THREE.NeutralToneMapping;
-      renderer.toneMappingExposure = 0.94;
+      renderer.toneMappingExposure = 0.92;
       scene = new THREE.Scene();
       camera = new THREE.PerspectiveCamera(32, 1, 0.1, 30);
       camera.position.z = 8;
       environment = makeEnvironment();
       scene.environment = environment.texture;
-      scene.environmentIntensity = 0.8;
-      scene.add(new THREE.HemisphereLight(0xffffff, 0x565f8d, 0.65));
-      const key = new THREE.DirectionalLight(0xfff6ec, 2.8);
+      scene.environmentIntensity = 0.94;
+      scene.add(new THREE.HemisphereLight(0xffffff, 0x414b6b, 0.38));
+      const key = new THREE.DirectionalLight(0xfff6ec, 2.1);
       key.position.set(-3.5, 4, 6);
-      const edge = new THREE.DirectionalLight(0xdbe7ff, 1.6);
+      const edge = new THREE.DirectionalLight(0xdbe7ff, 1.1);
       edge.position.set(4, 1, -3);
       scene.add(key, edge);
-      const plastic = (color, roughness = 0.23) => ownMaterial(new THREE.MeshPhysicalMaterial({
-        color, metalness: 0, roughness, clearcoat: 0.8,
-        clearcoatRoughness: 0.15, envMapIntensity: 0.85,
+      const porcelain = (color, roughness = 0.24) => ownMaterial(new THREE.MeshPhysicalMaterial({
+        color, metalness: 0, roughness, clearcoat: 0.65,
+        clearcoatRoughness: 0.12, envMapIntensity: 0.95,
       }));
-      const cobalt = plastic(0x2536ff);
-      const pink = plastic(0xff48b6);
-      const cream = plastic(0xfff8e8, 0.28);
-      const lime = plastic(0xdfff45, 0.27);
+      const surface = machiningTexture();
+      const cobalt = ownMaterial(new THREE.MeshPhysicalMaterial({
+        color: 0x364bff, metalness: 1, roughness: 0.32, roughnessMap: surface,
+        clearcoat: 0.22, clearcoatRoughness: 0.2, envMapIntensity: 1.05,
+      }));
+      const pink = porcelain(0xff48b6);
+      const cream = porcelain(0xf4f3ec, 0.21);
+      const lime = porcelain(0xdfff45, 0.25);
       const metal = ownMaterial(new THREE.MeshStandardMaterial({
-        color: 0xe5e9f0, metalness: 1, roughness: 0.28, envMapIntensity: 1.1,
+        color: 0xd6dce3, metalness: 1, roughness: 0.25, roughnessMap: surface, envMapIntensity: 1.05,
+      }));
+      const graphite = ownMaterial(new THREE.MeshStandardMaterial({
+        color: 0x242833, metalness: 1, roughness: 0.34, roughnessMap: surface,
+      }));
+      const opticalCoating = ownMaterial(new THREE.MeshPhysicalMaterial({
+        color: 0x101c31, metalness: 0, roughness: 0.09,
+        clearcoat: 1, clearcoatRoughness: 0.06,
+        iridescence: 0.85, iridescenceIOR: 1.35,
+        iridescenceThicknessRange: [160, 330], envMapIntensity: 1.4,
       }));
       rig = new THREE.Group();
       scene.add(rig);
@@ -170,46 +268,65 @@ export function createContinuum({ root = document.querySelector("main") || docum
         group.add(object);
         return object;
       };
-      // Portfolio: a small exploded optical assembly, with an opaque opal lens.
-      add(new THREE.TorusGeometry(1.24, 0.09, radial, segments), metal, groups[0]);
-      const front = add(new THREE.TorusGeometry(0.97, 0.14, radial, segments), cobalt, groups[0]);
-      front.position.z = 0.15;
-      const opal = add(new THREE.SphereGeometry(0.8, lowDetail ? 28 : 40, lowDetail ? 18 : 26), cream, groups[0]);
-      opal.scale.z = 0.2;
-      const focus = add(new THREE.SphereGeometry(0.35, 24, 16), pink, groups[0]);
-      focus.scale.z = 0.3;
-      focus.position.z = 0.18;
-      const rear = add(new THREE.TorusGeometry(1.08, 0.055, radial, segments), cobalt, groups[0]);
-      rear.position.z = -0.42;
-      // Services: one closed, solid, twisting ribbon instead of loose fragments.
-      add(ribbonGeometry(lowDetail ? 72 : 112, lowDetail ? 14 : 20), cobalt, groups[1]);
-      const ribbonJoin = add(new THREE.SphereGeometry(0.16, 24, 16), cream, groups[1]);
-      ribbonJoin.position.set(1.45, 0, 0.08);
-      // Studio: two distinct orbits with a shared centre, mirroring two founders.
-      const ellipse = ownGeometry(new THREE.TubeGeometry(new EllipsePath(1.42, 0.92), segments, 0.055, radial, true));
+      // Portfolio: a focusing lens registers into a machined optical barrel.
+      const barrel = add(machinedRingGeometry(1.19, 0.79, 0.38, 0.055, segments), graphite, groups[0]);
+      const front = add(machinedRingGeometry(1.24, 0.88, 0.16, 0.035, segments), cobalt, groups[0]);
+      const trim = add(machinedRingGeometry(0.9, 0.84, 0.06, 0.012, segments), metal, front);
+      trim.position.z = 0.11;
+      const lens = add(new THREE.SphereGeometry(0.82, lowDetail ? 32 : 48, lowDetail ? 20 : 30), opticalCoating, groups[0]);
+      lens.scale.z = 0.2;
+      const rear = add(machinedRingGeometry(1.13, 0.91, 0.09, 0.022, segments), metal, groups[0]);
+      opticalParts = [barrel, front, lens, rear];
+      const screwGeometry = ownGeometry(new THREE.CylinderGeometry(0.042, 0.042, 0.016, 12));
+      screwGeometry.rotateX(Math.PI / 2);
+      const screws = new THREE.InstancedMesh(screwGeometry, metal, 6);
+      const screwTransform = new THREE.Object3D();
+      for (let index = 0; index < 6; index++) {
+        const angle = index / 6 * TAU;
+        screwTransform.position.set(Math.cos(angle) * 1.065, Math.sin(angle) * 1.065, 0.092);
+        screwTransform.rotation.z = angle;
+        screwTransform.updateMatrix();
+        screws.setMatrixAt(index, screwTransform.matrix);
+      }
+      front.add(screws);
+      // Services: one continuous metal strip, connecting thought and execution.
+      const ribbon = add(ribbonGeometry(lowDetail ? 80 : 128, lowDetail ? 16 : 24), cobalt, groups[1]);
+      const seam = add(machinedRingGeometry(0.13, 0.08, 0.04, 0.012, segments / 2), metal, groups[1]);
+      seam.rotation.y = Math.PI / 2;
+      seam.position.set(1.45, 0, 0.02);
+      processDetails = [ribbon, seam];
+      // Studio: two precision tracks share a single centre and hold two founders.
+      const ellipse = ownGeometry(new THREE.TubeGeometry(new EllipsePath(1.42, 0.92), segments, 0.065, radial, true));
       const orbitA = new THREE.Mesh(ellipse, metal);
       orbitA.rotation.x = 0.55;
       groups[2].add(orbitA);
       const orbitB = new THREE.Mesh(ellipse, cobalt);
       orbitB.rotation.set(-0.25, 0.7, 0.78);
       groups[2].add(orbitB);
-      add(new THREE.SphereGeometry(0.29, 24, 16), pink, groups[2]);
+      const centre = add(machinedRingGeometry(0.36, 0.19, 0.18, 0.035, segments / 2), graphite, groups[2]);
+      const centreInsert = add(new THREE.SphereGeometry(0.185, 24, 16), pink, centre);
+      centreInsert.scale.z = 0.45;
+      sharedParts = [orbitA, orbitB, centre];
       nodes = [
-        add(new THREE.SphereGeometry(0.17, 20, 14), cream, orbitA),
-        add(new THREE.SphereGeometry(0.2, 20, 14), lime, orbitB),
+        add(new THREE.SphereGeometry(0.16, 24, 16), cream, orbitA),
+        add(new THREE.SphereGeometry(0.16, 24, 16), pink, orbitB),
       ];
-      // Contact: two genuine interlinked solid rings with generous clearance.
-      const linkA = add(new THREE.TorusGeometry(0.98, 0.19, radial, segments), lime, groups[3]);
-      linkA.position.x = -0.58;
-      const linkB = add(new THREE.TorusGeometry(0.98, 0.19, radial, segments), cream, groups[3]);
-      linkB.position.x = 0.58;
+      // Contact: two forged links hold a real, topologically coherent connection.
+      const linkGeometry = ownGeometry(forgedLinkGeometry(segments));
+      const linkA = new THREE.Mesh(linkGeometry, lime);
+      const linkB = new THREE.Mesh(linkGeometry, metal);
+      groups[3].add(linkA, linkB);
+      linkA.position.x = -0.57;
+      linkB.position.x = 0.57;
       linkB.rotation.x = Math.PI / 2;
+      links = [linkA, linkB];
       canvas.addEventListener("webglcontextlost", onContextLost);
       canvas.addEventListener("webglcontextrestored", onContextRestored);
       host.dataset.state = "ready";
     } catch {
       failed = true;
       host.dataset.state = "fallback";
+      host.style.opacity = "1";
       if (renderer) {
         renderer.dispose();
         renderer.forceContextLoss();
@@ -220,6 +337,8 @@ export function createContinuum({ root = document.querySelector("main") || docum
       materials.forEach((material) => material.dispose());
       geometries.clear();
       materials.clear();
+      textures.forEach((texture) => texture.dispose());
+      textures.clear();
       environment?.dispose();
       environment = null;
     }
@@ -227,17 +346,41 @@ export function createContinuum({ root = document.querySelector("main") || docum
   function pose() {
     const p = reducedMotion ? 0.5 : easedProgress;
     const enter = THREE.MathUtils.smootherstep(entrance, 0, 1);
-    const baseScale = [1.2, 1, 1.1, 1.03][activeIndex] || 1;
-    rig.scale.setScalar(sceneScale * baseScale * (0.93 + enter * 0.07));
-    rig.rotation.set(-0.16 + (p - 0.5) * 0.18, -0.35 + (p - 0.5) * 0.5, -0.12 + (p - 0.5) * 0.16);
+    const baseScale = [1.15, 1.2, 1.45, 1.32][activeIndex] || 1;
+    host.style.opacity = String(reducedMotion ? 1 : THREE.MathUtils.smoothstep(entrance, 0, 0.72));
+    host.dataset.progress = p.toFixed(3);
+    rig.scale.setScalar(sceneScale * baseScale * (0.96 + enter * 0.04));
+    rig.position.y = (1 - enter) * -0.08;
+    rig.rotation.set(-0.14 + (p - 0.5) * 0.14, -0.32 + (p - 0.5) * 0.4, -0.12 + (p - 0.5) * 0.13);
     groups.forEach((group, index) => { group.visible = index === activeIndex; });
+    if (activeIndex === 0) {
+      const focus = THREE.MathUtils.smootherstep(p, 0.12, 0.78);
+      opticalParts[0].position.z = -0.13;
+      opticalParts[1].position.z = 0.14 + (1 - focus) * 0.22;
+      opticalParts[2].position.z = 0.04 + (1 - focus) * 0.12;
+      opticalParts[3].position.z = -0.36 - (1 - focus) * 0.16;
+      groups[0].rotation.y = 0.11 + (1 - enter) * -0.14;
+    }
+    if (activeIndex === 1) {
+      // A short, measured presentation arc shows the strip's true thickness.
+      groups[1].rotation.set(0.06, 0.14 + (p - 0.5) * 0.26, -0.15 + (p - 0.5) * 0.2);
+      processDetails[1].rotation.x = (p - 0.5) * 0.08;
+    }
     if (activeIndex === 2) {
+      sharedParts[0].rotation.x = 0.55 + (p - 0.5) * 0.06;
+      sharedParts[1].rotation.set(-0.25, 0.7 + (p - 0.5) * 0.08, 0.78);
       nodes.forEach((node, index) => {
-        const angle = (index ? 0.62 : 2.9) + (p - 0.5) * 0.7;
+        const angle = (index ? 0.62 : 2.9) + (p - 0.5) * 0.56;
         node.position.set(Math.cos(angle) * 1.42, Math.sin(angle) * 0.92, 0);
       });
     }
-    if (activeIndex === 3) rig.rotation.x += 0.42;
+    if (activeIndex === 3) {
+      const tension = THREE.MathUtils.smootherstep(p, 0.15, 0.75);
+      links[0].position.x = -0.55 - tension * 0.045;
+      links[1].position.x = 0.55 + tension * 0.045;
+      rig.rotation.x += 0.32;
+      groups[3].rotation.z = -0.17 + tension * 0.1;
+    }
   }
   function render() {
     if (!canRender()) return;
@@ -263,8 +406,8 @@ export function createContinuum({ root = document.querySelector("main") || docum
     }
     const dt = lastTime ? Math.min((now - lastTime) / 1000, 0.08) : interval / 1000;
     lastTime = lastPaint = now;
-    entrance = Math.min(1, entrance + dt / 0.65);
-    easedProgress = THREE.MathUtils.lerp(easedProgress, targetProgress, 1 - Math.exp(-dt * 8));
+    entrance = Math.min(1, entrance + dt / 0.85);
+    easedProgress = THREE.MathUtils.lerp(easedProgress, targetProgress, 1 - Math.exp(-dt * 7));
     if (Math.abs(targetProgress - easedProgress) <= 0.0001) easedProgress = targetProgress;
     render();
     if (canAnimate()) frame = requestAnimationFrame(tick);
@@ -346,6 +489,7 @@ export function createContinuum({ root = document.querySelector("main") || docum
     event.preventDefault();
     contextLost = true;
     host.dataset.state = "fallback";
+    host.style.opacity = "1";
     stop();
   }
   function onContextRestored() {
@@ -394,6 +538,7 @@ export function createContinuum({ root = document.querySelector("main") || docum
       }
       geometries.forEach((geometry) => geometry.dispose());
       materials.forEach((material) => material.dispose());
+      textures.forEach((texture) => texture.dispose());
       if (scene) scene.environment = null;
       environment?.dispose();
       renderer?.dispose();

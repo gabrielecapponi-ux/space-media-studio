@@ -195,21 +195,23 @@ export function createExperience({ getHero, getPaused, onTogglePause }) {
     card.addEventListener(
       "pointermove",
       (event) => {
-        if (!finePointer.matches || preference.matches || getPaused()) return;
-        const rect = art.getBoundingClientRect();
+        if (!finePointer.matches || preference.matches || getPaused() || event.pointerType === "touch") return;
+        // Read the stationary card, so its own tilt cannot feed back into the
+        // pointer coordinates and make the artwork wobble near an edge.
+        const rect = card.getBoundingClientRect();
         const x = Math.max(
           0,
           Math.min(1, (event.clientX - rect.left) / rect.width),
         );
         const y = Math.max(
           0,
-          Math.min(1, (event.clientY - rect.top) / rect.height),
+          Math.min(1, (event.clientY - rect.top) / art.offsetHeight),
         );
         cancelAnimationFrame(tiltFrame);
         tiltFrame = requestAnimationFrame(() => {
           card.classList.add("is-tilting");
-          art.style.setProperty("--card-rx", `${(0.5 - y) * 8}deg`);
-          art.style.setProperty("--card-ry", `${(x - 0.5) * 10}deg`);
+          art.style.setProperty("--card-rx", `${(0.5 - y) * 5}deg`);
+          art.style.setProperty("--card-ry", `${(x - 0.5) * 6}deg`);
           art.style.setProperty("--card-px", `${x * 100}%`);
           art.style.setProperty("--card-py", `${y * 100}%`);
           art.style.setProperty("--card-shine", "1");

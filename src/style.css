@@ -1,14 +1,7 @@
 @font-face {
-  font-family: Instrument;
-  src: url("/fonts/InstrumentSans-Regular.ttf") format("truetype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: Instrument;
-  src: url("/fonts/InstrumentSans-Bold.ttf") format("truetype");
-  font-weight: 700;
+  font-family: SpaceGrotesk;
+  src: url("/fonts/SpaceGrotesk-Variable.woff2") format("woff2");
+  font-weight: 300 700;
   font-style: normal;
   font-display: swap;
 }
@@ -27,7 +20,9 @@
   --line: #d6d7d0;
   --gutter: clamp(24px, 4.4vw, 80px);
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
-  font-family: Instrument, Arial, sans-serif;
+  --font-sans: SpaceGrotesk, Arial, sans-serif;
+  --font-display: SpaceGrotesk, Arial, sans-serif;
+  font-family: var(--font-sans);
   color: var(--ink);
   background: var(--paper);
   font-synthesis: none;
@@ -85,7 +80,7 @@ p {
 h1,
 h2,
 h3 {
-  font-weight: 400;
+  font-weight: 500;
 }
 ::selection {
   background: var(--orange);
@@ -1934,13 +1929,6 @@ dialog::backdrop {
     font-size: 6.4vw;
   }
 }
-@font-face {
-  font-family: InstrumentSerif;
-  src: url("/fonts/InstrumentSerif-Regular.ttf") format("truetype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
 .concept-grid {
   grid-template-columns: repeat(2, 1fr);
   gap: 45px 26px;
@@ -1976,13 +1964,13 @@ dialog::backdrop {
   top: 40px;
   left: 27px;
   right: 27px;
-  font-family: InstrumentSerif, Georgia, serif;
+  font-family: var(--font-display);
   font-size: 100px;
   line-height: 1;
   letter-spacing: -0.06em;
 }
 .aura-wordmark > span {
-  font-family: Instrument, Arial, sans-serif;
+  font-family: var(--font-sans);
   position: absolute;
   font-size: 17px;
   top: 10px;
@@ -2107,7 +2095,7 @@ dialog::backdrop {
   letter-spacing: -0.055em;
 }
 .reverie-title em {
-  font-family: InstrumentSerif, Georgia, serif;
+  font-family: var(--font-display);
   font-weight: 400;
   font-style: normal;
   letter-spacing: -0.03em;

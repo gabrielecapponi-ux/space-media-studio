@@ -162,15 +162,15 @@ dialog {
 }
 .world-copy h3 {
   font-size: clamp(68px, 7.5vw, 125px);
-  font-weight: 400;
-  line-height: 0.94;
-  letter-spacing: -0.055em;
+  font-weight: 500;
+  line-height: 0.98;
+  letter-spacing: -0.05em;
 }
 .world-copy h3 em {
-  font-family: InstrumentSerif, Georgia, serif;
+  font-family: var(--font-display);
   font-style: normal;
-  font-size: 1.12em;
-  font-weight: 400;
+  font-size: 1em;
+  font-weight: 600;
   color: #e0e4d8;
   letter-spacing: -0.035em;
 }
@@ -350,7 +350,7 @@ dialog {
   transition: transform 0.5s var(--ease);
 }
 .concept-card.is-tilting .concept-art {
-  transition: transform 0.12s linear;
+  transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .concept-card:hover .concept-art {
   transform: perspective(1100px) rotateX(var(--card-rx, 0deg))
@@ -589,7 +589,7 @@ html:not(.js) .world-topline {
   }
   .world-kicker { font-size: 9px; margin-bottom: 12px; }
   .world-copy h3 { font-size: clamp(46px, 12vw, 54px); line-height: 0.96; }
-  .world-copy h3 em { font-size: 1.08em; }
+  .world-copy h3 em { font-size: 1em; }
   .world-copy p { font-size: 13px; line-height: 1.5; margin-top: 14px; }
   .world-scene { inset: calc(274px + env(safe-area-inset-top, 0px)) 0 calc(145px + env(safe-area-inset-bottom, 0px)); }
   .world-controls {
@@ -639,7 +639,7 @@ html:not(.js) .world-topline {
   .js [data-chapter="2"] [data-world-copy="2"] { transform: none; }
   .world-kicker { font-size: 9px; margin-bottom: 10px; }
   .world-copy h3 { font-size: 40px; line-height: 0.96; }
-  .world-copy h3 em { font-size: 1.08em; }
+  .world-copy h3 em { font-size: 1em; }
   .world-copy p { font-size: 12px; line-height: 1.5; margin-top: 12px; }
   .world-scene { inset: 0 0 calc(110px + env(safe-area-inset-bottom, 0px)) 48%; }
   .world-controls {
