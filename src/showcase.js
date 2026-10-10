@@ -38,6 +38,9 @@ function drawProduct(context, x, y, size = 1) {
   body.addColorStop(0, "#474c54"); body.addColorStop(0.15, "#dfe3e7");
   body.addColorStop(0.4, "#a2a9b0"); body.addColorStop(0.75, "#f2f2ef"); body.addColorStop(1, "#535b64");
   context.fillStyle = body; roundedPath(context, -88, -110, 176, 248, 20); context.fill();
+  const face = context.createLinearGradient(-78, -102, 78, 132);
+  face.addColorStop(0, "#39414b"); face.addColorStop(0.42, "#14191f"); face.addColorStop(1, "#292f38");
+  context.fillStyle = face; roundedPath(context, -80, -102, 160, 232, 14); context.fill();
   context.fillStyle = "#181b20"; roundedPath(context, -49, -197, 98, 86, 12); context.fill();
   context.fillStyle = LIME; context.fillRect(-50, -124, 100, 8);
   context.fillStyle = LIME; roundedPath(context, -66, -49, 132, 116, 2); context.fill();
