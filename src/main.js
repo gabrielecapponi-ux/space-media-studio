@@ -1,5 +1,6 @@
 import { createExperience } from "./experience.js";
 import { createHeroUI } from "./hero-ui.js";
+import { createFilms } from "./films.js";
 
 document.documentElement.classList.add("js");
 
@@ -9,6 +10,9 @@ const motionButton = document.querySelector("#motion-toggle");
 sceneContainer.dataset.scene = "loading";
 let scene;
 let experience;
+let films;
+let continuum;
+let destroyed = false;
 let userPaused = false;
 const heroUI = createHeroUI({
   getScene: () => scene,
@@ -18,7 +22,7 @@ const heroUI = createHeroUI({
 
 function updateMotionControl() {
   const reduced = motionPreference.matches;
-  const ready = sceneContainer.dataset.scene === "ready";
+  const ready = sceneContainer.dataset.scene === "ready" || films?.available;
   const unavailable = sceneContainer.dataset.scene === "fallback";
   motionButton.disabled = reduced || !ready;
   motionButton.setAttribute("aria-pressed", String(userPaused || reduced));
@@ -50,10 +54,13 @@ function toggleMotion() {
   userPaused = !userPaused;
   scene?.setPaused(userPaused);
   experience?.setPaused(userPaused);
+  films?.setPaused(userPaused);
+  continuum?.setPaused(userPaused);
   updateMotionControl();
 }
 motionButton.addEventListener("click", toggleMotion);
 motionPreference.addEventListener("change", updateMotionControl);
+document.addEventListener("filmavailabilitychange", updateMotionControl);
 const sceneStateObserver = new MutationObserver(updateMotionControl);
 sceneStateObserver.observe(sceneContainer, {
   attributes: true,
@@ -63,20 +70,29 @@ sceneStateObserver.observe(sceneContainer, {
 // Keep the document and navigation available while the optional 3D engine loads.
 import("./scene.js")
   .then(({ createScene }) => {
+    if (destroyed) return;
     scene = createScene(sceneContainer);
     scene.setPaused(userPaused);
     heroUI.ready();
     updateMotionControl();
   })
   .catch(() => {
+    if (destroyed) return;
     sceneContainer.dataset.scene = "fallback";
-    motionButton.hidden = true;
+    updateMotionControl();
   });
 updateMotionControl();
 experience = createExperience({
   getHero: () => scene,
   getPaused: () => userPaused,
   onTogglePause: toggleMotion,
+});
+films = createFilms({ getPaused: () => userPaused, onTogglePause: toggleMotion });
+import("./continuum.js").then(({ createContinuum }) => {
+  if (destroyed) return;
+  continuum = createContinuum({ paused: userPaused });
+}).catch(() => {
+  // Decorative slots keep their static artwork when WebGL is unavailable.
 });
 
 const revealObserver = new IntersectionObserver(
@@ -264,19 +280,28 @@ document.querySelectorAll(".service").forEach((detail) =>
 document.querySelector("#year").textContent = new Date().getFullYear();
 window.addEventListener("pagehide", (event) => {
   if (!event.persisted) {
+    destroyed = true;
     scene?.dispose();
     experience?.dispose();
     heroUI.dispose();
+    films?.dispose();
+    continuum?.dispose();
     sceneStateObserver.disconnect();
     revealObserver.disconnect();
     motionPreference.removeEventListener("change", updateMotionControl);
+    document.removeEventListener("filmavailabilitychange", updateMotionControl);
   }
 });
 if (import.meta.hot)
   import.meta.hot.dispose(() => {
+    destroyed = true;
     scene?.dispose();
     experience?.dispose();
     heroUI.dispose();
+    films?.dispose();
+    continuum?.dispose();
     sceneStateObserver.disconnect();
     revealObserver.disconnect();
+    motionPreference.removeEventListener("change", updateMotionControl);
+    document.removeEventListener("filmavailabilitychange", updateMotionControl);
   });

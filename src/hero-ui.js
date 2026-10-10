@@ -51,14 +51,16 @@ export function createHeroUI({ getScene, getPaused, onTogglePause }) {
     if (detail.progress !== undefined) setProgress(detail.progress);
   };
   const setAvailability = () => {
-    const ready = container.dataset.scene === "ready";
+    const sceneReady = container.dataset.scene === "ready";
+    const film = document.querySelector("#hero-film");
+    const ready = sceneReady || (film?.readyState >= 2 && film.dataset.state !== "fallback");
     replay.disabled = !ready || preference.matches;
     replay.hidden = !ready || preference.matches;
     modeButtons.forEach((button) => {
-      button.disabled = !ready;
+      button.disabled = !sceneReady;
     });
-    hero.classList.toggle("is-hero-ready", ready);
-    if (ready) setPhase({ progress: Number(container.dataset.progress || 0) });
+    hero.classList.toggle("is-hero-ready", sceneReady);
+    if (sceneReady) setPhase({ progress: Number(container.dataset.progress || 0) });
     else setPhase({ index: 2, progress: 1 });
   };
   container.addEventListener(
@@ -80,6 +82,7 @@ export function createHeroUI({ getScene, getPaused, onTogglePause }) {
     { signal },
   );
   preference.addEventListener("change", setAvailability, { signal });
+  document.addEventListener("filmavailabilitychange", setAvailability, { signal });
   const observer = new MutationObserver(setAvailability);
   observer.observe(container, {
     attributes: true,

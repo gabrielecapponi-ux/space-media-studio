@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="theme-color" content="#dfff45" />
+    <meta name="theme-color" content="#090b10" />
     <title>Space Media Studio — Marketing, design e creatività a Parma</title>
     <meta
       name="description"
@@ -49,6 +49,8 @@
     <link rel="stylesheet" href="/src/experience.css" />
     <link rel="stylesheet" href="/src/hero.css" />
     <link rel="stylesheet" href="/src/pop.css" />
+    <link rel="stylesheet" href="/src/cinematic.css" />
+    <link rel="stylesheet" href="/src/continuum.css" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -106,6 +108,20 @@
         aria-labelledby="hero-title"
         data-phase="form"
       >
+        <div class="hero-film-layer" aria-hidden="true">
+          <video
+            id="hero-film"
+            class="hero-film"
+            muted
+            playsinline
+            preload="none"
+            poster="/images/hero-film.jpg"
+            data-src-desktop="./films/portal-desktop.mp4"
+            data-src-mobile="./films/portal-mobile.mp4"
+            data-state="idle"
+            tabindex="-1"
+          ></video>
+        </div>
         <div
           id="hero-scene"
           class="hero-scene"
@@ -196,7 +212,7 @@
               id="motion-toggle"
               class="motion-toggle mono"
               type="button"
-              aria-controls="hero-scene world-scene"
+              aria-controls="hero-scene world-scene hero-film portal-film"
               aria-label="Metti in pausa tutte le animazioni 3D"
               aria-pressed="false"
             >
@@ -321,7 +337,7 @@
               type="button"
               id="world-motion"
               class="world-motion mono"
-              aria-controls="hero-scene world-scene"
+              aria-controls="hero-scene world-scene hero-film portal-film"
               aria-pressed="false"
               aria-label="Metti in pausa tutte le animazioni 3D"
             >
@@ -380,6 +396,7 @@
             di ciò che possiamo immaginare insieme.
           </p>
         </div>
+        <div class="continuum-window portfolio-space" data-continuum-slot aria-hidden="true"></div>
         <div class="concept-grid">
           <button
             class="concept-card reveal"
@@ -509,6 +526,35 @@
           illustrativo.
         </p>
       </section>
+      <section class="idea-film" id="dentro-idea" aria-labelledby="idea-film-title">
+        <div class="idea-film-stage" aria-hidden="true">
+          <video
+            id="portal-film"
+            class="portal-film"
+            muted
+            playsinline
+            loop
+            preload="none"
+            poster="/images/portal-film.jpg"
+            data-src-desktop="./films/portal-loop-desktop.mp4"
+            data-src-mobile="./films/portal-loop-mobile.mp4"
+            data-state="idle"
+            tabindex="-1"
+          ></video>
+        </div>
+        <div class="idea-film-copy">
+          <span class="mono">Dentro un’idea</span>
+          <h2 id="idea-film-title">C’è un mondo.<br /><em>Il tuo.</em></h2>
+          <p>Una direzione diventa immagine.<br />Un’immagine diventa esperienza.</p>
+          <a class="text-link" href="#servizi">Troviamo la tua dimensione <span class="circle-arrow" aria-hidden="true">↘</span></a>
+        </div>
+        <div class="idea-film-bottom mono">
+          <span>Una prospettiva in movimento.</span>
+          <button type="button" id="portal-film-toggle" class="film-toggle" data-film-motion aria-controls="portal-film" aria-label="Metti in pausa il filmato" aria-pressed="false" disabled>
+            <span class="film-toggle-icon" aria-hidden="true">Ⅱ</span><span class="film-toggle-label">Pausa filmato</span>
+          </button>
+        </div>
+      </section>
       <section
         class="services section-pad"
         id="servizi"
@@ -532,6 +578,7 @@
               >Troviamo la tua direzione
               <span class="circle-arrow" aria-hidden="true">↗</span></a
             >
+            <div class="continuum-window services-space" data-continuum-slot aria-hidden="true"></div>
           </div>
           <div class="service-list reveal">
             <details class="service" open>
@@ -633,6 +680,7 @@
               collaborazione. La prossima potrebbe essere con te.
             </p>
           </div>
+          <div class="continuum-window studio-space" data-continuum-slot aria-hidden="true"></div>
         </div>
         <div class="founders reveal">
           <article class="founder">
@@ -713,6 +761,7 @@
           ><h2 id="contact-title">Facciamo<br />spazio<span>.</span></h2>
           <span class="contact-arrow" aria-hidden="true">↗</span></a
         >
+        <div class="continuum-window contact-space" data-continuum-slot aria-hidden="true"></div>
         <div class="contact-bottom reveal">
           <div>
             <p class="contact-intro">

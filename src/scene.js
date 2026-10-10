@@ -1,22 +1,69 @@
 import * as THREE from "three";
-import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
 import { toCreasedNormals } from "three/addons/utils/BufferGeometryUtils.js";
 
 const MODES = ["orbit", "explode", "wave"];
 // These identifiers belong to the public HTML timeline API.
 const PHASES = ["idea", "fragments", "form"];
-const DURATION = 9;
-const ENVELOPE = 5.4;
+const DURATION = 11;
+const ENVELOPE = 5.9;
 const smooth = (value) => {
   const t = THREE.MathUtils.clamp(value, 0, 1);
   return t * t * t * (t * (t * 6 - 15) + 10);
 };
 
-// One manufactured component, repeated exactly four times. The concave
-// shoulders describe Space Media's four-point spark; the diagonal assembly
-// seams and central socket remain legible in both the closed and exploded view.
-function makePetalGeometry() {
+// The same four engineered modules unfold from a compact, deep enclosure
+// into the Space Media spark. Rounded cross-sections are real closed geometry;
+// their continuous normals catch softbox reflections without cap triangulation.
+function makePetalGeometry(compact) {
+  const profile = new THREE.CatmullRomCurve3([
+    [0.12, 0.22, 0.10], [0.22, 0.31, 0.19], [0.37, 0.44, 0.25],
+    [0.50, 0.57, 0.28], [0.34, 0.74, 0.28], [0.215, 1.02, 0.25],
+    [0.145, 1.35, 0.20], [0.10, 1.65, 0.145], [0.054, 1.87, 0.075],
+    [0, 1.96, 0],
+  ].map((point) => new THREE.Vector3(...point)), false, "centripetal");
+  const rows = compact ? 56 : 80;
+  const radial = compact ? 24 : 32;
+  const samples = profile.getPoints(rows);
+  const positions = [];
+  const uvs = [];
+  const indices = [];
+  for (let row = 0; row < rows; row += 1) {
+    const section = samples[row];
+    for (let side = 0; side < radial; side += 1) {
+      const angle = side / radial * Math.PI * 2;
+      positions.push(section.x * Math.cos(angle), section.y, section.z * Math.sin(angle));
+      uvs.push(side / radial, row / rows);
+      if (row < rows - 1) {
+        const a = row * radial + side;
+        const b = a + radial;
+        const d = row * radial + (side + 1) % radial;
+        const c = d + radial;
+        indices.push(a, b, d, b, c, d);
+      }
+    }
+  }
+  const base = positions.length / 3;
+  positions.push(0, samples[0].y, 0);
+  uvs.push(0.5, 0);
+  const tip = positions.length / 3;
+  positions.push(0, 1.96, 0);
+  uvs.push(0.5, 1);
+  for (let side = 0; side < radial; side += 1) {
+    const next = (side + 1) % radial;
+    indices.push(base, side, next);
+    indices.push(tip, (rows - 1) * radial + next, (rows - 1) * radial + side);
+  }
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3));
+  geometry.setAttribute("uv", new THREE.Float32BufferAttribute(uvs, 2));
+  geometry.setIndex(indices);
+  geometry.computeVertexNormals();
+  geometry.computeBoundingSphere();
+  return geometry;
+}
+
+function makeChassisGeometry(compact) {
   const outline = new THREE.Shape();
   outline.moveTo(-0.14, 0.24);
   outline.lineTo(-0.51, 0.57);
@@ -27,18 +74,21 @@ function makePetalGeometry() {
   outline.quadraticCurveTo(0, 0.18, -0.14, 0.24);
   outline.closePath();
   const geometry = new THREE.ExtrudeGeometry(outline, {
-    depth: 0.3,
-    steps: 1,
-    curveSegments: 28,
-    bevelEnabled: true,
-    bevelSize: 0.04,
-    bevelThickness: 0.06,
-    bevelSegments: 6,
+    depth: 0.1, steps: 1, curveSegments: compact ? 20 : 28,
+    bevelEnabled: true, bevelSize: 0.025, bevelThickness: 0.025,
+    bevelSegments: compact ? 4 : 6,
   });
-  geometry.translate(0, 0, -0.15);
-  // Smooth the actual bevel and curved silhouette, retaining sharp authored
-  // changes of direction. No normal-map imitation of a rounded edge.
+  geometry.translate(0, 0, -0.36);
   toCreasedNormals(geometry, Math.PI / 3);
+  // Chassis caps are truly planar. Preserve their normals instead of averaging
+  // a long triangulated cap with the small radius of the surrounding bevel.
+  const normals = geometry.attributes.normal;
+  const vertices = geometry.attributes.position;
+  geometry.groups.filter((group) => group.materialIndex === 0).forEach((group) => {
+    for (let index = group.start; index < group.start + group.count; index += 1) {
+      normals.setXYZ(index, 0, 0, vertices.getZ(index) > -0.31 ? 1 : -1);
+    }
+  });
   geometry.computeBoundingSphere();
   return geometry;
 }
@@ -46,7 +96,8 @@ function makePetalGeometry() {
 export function createScene(container) {
   if (!container) return { setMode() {}, setPaused() {}, playIntro() {}, dispose() {} };
   const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
-  const touchDevice = window.matchMedia("(pointer: coarse)").matches;
+  const touchDevice = window.matchMedia("(pointer: coarse)").matches || navigator.maxTouchPoints > 0;
+  const economicalGeometry = touchDevice || window.innerWidth <= 760;
   let reducedMotion = motionPreference.matches;
   let mode = reducedMotion ? "wave" : "orbit";
   let phaseIndex = reducedMotion ? 2 : 0;
@@ -95,7 +146,7 @@ export function createScene(container) {
   container.appendChild(canvas);
   container.dataset.scene = "ready";
   container.dataset.quality = "high";
-  container.dataset.sceneSubject = "space-mark";
+  container.dataset.sceneSubject = "space-sculpture";
   container.dataset.sceneModules = "4";
   renderer.setClearColor(0x000000, 0);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -109,31 +160,55 @@ export function createScene(container) {
   const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 40);
   camera.position.set(0, 0, 10);
   const makeEnvironment = () => {
-    const room = new RoomEnvironment();
+    // A photographic studio authored for this sculpture: broad key card,
+    // narrow edge card and overhead card. These are only baked into PMREM,
+    // never additional live draw calls or fetched HDR assets.
+    const studio = new THREE.Scene();
+    studio.background = new THREE.Color(0x252937);
+    const cardGeometry = new THREE.PlaneGeometry(1, 1);
+    const cardMaterials = [];
+    const cards = [
+      { at: [-3, 4, 5], size: [3.5, 5], power: 4 },
+      { at: [-5, 0, 2], size: [0.9, 6], power: 3.5 },
+      { at: [4, 1, -2], size: [1.5, 5], power: 3.2 },
+      { at: [0, 5, 0], size: [3, 2], power: 2.5 },
+    ];
+    cards.forEach(({ at, size, power }) => {
+      const material = new THREE.MeshBasicMaterial({
+        color: new THREE.Color(0xffffff).multiplyScalar(power), side: THREE.DoubleSide,
+      });
+      cardMaterials.push(material);
+      const card = new THREE.Mesh(cardGeometry, material);
+      card.position.set(...at);
+      card.scale.set(size[0], size[1], 1);
+      card.lookAt(0, 0, 0);
+      studio.add(card);
+    });
     const pmrem = new THREE.PMREMGenerator(renderer);
     try {
-      return pmrem.fromScene(room, 0.07);
+      return pmrem.fromScene(studio, 0.05);
     } finally {
-      room.dispose();
+      cardGeometry.dispose();
+      cardMaterials.forEach((material) => material.dispose());
       pmrem.dispose();
     }
   };
   let environment = makeEnvironment();
   scene.environment = environment.texture;
-  scene.environmentIntensity = 0.82;
+  scene.environmentIntensity = 0.95;
   const ceramic = new THREE.MeshPhysicalMaterial({
     color: 0x2536ff,
     metalness: 0,
-    roughness: 0.25,
-    clearcoat: 0.78,
-    clearcoatRoughness: 0.16,
+    roughness: 0.21,
+    clearcoat: 0.9,
+    clearcoatRoughness: 0.13,
     envMapIntensity: 0.85,
     dithering: true,
   });
   const lacquer = new THREE.MeshPhysicalMaterial({
     color: 0xff48b6,
     metalness: 0,
-    roughness: 0.2,
+    roughness: 0.19,
     clearcoat: 1,
     clearcoatRoughness: 0.1,
     envMapIntensity: 0.85,
@@ -142,14 +217,20 @@ export function createScene(container) {
   const chrome = new THREE.MeshStandardMaterial({
     color: 0xf0f2f6,
     metalness: 1,
-    roughness: 0.27,
-    envMapIntensity: 1.15,
+    roughness: 0.24,
+    envMapIntensity: 1.2,
     dithering: true,
   });
-  const materials = [ceramic, lacquer, chrome];
-  const petalGeometry = makePetalGeometry();
+  const orange = new THREE.MeshPhysicalMaterial({
+    color: 0xff6138, metalness: 0, roughness: 0.19,
+    clearcoat: 1, clearcoatRoughness: 0.1, dithering: true,
+  });
+  const materials = [ceramic, lacquer, chrome, orange];
+  const petalGeometry = makePetalGeometry(economicalGeometry);
+  const chassisGeometry = makeChassisGeometry(economicalGeometry);
   const coreGeometry = new RoundedBoxGeometry(0.24, 0.24, 0.32, 4, 0.075);
-  const geometries = [petalGeometry, coreGeometry];
+  const insetGeometry = new THREE.SphereGeometry(0.085, economicalGeometry ? 20 : 28, 16);
+  const geometries = [petalGeometry, chassisGeometry, coreGeometry, insetGeometry];
   const position = new THREE.Group();
   const rig = new THREE.Group();
   scene.add(position);
@@ -157,24 +238,35 @@ export function createScene(container) {
   const modules = Array.from({ length: 4 }, (_, index) => {
     const pivot = new THREE.Group();
     pivot.rotation.z = -index * Math.PI / 2;
-    const mesh = new THREE.Mesh(petalGeometry, index % 2 ? lacquer : ceramic);
-    mesh.castShadow = mesh.receiveShadow = true;
-    mesh.frustumCulled = false;
-    pivot.add(mesh);
+    const component = new THREE.Group();
+    const body = new THREE.Mesh(petalGeometry, index % 2 ? lacquer : ceramic);
+    const chassis = new THREE.Mesh(chassisGeometry, chrome);
+    [body, chassis].forEach((mesh) => {
+      mesh.castShadow = mesh.receiveShadow = true;
+      mesh.frustumCulled = false;
+      component.add(mesh);
+    });
+    pivot.add(component);
     rig.add(pivot);
-    return mesh;
+    return component;
   });
-  const core = new THREE.Mesh(coreGeometry, chrome);
-  core.rotation.z = Math.PI / 4;
-  core.position.z = 0.01;
-  core.castShadow = core.receiveShadow = true;
+  const core = new THREE.Group();
+  const coreHousing = new THREE.Mesh(coreGeometry, chrome);
+  coreHousing.rotation.z = Math.PI / 4;
+  const coreInset = new THREE.Mesh(insetGeometry, orange);
+  coreInset.scale.z = 0.58;
+  coreInset.position.z = 0.195;
+  [coreHousing, coreInset].forEach((mesh) => {
+    mesh.castShadow = mesh.receiveShadow = true;
+    core.add(mesh);
+  });
   rig.add(core);
-  const ambient = new THREE.HemisphereLight(0xffffff, 0x74715c, 0.48);
-  const key = new THREE.DirectionalLight(0xfffaf2, 2.6);
+  const ambient = new THREE.HemisphereLight(0xffffff, 0x29324d, 0.5);
+  const key = new THREE.DirectionalLight(0xfffaf2, 2.9);
   key.castShadow = true;
   key.shadow.bias = -0.00018;
-  const fill = new THREE.DirectionalLight(0xe4edff, 0.75);
-  const edge = new THREE.DirectionalLight(0xffffff, 1.45);
+  const fill = new THREE.DirectionalLight(0xe4edff, 0.8);
+  const edge = new THREE.DirectionalLight(0xffffff, 1.8);
   scene.add(ambient, key, key.target, fill, fill.target, edge, edge.target);
 
   let paused = false;
@@ -208,10 +300,11 @@ export function createScene(container) {
 
   const updatePose = () => {
     if (playing) {
-      // Readable holds bookend two deliberate movements: inspect, then assemble.
-      pose.explore = smooth((introTime - 1.4) / 1.9);
-      pose.connect = smooth((introTime - 4.6) / 3);
-      const nextPhase = introTime < 1.4 ? 0 : introTime < 4.6 ? 1 : 2;
+      // The camera first studies the folded object, then its construction,
+      // then the finished mark. A finite final hold lets the last image breathe.
+      pose.explore = smooth((introTime - 1.5) / 2.3);
+      pose.connect = smooth((introTime - 5.1) / 3.5);
+      const nextPhase = introTime < 1.5 ? 0 : introTime < 5.1 ? 1 : 2;
       if (nextPhase !== phaseIndex) {
         phaseIndex = nextPhase;
         mode = MODES[phaseIndex];
@@ -229,26 +322,34 @@ export function createScene(container) {
       if (blend === 1) transition = null;
     }
     const open = pose.explore * (1 - pose.connect);
-    modules.forEach((mesh, index) => {
-      // A short ordered stagger follows the same assembly axis. Absolute pose
-      // math makes reversal, manual selection and replay deterministic.
+    const unfurled = Math.max(pose.explore, pose.connect);
+    modules.forEach((component, index) => {
+      // Each module travels on its own assembly axis. In the first pose the
+      // forward fold reveals meaningful depth; sufficient radial clearance
+      // keeps the four solid shoulders apart throughout the choreography.
       const explored = smooth((pose.explore - index * 0.035) / 0.895);
       const assembled = smooth((pose.connect - index * 0.025) / 0.925);
       const separated = explored * (1 - assembled);
-      mesh.position.set(0, 0.015 + separated * 0.56, separated * (index % 2 ? -0.06 : 0.12));
-      mesh.rotation.set(separated * 0.13, separated * (index % 2 ? -0.16 : 0.16), 0);
-      mesh.scale.set(1, 1, 1);
+      const opened = Math.max(explored, assembled);
+      const radius = THREE.MathUtils.lerp(0.52, 0.015, opened) + separated * 0.82;
+      component.position.set(0, radius, separated * (index % 2 ? -0.10 : 0.20));
+      component.rotation.set((1 - opened) * 0.92 + separated * 0.11,
+        separated * (index % 2 ? -0.13 : 0.13), 0);
+      component.scale.set(1, 1, 1);
     });
-    core.scale.setScalar(1 + open * 0.12);
-    rig.scale.setScalar(0.96 + pose.connect * 0.2);
+    core.scale.setScalar(THREE.MathUtils.lerp(3.4, 1, smooth(unfurled)));
+    core.rotation.y = open * 0.3;
+    rig.scale.setScalar(1.04 - open * 0.08 + pose.connect * 0.22);
     rig.rotation.set(
-      -0.16 + pose.connect * 0.05 + easedPointer.y * 0.07,
-      -0.31 + open * 0.1 + easedPointer.x * 0.15,
-      -0.19 + open * 0.12 + pose.connect * 0.15,
+      -0.22 + pose.connect * 0.09 + easedPointer.y * 0.07,
+      -0.67 + open * 0.36 + pose.connect * 0.16 + easedPointer.x * 0.15,
+      -0.28 + open * 0.22 + pose.connect * 0.21,
     );
+    camera.position.set(easedPointer.x * 0.035, easedPointer.y * 0.02,
+      10 + open * 0.3 - pose.connect * 0.16);
     position.position.set(centerX + easedPointer.x * 0.02, centerY - easedPointer.y * 0.015, 0);
     position.scale.setScalar(sceneScale);
-    const sweep = smooth((introTime - 7.6) / 1.4);
+    const sweep = smooth((introTime - 8.6) / 2.4);
     key.position.set(centerX + (-4.2 + sweep * 1.2) * sceneScale, centerY + 6.2 * sceneScale, 8 * sceneScale);
     key.target.position.set(centerX, centerY, 0);
     fill.position.set(centerX + 5 * sceneScale, centerY + 0.5 * sceneScale, 4 * sceneScale);
@@ -348,8 +449,8 @@ export function createScene(container) {
     centerX = compact ? 0 : visibleWidth * 0.23;
     centerY = compact ? 0 : visibleHeight * 0.015;
     const diameter = compact
-      ? Math.min(height * 0.92, width * 0.92)
-      : Math.min(height * 0.78, width * 0.5);
+      ? Math.min(height * 0.98, width * 0.98)
+      : Math.min(height * 0.84, width * 0.55);
     sceneScale = (diameter * visibleHeight) / (height * ENVELOPE);
     const shadowSize = compact || touchDevice || qualityScale < 1 ? 512 : 1024;
     if (key.shadow.mapSize.x !== shadowSize) {
@@ -358,7 +459,7 @@ export function createScene(container) {
       key.shadow.mapSize.set(shadowSize, shadowSize);
     }
     const shadowCamera = key.shadow.camera;
-    const shadowExtent = sceneScale * 3.1;
+    const shadowExtent = sceneScale * 3.4;
     shadowCamera.left = shadowCamera.bottom = -shadowExtent;
     shadowCamera.right = shadowCamera.top = shadowExtent;
     shadowCamera.near = sceneScale * 0.5;

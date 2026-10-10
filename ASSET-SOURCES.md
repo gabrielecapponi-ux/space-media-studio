@@ -1,6 +1,6 @@
 # Provenienza dei materiali
 
-Verificato il 9 ottobre 2026. Le immagini sono salvate in locale: la navigazione del sito non richiede servizi fotografici esterni.
+Aggiornato il 10 ottobre 2026. Immagini e filmati sono salvati in locale: la navigazione del sito non richiede servizi di generazione o CDN fotografici esterni.
 
 ## Fotografie
 
@@ -30,3 +30,13 @@ Sono stati scaricati JPEG a larghezza 1600px dal CDN ufficiale `images.pexels.co
 ## Hero cinematografica
 
 Il segno a quattro moduli della hero, la lampadina, il diaframma fotografico e il bersaglio sono geometrie procedurali originali generate nel progetto. Nessun modello 3D esterno. Il poster di ripiego `public/images/hero-sculpture.svg` è un disegno vettoriale originale, senza risorse stock. Il manuale 3D WEB LAB fornito dall’utente è un riferimento tecnico interno e non viene distribuito con il sito.
+
+## Film CGI Higgsfield
+
+Il giroscopio cromato è un filmato originale generato il 10 ottobre 2026 con **Higgsfield Cinema Studio Video 3.0**, su direzione creativa realizzata per il sito. Il master restituito è H.264, 1920×1080, 24 fps, circa 8 secondi, senza audio. Non sono stati usati filmati stock, marchi o immagini di riferimento di terzi. Si tratta di immagini CGI generate, non di un modello 3D modificabile o di una ripresa reale.
+
+- `public/films/portal-desktop.mp4` e `portal-mobile.mp4`: apertura singola, 1600×900 e 640×640.
+- `public/films/portal-loop-desktop.mp4` e `portal-loop-mobile.mp4`: lo stesso film montato avanti/indietro per un ciclo continuo di circa 16 secondi.
+- `public/images/hero-film.jpg` e `portal-film.jpg`: fotogrammi del film usati come poster statici.
+
+Il master rimane negli artefatti locali del progetto. `scripts/prepare-films.mjs` documenta le conversioni FFmpeg. Le quattro sculture del canvas condiviso (sistema ottico, nastro continuo, orbite, anelli collegati) sono geometrie procedurali originali del progetto, separate dai filmati.
