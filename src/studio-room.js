@@ -49,85 +49,111 @@ function text(ctx, value, x, y, size, color = INK, weight = 500, align = "left")
 }
 
 function homeArtwork(ctx, width, height, aspect = 16 / 9) {
-  ctx.fillStyle = PAPER; ctx.fillRect(0, 0, width, height);
+  ctx.fillStyle = INK; ctx.fillRect(0, 0, width, height);
+
+  function orbitalProduct(cx, cy, scale) {
+    ctx.save(); ctx.translate(cx, cy); ctx.scale(scale, scale);
+    const halo = ctx.createRadialGradient(15, 30, 45, 15, 30, 420);
+    halo.addColorStop(0, "rgba(223,255,0,0.13)");
+    halo.addColorStop(0.5, "rgba(223,255,0,0.035)"); halo.addColorStop(1, "rgba(223,255,0,0)");
+    ctx.fillStyle = halo; ctx.fillRect(-450, -430, 900, 860);
+
+    const chrome = ctx.createLinearGradient(-330, -250, 330, 250);
+    chrome.addColorStop(0, "#626c75"); chrome.addColorStop(0.17, "#f8ffff");
+    chrome.addColorStop(0.29, "#49525b"); chrome.addColorStop(0.48, "#11171e");
+    chrome.addColorStop(0.62, "#d9e3e8"); chrome.addColorStop(0.78, "#78838a");
+    chrome.addColorStop(1, "#eef3e5");
+    ctx.save(); ctx.rotate(-0.48);
+    ctx.strokeStyle = chrome; ctx.lineWidth = 20;
+    ctx.beginPath(); ctx.ellipse(0, 0, 330, 174, 0, 0, Math.PI * 2); ctx.stroke();
+    ctx.strokeStyle = "rgba(245,245,242,0.19)"; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.ellipse(0, 0, 346, 189, 0, 0, Math.PI * 2); ctx.stroke();
+    ctx.restore();
+
+    // A branded glass silhouette keeps the monitor preview related to the
+    // actual product-design work, rather than an unrelated loading graphic.
+    ctx.save(); ctx.rotate(-0.12);
+    const glass = ctx.createLinearGradient(-112, 0, 112, 0);
+    glass.addColorStop(0, "#677646"); glass.addColorStop(0.08, "#d4e4a2");
+    glass.addColorStop(0.17, "#57613d"); glass.addColorStop(0.46, "#202a1b");
+    glass.addColorStop(0.84, "#1d2619"); glass.addColorStop(0.95, "#8c9b65");
+    glass.addColorStop(1, "#b9c58a");
+    ctx.fillStyle = glass; ctx.beginPath(); ctx.roundRect(-112, -121, 224, 306, 30); ctx.fill();
+    ctx.strokeStyle = "rgba(235,244,209,0.6)"; ctx.lineWidth = 1.5; ctx.stroke();
+    ctx.fillStyle = "rgba(4,8,5,0.48)";
+    ctx.beginPath(); ctx.roundRect(-95, -101, 190, 267, 22); ctx.fill();
+    ctx.strokeStyle = "rgba(223,255,0,0.25)"; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(-82, -85); ctx.lineTo(-82, 142); ctx.stroke();
+    const cap = ctx.createLinearGradient(-70, 0, 70, 0);
+    cap.addColorStop(0, "#13191e"); cap.addColorStop(0.18, "#e7edef");
+    cap.addColorStop(0.38, "#687278"); cap.addColorStop(0.73, "#1c2227");
+    cap.addColorStop(0.94, "#a4afb4"); cap.addColorStop(1, "#303940");
+    ctx.fillStyle = cap; ctx.beginPath(); ctx.roundRect(-69, -210, 138, 94, 12); ctx.fill();
+    text(ctx, "AURA", 0, 22, 43, PAPER, 500, "center");
+    text(ctx, "EAU DE PARFUM", 0, 49, 11, "#bfc5b6", 400, "center");
+    ctx.fillStyle = LIME; ctx.fillRect(-22, 78, 44, 2);
+    text(ctx, "01 / BRAND CONCEPT", 0, 133, 9, "#bfc5b6", 400, "center");
+    ctx.restore();
+
+    ctx.save(); ctx.rotate(0.46);
+    ctx.strokeStyle = LIME; ctx.lineWidth = 11;
+    ctx.beginPath(); ctx.ellipse(0, 25, 333, 149, 0, 0.08, Math.PI * 0.96); ctx.stroke();
+    ctx.strokeStyle = "#f1ff9d"; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.ellipse(0, 23, 334, 151, 0, 0.08, Math.PI * 0.96); ctx.stroke();
+    ctx.restore(); ctx.restore();
+  }
+
   // A responsive preview occupies the middle of the physical widescreen on
-  // phones. The final camera crops exactly this column, keeping the wordmark
-  // and headline in view rather than magnifying the middle of a desktop page.
+  // phones. The final camera crops this column with the live site's layout.
   if (aspect < 0.8) {
     const contentWidth = height * aspect, left = (width - contentWidth) / 2;
     const gutter = contentWidth * 0.057;
-    text(ctx, "space", left + gutter, 73, 43, INK, 600);
-    text(ctx, "media studio", left + gutter + 2, 92, 13);
-    ctx.fillStyle = INK; ctx.beginPath();
-    ctx.roundRect(left + contentWidth - gutter - 164, 36, 114, 51, 26); ctx.fill();
+    ctx.save(); ctx.beginPath(); ctx.rect(left, 0, contentWidth, height); ctx.clip();
+    text(ctx, "space", left + gutter, 73, 43, PAPER, 600);
+    text(ctx, "media studio", left + gutter + 2, 92, 13, "#a0a7a6");
+    ctx.fillStyle = LIME; ctx.beginPath();
+    ctx.arc(left + gutter + 119, 56, 4, 0, Math.PI * 2); ctx.fill();
+    ctx.strokeStyle = "#5b6159"; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.roundRect(left + contentWidth - gutter - 164, 36, 114, 51, 26); ctx.stroke();
     text(ctx, "Parliamone ↗", left + contentWidth - gutter - 107, 68, 15, PAPER, 500, "center");
-    ctx.fillStyle = INK;
+    ctx.fillStyle = PAPER;
     ctx.fillRect(left + contentWidth - gutter - 28, 51, 27, 2);
     ctx.fillRect(left + contentWidth - gutter - 28, 61, 27, 2);
-    text(ctx, "STUDIO CREATIVO INDIPENDENTE · PARMA", left + gutter, 163, 12, "#666a63");
-    const titleSize = contentWidth * 0.157;
-    text(ctx, "Un’idea.", left + gutter - 3, 256, titleSize, INK, 500);
-    text(ctx, "Un impatto.", left + gutter - 3, 256 + titleSize * 0.96, titleSize, INK, 500);
-    text(ctx, "Branding, siti web,", left + gutter, 410, 23, INK, 400);
-    text(ctx, "contenuti e campagne.", left + gutter, 443, 23, INK, 400);
-    text(ctx, "Guarda cosa", left + contentWidth - gutter - 139, 410, 13);
-    text(ctx, "possiamo creare ↘", left + contentWidth - gutter - 139, 431, 13);
-    const filmTop = 499, filmHeight = 630;
-    const gradient = ctx.createLinearGradient(0, filmTop, 0, filmTop + filmHeight);
-    gradient.addColorStop(0, "#080a0d"); gradient.addColorStop(0.8, "#1a1e24");
-    gradient.addColorStop(1, "#080a0d");
-    ctx.fillStyle = gradient; ctx.beginPath();
-    ctx.roundRect(left + gutter, filmTop, contentWidth - gutter * 2, filmHeight, 26); ctx.fill();
-    text(ctx, "IL DETTAGLIO CAMBIA TUTTO.", left + gutter + 30, filmTop + 52, 12, "#a9afb3");
-    text(ctx, "Piccolo inizio.", left + gutter + 30, filmTop + 120, 47, PAPER, 500);
-    text(ctx, "Grande impatto.", left + gutter + 30, filmTop + 169, 47, PAPER, 500);
-    ctx.save(); ctx.translate(width / 2, filmTop + 443); ctx.scale(1, 0.2);
-    ctx.strokeStyle = "#737d88"; ctx.lineWidth = 2;
-    for (let ring = 1; ring < 5; ring++) {
-      ctx.beginPath(); ctx.arc(0, 0, ring * 47, 0, Math.PI * 2); ctx.stroke();
-    }
-    ctx.restore();
-    const drop = ctx.createRadialGradient(width / 2 - 6, filmTop + 336, 1, width / 2, filmTop + 342, 17);
-    drop.addColorStop(0, "#ffffff"); drop.addColorStop(0.4, "#8f9aa4");
-    drop.addColorStop(0.7, "#11161b"); drop.addColorStop(1, "#9aa4ad");
-    ctx.fillStyle = drop; ctx.beginPath(); ctx.ellipse(width / 2, filmTop + 342, 17, 20, 0, 0, Math.PI * 2); ctx.fill();
-    return;
+    text(ctx, "CREATIVE MARKETING STUDIO · PARMA", left + gutter, 163, 12, "#a0a7a6");
+    const titleSize = contentWidth * 0.148;
+    text(ctx, "Il tuo brand.", left + gutter - 2, 262, titleSize, PAPER, 500);
+    text(ctx, "In un’altra", left + gutter - 2, 262 + titleSize, titleSize, PAPER, 500);
+    text(ctx, "dimensione.", left + gutter - 2, 262 + titleSize * 2, titleSize, LIME, 500);
+    const bodyTop = Math.max(490, 332 + titleSize * 2), buttonTop = bodyTop + 72;
+    text(ctx, "Branding, siti & e-commerce,", left + gutter, bodyTop, 23, "#b2b9b5", 400);
+    text(ctx, "contenuti & campagne.", left + gutter, bodyTop + 34, 23, "#b2b9b5", 400);
+    ctx.fillStyle = LIME; ctx.beginPath();
+    ctx.roundRect(left + gutter, buttonTop, contentWidth - gutter * 2, 62, 31); ctx.fill();
+    text(ctx, "Parliamo del tuo progetto  ↗", width / 2, buttonTop + 40, 22, INK, 500, "center");
+    orbitalProduct(width / 2, buttonTop + 299, Math.min(0.9, contentWidth / 750));
+    text(ctx, "STRATEGIA / DESIGN / IMPATTO", left + gutter, 1100, 12, "#8b958c");
+    ctx.restore(); return;
   }
-  text(ctx, "space", 100, 117, 67, INK, 600);
-  text(ctx, "media studio", 103, 149, 20, INK, 500);
-  text(ctx, "Cosa creiamo", width - 735, 116, 24);
-  text(ctx, "Lo studio", width - 490, 116, 24);
-  ctx.fillStyle = INK;
-  ctx.beginPath(); ctx.roundRect(width - 300, 70, 200, 66, 33); ctx.fill();
+
+  text(ctx, "space", 100, 117, 67, PAPER, 600);
+  text(ctx, "media studio", 103, 149, 20, "#a0a7a6");
+  ctx.fillStyle = LIME; ctx.beginPath(); ctx.arc(285, 91, 6, 0, Math.PI * 2); ctx.fill();
+  text(ctx, "Cosa creiamo", width - 735, 116, 24, PAPER);
+  text(ctx, "Lo studio", width - 490, 116, 24, PAPER);
+  ctx.strokeStyle = "#5b6159"; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.roundRect(width - 300, 70, 200, 66, 33); ctx.stroke();
   text(ctx, "Parliamone ↗", width - 200, 112, 25, PAPER, 500, "center");
-  text(ctx, "CREATIVE MARKETING STUDIO · PARMA", 104, 256, 23, "#6b6d66", 500);
-  text(ctx, "Un’idea.", 92, 428, 166, INK, 500);
-  text(ctx, "Un impatto.", 92, 592, 166, INK, 500);
-  text(ctx, "Branding, siti web,", width * 0.65, 360, 46, INK, 500);
-  text(ctx, "contenuti e campagne.", width * 0.65, 417, 46, INK, 500);
-  text(ctx, "Diamo forma al prossimo", width * 0.65, 490, 25, "#6b6d66");
-  text(ctx, "passo del tuo brand.", width * 0.65, 528, 25, "#6b6d66");
-  ctx.fillStyle = LIME;
-  ctx.beginPath(); ctx.roundRect(width * 0.65, 570, 260, 62, 31); ctx.fill();
-  text(ctx, "Scopri lo studio  ↘", width * 0.65 + 130, 610, 25, INK, 500, "center");
-  const gradient = ctx.createLinearGradient(0, height * 0.66, 0, height);
-  gradient.addColorStop(0, "#0a0b0e"); gradient.addColorStop(0.66, "#191c21");
-  gradient.addColorStop(1, "#07090b");
-  ctx.fillStyle = gradient;
-  ctx.beginPath(); ctx.roundRect(72, height * 0.69, width - 144, height * 0.29, 38); ctx.fill();
-  ctx.save(); ctx.translate(width * 0.51, height * 0.91); ctx.scale(1, 0.2);
-  for (let ring = 5; ring >= 1; ring--) {
-    ctx.strokeStyle = `rgba(237,240,235,${0.13 + ring * 0.018})`;
-    ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(0, 0, ring * 85, 0, Math.PI * 2); ctx.stroke();
-  }
-  ctx.restore();
-  const droplet = ctx.createRadialGradient(width * 0.51 - 9, height * 0.82 - 8, 2,
-    width * 0.51, height * 0.82, 24);
-  droplet.addColorStop(0, "#ffffff"); droplet.addColorStop(0.28, "#bcc4c8");
-  droplet.addColorStop(0.55, "#20282e"); droplet.addColorStop(0.88, "#939ea3");
-  droplet.addColorStop(1, "#10151a");
-  ctx.fillStyle = droplet; ctx.beginPath();
-  ctx.ellipse(width * 0.51, height * 0.82, 24, 28, 0, 0, Math.PI * 2); ctx.fill();
+  text(ctx, "CREATIVE MARKETING STUDIO · PARMA", 104, 256, 21, "#a0a7a6");
+  text(ctx, "Il tuo brand.", 92, 428, 143, PAPER, 500);
+  text(ctx, "In un’altra", 92, 576, 143, PAPER, 500);
+  text(ctx, "dimensione.", 92, 724, 143, LIME, 500);
+  text(ctx, "Branding, siti & e-commerce,", 104, 822, 32, "#b2b9b5", 400);
+  text(ctx, "contenuti & campagne.", 104, 869, 32, "#b2b9b5", 400);
+  ctx.fillStyle = LIME; ctx.beginPath(); ctx.roundRect(104, 925, 410, 73, 37); ctx.fill();
+  text(ctx, "Parliamo del tuo progetto  ↗", 309, 971, 25, INK, 500, "center");
+  orbitalProduct(width * 0.74, height * 0.56, 1.25);
+  text(ctx, "STRATEGIA / DESIGN / IMPATTO", 104, height - 60, 20, "#8b958c");
+  text(ctx, "AURA — PROGETTO POSSIBILE", width - 100, height - 60, 19, "#8b958c", 400, "right");
 }
 
 function brandArtwork(ctx, width, height) {

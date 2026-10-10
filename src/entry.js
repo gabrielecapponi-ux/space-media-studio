@@ -183,14 +183,14 @@ export function createEntry(motion) {
   const still = preference.matches || navigator.connection?.saveData;
   imagePaths.push(`./images/water-${still ? "" : "start-"}${mobile ? "mobile" : "desktop"}.jpg?v=refined-20261010`);
   const pictures = Promise.all(imagePaths.map((path, index) => task(`image-${index}`, 4, () => preloadImage(path))));
-  const roomTask = task("room", 12, async () => {
+  const roomTask = task("room", 8, async () => {
     if (preference.matches) return;
     const [{ createStudioRoom }] = await Promise.all([import("./studio-room.js"), fonts]);
     if (finished || disposed || preference.matches) return;
     room = createStudioRoom(shell.sceneHost, { reduced: preference.matches });
     room.setProgress(displayed / 99);
   });
-  const videoTask = task("film", 57, async (report) => {
+  const videoTask = task("film", 45, async (report) => {
     if (preference.matches || navigator.connection?.saveData) return;
     const video = document.querySelector("#water-film");
     if (!video) return;
@@ -233,11 +233,15 @@ export function createEntry(motion) {
     await decoded;
     video.dataset.entryVideo = "complete";
   });
-  const showcaseTask = task("showcase", 10, async () => {
+  const showcaseTask = task("showcase", 6, async () => {
     await Promise.all([pictures, fonts]);
     if (!finished && !disposed) await motion.prepareShowcase();
   });
-  Promise.all([fonts, pictures, roomTask, videoTask, showcaseTask]).then(() => {
+  const heroTask = task("hero", 20, async () => {
+    await fonts;
+    if (!finished && !disposed) await motion.prepareHero();
+  });
+  Promise.all([fonts, pictures, roomTask, videoTask, showcaseTask, heroTask]).then(() => {
     if (finished || disposed) return;
     settled = true;
     target = 99;

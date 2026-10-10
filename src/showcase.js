@@ -14,14 +14,6 @@ function roundedPath(context, x, y, width, height, radius) {
   context.roundRect(x, y, width, height, radius);
 }
 
-function cover(context, image, x, y, width, height) {
-  if (!image) return;
-  const ratio = Math.max(width / image.width, height / image.height);
-  const sourceWidth = width / ratio, sourceHeight = height / ratio;
-  context.drawImage(image, (image.width - sourceWidth) / 2, (image.height - sourceHeight) / 2,
-    sourceWidth, sourceHeight, x, y, width, height);
-}
-
 function label(context, text, x, y, size, color = INK, weight = 500, align = "left") {
   context.fillStyle = color;
   context.font = `${weight} ${size}px "Space Grotesk", sans-serif`;
@@ -40,96 +32,85 @@ function makeCanvas(width, height, draw) {
   return canvas;
 }
 
-function brandArtwork(context, width, height) {
-  context.fillStyle = LIME;
-  context.fillRect(0, 0, width, height);
-  label(context, "SPACE", 88, height * 0.51, 228, INK, 600);
-  label(context, "MEDIA STUDIO", 98, height * 0.64, 34, INK, 500);
-  context.fillStyle = INK;
-  context.fillRect(98, height - 97, width - 196, 2);
-  label(context, "STRATEGIA. DESIGN. IMPATTO.", 98, height - 54, 20);
-  label(context, "PARMA / IT", width - 98, height - 54, 20, INK, 500, "right");
-  context.strokeStyle = INK;
-  context.lineWidth = 3;
-  context.beginPath();
-  context.arc(width - 123, 117, 30, 0, Math.PI * 2);
-  context.moveTo(width - 140, 117);
-  context.lineTo(width - 106, 117);
-  context.moveTo(width - 123, 100);
-  context.lineTo(width - 123, 134);
-  context.stroke();
-}
-
-function websiteArtwork(context, width, height, image) {
-  context.fillStyle = PAPER;
-  context.fillRect(0, 0, width, height);
-  context.fillStyle = "#e5e5de";
-  context.fillRect(0, 0, width, 48);
-  [26, 47, 68].forEach((x) => {
-    context.beginPath(); context.arc(x, 24, 5, 0, Math.PI * 2);
-    context.fillStyle = "#b2b3aa"; context.fill();
-  });
-  context.fillStyle = "#f7f7f2";
-  roundedPath(context, width * 0.32, 10, width * 0.36, 28, 8); context.fill();
-  label(context, "forma.studio", width / 2, 30, 15, "#53554b", 500, "center");
-  label(context, "FORMA", 64, 120, 38, INK, 600);
-  label(context, "Architettura", width - 260, 114, 19);
-  label(context, "Studio", width - 105, 114, 19);
-  context.fillStyle = "#171916";
-  context.fillRect(0, 156, width, height - 156);
-  context.save();
-  context.filter = "grayscale(1)";
-  cover(context, image, width * 0.43, 156, width * 0.57, height - 156);
+function drawProduct(context, x, y, size = 1) {
+  context.save(); context.translate(x, y); context.scale(size, size);
+  const body = context.createLinearGradient(-90, 0, 90, 0);
+  body.addColorStop(0, "#474c54"); body.addColorStop(0.15, "#dfe3e7");
+  body.addColorStop(0.4, "#a2a9b0"); body.addColorStop(0.75, "#f2f2ef"); body.addColorStop(1, "#535b64");
+  context.fillStyle = body; roundedPath(context, -88, -110, 176, 248, 20); context.fill();
+  context.fillStyle = "#181b20"; roundedPath(context, -49, -197, 98, 86, 12); context.fill();
+  context.fillStyle = LIME; context.fillRect(-50, -124, 100, 8);
+  context.fillStyle = LIME; roundedPath(context, -66, -49, 132, 116, 2); context.fill();
+  label(context, "AURA", 0, -9, 40, INK, 600, "center");
+  label(context, "EXTRAIT 01", 0, 21, 11, INK, 500, "center");
+  label(context, "50 ML / PARFUM", 0, 48, 9, INK, 500, "center");
   context.restore();
-  const shade = context.createLinearGradient(width * 0.33, 0, width * 0.74, 0);
-  shade.addColorStop(0, "#171916"); shade.addColorStop(1, "rgba(23,25,22,0)");
-  context.fillStyle = shade; context.fillRect(0, 156, width, height - 156);
-  label(context, "SPAZI DA VIVERE", 64, 233, 17, "#b5b8ac");
-  label(context, "La forma", 60, 352, 89, PAPER, 500);
-  label(context, "di un’idea.", 60, 448, 89, PAPER, 500);
-  label(context, "Architettura essenziale.", 64, 521, 24, "#c9ccbf");
-  label(context, "Prospettive nuove.", 64, 555, 24, "#c9ccbf");
-  context.fillStyle = LIME;
-  roundedPath(context, 64, height - 131, 236, 58, 29); context.fill();
-  label(context, "Esplora i progetti   ↗", 86, height - 94, 22);
-  label(context, "01 / 03", width - 62, height - 61, 19, PAPER, 500, "right");
 }
 
-function campaignArtwork(context, width, height, image, social = false) {
-  context.fillStyle = PAPER;
-  context.fillRect(0, 0, width, height);
+function productLabel(context, width, height) {
+  context.fillStyle = LIME; context.fillRect(0, 0, width, height);
+  label(context, "AURA", width / 2, height * 0.35, width * 0.26, INK, 600, "center");
+  label(context, "EXTRAIT 01", width / 2, height * 0.53, width * 0.07, INK, 500, "center");
+  context.fillStyle = INK; context.fillRect(width * 0.12, height * 0.64, width * 0.76, 2);
+  label(context, "50 ML / PARFUM", width / 2, height * 0.76, width * 0.05, INK, 500, "center");
+  label(context, "A SPACE CONCEPT", width / 2, height * 0.88, width * 0.036, INK, 500, "center");
+}
+
+function brandArtwork(context, width, height) {
+  context.fillStyle = LIME; context.fillRect(0, 0, width, height);
+  label(context, "AURA", 75, height * 0.49, 260, INK, 600);
+  label(context, "UN’IDENTITÀ. IN OGNI DIMENSIONE.", 88, height * 0.64, 25);
+  context.fillStyle = INK; context.fillRect(88, height - 100, width - 176, 2);
+  label(context, "BRANDING / PRODUCT DESIGN / 3D", 88, height - 56, 21);
+  label(context, "SPACE CONCEPT 01", width - 88, height - 56, 21, INK, 500, "right");
+}
+
+function websiteArtwork(context, width, height) {
+  context.fillStyle = PAPER; context.fillRect(0, 0, width, height);
+  context.fillStyle = "#e4e5df"; context.fillRect(0, 0, width, 42);
+  [24, 44, 64].forEach((x) => { context.beginPath(); context.arc(x, 21, 5, 0, Math.PI * 2); context.fillStyle = "#a9aca3"; context.fill(); });
+  label(context, "aura.store / concept", width / 2, 28, 15, "#53554b", 500, "center");
+  label(context, "AURA", 58, 123, 47, INK, 600);
+  label(context, "La collezione", width - 280, 113, 20);
+  label(context, "Bag (0)", width - 122, 113, 20);
+  context.fillStyle = "#eceee5"; roundedPath(context, width * 0.51, 175, width * 0.45, height - 220, 26); context.fill();
+  const halo = context.createRadialGradient(width * 0.73, height * 0.5, 0, width * 0.73, height * 0.5, 280);
+  halo.addColorStop(0, "#e3f89c"); halo.addColorStop(1, "rgba(236,238,229,0)");
+  context.fillStyle = halo; context.fillRect(width * 0.51, 175, width * 0.45, height - 220);
+  drawProduct(context, width * 0.735, height * 0.58, 1.35);
+  label(context, "EXTRAIT DE PARFUM / 01", 59, 228, 18, "#64685d");
+  label(context, "Lascia", 54, 342, 91, INK, 500);
+  label(context, "il segno.", 54, 438, 91, INK, 500);
+  label(context, "AURA 01. La tua nuova essenza.", 59, 503, 24);
+  label(context, "50 ml · Eau de parfum", 59, 543, 20, "#64685d");
+  label(context, "Edizione 01", 58, 608, 32, INK, 500);
+  context.fillStyle = INK; roundedPath(context, 58, height - 129, 366, 61, 30); context.fill();
+  label(context, "Aggiungi al carrello   +", 84, height - 89, 25, LIME, 500);
+  label(context, "E-COMMERCE CONCEPT / SPACE", width - 54, height - 34, 15, "#64685d", 500, "right");
+}
+
+function campaignArtwork(context, width, height, unused, social = false) {
+  context.fillStyle = social ? LIME : PAPER; context.fillRect(0, 0, width, height);
   if (social) {
-    context.fillStyle = INK;
-    context.fillRect(0, 0, width, 94);
-    label(context, "REVERIE", 38, 61, 31, PAPER, 600);
-    context.save(); context.filter = "grayscale(1)";
-    cover(context, image, 0, 94, width, height * 0.63);
-    context.restore();
-    context.fillStyle = LIME;
-    context.fillRect(0, height * 0.71, width, height * 0.29);
-    label(context, "Il tuo prossimo", 36, height * 0.81, 38, INK, 500);
-    label(context, "rituale.", 36, height * 0.89, 38, INK, 500);
-    label(context, "SCOPRI LA COLLEZIONE   ↗", 38, height - 28, 17);
+    label(context, "AURA", 38, 98, 74, INK, 600);
+    label(context, "LASCIA IL SEGNO.", 40, 143, 22);
+    drawProduct(context, width * 0.53, height * 0.59, 1.28);
+    context.fillStyle = INK; roundedPath(context, 35, height - 108, width - 70, 61, 30); context.fill();
+    label(context, "SCOPRI AURA 01   ↗", width / 2, height - 69, 24, LIME, 500, "center");
     return;
   }
   label(context, "9:41", 39, 52, 22, INK, 600);
-  context.fillStyle = INK;
-  roundedPath(context, width - 75, 35, 35, 16, 4); context.fill();
-  label(context, "REVERIE", width / 2, 145, 44, INK, 600, "center");
-  label(context, "IL TUO RITUALE, OGNI GIORNO.", width / 2, 185, 14, INK, 500, "center");
-  context.save(); context.filter = "grayscale(1)";
-  cover(context, image, 0, 225, width, height * 0.47);
-  context.restore();
-  context.fillStyle = LIME;
-  context.fillRect(28, 244, 111, 35);
-  label(context, "ESSENTIALS", 40, 268, 15, INK, 600);
-  label(context, "Meno rumore.", 38, height * 0.78, 40, INK, 500);
-  label(context, "Più essenza.", 38, height * 0.835, 40, INK, 500);
-  context.fillStyle = INK;
-  roundedPath(context, 36, height - 115, width - 72, 58, 29); context.fill();
-  label(context, "Scopri REVERIE   ↗", width / 2, height - 77, 23, PAPER, 500, "center");
-  context.fillStyle = INK;
-  roundedPath(context, width * 0.36, height - 25, width * 0.28, 5, 3); context.fill();
+  context.fillStyle = INK; roundedPath(context, width - 75, 35, 35, 16, 4); context.fill();
+  label(context, "AURA", width / 2, 156, 62, INK, 600, "center");
+  label(context, "LASCIA IL SEGNO.", width / 2, 196, 19, INK, 500, "center");
+  context.fillStyle = "#e7eade"; roundedPath(context, 26, 232, width - 52, height * 0.48, 26); context.fill();
+  drawProduct(context, width / 2, height * 0.49, 1.3);
+  label(context, "AURA 01", 39, height * 0.775, 39, INK, 600);
+  label(context, "Extrait de parfum · 50 ml", 39, height * 0.815, 20, "#656a60");
+  label(context, "01", width - 39, height * 0.775, 31, INK, 500, "right");
+  context.fillStyle = INK; roundedPath(context, 36, height - 122, width - 72, 64, 32); context.fill();
+  label(context, "Aggiungi al carrello   +", width / 2, height - 80, 24, LIME, 500, "center");
+  context.fillStyle = INK; roundedPath(context, width * 0.36, height - 25, width * 0.28, 5, 3); context.fill();
 }
 
 function roundedShape(width, height, radius) {
@@ -181,16 +162,15 @@ export function createShowcase(container) {
   const compactQuery = window.matchMedia("(max-width: 760px)");
   const lowDetail = compactQuery.matches || navigator.maxTouchPoints > 0;
   const geometries = new Set(), materials = new Set(), textures = new Set();
-  let renderer, scene, camera, environment, group, display, phone, social;
+  let renderer, scene, camera, environment, group, display, phone, social, product, pedestal;
+  const fragments = [];
   let identityMaterial, websiteMaterial, phoneScreen, socialScreen;
   let shadow, initialized = false, disposed = false, failed = false;
   let visible = false, paused = false, reduced = motionQuery.matches;
   let progress = 0, appliedProgress = -1, renderFrame = 0, frames = 0;
-  let architectureImage = null, campaignImage = null;
   let width = 1, height = 1;
-  let textureBrand, textureWebsite, texturePhone, textureSocial;
+  let textureBrand, textureWebsite, texturePhone, textureSocial, textureLabel;
   let preparing = false, preparationCancelled = false, preparationPromise, cancelPreparation;
-  const imageTasks = [], imageWaiters = new Set();
   const fontReady = document.fonts?.load('500 32px "Space Grotesk"').catch(() => []) ?? Promise.resolve([]);
   const ownGeometry = (value) => { geometries.add(value); return value; };
   const ownMaterial = (value) => { materials.add(value); return value; };
@@ -246,12 +226,13 @@ export function createShowcase(container) {
       texture.needsUpdate = true;
     };
     replace(textureBrand, makeCanvas(1280, 800, brandArtwork));
+    replace(textureLabel, makeCanvas(512, 512, productLabel));
     replace(textureWebsite, makeCanvas(1280, 800,
-      (context, w, h) => websiteArtwork(context, w, h, architectureImage)));
+      websiteArtwork));
     replace(texturePhone, makeCanvas(512, 1100,
-      (context, w, h) => campaignArtwork(context, w, h, campaignImage)));
+      campaignArtwork));
     replace(textureSocial, makeCanvas(640, 800,
-      (context, w, h) => campaignArtwork(context, w, h, campaignImage, true)));
+      (context, w, h) => campaignArtwork(context, w, h, null, true)));
     requestPaint();
   }
 
@@ -290,6 +271,8 @@ export function createShowcase(container) {
       scene.add(key);
       const fill = new THREE.DirectionalLight(0xe2ebff, 0.7);
       fill.position.set(5, 0, 3); scene.add(fill);
+      const rim = new THREE.DirectionalLight(0xe3ff80, 2.2);
+      rim.position.set(3, 4, -4); scene.add(rim);
 
       const metal = ownMaterial(new THREE.MeshStandardMaterial({ color: 0x41454c, metalness: 1, roughness: 0.31 }));
       const edge = ownMaterial(new THREE.MeshStandardMaterial({ color: 0xb7bec7, metalness: 1, roughness: 0.24 }));
@@ -298,16 +281,52 @@ export function createShowcase(container) {
       const black = ownMaterial(new THREE.MeshStandardMaterial({ color: 0x050609, roughness: 0.48, metalness: 0 }));
       const lens = ownMaterial(new THREE.MeshStandardMaterial({ color: 0x111a24, metalness: 0, roughness: 0.1 }));
       const button = ownMaterial(new THREE.MeshStandardMaterial({ color: 0xaeb6c0, metalness: 1, roughness: 0.28 }));
+      const lime = ownMaterial(new THREE.MeshPhysicalMaterial({ color: 0xdfff00, roughness: 0.24,
+        metalness: 0, clearcoat: 0.7, clearcoatRoughness: 0.12 }));
+      const chrome = ownMaterial(new THREE.MeshStandardMaterial({ color: 0xc7cdd2, metalness: 1, roughness: 0.16 }));
       textureBrand = canvasTexture(1280, 800, brandArtwork);
-      textureWebsite = canvasTexture(1280, 800, (context, w, h) => websiteArtwork(context, w, h, architectureImage));
-      texturePhone = canvasTexture(512, 1100, (context, w, h) => campaignArtwork(context, w, h, campaignImage));
-      textureSocial = canvasTexture(640, 800, (context, w, h) => campaignArtwork(context, w, h, campaignImage, true));
+      textureWebsite = canvasTexture(1280, 800, websiteArtwork);
+      texturePhone = canvasTexture(512, 1100, campaignArtwork);
+      textureSocial = canvasTexture(640, 800, (context, w, h) => campaignArtwork(context, w, h, null, true));
       identityMaterial = ownMaterial(new THREE.MeshBasicMaterial({ map: textureBrand, toneMapped: false }));
       websiteMaterial = ownMaterial(new THREE.MeshBasicMaterial({ map: textureWebsite, transparent: true,
         opacity: 0, depthWrite: false, toneMapped: false }));
       phoneScreen = ownMaterial(new THREE.MeshBasicMaterial({ map: texturePhone, toneMapped: false }));
       socialScreen = ownMaterial(new THREE.MeshBasicMaterial({ map: textureSocial, toneMapped: false }));
       group = new THREE.Group(); scene.add(group);
+      product = new THREE.Group(); group.add(product);
+      const bottleMetal = ownMaterial(new THREE.MeshPhysicalMaterial({ color: 0xb5bcc4,
+        metalness: 1, roughness: 0.24, clearcoat: 0.32, clearcoatRoughness: 0.18 }));
+      mesh(new RoundedBoxGeometry(1.5, 2.15, 0.95, lowDetail ? 3 : 4, 0.14), bottleMetal, product, 0, -0.05, 0);
+      mesh(new RoundedBoxGeometry(1.36, 0.08, 0.82, 2, 0.035), black, product, 0, -1.15, 0);
+      mesh(new THREE.CylinderGeometry(0.24, 0.24, 0.22, 24), chrome, product, 0, 1.06, 0);
+      const capProfile = [[0, -0.34], [0.43, -0.34], [0.47, -0.3], [0.47, 0.28],
+        [0.44, 0.34], [0, 0.34]].map(([x, y]) => new THREE.Vector2(x, y));
+      mesh(new THREE.LatheGeometry(capProfile, lowDetail ? 32 : 48), bezel, product, 0, 1.4, 0);
+      mesh(new THREE.CylinderGeometry(0.475, 0.475, 0.045, 32), lime, product, 0, 1.11, 0);
+      textureLabel = canvasTexture(512, 512, productLabel);
+      const labelMaterial = ownMaterial(new THREE.MeshStandardMaterial({ map: textureLabel, roughness: 0.7,
+        metalness: 0, envMapIntensity: 0.45 }));
+      mesh(roundedSurface(1.18, 1.04, 0.015, 2), labelMaterial, product, 0, -0.03, 0.481, false);
+      pedestal = new THREE.Group(); product.add(pedestal);
+      mesh(new THREE.CylinderGeometry(1.3, 1.4, 0.24, lowDetail ? 32 : 48), metal, pedestal, 0, -1.32, 0);
+      const pedestalRing = mesh(new THREE.TorusGeometry(1.305, 0.025, 8, lowDetail ? 40 : 64), lime, pedestal, 0, -1.21, 0, false);
+      pedestalRing.rotation.x = Math.PI / 2;
+      const fragmentGeometry = new RoundedBoxGeometry(0.21, 1.04, 0.24, 2, 0.09);
+      for (let index = 0; index < 12; index++) {
+        const material = index % 3 === 0 ? chrome : index % 3 === 1 ? lime : metal;
+        fragments.push(mesh(fragmentGeometry, material, group));
+      }
+      const glowTexture = canvasTexture(128, 128, (context, w, h) => {
+        const glow = context.createRadialGradient(w / 2, h / 2, 0, w / 2, h / 2, w / 2);
+        glow.addColorStop(0, "rgba(170,205,40,0.16)");
+        glow.addColorStop(0.4, "rgba(170,205,40,0.055)");
+        glow.addColorStop(1, "rgba(170,205,40,0)");
+        context.fillStyle = glow; context.fillRect(0, 0, w, h);
+      });
+      mesh(new THREE.PlaneGeometry(8, 8), ownMaterial(new THREE.MeshBasicMaterial({ map: glowTexture,
+        transparent: true, depthWrite: false, toneMapped: false, blending: THREE.AdditiveBlending,
+      })), group, 0, 0, -2.7, false);
       display = new THREE.Group(); group.add(display);
       const corners = lowDetail ? 2 : 3;
       mesh(new RoundedBoxGeometry(6.12, 3.92, 0.21, corners, 0.095), metal, display, 0, 0, 0);
@@ -367,27 +386,70 @@ export function createShowcase(container) {
     const pose = reduced ? (requestedProgress < 0.3 ? 0 : requestedProgress < 0.72 ? 0.5 : 1) : requestedProgress;
     if (!force && Math.abs(pose - appliedProgress) < 0.00001) return;
     appliedProgress = pose;
-    const expand = phase(pose, 0.12, 0.47);
-    const campaign = phase(pose, 0.62, 0.94);
-    const webReveal = phase(pose, 0.2, 0.48);
-    const displayScale = mix(mix(0.61, 1, expand), 0.79, campaign);
+    const expand = phase(pose, 0.1, 0.52);
+    const campaign = phase(pose, 0.63, 0.96);
+    const webReveal = phase(pose, 0.17, 0.46);
+    const portrait = width / height < 0.9;
+    const spread = portrait ? 0.7 : 1;
+    const displayScale = mix(mix(0.36, portrait ? 0.7 : 0.83, expand), portrait ? 0.49 : 0.62, campaign);
+    display.visible = expand > 0.025;
     display.scale.set(displayScale, displayScale, 1);
-    display.position.set(mix(0.1, -0.77, campaign), mix(0.12, 0.25, campaign), mix(0.25, -0.3, campaign));
-    display.rotation.set(mix(-0.11, 0.025, expand), mix(mix(-0.31, -0.12, expand), 0.14, campaign),
-      mix(mix(-0.045, 0.015, expand), -0.025, campaign));
+    display.position.set(mix(-0.65, 0.18, campaign) * spread, mix(0.18, 0.36, campaign), mix(-0.5, -0.92, campaign));
+    display.rotation.set(mix(-0.04, 0.02, expand), mix(mix(0.38, -0.17, expand), 0.16, campaign),
+      mix(-0.025, 0.025, campaign));
     websiteMaterial.opacity = webReveal;
     websiteMaterial.visible = webReveal > 0.0001;
     identityMaterial.visible = webReveal < 0.9999;
+
+    const productScale = mix(mix(1.12, 0.86, expand), portrait ? 0.95 : 1.02, campaign);
+    product.scale.setScalar(productScale);
+    product.position.set(mix(mix(0, 1.35, expand), -1.45, campaign) * spread,
+      mix(0.02, -0.13, expand), mix(mix(0.4, 1.35, expand), 1.05, campaign));
+    product.rotation.set(mix(-0.025, 0.025, campaign), mix(mix(-0.27, -0.1, expand), 0.24, campaign),
+      mix(mix(-0.035, 0.025, expand), -0.045, campaign));
+
     phone.visible = campaign > 0.0001;
-    social.visible = campaign > 0.03;
-    phone.position.set(mix(0.7, 1.92, campaign), mix(-0.2, -0.09, campaign), mix(-0.57, 0.82, campaign));
-    phone.rotation.set(mix(0.02, -0.025, campaign), mix(-0.36, -0.15, campaign), mix(0.02, 0.055, campaign));
-    phone.scale.setScalar(mix(0.87, 1, campaign));
-    social.position.set(mix(0.85, 2.5, campaign), mix(-0.2, -0.22, campaign), mix(-0.85, -0.25, campaign));
-    social.rotation.set(0.02, mix(-0.3, -0.13, campaign), mix(0, -0.075, campaign));
-    social.scale.setScalar(mix(0.82, 1, campaign));
-    // Camera movement stays restrained and shares the scroll clock. No idle
-    // spin, independent sine motion, or cumulative position changes.
+    social.visible = campaign > 0.12;
+    phone.position.set(mix(1.12, 2.0, campaign) * spread, mix(-0.28, -0.04, campaign), mix(-0.7, 1.25, campaign));
+    phone.rotation.set(-0.025, mix(-0.35, -0.15, campaign), mix(-0.08, 0.05, campaign));
+    phone.scale.setScalar(mix(0.56, portrait ? 0.9 : 1, campaign));
+    social.position.set(mix(0.2, 0.14, campaign) * spread, mix(0, 0.31, campaign), mix(-1.2, -0.4, campaign));
+    social.rotation.set(0.025, -0.22, mix(0.12, -0.1, campaign));
+    social.scale.setScalar(mix(0.4, 0.76, campaign));
+
+    const burst = Math.sin(expand * Math.PI);
+    const turn = new THREE.Euler();
+    const target = new THREE.Vector3();
+    const mobileTarget = new THREE.Vector3();
+    fragments.forEach((fragment, index) => {
+      const angle = index / fragments.length * Math.PI * 2 + 0.12;
+      const side = Math.floor(index / 3), slot = index % 3 - 1;
+      const horizontal = side < 2;
+      const frameX = horizontal ? slot * 2.12 : (side === 2 ? -3.18 : 3.18);
+      const frameY = horizontal ? (side === 0 ? 2.06 : -2.06) : slot * 1.37;
+      target.set(frameX * displayScale, frameY * displayScale, 0.06)
+        .applyEuler(display.rotation).add(display.position);
+      const phoneScale = phone.scale.x;
+      const phoneX = horizontal ? slot * 0.595 : (side === 2 ? -0.9 : 0.9);
+      const phoneY = horizontal ? (side === 0 ? 1.72 : -1.72) : slot * 1.145;
+      mobileTarget.set(phoneX * phoneScale, phoneY * phoneScale, 0.04)
+        .applyEuler(phone.rotation).add(phone.position);
+      target.lerp(mobileTarget, campaign);
+      const ringX = Math.cos(angle) * 2.31;
+      const ringY = Math.sin(angle) * 2.25 + 0.12;
+      const ringZ = Math.sin(angle * 2) * 0.62;
+      fragment.position.set(mix(ringX, target.x, expand) + Math.cos(angle) * burst * 0.6,
+        mix(ringY, target.y, expand) + Math.sin(angle) * burst * 0.52,
+        mix(ringZ, target.z, expand) + Math.sin(angle * 2) * burst * 1.1);
+      const frameAngle = (horizontal ? Math.PI / 2 : 0) + mix(display.rotation.z, phone.rotation.z, campaign);
+      turn.set(mix(Math.sin(angle) * 0.52, mix(display.rotation.x, phone.rotation.x, campaign), expand),
+        mix(Math.cos(angle) * 0.58, mix(display.rotation.y, phone.rotation.y, campaign), expand),
+        mix(angle, frameAngle, expand) + burst * 0.38);
+      fragment.rotation.copy(turn);
+      const length = mix((horizontal ? 2.04 : 1.28) * displayScale,
+        (horizontal ? 0.55 : 1.08) * phoneScale, campaign);
+      fragment.scale.set(mix(1, mix(0.65, 0.42, campaign), expand), mix(1, length / 1.04, expand), 1);
+    });
     group.rotation.y = mix(0.035, -0.02, campaign);
     shadow.scale.set(mix(mix(0.58, 0.93, expand), 1, campaign),
       mix(mix(1.1, 0.72, expand), 0.85, campaign), 1);
@@ -402,17 +464,16 @@ export function createShowcase(container) {
     if (!camera) return;
     const aspect = width / height;
     camera.aspect = aspect;
-    // Fit the full campaign envelope at every orientation; never crop a
-    // portrait source to approximate responsive framing.
     const pose = Math.max(0, appliedProgress);
-    const expand = phase(pose, 0.12, 0.47);
-    const campaign = phase(pose, 0.62, 0.94);
-    const envelopeWidth = mix(mix(4.65, 6.8, expand), 7.5, campaign);
-    const envelopeHeight = mix(mix(3.8, 4.55, expand), 5.15, campaign);
+    const expand = phase(pose, 0.1, 0.52);
+    const campaign = phase(pose, 0.63, 0.96);
+    const portrait = aspect < 0.9;
+    const envelopeWidth = mix(mix(5.8, portrait ? 5.7 : 7.2, expand), portrait ? 5.8 : 7.1, campaign);
+    const envelopeHeight = mix(5.35, 5.6, campaign);
     const vertical = Math.max(envelopeHeight, envelopeWidth / aspect);
     const distance = vertical / (2 * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)));
-    camera.position.set(0.1, 0.46, distance);
-    camera.lookAt(0.1, -0.05, 0);
+    camera.position.set(0.04, 0.62, distance);
+    camera.lookAt(0.04, 0.02, 0);
     camera.updateProjectionMatrix();
   }
 
@@ -423,7 +484,7 @@ export function createShowcase(container) {
     height = Math.max(1, rect.height);
     renderer.setSize(width, height, false);
     diagnostics.dpr = renderer.getPixelRatio();
-    updateCamera();
+    applyPose(true);
     requestPaint();
   }
 
@@ -490,33 +551,6 @@ export function createShowcase(container) {
     } else if (visible && !preparing) { applyPose(true); requestPaint(); }
   }
 
-  function loadImage(path, assign) {
-    const image = new Image();
-    image.decoding = "async";
-    imageTasks.push(new Promise((resolve) => {
-      let settled = false;
-      const cancel = () => finish(false);
-      const finish = (ok) => {
-        if (settled) return;
-        settled = true;
-        imageWaiters.delete(cancel);
-        resolve(ok);
-      };
-      imageWaiters.add(cancel);
-      image.onload = async () => {
-        try { await image.decode?.(); } catch { /* A loaded image can still be drawn when decode() rejects. */ }
-        if (disposed) { finish(false); return; }
-        assign(image);
-        buildArtwork();
-        finish(true);
-      };
-      image.onerror = () => finish(false);
-    }));
-    image.src = `${import.meta.env.BASE_URL}${path}`;
-    return image;
-  }
-  const architecture = loadImage("images/forma-architecture.jpg", (image) => { architectureImage = image; });
-  const campaign = loadImage("images/aura-perfume.jpg", (image) => { campaignImage = image; });
   const intersection = new IntersectionObserver((entries) => {
     visible = entries.some((entry) => entry.isIntersecting);
     if (visible) { initialize(); if (!paused && !preparing) applyPose(true); requestPaint(); }
@@ -538,7 +572,7 @@ export function createShowcase(container) {
     const cancelled = new Promise((resolve) => { cancelPreparation = (state = "disposed") => resolve({ state }); });
     const work = (async () => {
       try {
-        await Promise.allSettled([...imageTasks, fontReady]);
+        await fontReady;
         if (disposed) return { state: "disposed" };
         if (preparationCancelled) return { state: "cancelled" };
         initialize();
@@ -636,13 +670,10 @@ export function createShowcase(container) {
       if (disposed) return;
       disposed = true;
       cancelPreparation?.();
-      imageWaiters.forEach((cancel) => cancel());
-      imageWaiters.clear();
       intersection.disconnect();
       resizeObserver.disconnect();
       motionQuery.removeEventListener("change", onMotionChange);
       document.removeEventListener("visibilitychange", onVisibilityChange);
-      architecture.onload = architecture.onerror = campaign.onload = campaign.onerror = null;
       setState("fallback");
       cleanupGPU();
       delete container.showcaseDiagnostics;

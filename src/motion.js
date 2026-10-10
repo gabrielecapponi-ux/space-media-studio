@@ -1,4 +1,4 @@
-// Absolute scroll owns the product. Native video decoding owns the water.
+// Scroll owns the product journey; the hero has an independent, bounded cycle.
 export function createMotion({ initiallyBlocked = false } = {}) {
   const abort = new AbortController();
   const { signal } = abort;
@@ -7,7 +7,10 @@ export function createMotion({ initiallyBlocked = false } = {}) {
   const stage = document.querySelector(".water-stage");
   const story = document.querySelector("#esperienza");
   const sceneContainer = document.querySelector("#showcase-scene");
-  const toggle = document.querySelector("#motion-toggle");
+  const toggles = [...document.querySelectorAll("#motion-toggle, #hero-motion-toggle")];
+  const heroContainer = document.querySelector("#kinetic-scene");
+  let hero;
+  let heroPromise;
   const replay = document.querySelector("#film-replay");
   const filmProgress = document.querySelector(".water-progress > span");
   const tabs = [...document.querySelectorAll("button[data-showcase-step]")];
@@ -49,7 +52,7 @@ export function createMotion({ initiallyBlocked = false } = {}) {
   }
   function controls() {
     const reduced = preference.matches;
-    if (toggle) {
+    toggles.forEach((toggle) => {
       toggle.disabled = reduced;
       toggle.setAttribute("aria-pressed", String(paused || reduced));
       toggle.setAttribute("aria-label", reduced ? "Movimento ridotto attivo" : paused ? "Riprendi le animazioni" : "Metti in pausa le animazioni");
@@ -57,7 +60,7 @@ export function createMotion({ initiallyBlocked = false } = {}) {
       const icon = toggle.querySelector(".motion-icon");
       if (label) label.textContent = reduced ? "Movimento ridotto" : paused ? "Riprendi" : "Pausa";
       if (icon) icon.textContent = paused || reduced ? "▷" : "Ⅱ";
-    }
+    });
     if (replay) {
       replay.disabled = reduced;
       replay.setAttribute("aria-label", movieFailed ? "Riprova a caricare il film" : "Riproduci il film dall’inizio");
@@ -156,6 +159,7 @@ export function createMotion({ initiallyBlocked = false } = {}) {
     video.currentTime = 0;
     stage?.classList.remove("is-complete");
     scene?.setPaused(blocked);
+    hero?.setBlocked(blocked);
     syncMovie();
     readScroll();
     controls();
@@ -186,6 +190,16 @@ export function createMotion({ initiallyBlocked = false } = {}) {
     }).catch(() => { if (!disposed) sceneContainer.dataset.scene = "fallback"; });
     return scenePromise;
   }
+  async function ensureHero() {
+    if (!heroContainer || disposed || heroPromise) return heroPromise;
+    heroPromise = Promise.all([import("./kinetic-hero.js"), document.fonts.ready]).then(([{ createKineticHero }]) => {
+      if (disposed) return;
+      hero = createKineticHero(heroContainer);
+      hero.setBlocked(paused || blocked);
+      return hero;
+    }).catch(() => { if (!disposed) heroContainer.dataset.scene = "fallback"; });
+    return heroPromise;
+  }
   function render(time) {
     frame = 0;
     if (disposed || blocked || paused || document.hidden || !storyVisible || preference.matches) return;
@@ -205,6 +219,10 @@ export function createMotion({ initiallyBlocked = false } = {}) {
   function readScroll() {
     scrollFrame = 0;
     if (disposed || blocked) return;
+    if (heroContainer && !preference.matches && !paused) {
+      const rect = heroContainer.getBoundingClientRect();
+      if (rect.bottom > 0 && rect.top < innerHeight) hero?.setProgress(clamp(-rect.top / Math.max(1, rect.height)));
+    }
     if (story && !preference.matches && !paused) {
       const rect = story.getBoundingClientRect();
       target = clamp(-rect.top / Math.max(1, rect.height - innerHeight));
@@ -243,15 +261,16 @@ export function createMotion({ initiallyBlocked = false } = {}) {
       scrollTo({ top: start + value * Math.max(1, story.offsetHeight - innerHeight), behavior: "smooth" });
     }
   }, { signal }));
-  toggle?.addEventListener("click", () => {
+  toggles.forEach((toggle) => toggle.addEventListener("click", () => {
     if (preference.matches) return;
     paused = !paused;
     scene?.setPaused(paused || blocked);
+    hero?.setBlocked(paused || blocked);
     if (paused) { cancelAnimationFrame(frame); frame = 0; previous = 0; }
     syncMovie();
     controls();
     if (!paused) readScroll();
-  }, { signal });
+  }, { signal }));
   const visibility = new IntersectionObserver((entries) => entries.forEach(({ target: element, isIntersecting }) => {
     if (element === video) {
       movieVisible = isIntersecting;
@@ -302,6 +321,7 @@ export function createMotion({ initiallyBlocked = false } = {}) {
       blocked = Boolean(value);
       if (!blocked) scene?.cancelPrepare?.();
       scene?.setPaused(paused || blocked);
+      hero?.setBlocked(paused || blocked);
       if (blocked) {
         cancelAnimationFrame(frame);
         cancelAnimationFrame(scrollFrame);
@@ -309,6 +329,7 @@ export function createMotion({ initiallyBlocked = false } = {}) {
       } else {
         readScroll();
         if (storyVisible) ensureScene();
+        ensureHero();
       }
       syncMovie();
     },
@@ -333,6 +354,11 @@ export function createMotion({ initiallyBlocked = false } = {}) {
       updateFilmProgress();
       return true;
     },
+    async prepareHero() {
+      const preparedHero = await ensureHero();
+      if (disposed || !preparedHero) return { state: "fallback" };
+      return preparedHero.prepare();
+    },
     async prepareShowcase() {
       const startedBlocked = blocked;
       const preparedScene = await ensureScene();
@@ -351,6 +377,7 @@ export function createMotion({ initiallyBlocked = false } = {}) {
       cancelVideoFrame();
       video?.pause();
       scene?.dispose();
+      hero?.dispose();
     },
   };
 }
