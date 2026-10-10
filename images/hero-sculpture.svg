@@ -1,24 +1,27 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 720" fill="none">
   <defs>
     <path id="module" d="M-.14 .24L-.51 .57C-.22 .94-.14 1.55-.055 1.88C-.045 1.96 .045 1.96 .055 1.88C.14 1.55 .22 .94 .51 .57L.14 .24Q0 .18-.14 .24Z"/>
-    <linearGradient id="cobalt" x1="-.42" y1="1.82" x2=".42" y2=".3" gradientUnits="userSpaceOnUse"><stop stop-color="#8895ff"/><stop offset=".24" stop-color="#3f53ff"/><stop offset=".64" stop-color="#2536ff"/><stop offset="1" stop-color="#1720bb"/></linearGradient>
-    <linearGradient id="pink" x1="-.42" y1="1.82" x2=".42" y2=".3" gradientUnits="userSpaceOnUse"><stop stop-color="#ffb3e3"/><stop offset=".24" stop-color="#ff69c4"/><stop offset=".64" stop-color="#ff48b6"/><stop offset="1" stop-color="#cf208b"/></linearGradient>
-    <linearGradient id="chrome" x1="-.15" y1=".15" x2=".15" y2="-.15" gradientUnits="userSpaceOnUse"><stop stop-color="#fffdf5"/><stop offset=".32" stop-color="#c5cccf"/><stop offset=".5" stop-color="#727c87"/><stop offset=".64" stop-color="#f4f6f6"/><stop offset="1" stop-color="#bac4d2"/></linearGradient>
-    <filter id="shadow" x="-35%" y="-35%" width="170%" height="180%"><feDropShadow dx="5" dy="13" stdDeviation="12" flood-color="#264400" flood-opacity=".16"/></filter>
+    <linearGradient id="cobalt" x1="-.5" y1="1.1" x2=".5" y2=".8" gradientUnits="userSpaceOnUse"><stop stop-color="#111d8f"/><stop offset=".24" stop-color="#3248ff"/><stop offset=".42" stop-color="#a1b1ff"/><stop offset=".56" stop-color="#4058ff"/><stop offset=".8" stop-color="#2536ff"/><stop offset="1" stop-color="#111974"/></linearGradient>
+    <linearGradient id="pink" x1="-.5" y1="1.1" x2=".5" y2=".8" gradientUnits="userSpaceOnUse"><stop stop-color="#7c165d"/><stop offset=".22" stop-color="#e72e9e"/><stop offset=".42" stop-color="#ffc6ee"/><stop offset=".56" stop-color="#ff68c7"/><stop offset=".8" stop-color="#ff48b6"/><stop offset="1" stop-color="#a11971"/></linearGradient>
+    <linearGradient id="chrome" x1="-.5" y1="1.8" x2=".5" y2=".3" gradientUnits="userSpaceOnUse"><stop stop-color="#f4f7ff"/><stop offset=".23" stop-color="#6d798e"/><stop offset=".36" stop-color="#e6edf8"/><stop offset=".5" stop-color="#252d40"/><stop offset=".65" stop-color="#b4bdca"/><stop offset=".8" stop-color="#fbfcff"/><stop offset="1" stop-color="#515e74"/></linearGradient>
+    <linearGradient id="hub" x1="-.15" y1=".15" x2=".15" y2="-.15" gradientUnits="userSpaceOnUse"><stop stop-color="#fff"/><stop offset=".34" stop-color="#9eaabd"/><stop offset=".49" stop-color="#30394b"/><stop offset=".65" stop-color="#f7faff"/><stop offset="1" stop-color="#72829a"/></linearGradient>
+    <radialGradient id="orange" cx=".32" cy=".3" r=".7"><stop stop-color="#ffe0ce"/><stop offset=".26" stop-color="#ff9a70"/><stop offset=".65" stop-color="#ff6138"/><stop offset="1" stop-color="#b92517"/></radialGradient>
+    <filter id="shadow" x="-40%" y="-40%" width="180%" height="190%"><feDropShadow dx="7" dy="18" stdDeviation="16" flood-color="#00020b" flood-opacity=".5"/></filter>
   </defs>
   <g filter="url(#shadow)">
-    <g transform="translate(363 365) rotate(-7) scale(145 -140)">
-      <g transform="translate(.06 -.1)">
-        <use href="#module" fill="#1720a8" stroke="#1720a8" stroke-width=".045"/>
-        <use href="#module" transform="rotate(-90)" fill="#c72287" stroke="#c72287" stroke-width=".045"/>
-        <use href="#module" transform="rotate(-180)" fill="#1720a8" stroke="#1720a8" stroke-width=".045"/>
-        <use href="#module" transform="rotate(-270)" fill="#c72287" stroke="#c72287" stroke-width=".045"/>
+    <g transform="translate(363 365) rotate(-5) scale(143 -145)">
+      <g transform="translate(.09 -.13) scale(1.015)">
+        <use href="#module" fill="url(#chrome)" stroke="#9aa7bc" stroke-width=".035"/>
+        <use href="#module" transform="rotate(-90)" fill="url(#chrome)" stroke="#9aa7bc" stroke-width=".035"/>
+        <use href="#module" transform="rotate(-180)" fill="url(#chrome)" stroke="#9aa7bc" stroke-width=".035"/>
+        <use href="#module" transform="rotate(-270)" fill="url(#chrome)" stroke="#9aa7bc" stroke-width=".035"/>
       </g>
-      <use href="#module" fill="url(#cobalt)" stroke="#8591ff" stroke-width=".014"/>
-      <use href="#module" transform="rotate(-90)" fill="url(#pink)" stroke="#ffa0dd" stroke-width=".014"/>
-      <use href="#module" transform="rotate(-180)" fill="url(#cobalt)" stroke="#8591ff" stroke-width=".014"/>
-      <use href="#module" transform="rotate(-270)" fill="url(#pink)" stroke="#ffa0dd" stroke-width=".014"/>
-      <rect x="-.13" y="-.13" width=".26" height=".26" rx=".045" transform="rotate(45)" fill="url(#chrome)" stroke="#f8faff" stroke-width=".012"/>
+      <use href="#module" fill="url(#cobalt)" stroke="#95a6ff" stroke-width=".012"/>
+      <use href="#module" transform="rotate(-90)" fill="url(#pink)" stroke="#ffb4e8" stroke-width=".012"/>
+      <use href="#module" transform="rotate(-180)" fill="url(#cobalt)" stroke="#95a6ff" stroke-width=".012"/>
+      <use href="#module" transform="rotate(-270)" fill="url(#pink)" stroke="#ffb4e8" stroke-width=".012"/>
+      <rect x="-.13" y="-.13" width=".26" height=".26" rx=".045" transform="rotate(45)" fill="url(#hub)" stroke="#f8faff" stroke-width=".012"/>
+      <ellipse rx=".083" ry=".083" fill="url(#orange)"/>
     </g>
   </g>
 </svg>
