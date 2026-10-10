@@ -24,8 +24,8 @@
 @media (max-width: 800px) and (orientation: portrait) {
   .studio-cinema .water-film[data-aspect=wide] { object-fit: contain; }
   .studio-cinema .water-film[data-aspect=portrait] {
-    mask-image: linear-gradient(to bottom,#000 72%,transparent 80%);
-    -webkit-mask-image: linear-gradient(to bottom,#000 72%,transparent 80%);
+    mask-image: linear-gradient(to bottom,transparent 18%,#000 22%,#000 72%,transparent 80%);
+    -webkit-mask-image: linear-gradient(to bottom,transparent 18%,#000 22%,#000 72%,transparent 80%);
   }
 }
 @media (max-width: 600px) and (orientation: portrait) {
