@@ -1,0 +1,147 @@
+{
+  "title": "Space / Soft motion study",
+  "source": "Original procedural Blender superellipsoids, materials, studio lighting, camera and choreography",
+  "render": {
+    "title": "Space / Soft motion study",
+    "source": "Original procedural superellipsoid geometry, materials, studio lighting and periodic camera choreography",
+    "blender": "5.2.1 LTS",
+    "engine": "CYCLES",
+    "samples": 32,
+    "device": "GPU",
+    "fps": 24,
+    "frames": 144,
+    "width": 1920,
+    "height": 1080,
+    "preview": false,
+    "render_range": [
+      41,
+      107
+    ],
+    "mesh_count": 9,
+    "sculpture_modules": 8,
+    "module_vertices": 4402,
+    "loop_boundary_max_transform_error": 0.0,
+    "loop": "Absolute periodic poses; compact, separated, stacked, separated, compact. Frames1–144 in chronological order; frame145 matches frame1.",
+    "paid_api_used": false,
+    "external_assets_used": false,
+    "ai_model_weights_used": false
+  },
+  "render_passes": [
+    {
+      "frames": [
+        1,
+        144
+      ],
+      "purpose": "Initial full resolution render"
+    },
+    {
+      "frames": [
+        41,
+        107
+      ],
+      "purpose": "Replace stack transitions with collision-safe choreography"
+    }
+  ],
+  "collision_check": {
+    "frames_checked": 144,
+    "pairs_per_frame": 28,
+    "surface_intersections": []
+  },
+  "render_script_sha256": "8660c8f34a01811ba00343030b84398b6049cd26bfe312232d929296de174336",
+  "export_script_sha256": "650a1b19b3ab0bf97353f2efaf4f1c9c545f4d608c9e3b6c2a422db15536132d",
+  "blend_sha256": "553c45bda2ffbf4fe269d591879f4c37d59369417783bc6b86fe81934a49b89f",
+  "composition": {
+    "tools": [
+      "Local Blender",
+      "Local FFmpeg"
+    ],
+    "status": "success",
+    "ai_model_weights_used": false,
+    "external_assets_used": false,
+    "paid_api_used": false,
+    "comfyui_used": false
+  },
+  "master_sha256": "bb2ef24c292a5e9b2e63467f486b7d03561fde511444a742058f62ead8c992da",
+  "mobile_filter": "crop=1280:1080,scale=640:540:flags=lanczos,pad=640:900:0:180:color=0x090b10,setsar=1",
+  "exports": {
+    "desktop": {
+      "file": "public/films/studio-soft-desktop.mp4",
+      "bytes": 1263052,
+      "sha256": "0024f2c5d562198465fc4722b0f94bd5ea291f831f8b2ad78e765b12bb9b9baf",
+      "validation": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 1920,
+            "height": 1080,
+            "pix_fmt": "yuv420p",
+            "color_range": "tv",
+            "color_space": "bt709",
+            "color_transfer": "iec61966-2-1",
+            "color_primaries": "bt709",
+            "r_frame_rate": "24/1",
+            "nb_frames": "144"
+          }
+        ],
+        "format": {
+          "duration": "6.000000"
+        }
+      }
+    },
+    "mobile": {
+      "file": "public/films/studio-soft-mobile.mp4",
+      "bytes": 342118,
+      "sha256": "af264a7ca89b92875a30e4b448a3d239fea0831a1b4c9ef33f5a015277e3cc98",
+      "validation": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 640,
+            "height": 900,
+            "pix_fmt": "yuv420p",
+            "color_range": "tv",
+            "color_space": "bt709",
+            "color_transfer": "iec61966-2-1",
+            "color_primaries": "bt709",
+            "r_frame_rate": "24/1",
+            "nb_frames": "144"
+          }
+        ],
+        "format": {
+          "duration": "6.000000"
+        }
+      }
+    }
+  },
+  "posters": {
+    "studio-soft-start-desktop.jpg": {
+      "frame": 1,
+      "bytes": 51063,
+      "sha256": "9095e7a9502b331eafa035fd6c73f4cff2509fd8466bd73e489b2cc71f984d2c"
+    },
+    "studio-soft-desktop.jpg": {
+      "frame": 73,
+      "bytes": 50758,
+      "sha256": "a532a63f1e9e77083b982a036fe9c296ca0bb419cc80e7e2d401eaa4edde49a5"
+    },
+    "studio-soft-start-mobile.jpg": {
+      "frame": 1,
+      "bytes": 20236,
+      "sha256": "924f149dcc4082d68338f8ac4a3f3b5c058081fc3a00f6b7c60bdc8bc21d9078"
+    },
+    "studio-soft-mobile.jpg": {
+      "frame": 73,
+      "bytes": 20063,
+      "sha256": "ffb51c5666dc15ca4fe5801a06dfe0e7d00541641f4dcea70990d003d0c6cc11"
+    }
+  },
+  "ffmpeg": "ffmpeg version 8.1.2 Copyright (c) 2000-2026 the FFmpeg developers",
+  "loop": "Periodic absolute poses. Frame145 matches frame1; frames1–144 exported in chronological order, without reverse footage.",
+  "validation": "Both exports fully decoded with FFmpeg; resolution, frame count, duration, format and faststart verified."
+}

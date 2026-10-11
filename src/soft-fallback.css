@@ -1,0 +1,67 @@
+/* Original static counterpart to the eight solid, inflated WebGL modules.
+   No animation or GPU context is required for this useful fallback. */
+.kinetic-fallback {
+  display: block;
+  isolation: isolate;
+  transform: rotate(-7deg) scale(.82);
+  transform-origin: 50% 54%;
+}
+.kinetic-fallback::after {
+  content: '';
+  position: absolute;
+  z-index: -2;
+  left: 4%;
+  bottom: -7%;
+  width: 95%;
+  height: 13%;
+  border-radius: 45%;
+  background: radial-gradient(ellipse, #000b, transparent 69%);
+}
+.kinetic-cushion {
+  --cushion-fill: radial-gradient(ellipse at 28% 18%, #fff 0, #e6e9eb 13%, #7a858c 42%, #dfe4e7 66%, #555f64 87%, #151b1e 100%);
+  position: absolute;
+  display: block;
+  width: 43%;
+  height: 40%;
+  border-radius: 33% / 38%;
+  background: var(--cushion-fill);
+  box-shadow: inset 3px 4px 8px #fff8, inset -7px -9px 12px #0005, 7px 12px 16px #0005;
+  transform: skewY(4deg);
+}
+.kinetic-cushion::after {
+  content: '';
+  position: absolute;
+  inset: 3%;
+  border: 1px solid #ffffff24;
+  border-radius: inherit;
+}
+/* Four modules behind the front face give the dense sculpture visible depth. */
+.kinetic-cushion:nth-child(-n+4) { z-index: -1; filter: brightness(.66); }
+.kinetic-cushion:nth-child(1) { left: 12%; top: 4%; }
+.kinetic-cushion:nth-child(2) { left: 58%; top: 4%; }
+.kinetic-cushion:nth-child(3) { left: 12%; top: 47%; }
+.kinetic-cushion:nth-child(4) { left: 58%; top: 47%; }
+.kinetic-cushion:nth-child(5) { left: 0; top: 17%; }
+.kinetic-cushion:nth-child(6) { left: 46%; top: 17%; }
+.kinetic-cushion:nth-child(7) { left: 0; top: 60%; }
+.kinetic-cushion:nth-child(8) { left: 46%; top: 60%; }
+.kinetic-cushion:nth-child(2),
+.kinetic-cushion:nth-child(5),
+.kinetic-cushion:nth-child(8) {
+  --cushion-fill: radial-gradient(ellipse at 28% 16%, #f7ffbd 0, #eaff64 15%, #dfff00 42%, #b7d600 73%, #718300 100%);
+}
+.kinetic-cushion:nth-child(4) {
+  --cushion-fill: radial-gradient(ellipse at 24% 15%, #9ba8ac 0, #4d595d 22%, #1b2328 55%, #535d63 76%, #10171b 100%);
+}
+.kinetic-cushion:nth-child(7) {
+  --cushion-fill: radial-gradient(ellipse at 28% 16%, #fff 0, #f2f1e6 30%, #d7d8d0 69%, #8c918a 100%);
+}
+@media (max-width: 800px) and (min-width: 601px) {
+  .kinetic-fallback { left: 40%; top: 43%; width: 48%; height: 41%; }
+}
+@media (max-width: 600px) {
+  .kinetic-fallback { transform: rotate(-7deg) scale(.84); }
+}
+@media (max-height: 540px) and (orientation: landscape) {
+  .kinetic-fallback { left: 58%; top: 14%; width: 29%; height: 61%; transform: rotate(-7deg) scale(.86); }
+}

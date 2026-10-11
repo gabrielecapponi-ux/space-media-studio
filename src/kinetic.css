@@ -30,13 +30,6 @@
 .kinetic-scroll { margin-left: auto; display: inline-flex; align-items: center; gap: 28px; min-height: 44px; font-size: 10px; }
 .kinetic-scroll span { color: var(--yellow); font-size: 24px; }
 .kinetic-fallback { position: absolute; left: 53%; top: 13%; width: 37%; height: 66%; display: grid; place-items: center; perspective: 950px; }
-.kinetic-orbit { position: absolute; width: 82%; aspect-ratio: 1; border: clamp(14px, 2.8vw, 45px) solid var(--yellow); border-radius: 50%; transform: rotateX(57deg) rotateY(-12deg) rotateZ(-30deg); box-shadow: inset 4px 4px 5px #f1ff7a, 9px 16px 14px #000; }
-.orbit-two { border-color: #a5adb5; transform: rotateY(65deg) rotateZ(24deg); box-shadow: inset 8px 0 7px #fff, inset -7px 0 8px #333a44; }
-.orbit-three { width: 65%; border-width: 14px; transform: rotateY(-64deg) rotateZ(-31deg); }
-.kinetic-bottle { position: relative; width: 34%; height: 48%; border-radius: 15px 15px 20px 20px; background: linear-gradient(105deg, #3a4149, #090b10 38%, #1f252c 70%, #697179); box-shadow: 4px 12px 25px #000; display: grid; place-items: center; border: 1px solid #5b646c; }
-.kinetic-bottle::before { content: ''; position: absolute; width: 68%; height: 23%; left: 16%; top: -23%; border-radius: 5px 5px 1px 1px; background: linear-gradient(100deg, #f4ff8e, #c5db00 50%, #677400); }
-.kinetic-bottle > span { width: 82%; text-align: center; border-top: 1px solid #bbc89c; border-bottom: 1px solid #bbc89c; padding: 12px 0; font-size: clamp(15px, 2.6vw, 35px); color: var(--yellow); letter-spacing: .08em; }
-.kinetic-bottle small { display: block; font-size: 5px; letter-spacing: .1em; margin-top: 8px; color: var(--paper); }
 .kinetic-scene[data-scene=ready] .kinetic-fallback { opacity: 0; visibility: hidden; }
 .showcase-story { background: #090b10; color: var(--paper); border: 0; height: 330svh; }
 .showcase-sticky { background: radial-gradient(ellipse at 75% 54%, #181d22, #090b10 65%); padding-top: 36px; }
@@ -103,9 +96,6 @@
   .kinetic-scroll { font-size: 8px; gap: 10px; }
   .kinetic-scroll span { font-size: 21px; }
   .kinetic-fallback { left: 16%; top: 48%; width: 68%; height: 39%; }
-  .kinetic-bottle > span { font-size: 24px; }
-  .kinetic-orbit { border-width: 23px; }
-  .orbit-three { border-width: 12px; }
   .showcase-story { height: 340svh; }
   .showcase-sticky { min-height: 600px; padding-top: 24px; padding-bottom: max(22px, env(safe-area-inset-bottom)); }
   .showcase-topline { padding-bottom: 16px; }

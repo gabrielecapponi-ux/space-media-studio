@@ -22,6 +22,8 @@
     <link rel="stylesheet" href="/src/services.css" />
     <link rel="stylesheet" href="/src/cinema.css" />
     <link rel="stylesheet" href="/src/refinement.css" />
+    <link rel="stylesheet" href="/src/soft-fallback.css" />
+    <link rel="stylesheet" href="/src/catalogue.css" />
     <style>html.entry-pending{overflow:hidden}html.entry-pending::before{content:"";position:fixed;inset:0;z-index:999;background:#090b10;pointer-events:none}html.entry-pending #studio-entry{z-index:1000}</style>
     <script>document.documentElement.classList.add('entry-pending');setTimeout(function(){if(document.documentElement.classList.contains('entry-pending')){document.dispatchEvent(new Event('space:entry-timeout'));document.documentElement.classList.remove('entry-pending')}},21000)</script>
     <script type="application/ld+json">
@@ -48,7 +50,7 @@
       <section class="hero kinetic-hero" id="hero" aria-labelledby="hero-title">
         <div class="kinetic-stage">
           <div id="kinetic-scene" class="kinetic-scene" data-scene="fallback" aria-hidden="true">
-            <div class="kinetic-fallback"><i class="kinetic-orbit orbit-one"></i><i class="kinetic-orbit orbit-two"></i><i class="kinetic-orbit orbit-three"></i><div class="kinetic-bottle"><span>AURA<small>EAU DE PARFUM</small></span></div></div>
+            <div class="kinetic-fallback"><i class="kinetic-cushion"></i><i class="kinetic-cushion"></i><i class="kinetic-cushion"></i><i class="kinetic-cushion"></i><i class="kinetic-cushion"></i><i class="kinetic-cushion"></i><i class="kinetic-cushion"></i><i class="kinetic-cushion"></i></div>
           </div>
           <div class="hero-content">
             <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span> Marketing, design & sviluppo · Parma</p>
@@ -56,7 +58,7 @@
             <p class="hero-description">Creiamo identità visive, siti ed e-commerce, contenuti e campagne. Dalla prima idea alla messa online.</p>
             <div class="hero-links"><a class="button button-yellow" href="#contatti">Parliamo del tuo progetto <span aria-hidden="true">↗</span></a><a class="hero-explore" href="#esperienza">Esplora cosa creiamo <span aria-hidden="true">↓</span></a></div>
           </div>
-          <div class="kinetic-caption"><span class="mono">AURA / Concept 3D originale</span><p>Il tuo prodotto<br />potrebbe essere qui.</p></div>
+          <div class="kinetic-caption"><span class="mono">Scultura modulare / Concept 3D originale</span><p>Il tuo prodotto<br />potrebbe essere qui.</p></div>
           <div class="kinetic-footer"><span class="mono">Un’idea. Infinite forme.</span><button id="hero-motion-toggle" class="hero-motion" type="button" aria-controls="kinetic-scene showcase-scene water-film" aria-label="Metti in pausa le animazioni" aria-pressed="false"><span class="motion-icon" aria-hidden="true">Ⅱ</span><span class="motion-label">Pausa</span></button><a class="kinetic-scroll" href="#esperienza" aria-label="Scopri i nostri servizi">Scorri per trasformare <span aria-hidden="true">↓</span></a></div>
         </div>
       </section>
@@ -111,14 +113,14 @@
         <div class="water-section" id="dimensioni">
           <div class="water-stage">
             <video id="water-film" class="water-film" muted playsinline loop preload="none"
-              poster="/images/studio-orbit-start-desktop.jpg"
-              data-poster-desktop="./images/studio-orbit-start-desktop.jpg" data-poster-mobile="./images/studio-orbit-start-mobile.jpg"
-              data-still-desktop="./images/studio-orbit-desktop.jpg" data-still-mobile="./images/studio-orbit-mobile.jpg"
-              data-src-desktop="./films/studio-orbit-desktop.mp4?v=motion-studio-20261010" data-src-mobile="./films/studio-orbit-mobile.mp4?v=motion-studio-20261010" data-loop="true"
-              tabindex="-1" aria-label="Una scultura di otto segmenti in cromo, grafite e giallo si apre nello spazio e si ricompone in un anello. Film 3D originale."></video>
+              poster="/images/studio-soft-start-desktop.jpg"
+              data-poster-desktop="./images/studio-soft-start-desktop.jpg" data-poster-mobile="./images/studio-soft-start-mobile.jpg"
+              data-still-desktop="./images/studio-soft-desktop.jpg" data-still-mobile="./images/studio-soft-mobile.jpg"
+              data-src-desktop="./films/studio-soft-desktop.mp4?v=soft-studio-20261011" data-src-mobile="./films/studio-soft-mobile.mp4?v=soft-studio-20261011" data-loop="true"
+              tabindex="-1" aria-label="Otto volumi pieni e morbidi in cromo, grafite e giallo si separano e si ricompongono in una scultura e in un totem. Film 3D originale."></video>
             <div class="water-shade" aria-hidden="true"></div>
             <div class="water-copy">
-              <p class="eyebrow">Space / Motion study 02</p>
+              <p class="eyebrow">Space / Soft motion study</p>
               <h2 id="cinema-title">Le idee non<br />stanno ferme.</h2>
             </div>
             <div class="water-bottom">
@@ -221,7 +223,7 @@
 
       <section class="possibilities section-pad" id="universo" aria-labelledby="possibilities-title">
         <div class="section-eyebrow reveal"><span class="eyebrow">Il prossimo progetto potrebbe essere il tuo.</span><span class="mono">03 / Possibilità</span></div>
-        <div class="section-intro reveal"><h2 id="possibilities-title">Immagina.<br />Possiamo crearlo.</h2><p>Tre direzioni creative per mostrarti ciò che possiamo immaginare insieme.</p></div>
+        <div class="section-intro reveal"><h2 id="possibilities-title">Immagina.<br />Possiamo crearlo.</h2><p>Dalle identità ai piccoli siti eleganti, fino alle esperienze 3D. Esplora cosa possiamo creare per la tua attività.</p></div>
         <div class="concept-grid">
           <button class="concept-card reveal" type="button" data-concept="identity" aria-label="Esplora Aura, progetto possibile di branding">
             <div class="concept-art art-aura"><img src="/images/muse-skincare.jpg" width="1600" height="1201" loading="lazy" decoding="async" alt="Still life skincare con flaconi neutri, tessuti naturali e luce solare" /><span class="art-index mono">001 / Beauty identity</span><span class="aura-wordmark">aura<span aria-hidden="true">✳</span></span><span class="aura-tagline mono">A quiet ritual.</span><span class="concept-open" aria-hidden="true">↗</span></div>
@@ -236,7 +238,66 @@
             <div class="concept-meta"><div><h3>Reverie</h3><span>Contenuti & campagne</span></div><span class="concept-kind mono">Progetto possibile</span></div>
           </button>
         </div>
-        <p class="concept-disclaimer">Concept dimostrativi, non lavori commissionati. Immagini stock su licenza; nomi e direzioni creative a scopo illustrativo.</p>
+        <section class="digital-catalogue" id="prodotti-digitali" aria-labelledby="catalogue-title">
+          <div class="catalogue-heading"><div><span class="eyebrow">Anche le piccole idee meritano un grande design.</span><h3 id="catalogue-title">Il tuo prossimo<br />spazio digitale.</h3></div><p>Un sito essenziale. Un piccolo shop. Un prodotto da esplorare in 3D. Nove punti di partenza, da costruire attorno a te.</p></div>
+          <div class="catalogue-toolbar">
+            <div class="catalogue-filters" role="group" aria-label="Filtra i progetti digitali" hidden>
+              <button type="button" data-catalogue-filter="all" aria-pressed="true" aria-controls="digital-grid">Tutti</button>
+              <button type="button" data-catalogue-filter="essenziale" aria-pressed="false" aria-controls="digital-grid">Siti web</button>
+              <button type="button" data-catalogue-filter="3d" aria-pressed="false" aria-controls="digital-grid">3D &amp; interattivi</button>
+              <button type="button" data-catalogue-filter="commerce-app" aria-pressed="false" aria-controls="digital-grid">Shop &amp; app</button>
+            </div>
+            <span class="catalogue-count mono" aria-live="polite" aria-atomic="true">9 progetti possibili</span>
+          </div>
+          <div class="digital-grid" id="digital-grid">
+            <button class="digital-card" type="button" data-category="essenziale" data-concept="seta" aria-label="Esplora Seta, sito essenziale">
+              <div class="digital-preview"><img src="/previews/seta.svg" width="1200" height="800" loading="lazy" decoding="async" alt="Concept Seta: sito beauty essenziale con palette crema e salvia" /></div>
+              <div class="digital-card-meta"><div><h4 translate="no">Seta</h4><p>Un sito essenziale per studi beauty, wellness e professionisti del benessere.</p></div><span class="digital-arrow" aria-hidden="true">↗</span></div>
+              <span class="digital-card-tag mono">Sito essenziale <span aria-hidden="true">·</span> Concept</span>
+            </button>
+            <button class="digital-card" type="button" data-category="essenziale" data-concept="tavola" aria-label="Esplora Tavola, ristorante &amp; menu digitale">
+              <div class="digital-preview"><img src="/previews/tavola.svg" width="1200" height="800" loading="lazy" decoding="async" alt="Concept Tavola: sito per ristorante con menu e prenotazioni" /></div>
+              <div class="digital-card-meta"><div><h4 translate="no">Tavola</h4><p>Un sito per ristoranti, con menu digitale e prenotazioni sempre a portata.</p></div><span class="digital-arrow" aria-hidden="true">↗</span></div>
+              <span class="digital-card-tag mono">Ristorante &amp; menu digitale <span aria-hidden="true">·</span> Concept</span>
+            </button>
+            <button class="digital-card" type="button" data-category="essenziale" data-concept="noma" aria-label="Esplora Noma, portfolio &amp; studio creativo">
+              <div class="digital-preview"><img src="/previews/noma.svg" width="1200" height="800" loading="lazy" decoding="async" alt="Concept Noma: portfolio di interior design con una stanza illustrata e toni caldi" /></div>
+              <div class="digital-card-meta"><div><h4 translate="no">Noma</h4><p>Portfolio eleganti per architetti, interior designer e studi creativi.</p></div><span class="digital-arrow" aria-hidden="true">↗</span></div>
+              <span class="digital-card-tag mono">Portfolio &amp; studio creativo <span aria-hidden="true">·</span> Concept</span>
+            </button>
+            <button class="digital-card" type="button" data-category="essenziale" data-concept="focus" aria-label="Esplora Focus, landing page">
+              <div class="digital-preview"><img src="/previews/focus.svg" width="1200" height="800" loading="lazy" decoding="async" alt="Concept Focus: landing page di lancio nera e lime con un pulsante di contatto" /></div>
+              <div class="digital-card-meta"><div><h4 translate="no">Focus</h4><p>Una pagina dedicata a un prodotto, un lancio o una richiesta.</p></div><span class="digital-arrow" aria-hidden="true">↗</span></div>
+              <span class="digital-card-tag mono">Landing page <span aria-hidden="true">·</span> Concept</span>
+            </button>
+            <button class="digital-card" type="button" data-category="3d" data-concept="vela" aria-label="Esplora Vela, minisito 3d">
+              <div class="digital-preview"><img src="/previews/vela.svg" width="1200" height="800" loading="lazy" decoding="async" alt="Concept Vela: minisito di prodotto blu e bianco con una scultura morbida originale" /></div>
+              <div class="digital-card-meta"><div><h4 translate="no">Vela</h4><p>Un piccolo sito 3D che mette il tuo prodotto al centro.</p></div><span class="digital-arrow" aria-hidden="true">↗</span></div>
+              <span class="digital-card-tag mono">Minisito 3D <span aria-hidden="true">·</span> Concept</span>
+            </button>
+            <button class="digital-card" type="button" data-category="3d" data-concept="materia" aria-label="Esplora Materia, configuratore 3d">
+              <div class="digital-preview"><img src="/previews/materia.svg" width="1200" height="800" loading="lazy" decoding="async" alt="Concept Materia: configuratore di arredo con una lampada illustrata e campioni di colore" /></div>
+              <div class="digital-card-meta"><div><h4 translate="no">Materia</h4><p>Un configuratore 3D per esplorare colori, materiali e varianti di un prodotto.</p></div><span class="digital-arrow" aria-hidden="true">↗</span></div>
+              <span class="digital-card-tag mono">Configuratore 3D <span aria-hidden="true">·</span> Concept</span>
+            </button>
+            <button class="digital-card" type="button" data-category="commerce" data-concept="ritual" aria-label="Esplora Ritual, e-commerce essenziale">
+              <div class="digital-preview"><img src="/previews/ritual.svg" width="1200" height="800" loading="lazy" decoding="async" alt="Concept Ritual: piccolo shop skincare con flaconi illustrati e schede prodotto" /></div>
+              <div class="digital-card-meta"><div><h4 translate="no">Ritual</h4><p>Un piccolo e-commerce per collezioni curate e prodotti da scoprire.</p></div><span class="digital-arrow" aria-hidden="true">↗</span></div>
+              <span class="digital-card-tag mono">E-commerce essenziale <span aria-hidden="true">·</span> Concept</span>
+            </button>
+            <button class="digital-card" type="button" data-category="app" data-concept="slot" aria-label="Esplora Slot, web app prenotazioni">
+              <div class="digital-preview"><img src="/previews/slot.svg" width="1200" height="800" loading="lazy" decoding="async" alt="Concept Slot: interfaccia di prenotazione con calendario e orari su fondo lavanda" /></div>
+              <div class="digital-card-meta"><div><h4 translate="no">Slot</h4><p>Una web app per scegliere servizi, disponibilità e prenotare un appuntamento.</p></div><span class="digital-arrow" aria-hidden="true">↗</span></div>
+              <span class="digital-card-tag mono">Web app prenotazioni <span aria-hidden="true">·</span> Concept</span>
+            </button>
+            <button class="digital-card" type="button" data-category="essenziale" data-concept="index" aria-label="Esplora Index, magazine &amp; newsletter">
+              <div class="digital-preview"><img src="/previews/index.svg" width="1200" height="800" loading="lazy" decoding="async" alt="Concept Index: magazine digitale editoriale in bianco e nero con articoli e newsletter" /></div>
+              <div class="digital-card-meta"><div><h4 translate="no">Index</h4><p>Un magazine digitale per articoli, newsletter e contenuti da seguire.</p></div><span class="digital-arrow" aria-hidden="true">↗</span></div>
+              <span class="digital-card-tag mono">Magazine &amp; newsletter <span aria-hidden="true">·</span> Concept</span>
+            </button>
+          </div>
+        </section>
+        <p class="concept-disclaimer">Concept dimostrativi, non progetti commissionati. Design digitali originali e fotografie su licenza. Nomi a scopo illustrativo.</p>
       </section>
 
       <section class="studio section-pad" id="studio" aria-labelledby="studio-title">

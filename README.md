@@ -27,37 +27,38 @@ La build statica è in `dist/`; l’anteprima è su `http://127.0.0.1:5175`. `ma
 
 ## Percorso e architettura
 
-L’hero riutilizza 24 segmenti originali lime e cromo per passare da un rotore a otto livelli separati a una doppia elica e al prodotto AURA. Un morph GPU curva gli stessi archi nella forma elicoidale; le pose restano assolute e i giunti conservano un piccolo spazio fisico. Il percorso successivo mantiene il prodotto come riferimento: branding e 3D, e-commerce, contenuti e campagne. Dodici frammenti si separano in profondità e si ricompongono intorno al display e al telefono. Le interfacce mostrano grafica Canvas originale, senza fotografie stock, prezzi o acquisti attivi.
+L’hero costruisce una scultura originale di otto volumi pieni e morbidi, con geometria superellissoidale condivisa. I cuscini si separano, diventano un totem a coppie sfalsate e convergono nel prodotto AURA. Posizioni, scale e quaternioni derivano da pose assolute con raccordi continui; la fase di apertura riduce leggermente la scala per conservare spazio intorno a testi e controlli. La preview nel monitor dell’introduzione e il ripiego CSS riprendono la stessa scultura, senza anelli. Il percorso successivo mantiene il prodotto come riferimento: branding e 3D, e-commerce, contenuti e campagne. Le interfacce mostrano grafica Canvas originale, senza fotografie stock, prezzi o acquisti attivi.
 
-Dopo il film CGI, la sezione **Servizi** presenta quattro card aperte, con benefici, attività e collegamenti ai contatti: **Branding & strategia**, **Siti web & e-commerce**, **Contenuti, social & 3D**, **Campagne digitali**. Piccole tavole tecniche collegano le competenze al linguaggio delle sculture. La navigazione offre un accesso diretto ai servizi; il metodo di lavoro è descritto in tre passaggi. I contenuti dell’offerta sono leggibili senza esplorare le scene 3D. I concept si aprono in una scheda visiva con fotografia, direzione creativa, attività previste e indicazione esplicita di progetto dimostrativo. I dialog bloccano lo scroll della pagina e restituiscono il focus al comando che li ha aperti.
+Dopo il film CGI, la sezione **Servizi** presenta quattro card aperte, con benefici, attività e collegamenti ai contatti: **Branding & strategia**, **Siti web & e-commerce**, **Contenuti, social & 3D**, **Campagne digitali**. Piccole tavole tecniche collegano le competenze al linguaggio delle sculture. La navigazione offre un accesso diretto ai servizi; il metodo di lavoro è descritto in tre passaggi. I contenuti dell’offerta sono leggibili senza esplorare le scene 3D. Tre direzioni creative sono affiancate da **nove concept digitali**: Seta, Tavola, Noma, Focus, Vela, Materia, Ritual, Slot e Index. Comprendono siti essenziali, portfolio, landing page, minisiti e configuratori 3D, e-commerce, prenotazioni e magazine. Le anteprime SVG sono originali, autonome e pesano circa 45 KB complessivi. I filtri aggiornano soltanto la raccolta digitale; ogni scheda mostra anteprima, descrizione, tre attività e indicazione esplicita di progetto dimostrativo. I dialog bloccano lo scroll della pagina e restituiscono il focus al comando che li ha aperti.
 
 | File | Responsabilità |
 | --- | --- |
 | `index.html` | Contenuti, navigazione, capitoli, film, quattro servizi, concept e contatti |
-| `src/main.js` | Avvio, menu, dialog dei concept e ciclo di vita della pagina |
+| `src/main.js`, `src/digital-concepts.js` | Avvio, menu, filtri, dialog dei dodici concept e ciclo di vita |
 | `src/entry.js` | Preparazione delle risorse, avanzamento reale ponderato e uscita dall’introduzione |
 | `src/entry-shell.js`, `src/entry.css` | Overlay, contatore, controlli e illustrazione CSS di ripiego |
 | `src/studio-room.js` | Studio Three.js originale e ingresso della camera nel monitor |
 | `src/motion.js` | Coordinamento di hero, showcase e film, scroll, pausa e replay |
-| `src/kinetic-hero.js` | Coreografia orbitale, elica e assemblaggio del prodotto AURA |
+| `src/kinetic-hero.js`, `src/soft-sculpture.js` | Scultura di otto volumi morbidi, scomposizione, totem e prodotto AURA |
 | `src/showcase.js` | Prodotto, e-commerce e campagna; pose assolute e movimento ambientale contenuto |
 | `src/editorial.css`, `src/kinetic.css` | Layout, tipografia, servizi, adattamenti responsive e ripieghi |
 | `src/services.css`, `src/refinement.css` | Tavole dei servizi, anteprime visive dei concept, focus e impaginazione compatta |
-| `scripts/render-studio-orbit.py` | Geometrie, materiali, luci, camera e animazione del film CGI originale |
-| `scripts/comfy-studio-orbit.py` e `scripts/export-studio-orbit.py` | Composizione ComfyUI locale, export responsive e verifica dei file |
+| `src/catalogue.css`, `public/previews/` | Griglia digitale, anteprime SVG originali e dialog responsive |
+| `src/soft-fallback.css` | Controparte statica della scultura, senza WebGL |
+| `scripts/render-studio-soft.py`, `scripts/export-studio-soft.py` | Blender locale, film CGI, export responsive e verifica |
 | `public/` | Export web del film, poster, fotografie dei concept, font e licenze |
 
 ## Film CGI originale
 
-**Space / Motion study 02** mostra otto segmenti in cromo, grafite e lime che si aprono attorno a un nucleo e si ricompongono. Geometrie, superfici, illuminazione e movimento sono creati per il progetto; il film non usa modelli o riprese stock.
+**Space / Soft motion study** riprende il nuovo linguaggio di otto cuscini pieni in cromo, grafite e lime. Volume compatto, apertura, totem e ricomposizione formano un gesto periodico originale. Geometrie, superfici, illuminazione e movimento sono creati per il progetto; il film non usa modelli o riprese stock.
 
-Pipeline locale: **Blender 5.2.1 / Cycles GPU**, 32 campioni con denoising, **144 fotogrammi a 24 fps**, durata **6 secondi**, render **1920×1080**. La composizione dei due capitoli usa i nodi nativi ComfyUI **LoadVideo → ConcatenateVideo → SaveVideo**, eseguiti localmente su CPU senza pesi AI, Higgsfield o servizi di generazione a pagamento.
+Pipeline locale: **Blender 5.2.1 / Cycles GPU**, 32 campioni con denoising, **144 fotogrammi a 24 fps**, durata **6 secondi**, render **1920×1080**; montaggio ed export con **FFmpeg**. Non usa ComfyUI, modelli AI o servizi a pagamento.
 
-- Desktop: `public/films/studio-orbit-desktop.mp4`, **1920×1080**.
-- Mobile: `public/films/studio-orbit-mobile.mp4`, **640×900**. La finestra centrale 1280×1080 viene ridotta a 640×540 e inserita con 180 pixel di margine sopra e sotto, preservando la scultura nel formato verticale.
-- Poster `studio-orbit-start-*`: primo fotogramma. Poster `studio-orbit-desktop.jpg` e `studio-orbit-mobile.jpg`: fotogramma 73 per la presentazione statica.
+- Desktop: `public/films/studio-soft-desktop.mp4`, **1920×1080**.
+- Mobile: `public/films/studio-soft-mobile.mp4`, **640×900**. La composizione verticale conserva l’intera scultura.
+- Poster `studio-soft-start-*`: primo fotogramma. Poster `studio-soft-desktop.jpg` e `studio-soft-mobile.jpg`: fotogramma 73 per la presentazione statica.
 
-Hash e verifica degli export finali sono in [ASSET-STUDIO-ORBIT.json](./ASSET-STUDIO-ORBIT.json). Il gesto è periodico e il film può ripetersi senza invertire il montaggio. Pausa e **Rivedi** rimangono disponibili. Master, scena Blender e fotogrammi di lavorazione sono in `outputs/studio-orbit/`, esclusa dalla build. Il precedente film d’acqua non fa parte del percorso corrente; [ASSET-WATER.md](./ASSET-WATER.md) e [ASSET-WATER.json](./ASSET-WATER.json) ne conservano la documentazione storica.
+Hash e verifiche degli export sono in [ASSET-STUDIO-SOFT.json](./ASSET-STUDIO-SOFT.json). Pausa e **Rivedi** rimangono disponibili. Master, scena Blender e fotogrammi di lavorazione sono in `outputs/studio-soft/`, esclusa dalla build. I precedenti film Orbit e acqua restano documentati nei manifest storici; non sono caricati dal sito.
 
 ## Caricamento, movimento e accessibilità
 
@@ -71,7 +72,7 @@ Anche l’hero anima soltanto quando è visibile e il movimento è consentito. M
 
 ## Concept e diritti
 
-Aura, FORMA e REVERIE sono **progetti possibili**, dichiarati come concept dimostrativi: non sono clienti, incarichi o risultati ottenuti. Le fotografie su licenza Pexels compaiono soltanto nelle tre card dei concept; hero, prodotto, dispositivi e film CGI usano geometrie e grafica originali. I crediti sono in [ASSET-SOURCES.md](./ASSET-SOURCES.md).
+Tutti i dodici concept sono **progetti possibili**, dichiarati come concept dimostrativi: non sono clienti, incarichi o risultati ottenuti. Le fotografie su licenza Pexels compaiono soltanto nelle tre card dei concept; hero, prodotto, dispositivi e film CGI usano geometrie e grafica originali. I crediti sono in [ASSET-SOURCES.md](./ASSET-SOURCES.md).
 
 Il sito non include form, analytics o cookie di profilazione. Telefono, WhatsApp e mappa si aprono su richiesta.
 

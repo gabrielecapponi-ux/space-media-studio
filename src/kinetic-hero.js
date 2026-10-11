@@ -1,48 +1,11 @@
 import * as THREE from 'three';
 
-const TAU = Math.PI * 2;
-const ARC_ANGLE = TAU / 3 - 0.1;
-const HELIX_RISE = 0.24;
+import { createSoftBlockGeometry, createSoftPartPoses, softChoreography, softFormAmount, SOFT_PART_COUNT } from './soft-sculpture.js';
+
 const LIME = '#dfff00';
 const clamp = (value) => Math.max(0, Math.min(1, value));
 const smooth = (value) => { const t = clamp(value); return t * t * t * (t * (t * 6 - 15) + 10); };
 const lerp = (a, b, t) => a + (b - a) * t;
-
-// A beveled arc is one authored part, reused for the sculpture and the product collar.
-function createArc() {
-  const arc = ARC_ANGLE;
-  const shape = new THREE.Shape();
-  shape.absarc(0, 0, 1, 0, arc, false);
-  shape.lineTo(Math.cos(arc) * 0.72, Math.sin(arc) * 0.72);
-  shape.absarc(0, 0, 0.72, arc, 0, true);
-  shape.closePath();
-  const geometry = new THREE.ExtrudeGeometry(shape, {
-    depth: 0.115, steps: 1, curveSegments: 28,
-    bevelEnabled: true, bevelSegments: 3, bevelSize: 0.026, bevelThickness: 0.026,
-  });
-  geometry.translate(0, 0, -0.0575);
-  geometry.rotateX(Math.PI / 2);
-  // Bend the same machined part into a true rising arc. The original flat topology
-  // remains shared; a GPU morph supplies a continuous helix without per-frame edits.
-  const positions = geometry.attributes.position.clone();
-  const normals = geometry.attributes.normal.clone();
-  const normal = new THREE.Vector3();
-  for (let index = 0; index < positions.count; index += 1) {
-    const x = positions.getX(index), z = positions.getZ(index);
-    const angle = Math.atan2(z, x);
-    positions.setY(index, positions.getY(index) + angle / ARC_ANGLE * HELIX_RISE);
-    // The inverse-transpose of this bend preserves the authored smooth bevel normals.
-    const slope = HELIX_RISE / ARC_ANGLE / (x * x + z * z);
-    const ny = normals.getY(index);
-    normal.set(normals.getX(index) + slope * z * ny, ny, normals.getZ(index) - slope * x * ny).normalize();
-    normals.setXYZ(index, normal.x, normal.y, normal.z);
-  }
-  geometry.morphAttributes.position = [positions];
-  geometry.morphAttributes.normal = [normals];
-  geometry.computeBoundingBox();
-  geometry.computeBoundingSphere();
-  return geometry;
-}
 
 function canvasTexture(width, height, paint) {
   const canvas = document.createElement('canvas');
@@ -110,33 +73,6 @@ function roundedLabelShape(width, height, radius) {
   return shape;
 }
 
-// One complete sequence: an orbital idea becomes a woven structure, then a product.
-// Every boundary shares its endpoint pose; looping never resets an object's transform.
-function choreography(time) {
-  const phase = ((time + 15.55) % 18 + 18) % 18;
-  const hold = (form) => ({ from: form, to: form, progress: 0, product: form === 'product' ? 1 : 0 });
-  const transition = (from, to, progress) => ({
-    from, to, progress,
-    product: to === 'product' ? smooth(progress) : from === 'product' ? 1 - smooth(progress) : 0,
-  });
-  if (phase < 2.2) return hold('orbit');
-  if (phase < 3.65) return transition('orbit', 'spread', (phase - 2.2) / 1.45);
-  if (phase < 5.6) return transition('spread', 'helix', (phase - 3.65) / 1.95);
-  if (phase < 7.75) return hold('helix');
-  if (phase < 9.15) return transition('helix', 'spread', (phase - 7.75) / 1.4);
-  if (phase < 11.2) return transition('spread', 'product', (phase - 9.15) / 2.05);
-  if (phase < 13.95) return hold('product');
-  if (phase < 15.55) return transition('product', 'spread', (phase - 13.95) / 1.6);
-  return transition('spread', 'orbit', (phase - 15.55) / 2.45);
-}
-
-function formAmount(state, form) {
-  if (state.from === form && state.to === form) return 1;
-  if (state.to === form) return smooth(state.progress);
-  if (state.from === form) return 1 - smooth(state.progress);
-  return 0;
-}
-
 export function createKineticHero(container) {
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
   const coarse = window.matchMedia('(pointer: coarse)');
@@ -156,56 +92,28 @@ export function createKineticHero(container) {
   const ownGeometry = (geometry) => { geometries.add(geometry); return geometry; };
   const ownMaterial = (material) => { materials.add(material); return material; };
   const ownTexture = (texture) => { textures.add(texture); return texture; };
-  const chrome = ownMaterial(new THREE.MeshStandardMaterial({ color: '#e3e7e9', metalness: 1, roughness: 0.15, envMapIntensity: 1.05 }));
-  const satin = ownMaterial(new THREE.MeshStandardMaterial({ color: '#cfff00', metalness: 0, roughness: 0.32, envMapIntensity: 0.32 }));
-  const darkChrome = ownMaterial(new THREE.MeshStandardMaterial({ color: '#3c4143', metalness: 1, roughness: 0.21, envMapIntensity: 1.0 }));
-  const arcGeometry = ownGeometry(createArc());
-  const sectorRotation = new THREE.Quaternion();
-  for (let index = 0; index < 24; index += 1) {
-    const layer = Math.floor(index / 3), sector = index % 3;
-    const mesh = new THREE.Mesh(arcGeometry, layer === 2 || layer === 6 ? satin : layer === 0 ? darkChrome : chrome);
+  const chrome = ownMaterial(new THREE.MeshStandardMaterial({ color: '#e7ebee', metalness: 1, roughness: 0.17, envMapIntensity: 1.1 }));
+  const satin = ownMaterial(new THREE.MeshPhysicalMaterial({ color: '#dfff00', metalness: 0, roughness: 0.26,
+    clearcoat: 0.4, clearcoatRoughness: 0.22, envMapIntensity: 0.6 }));
+  const ivory = ownMaterial(new THREE.MeshStandardMaterial({ color: '#f3f2e9', metalness: 0, roughness: 0.29, envMapIntensity: 0.7 }));
+  const darkChrome = ownMaterial(new THREE.MeshStandardMaterial({ color: '#252b2d', metalness: 1, roughness: 0.23, envMapIntensity: 1.0 }));
+  const blockGeometry = ownGeometry(createSoftBlockGeometry());
+  const palette = [chrome, satin, satin, chrome, darkChrome, chrome, ivory, satin];
+  for (let index = 0; index < SOFT_PART_COUNT; index += 1) {
+    const mesh = new THREE.Mesh(blockGeometry, palette[index]);
     root.add(mesh);
-    // Parallel rotor layers share one axis, leaving a physical gap between parts.
-    // The changing radius gives the assembled object a deliberate spindle silhouette.
-    const orbitQuaternion = new THREE.Quaternion().setFromEuler(new THREE.Euler(0.2, 0, 0.1));
-    sectorRotation.setFromAxisAngle(new THREE.Vector3(0, 1, 0), sector * TAU / 3 + layer * 0.2);
-    orbitQuaternion.multiply(sectorRotation);
-    const angle = index * TAU / 24;
-    const spreadQuaternion = new THREE.Quaternion().setFromEuler(new THREE.Euler(
-      Math.sin(angle * 2) * 0.4 + 0.65, -angle + 0.4, Math.cos(angle) * 0.7,
-    ));
-    // Two rising, interleaved ribbons retain evenly spaced joints and constant radius.
-    const strand = Math.floor(index / 12), helixStep = index % 12;
-    const helixAngle = helixStep * TAU / 3 + strand * Math.PI;
-    const helixQuaternion = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), -helixAngle);
-    const helixRadius = 0.98;
-    const rotorRadius = 0.92 + Math.sin(layer / 7 * Math.PI) * 0.53;
-    const productQuaternion = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), sector * TAU / 3 + 0.025);
-    const radius = layer < 6 ? 0.9 : layer === 6 ? 0.5 : 0.44;
-    const productY = layer < 6 ? -1.1 + layer * 0.27 : layer === 6 ? 0.72 : 1.04;
-    parts.push({ mesh, index,
-      orbit: { position: new THREE.Vector3(0, -1.225 + layer * 0.35, 0), quaternion: orbitQuaternion,
-        scale: new THREE.Vector3(rotorRadius, 1, rotorRadius) },
-      spread: { position: new THREE.Vector3(Math.cos(angle) * 1.58, Math.sin(angle) * 1.52,
-        Math.sin(angle * 3 + 0.3) * 0.72), quaternion: spreadQuaternion, scale: new THREE.Vector3(0.63, 0.9, 0.63) },
-      helix: { position: new THREE.Vector3(0, -1.44 + helixStep * HELIX_RISE, 0),
-        quaternion: helixQuaternion, scale: new THREE.Vector3(helixRadius, 1, helixRadius) },
-      product: { position: new THREE.Vector3(0, productY, 0), quaternion: productQuaternion,
-        scale: new THREE.Vector3(radius, layer === 7 ? 1.7 : 1, radius) },
-    });
+    parts.push({ mesh, index, ...createSoftPartPoses(index) });
   }
 
   const bodyMaterial = ownMaterial(new THREE.MeshPhysicalMaterial({
-    color: '#151a17', metalness: 0.48, roughness: 0.15, clearcoat: 1, clearcoatRoughness: 0.08,
+    color: '#151a17', metalness: 0, roughness: 0.2, clearcoat: 1, clearcoatRoughness: 0.12,
     transparent: true, opacity: 0, envMapIntensity: 1.15,
   }));
   const capMaterial = ownMaterial(new THREE.MeshStandardMaterial({ color: '#cdd0ce', metalness: 1, roughness: 0.19, transparent: true, opacity: 0 }));
-  const profile = [[0, -1.25], [0.74, -1.25], [0.85, -1.22], [0.875, -1.13], [0.875, 0.34],
-    [0.86, 0.43], [0.78, 0.53], [0.46, 0.69], [0.38, 0.73], [0.38, 0.91], [0, 0.91]];
-  const body = new THREE.Mesh(ownGeometry(new THREE.LatheGeometry(profile.map(([x, y]) => new THREE.Vector2(x, y)), 64)), bodyMaterial);
-  product.add(body);
-  const cap = new THREE.Mesh(ownGeometry(new THREE.CylinderGeometry(0.42, 0.42, 0.32, 48, 1)), capMaterial);
-  cap.position.y = 1.03; product.add(cap);
+  const body = new THREE.Mesh(blockGeometry, bodyMaterial);
+  body.scale.set(1.52, 1.85, 0.82); body.position.y = -0.2; product.add(body);
+  const cap = new THREE.Mesh(blockGeometry, capMaterial);
+  cap.scale.set(0.72, 0.44, 0.62); cap.position.y = 0.96; product.add(cap);
   currentLabelTexture = ownTexture(makeLabel());
   const labelMaterial = ownMaterial(new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: 0.65, metalness: 0,
     map: currentLabelTexture, transparent: true, opacity: 0 }));
@@ -216,7 +124,7 @@ export function createKineticHero(container) {
     labelUV.setXY(index, labelUV.getX(index) / 0.88 + 0.5, labelUV.getY(index) / 0.88 + 0.5);
   }
   labelUV.needsUpdate = true;
-  label.position.set(0, -0.18, 0.95); product.add(label);
+  label.position.set(0, -0.18, 0.425); product.add(label);
   const floorTexture = ownTexture(canvasTexture(256, 256, (context, size) => {
     const gradient = context.createRadialGradient(size / 2, size / 2, 12, size / 2, size / 2, size / 2);
     gradient.addColorStop(0, 'rgba(0,0,0,0.65)'); gradient.addColorStop(0.6, 'rgba(0,0,0,0.25)');
@@ -224,9 +132,10 @@ export function createKineticHero(container) {
   }));
   const floor = new THREE.Mesh(ownGeometry(new THREE.PlaneGeometry(5.5, 5.5)),
     ownMaterial(new THREE.MeshBasicMaterial({ map: floorTexture, transparent: true, opacity: 0.6, depthWrite: false })));
-  floor.rotation.x = -Math.PI / 2; floor.position.y = -1.31; root.add(floor);
-  const pedestal = new THREE.Mesh(ownGeometry(new THREE.CylinderGeometry(1.28, 1.32, 0.08, 64)),
+  floor.rotation.x = -Math.PI / 2; floor.position.y = -1.92; root.add(floor);
+  const pedestal = new THREE.Mesh(blockGeometry,
     ownMaterial(new THREE.MeshStandardMaterial({ color: '#202622', metalness: 0.65, roughness: 0.35, transparent: true, opacity: 0 })));
+  pedestal.scale.set(2.5, 0.08, 1.6);
   pedestal.position.y = -1.29; root.add(pedestal);
   scene.add(new THREE.HemisphereLight('#eef4ff', '#101714', 0.9));
   const key = new THREE.DirectionalLight('#ffffff', 2.2); key.position.set(-3.5, 6, 5); scene.add(key);
@@ -235,49 +144,59 @@ export function createKineticHero(container) {
 
   function formName(state) {
     if (state.product > 0.8) return 'product';
-    if (state.from === state.to) return state.from === 'helix' ? 'helix' : 'sculpture';
+    if (state.from === state.to) return state.from === 'stack' ? 'stack' : 'sculpture';
     return 'assembly';
   }
 
   function pose(time) {
-    const state = reduced.matches ? { from: 'orbit', to: 'orbit', progress: 0, product: 0 } : choreography(time);
+    const state = reduced.matches ? { from: 'cushion', to: 'cushion', progress: 0, product: 0 } : softChoreography(time);
     const productAmount = state.product;
     for (const part of parts) {
       const from = part[state.from], to = part[state.to];
-      const stagger = (part.index % 6) / 5 * 0.12;
+      const stagger = (part.index % 4) / 3 * 0.09;
       const amount = smooth((state.progress - stagger) / (1 - stagger));
       part.mesh.position.copy(from.position).lerp(to.position, amount);
-      // A shallow, authored flight arc makes reassembly read as a single gesture.
-      const flight = Math.sin(amount * Math.PI);
-      part.mesh.position.x += Math.sin(part.index * 0.73) * 0.15 * flight;
-      part.mesh.position.y += Math.cos(part.index * 0.67) * 0.1 * flight;
-      part.mesh.position.z += Math.sin(part.index * 0.61) * 0.28 * flight;
+      const stacking = state.from === 'spread' && state.to === 'stack';
+      const unstacking = state.from === 'stack' && state.to === 'spread';
+      // Establish vertical clearance before closing the front/back depth pairs.
+      const vertical = stacking ? smooth(amount / 0.7)
+        : unstacking ? smooth((amount - 0.3) / 0.7) : amount;
+      const depth = stacking ? smooth((amount - 0.3) / 0.7)
+        : unstacking ? smooth(amount / 0.7) : amount;
+      part.mesh.position.y = lerp(from.position.y, to.position.y, vertical);
+      part.mesh.position.z = lerp(from.position.z, to.position.z, depth);
       part.mesh.quaternion.copy(from.quaternion).slerp(to.quaternion, amount);
       part.mesh.scale.copy(from.scale).lerp(to.scale, amount);
-      part.mesh.morphTargetInfluences[0] = state.from === 'helix' ? 1 - amount : state.to === 'helix' ? amount : 0;
+      part.mesh.scale.y = lerp(from.scale.y, to.scale.y, vertical);
+      // The finished product replaces the converged modules as one clean surface.
+      part.mesh.scale.multiplyScalar(1 - smooth((productAmount - 0.36) / 0.58));
+      part.mesh.visible = productAmount < 0.96;
     }
     const orbitAmount = 1 - productAmount;
-    const helixAmount = formAmount(state, 'helix');
-    const spreadAmount = formAmount(state, 'spread');
-    root.rotation.x = lerp(0.16, 0.04, productAmount) - helixAmount * 0.07 + easedPointer.y * 0.08;
-    const orbitalTurn = 0.55 + Math.sin(time * 0.24) * 0.7 + scrollProgress * 0.6;
-    const sculpturalTurn = lerp(orbitalTurn, 0.28 + Math.sin(time * 0.22) * 0.32, helixAmount);
-    root.rotation.y = lerp(sculpturalTurn, Math.sin(time * 0.28) * 0.12, productAmount) + easedPointer.x * 0.12;
-    root.rotation.z = Math.sin(time * 0.28) * 0.05 * orbitAmount + helixAmount * 0.12;
+    const stackAmount = softFormAmount(state, 'stack');
+    const spreadAmount = softFormAmount(state, 'spread');
+    root.rotation.x = lerp(0.2, 0.025, productAmount) - stackAmount * 0.07 + easedPointer.y * 0.065;
+    const sculpturalTurn = 0.5 + Math.sin(time * 0.22) * 0.3 + scrollProgress * 0.26;
+    root.rotation.y = lerp(sculpturalTurn, Math.sin(time * 0.28) * 0.1, productAmount) + easedPointer.x * 0.11;
+    root.rotation.z = (-0.07 + Math.sin(time * 0.28) * 0.025) * orbitAmount + stackAmount * 0.04;
     root.position.x = phone ? 0 : camera.aspect * 4.95 * 0.23;
     root.position.y = (phone ? (height < 700 ? -1.65 : -1.45) : -0.05)
       + Math.sin(time * 0.58) * 0.025 * orbitAmount;
-    const fitScale = phone ? lerp(height < 700 ? 0.87 : 0.94, height < 700 ? 0.75 : 0.79, spreadAmount) : 1;
+    const fitScale = phone ? lerp(height < 700 ? 0.8 : 0.86, height < 700 ? 0.69 : 0.73, spreadAmount)
+      : lerp(0.95, 0.76, spreadAmount);
     root.scale.setScalar(fitScale * (1 + Math.sin(time * 0.65) * 0.009 * orbitAmount));
     product.visible = productAmount > 0.002;
     const solid = smooth((productAmount - 0.12) / 0.76);
     bodyMaterial.opacity = solid;
     capMaterial.opacity = solid;
     labelMaterial.opacity = smooth((productAmount - 0.43) / 0.53);
-    pedestal.material.opacity = solid;
+    pedestal.material.opacity = solid * 0.55;
     floor.material.opacity = lerp(0.32, 0.8, solid);
+    floor.position.y = lerp(-1.92, -1.31, solid);
     const form = formName(state);
     if (form !== previousForm) { container.dataset.form = form; previousForm = form; }
+    container.dataset.sculpture = 'soft-modules';
+    container.dataset.motionTime = time.toFixed(2);
   }
 
   function paint() {
@@ -365,7 +284,7 @@ export function createKineticHero(container) {
         labelMaterial.map = texture; labelMaterial.needsUpdate = true;
         textures.delete(currentLabelTexture); currentLabelTexture.dispose(); currentLabelTexture = texture;
         // Compile both product and abstract materials while the entry scene is on screen.
-        pose(14); product.visible = true;
+        pose(12); product.visible = true;
         if (renderer.compileAsync) await renderer.compileAsync(scene, camera);
         if (disposed) return { cancelled: true };
         if (lost) return { fallback: true };

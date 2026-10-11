@@ -51,56 +51,60 @@ function text(ctx, value, x, y, size, color = INK, weight = 500, align = "left")
 function homeArtwork(ctx, width, height, aspect = 16 / 9) {
   ctx.fillStyle = INK; ctx.fillRect(0, 0, width, height);
 
-  function orbitalProduct(cx, cy, scale) {
+  function modularSculpture(cx, cy, scale) {
     ctx.save(); ctx.translate(cx, cy); ctx.scale(scale, scale);
-    const halo = ctx.createRadialGradient(15, 30, 45, 15, 30, 420);
-    halo.addColorStop(0, "rgba(223,255,0,0.13)");
-    halo.addColorStop(0.5, "rgba(223,255,0,0.035)"); halo.addColorStop(1, "rgba(223,255,0,0)");
-    ctx.fillStyle = halo; ctx.fillRect(-450, -430, 900, 860);
+    const halo = ctx.createRadialGradient(0, 15, 60, 0, 15, 380);
+    halo.addColorStop(0, "rgba(223,255,0,0.08)");
+    halo.addColorStop(1, "rgba(223,255,0,0)");
+    ctx.fillStyle = halo; ctx.fillRect(-410, -390, 820, 780);
+    ctx.save(); ctx.translate(20, 253); ctx.scale(1, 0.15);
+    const shadow = ctx.createRadialGradient(0, 0, 25, 0, 0, 270);
+    shadow.addColorStop(0, "rgba(0,0,0,0.7)"); shadow.addColorStop(1, "rgba(0,0,0,0)");
+    ctx.fillStyle = shadow; ctx.fillRect(-280, -280, 560, 560); ctx.restore();
+    ctx.rotate(-0.12); ctx.transform(1, 0.055, 0.07, 1, 0, 0);
 
-    const chrome = ctx.createLinearGradient(-330, -250, 330, 250);
-    chrome.addColorStop(0, "#626c75"); chrome.addColorStop(0.17, "#f8ffff");
-    chrome.addColorStop(0.29, "#49525b"); chrome.addColorStop(0.48, "#11171e");
-    chrome.addColorStop(0.62, "#d9e3e8"); chrome.addColorStop(0.78, "#78838a");
-    chrome.addColorStop(1, "#eef3e5");
-    ctx.save(); ctx.rotate(-0.48);
-    ctx.strokeStyle = chrome; ctx.lineWidth = 20;
-    ctx.beginPath(); ctx.ellipse(0, 0, 330, 174, 0, 0, Math.PI * 2); ctx.stroke();
-    ctx.strokeStyle = "rgba(245,245,242,0.19)"; ctx.lineWidth = 1;
-    ctx.beginPath(); ctx.ellipse(0, 0, 346, 189, 0, 0, Math.PI * 2); ctx.stroke();
+    // Eight full cushions mirror the live hero: a dense front face and a
+    // visible second layer, rather than thin orbital lines around a product.
+    function cushion(x, y, material, behind = false) {
+      const size = 202, radius = 69;
+      ctx.save(); ctx.translate(x, y);
+      let fill;
+      if (material === "chrome" || material === "graphite") {
+        fill = ctx.createLinearGradient(-101, -101, 101, 101);
+        const stops = material === "chrome"
+          ? [[0, "#f5fafc"], [0.18, "#dfe6e9"], [0.38, "#68767d"], [0.64, "#e8edef"], [0.85, "#748188"], [1, "#293238"]]
+          : [[0, "#7b8a90"], [0.23, "#48575d"], [0.5, "#18232a"], [0.75, "#3b4a52"], [1, "#10171c"]];
+        stops.forEach(([position, color]) => fill.addColorStop(position, color));
+      } else {
+        fill = ctx.createRadialGradient(-50, -65, 6, 5, 15, 165);
+        const stops = material === "lime"
+          ? [[0, "#f4ffae"], [0.22, "#eaff58"], [0.62, LIME], [0.86, "#b7d100"], [1, "#7e9200"]]
+          : [[0, "#ffffff"], [0.35, "#f2f1e8"], [0.75, "#d5d8d0"], [1, "#939c95"]];
+        stops.forEach(([position, color]) => fill.addColorStop(position, color));
+      }
+      ctx.globalAlpha = behind ? 0.8 : 1;
+      ctx.shadowColor = "rgba(0,0,0,0.48)"; ctx.shadowBlur = 22;
+      ctx.shadowOffsetX = 7; ctx.shadowOffsetY = 13;
+      ctx.fillStyle = fill; ctx.beginPath(); ctx.roundRect(-101, -101, size, size, radius); ctx.fill();
+      ctx.shadowColor = "transparent";
+      ctx.strokeStyle = "rgba(255,255,255,0.22)"; ctx.lineWidth = 1.8; ctx.stroke();
+      const edge = ctx.createLinearGradient(0, -97, 0, 97);
+      edge.addColorStop(0, "rgba(255,255,255,0.44)");
+      edge.addColorStop(0.46, "rgba(255,255,255,0.04)");
+      edge.addColorStop(1, "rgba(0,0,0,0.18)");
+      ctx.strokeStyle = edge; ctx.lineWidth = 3;
+      ctx.beginPath(); ctx.roundRect(-96, -96, 192, 192, radius - 3); ctx.stroke();
+      ctx.restore();
+    }
+    cushion(-48, -154, "graphite", true);
+    cushion(161, -154, "lime", true);
+    cushion(-48, 55, "chrome", true);
+    cushion(161, 55, "graphite", true);
+    cushion(-105, -105, "lime");
+    cushion(104, -105, "chrome");
+    cushion(-105, 104, "ivory");
+    cushion(104, 104, "lime");
     ctx.restore();
-
-    // A branded glass silhouette keeps the monitor preview related to the
-    // actual product-design work, rather than an unrelated loading graphic.
-    ctx.save(); ctx.rotate(-0.12);
-    const glass = ctx.createLinearGradient(-112, 0, 112, 0);
-    glass.addColorStop(0, "#677646"); glass.addColorStop(0.08, "#d4e4a2");
-    glass.addColorStop(0.17, "#57613d"); glass.addColorStop(0.46, "#202a1b");
-    glass.addColorStop(0.84, "#1d2619"); glass.addColorStop(0.95, "#8c9b65");
-    glass.addColorStop(1, "#b9c58a");
-    ctx.fillStyle = glass; ctx.beginPath(); ctx.roundRect(-112, -121, 224, 306, 30); ctx.fill();
-    ctx.strokeStyle = "rgba(235,244,209,0.6)"; ctx.lineWidth = 1.5; ctx.stroke();
-    ctx.fillStyle = "rgba(4,8,5,0.48)";
-    ctx.beginPath(); ctx.roundRect(-95, -101, 190, 267, 22); ctx.fill();
-    ctx.strokeStyle = "rgba(223,255,0,0.25)"; ctx.lineWidth = 2;
-    ctx.beginPath(); ctx.moveTo(-82, -85); ctx.lineTo(-82, 142); ctx.stroke();
-    const cap = ctx.createLinearGradient(-70, 0, 70, 0);
-    cap.addColorStop(0, "#13191e"); cap.addColorStop(0.18, "#e7edef");
-    cap.addColorStop(0.38, "#687278"); cap.addColorStop(0.73, "#1c2227");
-    cap.addColorStop(0.94, "#a4afb4"); cap.addColorStop(1, "#303940");
-    ctx.fillStyle = cap; ctx.beginPath(); ctx.roundRect(-69, -210, 138, 94, 12); ctx.fill();
-    text(ctx, "AURA", 0, 22, 43, PAPER, 500, "center");
-    text(ctx, "EAU DE PARFUM", 0, 49, 11, "#bfc5b6", 400, "center");
-    ctx.fillStyle = LIME; ctx.fillRect(-22, 78, 44, 2);
-    text(ctx, "01 / BRAND CONCEPT", 0, 133, 9, "#bfc5b6", 400, "center");
-    ctx.restore();
-
-    ctx.save(); ctx.rotate(0.46);
-    ctx.strokeStyle = LIME; ctx.lineWidth = 11;
-    ctx.beginPath(); ctx.ellipse(0, 25, 333, 149, 0, 0.08, Math.PI * 0.96); ctx.stroke();
-    ctx.strokeStyle = "#f1ff9d"; ctx.lineWidth = 2;
-    ctx.beginPath(); ctx.ellipse(0, 23, 334, 151, 0, 0.08, Math.PI * 0.96); ctx.stroke();
-    ctx.restore(); ctx.restore();
   }
 
   // A responsive preview occupies the middle of the physical widescreen on
@@ -130,7 +134,7 @@ function homeArtwork(ctx, width, height, aspect = 16 / 9) {
     ctx.fillStyle = LIME; ctx.beginPath();
     ctx.roundRect(left + gutter, buttonTop, contentWidth - gutter * 2, 62, 31); ctx.fill();
     text(ctx, "Parliamo del tuo progetto  ↗", width / 2, buttonTop + 40, 22, INK, 500, "center");
-    orbitalProduct(width / 2, buttonTop + 299, Math.min(0.9, contentWidth / 750));
+    modularSculpture(width / 2, buttonTop + 299, Math.min(0.9, contentWidth / 750));
     text(ctx, "STRATEGIA / DESIGN / IMPATTO", left + gutter, 1100, 12, "#8b958c");
     ctx.restore(); return;
   }
@@ -151,9 +155,9 @@ function homeArtwork(ctx, width, height, aspect = 16 / 9) {
   text(ctx, "contenuti & campagne.", 104, 869, 32, "#b2b9b5", 400);
   ctx.fillStyle = LIME; ctx.beginPath(); ctx.roundRect(104, 925, 410, 73, 37); ctx.fill();
   text(ctx, "Parliamo del tuo progetto  ↗", 309, 971, 25, INK, 500, "center");
-  orbitalProduct(width * 0.74, height * 0.56, 1.25);
+  modularSculpture(width * 0.74, height * 0.56, 1.25);
   text(ctx, "STRATEGIA / DESIGN / IMPATTO", 104, height - 60, 20, "#8b958c");
-  text(ctx, "AURA — PROGETTO POSSIBILE", width - 100, height - 60, 19, "#8b958c", 400, "right");
+  text(ctx, "SCULTURA MODULARE / CONCEPT 3D", width - 100, height - 60, 19, "#8b958c", 400, "right");
 }
 
 function brandArtwork(ctx, width, height) {

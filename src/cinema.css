@@ -24,13 +24,18 @@
 @media (max-width: 800px) and (orientation: portrait) {
   .studio-cinema .water-film[data-aspect=wide] { object-fit: contain; }
   .studio-cinema .water-film[data-aspect=portrait] {
-    mask-image: linear-gradient(to bottom,transparent 18%,#000 22%,#000 72%,transparent 80%);
-    -webkit-mask-image: linear-gradient(to bottom,transparent 18%,#000 22%,#000 72%,transparent 80%);
+    position: absolute;
+    top: 50%; left: 50%;
+    width: auto; height: auto;
+    max-width: 100%; max-height: 100%;
+    transform: translate(-50%, -50%);
+    mask-image: linear-gradient(to bottom,transparent 20%,#000 26%,#000 76%,transparent 80%);
+    -webkit-mask-image: linear-gradient(to bottom,transparent 20%,#000 26%,#000 76%,transparent 80%);
   }
 }
 @media (max-width: 600px) and (orientation: portrait) {
   .studio-cinema .water-stage { height: 92svh; min-height: 590px; max-height: 1000px; }
-  .studio-cinema .water-film { object-fit: cover; }
+  .studio-cinema .water-film { object-fit: contain; }
   .studio-cinema .water-copy { top: 7%; max-width: 90%; }
   .studio-cinema .water-copy .eyebrow { margin-bottom: 18px; font-size: 8px; }
   .studio-cinema .water-copy h2 { font-size: clamp(34px,9.8vw,48px); }
@@ -49,4 +54,8 @@
   .studio-cinema .water-copy h2 { font-size: 38px; }
   .studio-cinema .water-film { object-fit: contain; }
   .studio-cinema .water-bottom { bottom: 40px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  /* This fixed translation centres the poster; it does not animate. */
+  .studio-cinema .water-film[data-aspect=portrait] { transform: translate(-50%, -50%) !important; }
 }

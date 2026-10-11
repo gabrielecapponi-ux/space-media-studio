@@ -1,5 +1,6 @@
 import { createMotion } from "./motion.js";
 import { createEntry } from "./entry.js";
+import { digitalConcepts } from "./digital-concepts.js";
 
 document.documentElement.classList.add("js", "motion-ready");
 const abort = new AbortController();
@@ -77,6 +78,7 @@ menu?.querySelectorAll("nav a").forEach((link) => link.addEventListener("click",
 document.querySelector("#concept-cta")?.addEventListener("click", (event) => navigateFromDialog(event, conceptDialog), { signal });
 
 const concepts = {
+  ...digitalConcepts,
   identity: {
     title: "Aura — The quiet ritual",
     image: "./images/muse-skincare.jpg",
@@ -111,25 +113,33 @@ const concepts = {
     credit: { name: "Daria Liudnaya / Pexels", url: "https://www.pexels.com/photo/blank-perfume-bottles-8166611/" },
   },
 };
-document.querySelectorAll("[data-concept]").forEach((card) => card.addEventListener("click", () => {
+document.querySelectorAll(".concept-card[data-concept], .digital-card[data-concept]").forEach((card) => card.addEventListener("click", () => {
   const concept = concepts[card.dataset.concept];
   if (!concept) return;
   const image = document.querySelector("#concept-image");
   image.src = new URL(concept.image, document.baseURI).href;
   image.alt = concept.imageAlt;
   conceptDialog.dataset.concept = card.dataset.concept;
+  if (concept.digital) conceptDialog.dataset.digital = "true";
+  else delete conceptDialog.dataset.digital;
+  image.width = concept.digital ? 1200 : 800;
+  image.height = concept.digital ? 800 : 1000;
   document.querySelector("#concept-wordmark").textContent = concept.wordmark;
   document.querySelector("#concept-signature").textContent = concept.signature;
   document.querySelector("#concept-discipline").textContent = concept.discipline;
   document.querySelector("#concept-title").textContent = concept.title;
   document.querySelector("#concept-description").textContent = concept.description;
   const credit = document.querySelector("#concept-credit");
-  const link = document.createElement("a");
-  link.href = concept.credit.url;
-  link.target = "_blank";
-  link.rel = "noopener noreferrer";
-  link.textContent = concept.credit.name;
-  credit.replaceChildren("Fotografia su licenza: ", link);
+  if (concept.digital) {
+    credit.textContent = "Design originale Space Media Studio / Concept dimostrativo.";
+  } else {
+    const link = document.createElement("a");
+    link.href = concept.credit.url;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.textContent = concept.credit.name;
+    credit.replaceChildren("Fotografia su licenza: ", link);
+  }
   document.querySelector("#concept-deliverables").replaceChildren(...concept.deliverables.map((item) => {
     const li = document.createElement("li");
     li.textContent = item;
@@ -137,6 +147,30 @@ document.querySelectorAll("[data-concept]").forEach((card) => card.addEventListe
   }));
   openDialog(conceptDialog);
 }, { signal }));
+
+const catalogueFilters = document.querySelector(".catalogue-filters");
+const catalogueCards = [...document.querySelectorAll(".digital-card")];
+const catalogueCount = document.querySelector(".catalogue-count");
+if (catalogueFilters && catalogueCards.length) {
+  catalogueFilters.hidden = false;
+  catalogueFilters.querySelectorAll("[data-catalogue-filter]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const filter = button.dataset.catalogueFilter;
+      let shown = 0;
+      catalogueCards.forEach((card) => {
+        const category = card.dataset.category;
+        const matches = filter === "all" || filter === category ||
+          (filter === "commerce-app" && (category === "commerce" || category === "app"));
+        card.hidden = !matches;
+        shown += Number(matches);
+      });
+      catalogueFilters.querySelectorAll("[data-catalogue-filter]").forEach((item) => {
+        item.setAttribute("aria-pressed", String(item === button));
+      });
+      catalogueCount.textContent = `${shown} ${shown === 1 ? "progetto possibile" : "progetti possibili"}`;
+    }, { signal });
+  });
+}
 
 const year = document.querySelector("#year");
 if (year) year.textContent = new Date().getFullYear();
