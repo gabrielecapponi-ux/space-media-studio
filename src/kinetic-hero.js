@@ -1,6 +1,8 @@
 import * as THREE from 'three';
 
 const TAU = Math.PI * 2;
+const ARC_ANGLE = TAU / 3 - 0.1;
+const HELIX_RISE = 0.24;
 const LIME = '#dfff00';
 const clamp = (value) => Math.max(0, Math.min(1, value));
 const smooth = (value) => { const t = clamp(value); return t * t * t * (t * (t * 6 - 15) + 10); };
@@ -8,7 +10,7 @@ const lerp = (a, b, t) => a + (b - a) * t;
 
 // A beveled arc is one authored part, reused for the sculpture and the product collar.
 function createArc() {
-  const arc = TAU / 3 - 0.055;
+  const arc = ARC_ANGLE;
   const shape = new THREE.Shape();
   shape.absarc(0, 0, 1, 0, arc, false);
   shape.lineTo(Math.cos(arc) * 0.72, Math.sin(arc) * 0.72);
@@ -16,10 +18,28 @@ function createArc() {
   shape.closePath();
   const geometry = new THREE.ExtrudeGeometry(shape, {
     depth: 0.115, steps: 1, curveSegments: 28,
-    bevelEnabled: true, bevelSegments: 3, bevelSize: 0.035, bevelThickness: 0.035,
+    bevelEnabled: true, bevelSegments: 3, bevelSize: 0.026, bevelThickness: 0.026,
   });
   geometry.translate(0, 0, -0.0575);
   geometry.rotateX(Math.PI / 2);
+  // Bend the same machined part into a true rising arc. The original flat topology
+  // remains shared; a GPU morph supplies a continuous helix without per-frame edits.
+  const positions = geometry.attributes.position.clone();
+  const normals = geometry.attributes.normal.clone();
+  const normal = new THREE.Vector3();
+  for (let index = 0; index < positions.count; index += 1) {
+    const x = positions.getX(index), z = positions.getZ(index);
+    const angle = Math.atan2(z, x);
+    positions.setY(index, positions.getY(index) + angle / ARC_ANGLE * HELIX_RISE);
+    // The inverse-transpose of this bend preserves the authored smooth bevel normals.
+    const slope = HELIX_RISE / ARC_ANGLE / (x * x + z * z);
+    const ny = normals.getY(index);
+    normal.set(normals.getX(index) + slope * z * ny, ny, normals.getZ(index) - slope * x * ny).normalize();
+    normals.setXYZ(index, normal.x, normal.y, normal.z);
+  }
+  geometry.morphAttributes.position = [positions];
+  geometry.morphAttributes.normal = [normals];
+  geometry.computeBoundingBox();
   geometry.computeBoundingSphere();
   return geometry;
 }
@@ -145,34 +165,31 @@ export function createKineticHero(container) {
     const layer = Math.floor(index / 3), sector = index % 3;
     const mesh = new THREE.Mesh(arcGeometry, layer === 2 || layer === 6 ? satin : layer === 0 ? darkChrome : chrome);
     root.add(mesh);
-    const orbitQuaternion = new THREE.Quaternion().setFromEuler(new THREE.Euler(
-      Math.sin(layer * 0.83) * 0.95 + 0.3, layer * 0.38, Math.cos(layer * 0.65) * 0.78,
-    ));
-    sectorRotation.setFromAxisAngle(new THREE.Vector3(0, 1, 0), sector * TAU / 3 + layer * 0.13);
+    // Parallel rotor layers share one axis, leaving a physical gap between parts.
+    // The changing radius gives the assembled object a deliberate spindle silhouette.
+    const orbitQuaternion = new THREE.Quaternion().setFromEuler(new THREE.Euler(0.2, 0, 0.1));
+    sectorRotation.setFromAxisAngle(new THREE.Vector3(0, 1, 0), sector * TAU / 3 + layer * 0.2);
     orbitQuaternion.multiply(sectorRotation);
     const angle = index * TAU / 24;
     const spreadQuaternion = new THREE.Quaternion().setFromEuler(new THREE.Euler(
       Math.sin(angle * 2) * 0.4 + 0.65, -angle + 0.4, Math.cos(angle) * 0.7,
     ));
-    // Two continuous, interleaved ribbons wind upward through four complete turns.
-    // Local tilt lifts each curved segment's end to the next segment's starting height.
+    // Two rising, interleaved ribbons retain evenly spaced joints and constant radius.
     const strand = Math.floor(index / 12), helixStep = index % 12;
-    const helixProgress = helixStep / 11;
     const helixAngle = helixStep * TAU / 3 + strand * Math.PI;
     const helixQuaternion = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), -helixAngle);
-    helixQuaternion.multiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), -0.27));
-    const helixRadius = 0.84 + Math.sin(helixProgress * Math.PI) * 0.18;
+    const helixRadius = 0.98;
+    const rotorRadius = 0.92 + Math.sin(layer / 7 * Math.PI) * 0.53;
     const productQuaternion = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), sector * TAU / 3 + 0.025);
-    const radius = layer < 6 ? 0.9 : layer === 6 ? 0.64 : 0.44;
-    const productY = layer < 6 ? -1.1 + layer * 0.27 : layer === 6 ? 0.55 : 1.04;
+    const radius = layer < 6 ? 0.9 : layer === 6 ? 0.5 : 0.44;
+    const productY = layer < 6 ? -1.1 + layer * 0.27 : layer === 6 ? 0.72 : 1.04;
     parts.push({ mesh, index,
-      orbit: { position: new THREE.Vector3(0, Math.sin(layer * 0.8) * 0.1, 0), quaternion: orbitQuaternion,
-        scale: new THREE.Vector3(1.28 + layer * 0.035, 1, 1.28 + layer * 0.035) },
+      orbit: { position: new THREE.Vector3(0, -1.225 + layer * 0.35, 0), quaternion: orbitQuaternion,
+        scale: new THREE.Vector3(rotorRadius, 1, rotorRadius) },
       spread: { position: new THREE.Vector3(Math.cos(angle) * 1.58, Math.sin(angle) * 1.52,
         Math.sin(angle * 3 + 0.3) * 0.72), quaternion: spreadQuaternion, scale: new THREE.Vector3(0.63, 0.9, 0.63) },
-      helix: { position: new THREE.Vector3(Math.sin(helixProgress * TAU) * 0.18,
-        -1.4 + helixStep * 0.24, Math.cos(helixProgress * TAU) * 0.14),
-        quaternion: helixQuaternion, scale: new THREE.Vector3(helixRadius, 0.88, helixRadius) },
+      helix: { position: new THREE.Vector3(0, -1.44 + helixStep * HELIX_RISE, 0),
+        quaternion: helixQuaternion, scale: new THREE.Vector3(helixRadius, 1, helixRadius) },
       product: { position: new THREE.Vector3(0, productY, 0), quaternion: productQuaternion,
         scale: new THREE.Vector3(radius, layer === 7 ? 1.7 : 1, radius) },
     });
@@ -237,6 +254,7 @@ export function createKineticHero(container) {
       part.mesh.position.z += Math.sin(part.index * 0.61) * 0.28 * flight;
       part.mesh.quaternion.copy(from.quaternion).slerp(to.quaternion, amount);
       part.mesh.scale.copy(from.scale).lerp(to.scale, amount);
+      part.mesh.morphTargetInfluences[0] = state.from === 'helix' ? 1 - amount : state.to === 'helix' ? amount : 0;
     }
     const orbitAmount = 1 - productAmount;
     const helixAmount = formAmount(state, 'helix');

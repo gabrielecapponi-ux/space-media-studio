@@ -1,0 +1,90 @@
+/* Focus must never scroll the cropped stage independently of the document. */
+.kinetic-stage { overflow: clip; }
+body.dialog-open, html:has(dialog[open]) { overflow: hidden; }
+dialog { overscroll-behavior: contain; }
+
+/* Keep text, actions and the lower rail apart on shorter desktop displays. */
+@media (min-width: 801px) and (max-height: 800px) {
+  .hero-content { padding-top: 30px; padding-bottom: 90px; }
+  .hero-content .eyebrow { margin-bottom: 20px; }
+  .kinetic-hero h1 { font-size: clamp(60px, 6.3vw, 94px); }
+  .hero-description { margin-top: 22px; font-size: 14px; max-width: 350px; }
+  .hero-links { margin-top: 20px; }
+}
+@media (min-width: 801px) and (max-height: 540px) and (orientation: landscape) {
+  .hero-content { padding-top: 20px; }
+  .kinetic-hero h1 { font-size: 44px; }
+  .hero-content .eyebrow { margin-bottom: 12px; }
+  .hero-description { margin-top: 14px; font-size: 10px; max-width: 270px; }
+  .hero-links { margin-top: 16px; }
+}
+
+/* The concept is a visual case study, with an explicit demonstration label. */
+.concept-dialog {
+  width: min(1060px, calc(100% - 64px));
+  max-width: none;
+  max-height: calc(100svh - 64px);
+  padding: 0;
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 12px;
+  overflow: auto;
+  background: var(--paper);
+}
+.concept-dialog[open] { display: grid; grid-template-columns: .9fr 1fr; }
+.concept-dialog > .dialog-close { z-index: 2; right: 16px; top: 16px; width: 44px; height: 44px; }
+.concept-preview { position: relative; isolation: isolate; min-height: 600px; overflow: hidden; background: #c9c6bb; }
+.concept-preview > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.concept-preview::after { content: ''; position: absolute; inset: 0; z-index: 0; background: linear-gradient(180deg, rgba(9,11,16,.16), transparent 40%, rgba(9,11,16,.38)); pointer-events: none; }
+.concept-preview > span { position: absolute; z-index: 1; left: 32px; right: 32px; color: #fff; }
+.concept-preview-label { top: 30px; font-size: 9px; }
+.concept-preview-wordmark { top: 21%; font-size: clamp(60px, 8vw, 108px); line-height: 1; letter-spacing: -.075em; font-weight: 500; }
+.concept-preview-signature { bottom: 33px; font-size: 10px; }
+.concept-dialog[data-concept=identity] .concept-preview-wordmark { color: #303c2d; }
+.concept-dialog[data-concept=architecture] .concept-preview > img { filter: grayscale(1); }
+.concept-dialog[data-concept=architecture] .concept-preview-wordmark { top: auto; bottom: 81px; font-size: clamp(40px, 5.3vw, 72px); letter-spacing: .03em; }
+.concept-dialog[data-concept=content] .concept-preview-wordmark { font-size: clamp(38px, 5.2vw, 65px); letter-spacing: .02em; top: 24%; }
+.concept-detail { padding: 57px 42px 38px; min-width: 0; }
+.concept-detail > .eyebrow { padding-right: 20px; font-size: 9px; color: var(--muted); margin-bottom: 30px; }
+.concept-detail h2 { font-size: clamp(33px, 3.2vw, 44px); line-height: 1.05; letter-spacing: -.06em; margin-bottom: 21px; }
+.concept-detail > p { font-size: 14px; line-height: 1.65; letter-spacing: -.015em; color: var(--muted); }
+.concept-detail h3 { font-size: 9px; text-transform: uppercase; margin-top: 28px; color: var(--muted); letter-spacing: .04em; }
+.concept-detail ul { display: block; padding: 0; margin: 10px 0 26px; list-style: none; }
+.concept-detail li { padding: 11px 0; margin: 0; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; font-size: 12px; line-height: 1.5; }
+.concept-detail > .button { font-size: 11px; gap: 22px; min-height: 48px; }
+.concept-detail > .dialog-note { border-top: 1px solid var(--line); margin-top: 28px; padding-top: 18px; font-size: 10px; line-height: 1.65; }
+.concept-detail > .concept-credit { font-size: 10px; line-height: 1.6; margin-top: 10px; overflow-wrap: anywhere; }
+@media (max-width: 800px) {
+  .concept-dialog { width: calc(100% - 40px); max-height: calc(100svh - 40px); }
+  .concept-dialog[open] { grid-template-columns: .8fr 1fr; }
+  .concept-preview { min-height: 580px; }
+  .concept-preview > span { left: 23px; right: 23px; }
+  .concept-preview-label { font-size: 7px; }
+  .concept-detail { padding: 60px 27px 30px; }
+  .concept-detail h2 { font-size: 33px; }
+  .concept-detail > p { font-size: 13px; }
+  .concept-detail > .eyebrow { font-size: 8px; margin-bottom: 24px; padding-right: 0; }
+  .concept-detail > .button { gap: 15px; font-size: 10px; padding: 12px 17px; }
+}
+@media (max-width: 600px) {
+  .concept-dialog { width: calc(100% - 28px); max-height: calc(100svh - 28px); border-radius: 10px; }
+  .concept-dialog[open] { display: block; }
+  .concept-dialog > .dialog-close { position: sticky; float: right; top: 12px; right: auto; margin: 12px 12px -56px 0; }
+  .concept-preview { height: 290px; min-height: 0; }
+  .concept-preview > span { left: 25px; right: 25px; }
+  .concept-preview-label { top: 23px; font-size: 8px; padding-right: 35px; }
+  .concept-preview-wordmark { top: 31%; font-size: 78px; }
+  .concept-preview-signature { bottom: 24px; font-size: 9px; }
+  .concept-dialog[data-concept=architecture] .concept-preview-wordmark { bottom: 65px; font-size: 43px; }
+  .concept-dialog[data-concept=content] .concept-preview-wordmark { font-size: 39px; top: 32%; }
+  .concept-detail { padding: 28px 25px; }
+  .concept-detail > .eyebrow { margin-bottom: 20px; }
+  .concept-detail h2 { font-size: 34px; margin-bottom: 18px; }
+  .concept-detail > p { font-size: 12px; }
+  .concept-detail h3 { margin-top: 24px; }
+  .concept-detail li { font-size: 11px; }
+  .concept-detail > .button { font-size: 11px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .concept-dialog[open] { animation: concept-enter .3s var(--ease) both; }
+  @keyframes concept-enter { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+}

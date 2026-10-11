@@ -29,14 +29,18 @@ function openDialog(dialog) {
   if (!dialog || dialog.open) return;
   dialog.showModal();
   document.body.classList.add("dialog-open");
+  motion.setBlocked(true);
 }
 function closeDialog(dialog) { dialog?.close(); }
 dialogs.forEach((dialog) => {
   dialog.addEventListener("close", () => {
-    if (!dialogs.some((item) => item.open)) document.body.classList.remove("dialog-open");
+    if (!dialogs.some((item) => item.open)) {
+      document.body.classList.remove("dialog-open");
+      motion.setBlocked(false);
+    }
     if (dialog === menu) {
-      menuToggle?.setAttribute("aria-expanded", "false");
-      menuToggle?.setAttribute("aria-label", "Apri menu");
+      menuToggle?.setAttribute("aria-expanded", String(menu.open));
+      menuToggle?.setAttribute("aria-label", menu.open ? "Chiudi menu" : "Apri menu");
     }
   }, { signal });
   dialog.addEventListener("click", (event) => {
@@ -75,18 +79,33 @@ document.querySelector("#concept-cta")?.addEventListener("click", (event) => nav
 const concepts = {
   identity: {
     title: "Aura — The quiet ritual",
+    image: "./images/muse-skincare.jpg",
+    imageAlt: "Still life skincare con flaconi neutri e tessuti naturali",
+    wordmark: "aura",
+    signature: "A quiet ritual.",
+    discipline: "01 / Branding & direzione creativa",
     description: "Una possibile identità per un brand beauty. Packaging, parole e immagini condividono un linguaggio essenziale e riconoscibile, dalla prima impressione a ogni punto di contatto.",
     deliverables: ["Strategia e posizionamento", "Identità visiva e direzione creativa", "Packaging e applicazioni digitali"],
     credit: { name: "Polina / Pexels", url: "https://www.pexels.com/photo/cosmetic-containers-on-gray-textile-8101525/" },
   },
   architecture: {
     title: "Forma — A new perspective",
+    image: "./images/forma-architecture.jpg",
+    imageAlt: "Architettura geometrica in bianco e nero",
+    wordmark: "FORMA",
+    signature: "Spaces that inspire.",
+    discipline: "02 / Web design & sviluppo",
     description: "Un possibile sito per uno studio di architettura: immagini, tipografia e movimento costruiscono un percorso chiaro, curato su ogni schermo.",
     deliverables: ["Direzione visiva e architettura dei contenuti", "Web design e sviluppo responsive", "Motion design e interazioni"],
     credit: { name: "Alec Doualetas / Pexels", url: "https://www.pexels.com/photo/modern-architectural-concrete-structure-detail-31851512/" },
   },
   content: {
     title: "Reverie — More feeling",
+    image: "./images/aura-perfume.jpg",
+    imageAlt: "Still life di flaconi senza marchio e forme scultoree",
+    wordmark: "RÊVERIE",
+    signature: "Less noise. More feeling.",
+    discipline: "03 / Contenuti & campagne",
     description: "Una possibile campagna lifestyle. Un unico concept diventa immagini, video, contenuti social e creatività pubblicitarie, mantenendo una direzione coerente.",
     deliverables: ["Concept di campagna", "Direzione di contenuti fotografici e video", "Creatività social e advertising"],
     credit: { name: "Daria Liudnaya / Pexels", url: "https://www.pexels.com/photo/blank-perfume-bottles-8166611/" },
@@ -95,6 +114,13 @@ const concepts = {
 document.querySelectorAll("[data-concept]").forEach((card) => card.addEventListener("click", () => {
   const concept = concepts[card.dataset.concept];
   if (!concept) return;
+  const image = document.querySelector("#concept-image");
+  image.src = new URL(concept.image, document.baseURI).href;
+  image.alt = concept.imageAlt;
+  conceptDialog.dataset.concept = card.dataset.concept;
+  document.querySelector("#concept-wordmark").textContent = concept.wordmark;
+  document.querySelector("#concept-signature").textContent = concept.signature;
+  document.querySelector("#concept-discipline").textContent = concept.discipline;
   document.querySelector("#concept-title").textContent = concept.title;
   document.querySelector("#concept-description").textContent = concept.description;
   const credit = document.querySelector("#concept-credit");
