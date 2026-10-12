@@ -4,7 +4,7 @@ La versione corrente concentra l'offerta in quattro capitoli: branding, web, fil
 
 ## Direzione
 
-Space Grotesk e DM Mono locali. Bianco caldo, nero e lime. Alternanza chiaro/scuro tra i capitoli; titolo grande, beneficio, tre attività e CTA a sinistra, film originale a destra. Su telefono il film segue il testo. Nessuna galleria, griglia o richiesta di esplorare un modello per capire l'offerta.
+Space Grotesk e DM Mono locali. Bianco caldo, nero e lime. Alternanza chiaro/scuro tra i capitoli; titolo grande, beneficio, tre attività e CTA a sinistra, film originale a destra. Su telefono il film segue il testo. L'offerta rimane comprensibile nei quattro capitoli, senza richiedere l'apertura dei concept. Il dialog aggiunge un approfondimento facoltativo; la sezione Progetti & bandi completa il percorso prima dei contatti.
 
 1. Carta, libro e packaging: identità riconoscibile.
 2. Laptop in alluminio e interfaccia elegante: siti ed e-commerce.
@@ -14,6 +14,16 @@ Space Grotesk e DM Mono locali. Bianco caldo, nero e lime. Alternanza chiaro/scu
 Ogni visual indica il carattere di concept dimostrativo. Non si inventano clienti, testimonial o risultati.
 
 Il percorso segue una sequenza concreta: definire l'identità, creare il sito o lo shop, mostrare il prodotto, distribuirne i contenuti. I titoli parlano del risultato; le tre attività sotto ciascuno chiariscono ciò che il cliente può richiedere. «Quattro scroll» identifica questi quattro capitoli, lasciando al contenuto lo spazio necessario su schermi piccoli o con testo ingrandito.
+
+## Esplorazione e richieste
+
+Ogni capitolo apre il proprio concept in un dialog nativo con film, descrizione e attività. Il cursore esplora il loop guidato di due secondi dei quattro film Blender esistenti, con export 4K a 60 fps o Full HD secondo la variante attiva. Non introduce un modello WebGL o una rotazione libera a 360°. Il dialog sospende i film sottostanti, offre pausa e concept successivo, ripristina il focus alla chiusura e può portare al modulo del servizio selezionato.
+
+Il concept web presenta tre direzioni originali in SVG: Seta (shop skincare), Forma (sito essenziale) e Nova (landing di prodotto). I file `public/previews/{seta,forma,nova}-web.svg` incorporano i nostri poster CGI. Le anteprime mostrano direzioni possibili, senza aggiungere tre lavori commissionati al portfolio o tre capitoli al percorso principale.
+
+Cinque brevi moduli, uno per servizio più Progetti & bandi, sono contenuti in elementi `details`. I form nativi GET preparano il testo su WhatsApp anche senza JavaScript; il miglioramento aggiunge il contesto del servizio, il conteggio dei caratteri e la validazione. Non esistono invio automatico, backend di raccolta o archiviazione delle idee nel sito: l'utente sceglie se inviare la bozza su WhatsApp.
+
+Progetti & bandi presenta supporto a obiettivi, attività, partner, budget, ricerca e candidatura per aziende, APS e ASD. Gli esempi di digitalizzazione, cultura e sport sono generali; non rappresentano bandi aperti o garanzie di ottenimento di fondi. Il punto di partenza resta la verifica del bando e dei requisiti.
 
 ## Movimento e formati
 
@@ -30,6 +40,8 @@ I testi entrano una sola volta per capitolo, con una traslazione di 18 px e uno 
 HTML, CSS e JavaScript ESM con Vite. Il bundle corrente non importa Three.js né i controller delle vecchie scene. Le skill Studio frontend e UI animation sono applicate a gerarchia, continuità, lifecycle e varianti statiche. `using-blender` e `video-non-higgsfield` guidano la pipeline locale originale; non viene dichiarato l'uso di generazione video AI.
 
 Le reference Studio su reveal, menu e composizione sono usate come criteri progettuali, senza incorporare codice o asset delle demo. Provenienza e impostazioni effettive dei film sono nel manifest degli asset.
+
+Horizon CoverFlow è stato selezionato come riferimento ma non acquisito né integrato per mancanza di un accesso autenticato. La presentazione delle tre anteprime è originale e non pubblica sorgenti o asset Horizon.
 
 ## Verifica
 

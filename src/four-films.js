@@ -9,6 +9,9 @@ export function createServiceFilms({ initiallyBlocked = true } = {}) {
   const toggle = document.querySelector("#motion-toggle");
   const qualityToggle = document.querySelector("#quality-toggle");
   const rail = [...document.querySelectorAll("[data-chapter-link]")];
+  const supportLink = document.querySelector('.projects-nav');
+  const support = document.querySelector('#progetti');
+  const contact = document.querySelector('#contatti');
   const chapters = [...document.querySelectorAll(".service-chapter")].map((section) => ({
     section,
     video: section.querySelector(".service-film"),
@@ -24,6 +27,7 @@ export function createServiceFilms({ initiallyBlocked = true } = {}) {
     resumeAt: null,
   }));
   let active = 0;
+  let inSupplement = false;
   let paused = false;
   let blocked = initiallyBlocked;
   let disposed = false;
@@ -113,7 +117,7 @@ export function createServiceFilms({ initiallyBlocked = true } = {}) {
     }
   }
   function allowed(item, index) {
-    return !disposed && !blocked && !paused && !reduced.matches && !document.hidden &&
+    return !disposed && !blocked && !inSupplement && !paused && !reduced.matches && !document.hidden &&
       index === active && inView(item) && canAutoload(item) && !item.failed && !item.denied;
   }
   function sync() {
@@ -149,7 +153,7 @@ export function createServiceFilms({ initiallyBlocked = true } = {}) {
         updateControls();
       });
     });
-    if (!blocked && !paused && !document.hidden && chapters[active + 1]) ensureSource(chapters[active + 1], "metadata");
+    if (!blocked && !inSupplement && !paused && !document.hidden && chapters[active + 1]) ensureSource(chapters[active + 1], "metadata");
     updateControls();
   }
   function readPosition() {
@@ -166,17 +170,30 @@ export function createServiceFilms({ initiallyBlocked = true } = {}) {
     active = chosen;
     chapters.forEach((item, index) => item.section.classList.toggle("is-current", index === active));
     document.documentElement.dataset.chapter = chapters[active].section.dataset.chapter;
-    document.documentElement.dataset.theme = chapters[active].section.dataset.theme || (active % 2 ? "dark" : "light");
+    const containsLine = (element) => {
+      const bounds = element?.getBoundingClientRect();
+      return bounds && bounds.top <= line && bounds.bottom >= line;
+    };
+    const inSupport = containsLine(support);
+    const inContact = containsLine(contact);
+    inSupplement = inSupport || inContact;
+    document.documentElement.dataset.theme = inSupport || inContact ? "light" : chapters[active].section.dataset.theme || (active % 2 ? "dark" : "light");
     rail.forEach((link) => {
-      const selected = link.getAttribute("href") === `#${chapters[active].section.id}`;
+      const selected = !inSupport && !inContact && link.getAttribute("href") === `#${chapters[active].section.id}`;
       if (selected) link.setAttribute("aria-current", "location");
       else link.removeAttribute("aria-current");
     });
+    if (inSupport) supportLink?.setAttribute('aria-current', 'location');
+    else supportLink?.removeAttribute('aria-current');
     const indicator = document.querySelector("[data-current-chapter]");
     if (indicator) indicator.textContent = String(active + 1).padStart(2, "0");
     sync();
   }
   function requestRead() { if (!frame && !disposed) frame = requestAnimationFrame(readPosition); }
+  // Native idea boxes can change chapter height without a window resize.
+  const layoutObserver = typeof ResizeObserver === 'function' ? new ResizeObserver(requestRead) : null;
+  chapters.forEach((item) => layoutObserver?.observe(item.section));
+  if (support) layoutObserver?.observe(support);
   chapters.forEach((item) => {
     const video = item.video;
     if (!video) return;
@@ -287,6 +304,7 @@ export function createServiceFilms({ initiallyBlocked = true } = {}) {
       if (disposed) return;
       disposed = true;
       abort.abort();
+      layoutObserver?.disconnect();
       cancelAnimationFrame(frame);
       chapters.forEach((item) => {
         stop(item);

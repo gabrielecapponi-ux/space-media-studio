@@ -19,6 +19,20 @@ Pipeline locale **Blender + FFmpeg**, senza Higgsfield, servizi a pagamento, mod
 
 [ASSET-FOUR-SERVICES.json](./ASSET-FOUR-SERVICES.json) registra engine, campioni, dimensioni, frame rate, durata, hash e verifiche effettive. Il desktop sceglie l'export 4K alla risoluzione originale; il mobile usa Full HD con compressione dedicata. Connessioni lente e problemi di decodifica 4K attivano Full HD su desktop.
 
+Il dialog dei quattro concept riusa questi stessi film e poster, senza introdurre nuove riprese o scene. Il cursore controlla il tempo del loop originale di due secondi: è una vista guidata del film, non un modello navigabile liberamente a 360°.
+
+## Anteprime web originali
+
+Le tre anteprime sono composizioni SVG originali con grafica, testo e poster Blender del progetto incorporati come immagini JPEG. Non contengono script o immagini stock.
+
+| Anteprima | File | Poster incorporato |
+| --- | --- | --- |
+| Seta / E-commerce skincare | `public/previews/seta-web.svg` | `public/images/four-cgi-desktop.jpg` |
+| Forma / Sito essenziale | `public/previews/forma-web.svg` | `public/images/four-identity-desktop.jpg` |
+| Nova / Landing di prodotto | `public/previews/nova-web.svg` | `public/images/four-campaigns-desktop.jpg` |
+
+Sono esempi dimostrativi di interfaccia, non siti di clienti né siti completi già realizzati e pubblicati. I nomi hanno funzione illustrativa.
+
 ## Font e identità
 
 - **Space Grotesk:** WOFF2 variabile dal [repository ufficiale di Florian Karsten](https://github.com/floriankarsten/space-grotesk), SIL Open Font License 1.1; copia in `public/fonts/SpaceGrotesk-OFL.txt`.
@@ -26,6 +40,12 @@ Pipeline locale **Blender + FFmpeg**, senza Higgsfield, servizi a pagamento, mod
 - Logo Space, composizioni, codice UI e scene originali del progetto.
 
 I font web sono serviti localmente. Gli eventuali font di sistema usati per renderizzare il testo tridimensionale restano incorporati nei raster dei film e sono indicati nella pipeline, senza distribuire i file di sistema.
+
+## Reference Horizon e contenuti di servizio
+
+**Horizon CoverFlow** è stato selezionato come riferimento, ma non acquisito né integrato perché richiede un accesso autenticato non disponibile. Nessun codice o asset Horizon è pubblicato nel sito. Le tre anteprime web e la loro presentazione corrente sono realizzate nel progetto; un nome di classe o attributo predisposto per il pattern non indica l'incorporazione di sorgenti Horizon.
+
+La sezione **Progetti & bandi** usa testi ed esempi generali originali per aziende, APS e ASD. Non riporta bandi aperti, scadenze o finanziamenti verificati e non promette ammissibilità o contributi. I cinque moduli creano una bozza WhatsApp tramite richiesta GET; non inviano messaggi automaticamente e non usano un backend di raccolta.
 
 ## Iterazioni precedenti
 

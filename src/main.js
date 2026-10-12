@@ -1,4 +1,6 @@
 import { createServiceFilms } from "./four-films.js";
+import { installIdeaBriefs } from "./idea-briefs.js";
+import { installConceptShowcase } from "./concept-showcase.js";
 
 const root = document.documentElement;
 root.classList.add("js");
@@ -26,6 +28,15 @@ const revealedCopies = new WeakSet();
 const copyAnimations = new Set();
 let copyObserver;
 let pageSuspended = false;
+installIdeaBriefs({ signal });
+let showcase;
+showcase = installConceptShowcase({ signal, onOpenChange() {
+  syncFilmBlocking();
+  if (showcase?.isOpen()) cancelCopyReveals();
+} });
+function syncFilmBlocking() {
+  films.setBlocked(!opened || pageSuspended || Boolean(menu?.open) || Boolean(showcase?.isOpen()));
+}
 function cancelCopyReveals(disconnect = false) {
   if (disconnect) copyObserver?.disconnect();
   for (const animation of copyAnimations) animation.cancel();
@@ -39,7 +50,7 @@ function startCopyReveals() {
         if (!isIntersecting || revealedCopies.has(copy) || pageSuspended || disposed) continue;
         revealedCopies.add(copy);
         copyObserver.unobserve(copy);
-        if (preference.matches || root.dataset.motion === "paused" || menu?.open || document.hidden || copy.contains(document.activeElement)) continue;
+        if (preference.matches || root.dataset.motion === "paused" || menu?.open || showcase?.isOpen() || document.hidden || copy.contains(document.activeElement)) continue;
         [...copy.children].slice(0, 6).forEach((element, index) => {
           if (typeof element.animate !== "function") return;
           try {
@@ -106,7 +117,7 @@ function openSite() {
     target?.setAttribute("tabindex", "-1");
     target?.focus({ preventScroll: true });
   }
-  films.setBlocked(Boolean(menu?.open));
+  syncFilmBlocking();
   startCopyReveals();
 }
 entrySkip?.addEventListener("click", openSite, { signal });
@@ -132,7 +143,7 @@ if (entry) {
   Promise.all([fonts, picture, film]).then(openSite);
 } else {
   root.classList.add("is-ready");
-  films.setBlocked(false);
+  syncFilmBlocking();
   startCopyReveals();
 }
 
@@ -142,7 +153,7 @@ function menuState() {
   menuToggle?.setAttribute("aria-label", open ? "Chiudi menu" : "Apri menu");
   document.body.classList.toggle("dialog-open", open);
   root.classList.toggle("menu-open", open);
-  films.setBlocked(!opened || open);
+  syncFilmBlocking();
   if (open) cancelCopyReveals();
 }
 menuToggle?.addEventListener("click", () => {
@@ -186,7 +197,7 @@ window.addEventListener("pagehide", (event) => {
 window.addEventListener("pageshow", (event) => {
   if (event.persisted) {
     pageSuspended = false;
-    films.setBlocked(!opened || Boolean(menu?.open));
+    syncFilmBlocking();
     startCopyReveals();
   }
 }, { signal });
