@@ -1,12 +1,15 @@
 import { createServiceFilms } from "./four-films.js";
 import { installIdeaBriefs } from "./idea-briefs.js";
 import { installConceptShowcase } from "./concept-showcase.js";
+import { installSpatialMotion } from "./spatial-motion.js";
 
 const root = document.documentElement;
 root.classList.add("js");
 document.querySelectorAll("#motion-toggle, #quality-toggle, .menu-toggle").forEach((control) => { control.hidden = false; });
 const abort = new AbortController();
 const { signal } = abort;
+const spatial = installSpatialMotion({ signal });
+spatial.setBlocked(true);
 const preference = matchMedia("(prefers-reduced-motion: reduce)");
 const films = createServiceFilms({ initiallyBlocked: true });
 const entry = document.querySelector("#studio-entry");
@@ -23,7 +26,7 @@ let completed = 0;
 let deadline;
 let dismissTimer;
 let progress = 0;
-const chapterCopies = [...document.querySelectorAll(".chapter-copy")];
+const chapterCopies = [...document.querySelectorAll(".chapter-intro, .chapter-info")];
 const revealedCopies = new WeakSet();
 const copyAnimations = new Set();
 let copyObserver;
@@ -35,7 +38,9 @@ showcase = installConceptShowcase({ signal, onOpenChange() {
   if (showcase?.isOpen()) cancelCopyReveals();
 } });
 function syncFilmBlocking() {
-  films.setBlocked(!opened || pageSuspended || Boolean(menu?.open) || Boolean(showcase?.isOpen()));
+  const blocked = !opened || pageSuspended || Boolean(menu?.open) || Boolean(showcase?.isOpen());
+  films.setBlocked(blocked);
+  spatial.setBlocked(blocked);
 }
 function cancelCopyReveals(disconnect = false) {
   if (disconnect) copyObserver?.disconnect();
@@ -187,7 +192,7 @@ menu?.querySelectorAll('a[href^="#"]').forEach((link) => link.addEventListener("
 window.addEventListener("pagehide", (event) => {
   pageSuspended = true;
   cancelCopyReveals(true);
-  if (event.persisted) { films.setBlocked(true); return; }
+  if (event.persisted) { films.setBlocked(true); spatial.setBlocked(true); return; }
   disposed = true;
   clearTimeout(deadline);
   clearTimeout(dismissTimer);

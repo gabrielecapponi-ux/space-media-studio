@@ -177,7 +177,7 @@ export function createServiceFilms({ initiallyBlocked = true } = {}) {
     const inSupport = containsLine(support);
     const inContact = containsLine(contact);
     inSupplement = inSupport || inContact;
-    document.documentElement.dataset.theme = inSupport || inContact ? "light" : chapters[active].section.dataset.theme || (active % 2 ? "dark" : "light");
+    document.documentElement.dataset.theme = inContact ? "dark" : inSupport ? "light" : chapters[active].section.dataset.theme || (active % 2 ? "dark" : "light");
     rail.forEach((link) => {
       const selected = !inSupport && !inContact && link.getAttribute("href") === `#${chapters[active].section.id}`;
       if (selected) link.setAttribute("aria-current", "location");

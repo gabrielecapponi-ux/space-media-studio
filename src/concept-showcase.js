@@ -49,13 +49,73 @@ export function installConceptShowcase({ signal, onOpenChange = () => {} } = {})
   let explicit = false;
   let userPaused = false;
   let backdropPointer = false;
+  let openingAnimation;
   const absolute = (path) => path ? new URL(path, document.baseURI).href : "";
   const clamp = (value) => Math.max(0, Math.min(1, Number.isFinite(value) ? value : 0));
   const duration = () => Number.isFinite(video.duration) && video.duration > 0 ? video.duration : 0;
   const ratio = () => duration() ? clamp(video.currentTime / duration()) : 0;
   const automatic = () => !reduced.matches && !connection?.saveData && document.documentElement.dataset.motion !== "paused";
   const canPlay = () => opened && !disposed && !suspended && !document.hidden && wantsPlay && (explicit || automatic());
-  const variant = () => mobile.matches ? "mobile" : quality?.getAttribute("aria-pressed") === "true" && !fallbackHD ? "ultra" : "desktop";
+  const variant = (fallback = fallbackHD) => mobile.matches ? "mobile" : quality?.getAttribute("aria-pressed") === "true" && !fallback ? "ultra" : "desktop";
+  function sourceFor(item, key = variant()) {
+    const data = item.original.dataset;
+    const override = `concept${key[0].toUpperCase()}${key.slice(1)}`;
+    if (data[override]) return { src: absolute(data[override]), key };
+    if (data.conceptDesktop) return { src: absolute(data.conceptDesktop), key: "desktop" };
+    if (data[key]) return { src: absolute(data[key]), key };
+    return { src: absolute(data.desktop), key: "desktop" };
+  }
+  function inheritPosition(item) {
+    const original = item.original;
+    if (item.key === "identity" && ["conceptDesktop", "conceptMobile", "conceptUltra"].some((key) => original.dataset[key])) return 0;
+    const selected = sourceFor(item, variant(false));
+    const originalSource = absolute(original.currentSrc || original.getAttribute("src"));
+    if (!selected.src || selected.src !== originalSource || (original.dataset.aspect && original.dataset.aspect !== selected.key)) return 0;
+    return Number.isFinite(original.duration) && original.duration > 0 ? clamp(original.currentTime / original.duration) : 0;
+  }
+  function cancelOpeningAnimation() {
+    const animation = openingAnimation;
+    openingAnimation = undefined;
+    animation?.cancel();
+  }
+  function openingRect(item) {
+    if (!automatic() || document.hidden || typeof dialog.animate !== "function") return null;
+    const frame = item.original.closest(".service-media")?.querySelector(".service-frame");
+    const rect = frame?.getBoundingClientRect();
+    if (!rect || !rect.width || !rect.height) return null;
+    const section = item.original.closest(".service-chapter")?.getBoundingClientRect();
+    const width = document.documentElement.clientWidth || innerWidth;
+    const left = Math.max(0, rect.left, section?.left ?? 0);
+    const top = Math.max(0, rect.top, section?.top ?? 0);
+    const right = Math.min(width, rect.right, section?.right ?? width);
+    const bottom = Math.min(innerHeight, rect.bottom, section?.bottom ?? innerHeight);
+    return right - left > 1 && bottom - top > 1 ? { left, top, right, bottom } : null;
+  }
+  function revealDialog(rect) {
+    if (!rect || !opened || !automatic()) return;
+    const bounds = dialog.getBoundingClientRect();
+    if (!bounds.width || !bounds.height) return;
+    const top = Math.max(0, Math.min(bounds.height, rect.top - bounds.top));
+    const left = Math.max(0, Math.min(bounds.width, rect.left - bounds.left));
+    const right = Math.max(0, Math.min(bounds.width, bounds.right - rect.right));
+    const bottom = Math.max(0, Math.min(bounds.height, bounds.bottom - rect.bottom));
+    let animation;
+    try {
+      animation = dialog.animate([
+        { clipPath: `inset(${top}px ${right}px ${bottom}px ${left}px round 12px)` },
+        { clipPath: "inset(0px 0px 0px 0px round 0px)" },
+      ], { duration: 300, easing: "cubic-bezier(.22,1,.36,1)", fill: "none" });
+      if (typeof animation.finished?.then !== "function") { animation.cancel(); return; }
+      openingAnimation = animation;
+      const release = () => {
+        if (openingAnimation === animation) openingAnimation = undefined;
+        if (animation.playState !== "idle") animation.cancel();
+      };
+      animation.finished.then(release, release);
+    } catch {
+      animation?.cancel();
+    }
+  }
   function state(value) {
     dialog.dataset.filmState = value;
     video.dataset.state = value;
@@ -78,7 +138,7 @@ export function installConceptShowcase({ signal, onOpenChange = () => {} } = {})
       scrub.setAttribute("aria-valuetext", seconds ? `${Math.round(percent)}% · ${(seconds * percent / 100).toFixed(1).replace(".", ",")} di ${seconds.toFixed(1).replace(".", ",")} secondi` : "Film non ancora caricato");
     }
     if (progress) progress.textContent = `${Math.round(percent)}%`;
-    if (qualityLabel) qualityLabel.textContent = (source ? video.dataset.aspect : variant()) === "ultra" ? "4K / 60 fps" : "Full HD / 60 fps";
+    if (qualityLabel) qualityLabel.textContent = (source ? video.dataset.aspect : current ? sourceFor(current).key : variant()) === "ultra" ? "4K / 60 fps" : "Full HD / 60 fps";
   }
   function pause() {
     playToken += 1;
@@ -97,16 +157,17 @@ export function installConceptShowcase({ signal, onOpenChange = () => {} } = {})
   }
   function updatePoster() {
     if (!current) return;
-    const path = current.original.dataset[mobile.matches ? "posterMobile" : "posterDesktop"];
+    const data = current.original.dataset;
+    const override = data[mobile.matches ? "conceptPosterMobile" : "conceptPosterDesktop"] || data.conceptPosterDesktop;
+    const path = override || data[mobile.matches ? "posterMobile" : "posterDesktop"];
     const image = current.original.closest(".service-media")?.querySelector(".service-poster");
     const src = absolute(path || image?.currentSrc || image?.getAttribute("src"));
     if (src) { poster.src = src; video.poster = src; }
-    poster.alt = image?.alt || `Concept originale: ${current.template.dataset.title || current.key}`;
+    poster.alt = (!override && image?.alt) || `Concept originale: ${current.template.dataset.title || current.key}`;
   }
   function ensureSource() {
     if (!opened || !current || disposed) return false;
-    const key = variant();
-    const src = absolute(current.original.dataset[key] || current.original.dataset.desktop);
+    const { src, key } = sourceFor(current);
     if (!src) { failed = true; state("error"); updateControls(); return false; }
     if (src === source) return true;
     if (pendingRatio === null && source) pendingRatio = ratio();
@@ -162,6 +223,7 @@ export function installConceptShowcase({ signal, onOpenChange = () => {} } = {})
   }
   function finishClose(restoreFocus = true) {
     if (!opened) return;
+    cancelOpeningAnimation();
     opened = false;
     wantsPlay = false;
     clearSource();
@@ -172,12 +234,14 @@ export function installConceptShowcase({ signal, onOpenChange = () => {} } = {})
   }
   function close(restoreFocus = true) {
     if (!opened) return;
+    cancelOpeningAnimation();
     // Release the decoder before the callback can resume the main-page film.
     pause();
     if (dialog.open) dialog.close();
     finishClose(restoreFocus);
   }
-  function select(item) {
+  function select(item, initialRatio = 0) {
+    cancelOpeningAnimation();
     pause();
     current = item;
     fallbackHD = false;
@@ -188,7 +252,7 @@ export function installConceptShowcase({ signal, onOpenChange = () => {} } = {})
     hasFrame = false;
     wantsPlay = !userPaused && automatic();
     clearSource();
-    pendingRatio = 0;
+    pendingRatio = clamp(initialRatio);
     content.replaceChildren(item.template.content.cloneNode(true));
     title.textContent = item.template.dataset.title || item.key;
     video.setAttribute("aria-label", `${title.textContent} · Film 3D originale`);
@@ -203,6 +267,10 @@ export function installConceptShowcase({ signal, onOpenChange = () => {} } = {})
   }
   function open(item, button) {
     if (disposed || suspended) return;
+    cancelOpeningAnimation();
+    const wasOpen = opened;
+    const rect = !wasOpen ? openingRect(item) : null;
+    const initialRatio = inheritPosition(item);
     if (!opened) {
       opener = button;
       userPaused = false;
@@ -212,7 +280,8 @@ export function installConceptShowcase({ signal, onOpenChange = () => {} } = {})
       try { dialog.showModal(); } catch { finishClose(); return; }
       document.body.classList.add("concept-open");
     }
-    select(item);
+    select(item, initialRatio);
+    revealDialog(rect);
   }
   function refreshSource() {
     if (!opened || disposed) return;
@@ -303,6 +372,7 @@ export function installConceptShowcase({ signal, onOpenChange = () => {} } = {})
   }, options);
   dialog.querySelectorAll("[data-concept-close]").forEach((button) => button.addEventListener("click", () => close(), options));
   dialog.addEventListener("cancel", (event) => { event.preventDefault(); close(); }, options);
+  dialog.addEventListener("keydown", cancelOpeningAnimation, options);
   dialog.addEventListener("close", () => { if (!dialog.open) finishClose(); }, options);
   dialog.addEventListener("pointerdown", (event) => { backdropPointer = event.target === dialog; }, options);
   dialog.addEventListener("pointercancel", () => { backdropPointer = false; }, options);
@@ -320,6 +390,7 @@ export function installConceptShowcase({ signal, onOpenChange = () => {} } = {})
   mobile.addEventListener("change", refreshSource, options);
   reduced.addEventListener("change", () => {
     if (!opened || !reduced.matches) return;
+    cancelOpeningAnimation();
     wantsPlay = false;
     userPaused = true;
     explicit = false;
@@ -327,16 +398,22 @@ export function installConceptShowcase({ signal, onOpenChange = () => {} } = {})
     updateControls();
   }, options);
   connection?.addEventListener?.("change", () => {
-    if (opened && connection.saveData && !explicit) {
+    if (opened && connection.saveData) {
+      cancelOpeningAnimation();
+      if (explicit) return;
       wantsPlay = false;
       userPaused = true;
       pause();
       updateControls();
     }
   }, options);
-  document.addEventListener("visibilitychange", playback, options);
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) cancelOpeningAnimation();
+    playback();
+  }, options);
   window.addEventListener("pagehide", (event) => {
     suspended = true;
+    cancelOpeningAnimation();
     pause();
     updateControls();
     if (!event.persisted) dispose();
@@ -350,6 +427,7 @@ export function installConceptShowcase({ signal, onOpenChange = () => {} } = {})
       if (!opened) return;
       if (changes.some((change) => change.target === quality)) refreshSource();
       if (changes.some((change) => change.target === document.documentElement) && document.documentElement.dataset.motion === "paused") {
+        cancelOpeningAnimation();
         wantsPlay = false;
         userPaused = true;
         pause();
@@ -361,6 +439,7 @@ export function installConceptShowcase({ signal, onOpenChange = () => {} } = {})
   }
   function dispose() {
     if (disposed) return;
+    cancelOpeningAnimation();
     close();
     disposed = true;
     observer?.disconnect();

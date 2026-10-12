@@ -1,48 +1,50 @@
-# Quattro servizi in quattro scroll — 12 ottobre 2026
+# Space / Creative Objects — 12 ottobre 2026
 
-La versione corrente concentra l'offerta in quattro capitoli: branding, web, film CGI e campagne. Il catalogo di dodici concept, la scultura astratta e il percorso AURA in tre tappe sono sostituiti da quattro scene di oggetti fisici, ciascuna legata a un servizio concreto.
+La nuova direzione mantiene quattro capitoli commerciali: branding, web, film 3D e campagne. Cambia la regia della pagina: quattro composizioni diverse, tipografia di grande scala e un oggetto protagonista per scena. L’offerta rimane leggibile senza aprire i concept; Progetti & bandi e i cinque box idea restano parte del percorso.
 
-## Direzione
+## Composizione
 
-Space Grotesk e DM Mono locali. Bianco caldo, nero e lime. Alternanza chiaro/scuro tra i capitoli; titolo grande, beneficio, tre attività e CTA a sinistra, film originale a destra. Su telefono il film segue il testo. L'offerta rimane comprensibile nei quattro capitoli, senza richiedere l'apertura dei concept. Il dialog aggiunge un approfondimento facoltativo; la sezione Progetti & bandi completa il percorso prima dei contatti.
+La palette approvata resta bianco caldo, nero e giallo lime. Space Grotesk e DM Mono sono locali. Titoli grandi, pochi livelli tipografici, distanze generose e sovrapposizioni controllate danno rilievo agli oggetti. Il linguaggio comune è quello di una mostra creativa, evitando di ripetere quattro volte la stessa coppia testo a sinistra/film a destra.
 
-1. Carta, libro e packaging: identità riconoscibile.
-2. Laptop in alluminio e interfaccia elegante: siti ed e-commerce.
-3. Vetro e luce: immagini e film 3D di prodotto.
-4. Cuffie e composizione pubblicitaria: contenuti e campagne.
+1. **Branding:** scena chiara e asimmetrica, titolo dominante, segno Space e scultura a otto moduli che si scompone e ricompone. Il film di carta e packaging rimane nell’approfondimento del concept.
+2. **Web:** ambiente scuro, laptop a sinistra e titolo a destra. Siti essenziali, e-commerce ed esperienze web 3D restano espliciti.
+3. **Film 3D:** scena calda di prodotto, vetro e luce, titolo ampio e film privo della precedente cornice da scheda. La fragranza Aura conserva il proprio ruolo di esempio dimostrativo.
+4. **Campagne:** campo lime, tipografia “Fatti vedere. Fatti scegliere.” e scena audio scura. Il contrasto evidenzia contenuti, social e creatività pubblicitarie.
 
-Ogni visual indica il carattere di concept dimostrativo. Non si inventano clienti, testimonial o risultati.
+La navigazione numerata 01–04 e la linea di avanzamento mantengono l’orientamento. Su telefono la composizione passa a testo, film completo in 16:9 e informazioni; non si ritagliano i soggetti per imitare un video verticale. «Quattro scroll» indica quattro passaggi dell’offerta, senza imporre quattro gesti o quattro altezze esatte a ogni dispositivo.
 
-Il percorso segue una sequenza concreta: definire l'identità, creare il sito o lo shop, mostrare il prodotto, distribuirne i contenuti. I titoli parlano del risultato; le tre attività sotto ciascuno chiariscono ciò che il cliente può richiedere. «Quattro scroll» identifica questi quattro capitoli, lasciando al contenuto lo spazio necessario su schermi piccoli o con testo ingrandito.
+## Nuova scultura e continuità
 
-## Esplorazione e richieste
+La scultura Space è originale: otto moduli pieni e arrotondati, con superfici gialle, scure e metalliche. L’animazione deve mostrare separazione ordinata e ricomposizione leggibile del segno. Render nativo Blender verificato: **3840×2160 a 60 fps**, **240 fotogrammi distinti / quattro secondi**, con derivati web 4K e Full HD. Dimensioni, hash, decodifica completa, faststart e continuità sono registrati in `ASSET-SPATIAL-SCULPTURE.json`.
 
-Ogni capitolo apre il proprio concept in un dialog nativo con film, descrizione e attività. Il cursore esplora il loop guidato di due secondi dei quattro film Blender esistenti, con export 4K a 60 fps o Full HD secondo la variante attiva. Non introduce un modello WebGL o una rotazione libera a 360°. Il dialog sospende i film sottostanti, offre pausa e concept successivo, ripristina il focus alla chiusura e può portare al modulo del servizio selezionato.
+La pipeline locale monta due segmenti consecutivi in ComfyUI e prepara i derivati in FFmpeg. È un montaggio CGI deterministico, non nuova generazione AI. Le scene laptop, fragranza e cuffie sono conservate; il packaging originale resta disponibile nel dialog branding mediante gli override dedicati ai media del concept.
 
-Il concept web presenta tre direzioni originali in SVG: Seta (shop skincare), Forma (sito essenziale) e Nova (landing di prodotto). I file `public/previews/{seta,forma,nova}-web.svg` incorporano i nostri poster CGI. Le anteprime mostrano direzioni possibili, senza aggiungere tre lavori commissionati al portfolio o tre capitoli al percorso principale.
+## Movimento dell’interfaccia
 
-Cinque brevi moduli, uno per servizio più Progetti & bandi, sono contenuti in elementi `details`. I form nativi GET preparano il testo su WhatsApp anche senza JavaScript; il miglioramento aggiunge il contesto del servizio, il conteggio dei caratteri e la validazione. Non esistono invio automatico, backend di raccolta o archiviazione delle idee nel sito: l'utente sceglie se inviare la bozza su WhatsApp.
+`src/spatial-motion.js` possiede i transform dei quattro `.service-frame`. Il movimento dello scroll resta entro 28 px verticali complessivi, con scala tra 1 e 1,045. Solo il puntatore mouse fine e hover aggiunge inclinazione fino a 2° e spostamenti fino a 7 px. Lo scroll non viene intercettato o trasformato in una navigazione artificiale.
 
-Progetti & bandi presenta supporto a obiettivi, attività, partner, budget, ricerca e candidatura per aziende, APS e ASD. Gli esempi di digitalizzazione, cultura e sport sono generali; non rappresentano bandi aperti o garanzie di ottenimento di fondi. Il punto di partenza resta la verifica del bando e dei requisiti.
+Il ciclo di assestamento si arresta da solo. Pausa, loader, menu, concept aperto e documento nascosto interrompono il movimento; movimento ridotto e SaveData ripristinano la posa statica. Le preferenze aggiornate durante la visita, il ritorno della pagina dalla cache e la pulizia di listener e observer fanno parte del contratto del componente. La linea di avanzamento rimane informativa anche con animazioni in pausa.
 
-## Movimento e formati
+Il dialog amplia il concept selezionato, sospende i film sottostanti e ripristina il focus alla chiusura. Riproduzione, pausa, cursore e concept successivo restano controlli nativi. Il cursore esplora i film guidati dei concept, non un modello 3D ruotabile liberamente. La nuova scultura di apertura e il packaging del dialog sono due media distinti: non si trasferisce fra loro una posa incompatibile.
 
-Le scene Blender hanno movimenti periodici distinti, illuminazione da studio e materiali PBR per carta, metallo, vetro, pelle e stampa. Master nativi 3840×2160 a 60 fps; il desktop usa il 4K, con comando di passaggio a Full HD e ripiego automatico in caso di errore. Il mobile fino a 1024 px usa Full HD 1920×1080 a 60 fps con compressione dedicata, conservando l'intero soggetto senza crop o bande aggiunte. Le connessioni 2G/3G iniziano in Full HD.
+## Concept e richieste
 
-Il frame di presentazione segue il rapporto effettivo del film; la sfumatura si applica ai suoi bordi, evitando rettangoli visibili dentro un contenitore più alto. Lo scorrimento è nativo e i collegamenti raggiungono l'inizio dei capitoli senza duplicare l'offset del menu fisso. Il film visibile è l'unico in riproduzione; un secondo può essere preparato solo come metadata.
+Tutti i visual sono **concept originali dimostrativi**, non incarichi, clienti o risultati commerciali inventati. Le tre anteprime web Seta, Forma e Nova sono direzioni visive originali in SVG, non tre siti completi già pubblicati.
 
-Il loader usa dipendenze reali del primo viewport, si può saltare subito ed ha una scadenza. Menu, focus, pausa e movimento ridotto sono gestiti senza introdurre una libreria di animazione o un nuovo framework. I feedback dei controlli rimangono brevi e interrompibili.
+I cinque moduli in elementi `details` preparano una bozza WhatsApp, uno per servizio più Progetti & bandi. Il form GET funziona anche senza JavaScript; il miglioramento aggiunge contesto, conteggio e validazione. Il visitatore decide se inviare. Il sito non invia messaggi automaticamente, non archivia idee e non usa un backend di raccolta.
 
-I testi entrano una sola volta per capitolo, con una traslazione di 18 px e uno sfalsamento contenuto entro 785 ms. Pausa, menu, focus e movimento ridotto annullano subito il reveal; senza JavaScript i testi sono già visibili.
+Progetti & bandi diventa una sezione editoriale compatta, con tre passaggi: idea, progetto e budget, opportunità e candidatura. Si rivolge ad aziende, APS e ASD e include fonti europee, nazionali, regionali, provinciali, private, fondazioni e istituti bancari. Digitalizzazione, cultura e sport restano esempi generali; non si annunciano bandi aperti e non si promettono finanziamenti.
 
-## Stack e reference
+## Skill e provenienza
 
-HTML, CSS e JavaScript ESM con Vite. Il bundle corrente non importa Three.js né i controller delle vecchie scene. Le skill Studio frontend e UI animation sono applicate a gerarchia, continuità, lifecycle e varianti statiche. `using-blender` e `video-non-higgsfield` guidano la pipeline locale originale; non viene dichiarato l'uso di generazione video AI.
+`studio-siti-space` coordina la direzione; Studio frontend e UI animation guidano gerarchia, composizione, continuità e lifecycle. `siti-3d` e Blender guidano la scena originale. La denominazione “City 3D Wow” non corrisponde a una skill presente nel catalogo: si applica `siti-3d` senza dichiarare l’uso di un pacchetto assente.
 
-Le reference Studio su reveal, menu e composizione sono usate come criteri progettuali, senza incorporare codice o asset delle demo. Provenienza e impostazioni effettive dei film sono nel manifest degli asset.
+`video-non-higgsfield` è applicata al montaggio locale ComfyUI dei segmenti consecutivi e agli export FFmpeg. Non vengono dichiarati nuovi video generati da AI, nuovi pesi modello o produzione Higgsfield.
 
-Horizon CoverFlow è stato selezionato come riferimento ma non acquisito né integrato per mancanza di un accesso autenticato. La presentazione delle tre anteprime è originale e non pubblica sorgenti o asset Horizon.
+**Horizon CoverFlow non è acquisito né integrato:** la risorsa è stata selezionata, ma l’accesso autenticato resta pendente. La ricerca non costituisce integrazione. I sorgenti e le anteprime correnti sono originali; nessun codice Horizon entra nel repository pubblico.
 
-## Verifica
+## Verifica e pubblicazione
 
-Struttura HTML, link interni, build, tastiera, menu, loader, autoplay, cambio qualità, ripiego statico e dimensioni responsive vengono verificati sulla build di produzione. La QA distingue la frequenza nominale dei file dalle prestazioni su dispositivi fisici; non dichiara un benchmark iPhone dal solo browser desktop.
+La build finale è stata verificata nel browser su desktop, viewport iPhone 390×844 e 320×667 e orientamento orizzontale 844×390: nessun overflow laterale; menu, focus, dialog, pausa e formato responsive funzionano. I controlli deterministici coprono anche preferenze, errori media e cleanup. Queste prove non certificano consumi o prestazioni su un iPhone fisico. I media della nuova apertura hanno il proprio manifest verificato; quello dei film precedenti conserva il proprio ambito.
+
+Il deploy sostituisce soltanto le radici Space dichiarate nello script, preservando altri siti, cartelle estranee e `CNAME` nel ramo di pubblicazione. Diritti e fonti restano documentati in `ASSET-SOURCES.md`; codice e composizioni originali non ricevono una licenza generale di riutilizzo con la pubblicazione dei sorgenti.

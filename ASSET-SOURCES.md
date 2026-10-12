@@ -1,6 +1,19 @@
 # Provenienza dei materiali
 
-Versione a quattro capitoli, 12 ottobre 2026. Il sito corrente usa **quattro film CGI originali**, poster estratti dai film, logo originale e font locali. Nessuna fotografia o ripresa stock è caricata dal sito.
+Versione a quattro capitoli, 12 ottobre 2026. Il sito corrente usa **cinque film CGI originali**: la scultura Space in apertura e i quattro concept di servizio. Include poster estratti dai film, logo originale e font locali. Nessuna fotografia o ripresa stock è caricata dal sito.
+
+## Scultura Space originale
+
+Otto moduli convessi morbidi, cromati, gialli e grafite compongono un asterisco. La coreografia separa i moduli nello spazio, li apre in profondità e li ricompone nella stessa posa. Geometria, materiali PBR, camera e luci sono originali, prodotti con `scripts/render-spatial-sculpture.py` in Blender locale.
+
+Il film usa **240 fotogrammi distinti renderizzati nativamente a 3840×2160, 60 fps**, per un ciclo di quattro secondi. Nessun upscaling o interpolazione. Il master viene assemblato realmente in **ComfyUI locale**, con due segmenti cronologici della stessa scena e i nodi nativi `LoadVideo`, `ConcatenateVideo` e `SaveVideo`; FFmpeg produce gli export web. È montaggio video locale previsto dalla skill Video Non Higgsfield, senza generazione AI, pesi modello, stock o servizi a pagamento.
+
+- Export 4K: `public/films/spatial-sculpture-4k.mp4`.
+- Export Full HD: `public/films/spatial-sculpture-{desktop,mobile}.mp4`, entrambi 1920×1080 a 60 fps.
+- Poster: `public/images/spatial-sculpture-{desktop,mobile}.jpg`.
+- Scena Blender, frame sorgente e master: `outputs/spatial-rebuild/`, esclusa da Git e dalla build.
+
+[ASSET-SPATIAL-SCULPTURE.json](./ASSET-SPATIAL-SCULPTURE.json) registra provenienza, pipeline effettiva, hash, dimensioni, decodifica completa e continuità del montaggio. La scultura appare nel primo capitolo; il suo dialog continua a mostrare il concept di identità e packaging, con sorgenti e poster dedicati.
 
 ## Quattro scene Blender originali
 
