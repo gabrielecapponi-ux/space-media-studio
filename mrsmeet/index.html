@@ -9,8 +9,8 @@
   <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
   <link rel="preload" href="./fonts/DynaPuff.ttf" as="font" type="font/ttf" crossorigin />
   <link rel="preload" href="./fonts/InstrumentSans-Regular.ttf" as="font" type="font/ttf" crossorigin />
-  <script type="module" crossorigin src="./assets/main-D0qygg2X.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/main-DFIfHPsi.css">
+  <script type="module" crossorigin src="./assets/main-CY3sNhOt.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/main-DQ7MExu2.css">
   <link rel="stylesheet" crossorigin href="./assets/mobile-polish-CPYDz-1w.css">
 </head>
 <body>
@@ -22,19 +22,20 @@
         <a class="nav-link" href="#menu">IL MENU<span>↗</span></a>
         <a class="nav-link" href="#storia">LA STORIA<span>↗</span></a>
         <a class="nav-link" href="#truck">FOOD TRUCK<span>↗</span></a>
+        <a class="nav-link" href="#dove-siamo">DOVE SIAMO<span>↗</span></a>
       </nav>
       <a class="button small pink" href="./ordina.html">È ORA DI ORDINARE <span aria-hidden="true">↗</span></a>
       <button class="mobile-menu" aria-label="Apri navigazione" aria-expanded="false" aria-controls="mobile-navigation"><span></span><span></span></button>
     </header>
-    <nav id="mobile-navigation" class="mobile-navigation" aria-label="Navigazione mobile" hidden><a href="#menu">Il menu ↗</a><a href="#storia">La storia ↗</a><a href="#truck">Food truck ↗</a><a href="./ordina.html">Ordina ↗</a></nav>
+    <nav id="mobile-navigation" class="mobile-navigation" aria-label="Navigazione mobile" hidden><a href="#menu">Il menu ↗</a><a href="#storia">La storia ↗</a><a href="#truck">Food truck ↗</a><a href="#dove-siamo">Dove siamo ↗</a><a href="./ordina.html">Ordina ↗</a></nav>
     <main>
-      <section class="hero" id="top" aria-labelledby="hero-title">
+      <section class="hero photo-hero" id="top" aria-labelledby="hero-title">
         <div class="hero-intro">
           <p class="eyebrow"><span class="tiny-star" aria-hidden="true">✳</span> PARMA, CON UN BEL PO’ DI CARATTERE.</p>
           <h1 id="hero-title">SMASH.<br /><span class="outline-word">LOVE.</span><br />REPEAT.</h1>
-          <p class="hero-description">Il primo morso non si scorda mai.<br />Benvenuto nel mondo di <strong>Mr Smeet.</strong></p>
-          <a class="button green" href="#menu">DAI UN MORSO AL MENU <span aria-hidden="true">↘</span></a>
-          <div class="hero-footnote"><span class="tiny-line" aria-hidden="true"></span> MEETICO SMASH BURGER. ZERO COMPLICAZIONI.</div>
+          <p class="hero-description">Smash burger, patatine e sfizi a Parma.<br />Scegli dal menu. Al resto pensiamo noi.</p>
+          <div class="hero-actions"><a class="button green" href="#menu">VEDI IL MENU <span aria-hidden="true">↘</span></a><a class="button pink" href="./ordina.html">ORDINA <span aria-hidden="true">↗</span></a></div>
+          <div class="hero-footnote"><span class="tiny-line" aria-hidden="true"></span> SU GLOVO, GLI STESSI PREZZI DEL NEGOZIO.</div>
         </div>
         <div class="hero-visual">
           <div class="hero-blob" aria-hidden="true"></div>
@@ -42,50 +43,192 @@
           <svg class="hero-spark spark-one" viewBox="0 0 80 80" aria-hidden="true"><path d="M40 2Q43 36 78 40Q44 44 40 78Q37 44 2 40Q36 36 40 2Z"/></svg>
           <svg class="hero-spark spark-two" viewBox="0 0 80 80" aria-hidden="true"><path d="M40 2Q43 36 78 40Q44 44 40 78Q37 44 2 40Q36 36 40 2Z"/></svg>
           <div class="round-stamp"><span>SMASHED<br />TO MAKE<br /><b>YOU SMILE.</b></span><span aria-hidden="true">☺</span></div>
-          <div class="product-stage" id="hero-scene" role="img" aria-label="Doppio smash burger: animazione generata con IA. Tocca per esplorare il modello 3D illustrativo.">
-            <div class="scene-fallback"><img src="./images/double-smash-photographic.webp" alt="Visual generato di un doppio smash con brioche lucida e cheddar fuso" width="1254" height="1254" /></div>
-            <video id="hero-film" class="hero-film" muted playsinline loop preload="auto" poster="./images/double-smash-photographic.webp" aria-hidden="true"><source src="./films/cinematic-double-smash-mobile.mp4" media="(max-width: 760px)" type="video/mp4" /><source src="./films/cinematic-double-smash.mp4" type="video/mp4" /></video>
+          <div class="product-stage photo-stage" id="hero-scene" role="img" aria-label="Classic Smash Burger Triplo Mr Smeet: animazione della fotografia del prodotto.">
+            <div class="photo-surface"><img class="hero-original-photo" src="./images/menu/classic-smash-burger-triplo.webp" alt="Il Classic Smash Burger Triplo di Mr Smeet, con cheddar fuso e cetrioli" width="1226" height="920" fetchpriority="high" />
+              <video id="hero-film" class="hero-film" muted playsinline loop preload="auto" poster="./images/menu/classic-smash-burger-triplo.webp" aria-hidden="true"><source src="./films/classic-triplo-photo-mobile.mp4" media="(max-width: 760px)" type="video/mp4" /><source src="./films/classic-triplo-photo.mp4" type="video/mp4" /></video>
+            </div>
           </div>
-          <div class="scene-note"><span class="hand-arrow" aria-hidden="true">⤴</span> il buongiorno<br />si vede dal burger.</div>
-          <div class="product-label"><span class="product-number" id="product-number">01 / 05</span><span id="product-name">THE CLASSIC SMASH</span><span class="label-star" aria-hidden="true">✳</span></div>
-          <div class="scene-tools">
-            <button class="round-button" id="rotate-left" aria-label="Ruota il prodotto a sinistra">↶</button>
-            <button class="explode-button" id="explode" aria-pressed="false">APRI IL BURGER <span aria-hidden="true">＋</span></button>
-            <button class="round-button" id="rotate-right" aria-label="Ruota il prodotto a destra">↷</button>
-          </div>
-          <p class="drag-hint"><span class="film-credit">ANIMAZIONE GENERATA CON IA · </span>TOCCA ED ESPLORA IN 3D</p>
+          <div class="hero-product-caption"><span>IL CLASSIC TRIPLO</span><span class="hero-promo">−20% SU GLOVO</span></div>
+          <div class="photo-controls"><button class="explode-button" data-product-photo="classic-smash-burger-triplo">GUARDA DA VICINO <span aria-hidden="true">＋</span></button><button class="round-button" id="hero-motion" aria-label="Metti in pausa il video del burger" aria-pressed="false">Ⅱ</button></div>
+          <p class="drag-hint">FOTO DEL PRODOTTO ANIMATA CON IA.</p>
         </div>
         <a class="hero-scroll" href="#menu" aria-label="Scorri al menu"><span>SCOPRI<br />IL MENU</span><span aria-hidden="true">↓</span></a>
       </section>
       <div class="ticker" aria-hidden="true"><div class="ticker-track"><span>SMASH IT.</span><b>✳</b><span>LOVE IT.</span><b>✳</b><span>SMEET AGAIN.</span><b>✳</b><span>SMASH IT.</span><b>✳</b><span>LOVE IT.</span><b>✳</b><span>SMEET AGAIN.</span><b>✳</b></div></div>
       <section class="menu-section section-pad" id="menu" aria-labelledby="menu-title">
-        <div class="section-heading reveal"><div><p class="eyebrow">01 / IL MENU</p><h2 id="menu-title">POCHI FRONZOLI.<br /><span>TANTI MORSI.</span></h2></div><p>Scegli il tuo prossimo colpo di fulmine.<br />Al resto ci pensa la piastra.</p></div>
-        <div class="menu-tabs" role="tablist" aria-label="Categorie del menu"><button role="tab" id="tab-burger" aria-controls="panel-burger" aria-selected="true" data-category="burger">SMASH BURGER <span>02</span></button><button role="tab" id="tab-fries" aria-controls="panel-fries" aria-selected="false" tabindex="-1" data-category="fries">FRIES & SAUCES <span>03</span></button><button role="tab" id="tab-extra" aria-controls="panel-extra" aria-selected="false" tabindex="-1" data-category="extra">SWEET & DRINKS <span>06</span></button></div>
-        <div id="panel-burger" class="menu-panel" role="tabpanel" aria-labelledby="tab-burger">
-          <article class="menu-card mint-card" data-tilt>
-            <div class="card-heading"><span class="eyebrow">L’ORIGINALE</span><span class="pill-label">THE CLASSIC</span></div>
-            <div class="menu-card-body"><h3>MEAT<br />SMASH.</h3><span class="food-icon" data-icon="burger" aria-hidden="true"></span></div>
-            <p>Carne, cheddar, cetrioli e salsa.<br />Il grande classico, fatto a modo nostro.</p>
-            <div class="price-options"><span>Singolo <b>€ 7</b></span><span>Doppio <b>€ 10</b></span><span>Triplo <b>€ 13</b></span></div>
-            <div class="card-bottom"><span>+ bacon € 1,50 · + onion € 0,50</span><button class="view-product" data-product="meat" aria-label="Esplora Meat Smash in 3D">ESPLORA IN 3D <span>↗</span></button></div>
+        <div class="section-heading reveal"><div><p class="eyebrow">01 / IL MENU</p><h2 id="menu-title">SCEGLI IL TUO<br /><span>PROSSIMO MORSO.</span></h2></div><p>Burger, menù completi e contorni.<br />Guarda le foto, scegli e ordina.</p></div>
+        <div class="menu-tabs" role="tablist" aria-label="Categorie del menu">
+          <button type="button" role="tab" id="tab-burger" aria-controls="panel-burger" aria-selected="true" tabindex="0" data-category="burger">Burger <span>04</span></button>
+          <button type="button" role="tab" id="tab-menu" aria-controls="panel-menu" aria-selected="false" tabindex="-1" data-category="menu">Menù completi <span>03</span></button>
+          <button type="button" role="tab" id="tab-fries" aria-controls="panel-fries" aria-selected="false" tabindex="-1" data-category="fries">Contorni <span>03</span></button>
+        </div>
+        <div id="panel-burger" class="menu-panel product-grid" role="tabpanel" aria-labelledby="tab-burger">
+          <article class="product-card" data-menu-product="classic-smash-burger-triplo">
+            <button class="product-photo" type="button" data-product-photo="classic-smash-burger-triplo" data-photo-src="./images/menu/classic-smash-burger-triplo.webp" data-photo-title="Classic Smash Burger Triplo" aria-label="Guarda la foto di Classic Smash Burger Triplo">
+              <img src="./images/menu/classic-smash-burger-triplo.webp" alt="" width="800" height="800" loading="lazy" decoding="async" />
+              <span class="product-photo-hint" aria-hidden="true">Guarda la foto <span>↗</span></span>
+            </button>
+            <div class="product-info product-content">
+              <div class="product-badges"><span class="promo-badge">−20% su Glovo</span></div>
+              <h3 class="product-name">Classic Smash Burger Triplo</h3>
+              <p class="product-description">Carne, cheddar, cetrioli e salsa.</p>
+              
+              <div class="product-footer">
+                <div class="product-price"><s class="price-original">16,00 €</s> <strong class="price-current">12,80 €</strong></div>
+                <a class="product-action" href="./ordina.html" aria-label="Ordina Classic Smash Burger Triplo">Ordina <span aria-hidden="true">↗</span></a>
+              </div>
+            </div>
           </article>
-          <article class="menu-card pink-card" data-tilt>
-            <div class="card-heading"><span class="eyebrow">STESSA VOGLIA DI SMASH</span><span class="pill-label">PLANT-BASED PATTY</span></div>
-            <div class="menu-card-body"><h3>BEYOND<br />SMASH.</h3><span class="food-icon" data-icon="beyond" aria-hidden="true"></span></div>
-            <p>Patty plant-based, cheddar, cetrioli e salsa.<br />Un’altra strada per il primo morso.</p>
-            <div class="price-options"><span>Singolo <b>€ 9</b></span><span>Doppio <b>€ 13</b></span><span class="option-light">+ onion <b>€ 0,50</b></span></div>
-            <div class="card-bottom"><span>Per ingredienti e allergeni, chiedici.</span><button class="view-product" data-product="beyond" aria-label="Esplora Beyond Smash in 3D">ESPLORA IN 3D <span>↗</span></button></div>
+          <article class="product-card" data-menu-product="classic-smash-burger-doppio">
+            <button class="product-photo" type="button" data-product-photo="classic-smash-burger-doppio" data-photo-src="./images/menu/classic-smash-burger-doppio.webp" data-photo-title="Classic Smash Burger Doppio" aria-label="Guarda la foto di Classic Smash Burger Doppio">
+              <img src="./images/menu/classic-smash-burger-doppio.webp" alt="" width="800" height="800" loading="lazy" decoding="async" />
+              <span class="product-photo-hint" aria-hidden="true">Guarda la foto <span>↗</span></span>
+            </button>
+            <div class="product-info product-content">
+              
+              <h3 class="product-name">Classic Smash Burger Doppio</h3>
+              <p class="product-description">Doppio burger di carne, cheddar, cetrioli e salsa.</p>
+              
+              <div class="product-footer">
+                <div class="product-price"><strong class="price-current">12,00 €</strong></div>
+                <a class="product-action" href="./ordina.html" aria-label="Ordina Classic Smash Burger Doppio">Ordina <span aria-hidden="true">↗</span></a>
+              </div>
+            </div>
+          </article>
+          <article class="product-card" data-menu-product="100-percento-vegano">
+            <button class="product-photo" type="button" data-product-photo="100-percento-vegano" data-photo-src="./images/menu/100-percento-vegano.webp" data-photo-title="100% vegano" aria-label="Guarda la foto di 100% vegano">
+              <img src="./images/menu/100-percento-vegano.webp" alt="" width="800" height="800" loading="lazy" decoding="async" />
+              <span class="product-photo-hint" aria-hidden="true">Guarda la foto <span>↗</span></span>
+            </button>
+            <div class="product-info product-content">
+              <div class="product-badges"><span class="diet-badge">Vegano</span></div>
+              <h3 class="product-name">100% vegano</h3>
+              <p class="product-description">Pane vegano, Beyond Meat, maionese vegana, cheddar vegano e cetrioli.</p>
+              
+              <div class="product-footer">
+                <div class="product-price"><strong class="price-current">12,00 €</strong></div>
+                <a class="product-action" href="./ordina.html" aria-label="Ordina 100% vegano">Ordina <span aria-hidden="true">↗</span></a>
+              </div>
+            </div>
+          </article>
+          <article class="product-card" data-menu-product="plant-based-burger-doppio">
+            <button class="product-photo" type="button" data-product-photo="plant-based-burger-doppio" data-photo-src="./images/menu/plant-based-burger-doppio.webp" data-photo-title="Plant Based Burger Doppio" aria-label="Guarda la foto di Plant Based Burger Doppio">
+              <img src="./images/menu/plant-based-burger-doppio.webp" alt="" width="800" height="800" loading="lazy" decoding="async" />
+              <span class="product-photo-hint" aria-hidden="true">Guarda la foto <span>↗</span></span>
+            </button>
+            <div class="product-info product-content">
+              
+              <h3 class="product-name">Plant Based Burger Doppio</h3>
+              <p class="product-description">Burger plant based, cheddar e salsa.</p>
+              <p class="product-options">Cipolla +1,50 €</p>
+              <div class="product-footer">
+                <div class="product-price"><strong class="price-current">15,00 €</strong></div>
+                <a class="product-action" href="./ordina.html" aria-label="Ordina Plant Based Burger Doppio">Ordina <span aria-hidden="true">↗</span></a>
+              </div>
+            </div>
           </article>
         </div>
-        <div id="panel-fries" class="menu-panel" role="tabpanel" aria-labelledby="tab-fries">
-          <article class="menu-card pink-card" data-tilt><div class="card-heading"><span class="eyebrow">IL MIGLIOR CONTORNO</span><span class="pill-label">GOLDEN & CRISPY</span></div><div class="menu-card-body"><h3>CLASSIC<br />FRIES.</h3><span class="food-icon" data-icon="fries" aria-hidden="true"></span></div><p>Dorate, croccanti. Da rubare dal cartoccio<br />ancora prima del primo morso.</p><div class="price-options"><span>Classic fries <b>€ 3,50</b></span><span>Salsa extra <b>€ 0,50</b></span></div><div class="card-bottom"><span>Condividere è facoltativo.</span><button class="view-product" data-product="fries">ESPLORA IN 3D <span>↗</span></button></div></article>
-          <article class="menu-card yellow-card" data-tilt><div class="card-heading"><span class="eyebrow">IL LATO SWEET</span><span class="pill-label">SWEET POTATO</span></div><div class="menu-card-body"><h3>SWEET<br />FRIES.</h3><span class="food-icon sweet-icon" data-icon="fries" aria-hidden="true"></span></div><p>Patate dolci, stessa irresistibile voglia<br />di arrivare fino all’ultima.</p><div class="price-options"><span>Sweet fries <b>€ 4</b></span><span>Salsa extra <b>€ 0,50</b></span></div><div class="card-bottom"><span>Qualcosa di diverso. Sempre croccante.</span><button class="view-product" data-product="sweet">ESPLORA IN 3D <span>↗</span></button></div></article>
+        <div id="panel-menu" class="menu-panel product-grid" role="tabpanel" aria-labelledby="tab-menu" hidden>
+          <article class="product-card" data-menu-product="classic-smash-menu">
+            <button class="product-photo" type="button" data-product-photo="classic-smash-menu" data-photo-src="./images/menu/classic-smash-menu.webp" data-photo-title="Classic Smash Menù" aria-label="Guarda la foto di Classic Smash Menù">
+              <img src="./images/menu/classic-smash-menu.webp" alt="" width="800" height="800" loading="lazy" decoding="async" />
+              <span class="product-photo-hint" aria-hidden="true">Guarda la foto <span>↗</span></span>
+            </button>
+            <div class="product-info product-content">
+              <div class="product-badges"><span class="promo-badge">−20% su Glovo</span></div>
+              <h3 class="product-name">Classic Smash Menù</h3>
+              <p class="product-description">Classic Smash Burger singolo, patatine e bibita.</p>
+              
+              <div class="product-footer">
+                <div class="product-price"><s class="price-original">18,00 €</s> <strong class="price-current">14,40 €</strong></div>
+                <a class="product-action" href="./ordina.html" aria-label="Ordina Classic Smash Menù">Ordina <span aria-hidden="true">↗</span></a>
+              </div>
+            </div>
+          </article>
+          <article class="product-card" data-menu-product="chicken-burger-menu">
+            <button class="product-photo" type="button" data-product-photo="chicken-burger-menu" data-photo-src="./images/menu/chicken-burger-menu.webp" data-photo-title="Chicken Burger Menù" aria-label="Guarda la foto di Chicken Burger Menù">
+              <img src="./images/menu/chicken-burger-menu.webp" alt="" width="800" height="800" loading="lazy" decoding="async" />
+              <span class="product-photo-hint" aria-hidden="true">Guarda la foto <span>↗</span></span>
+            </button>
+            <div class="product-info product-content">
+              <div class="product-badges"><span class="promo-badge">−20% su Glovo</span></div>
+              <h3 class="product-name">Chicken Burger Menù</h3>
+              <p class="product-description">Chicken Burger, patatine e bibita.</p>
+              
+              <div class="product-footer">
+                <div class="product-price"><s class="price-original">18,00 €</s> <strong class="price-current">14,40 €</strong></div>
+                <a class="product-action" href="./ordina.html" aria-label="Ordina Chicken Burger Menù">Ordina <span aria-hidden="true">↗</span></a>
+              </div>
+            </div>
+          </article>
+          <article class="product-card" data-menu-product="menu-birra">
+            <button class="product-photo" type="button" data-product-photo="menu-birra" data-photo-src="./images/menu/menu-birra.webp" data-photo-title="Menù Birra" aria-label="Guarda la foto di Menù Birra">
+              <img src="./images/menu/menu-birra.webp" alt="" width="800" height="800" loading="lazy" decoding="async" />
+              <span class="product-photo-hint" aria-hidden="true">Guarda la foto <span>↗</span></span>
+            </button>
+            <div class="product-info product-content">
+              
+              <h3 class="product-name">Menù Birra</h3>
+              <p class="product-description">Classic Smash Burger singolo, patatine e birra in lattina.</p>
+              
+              <div class="product-footer">
+                <div class="product-price"><strong class="price-current">20,00 €</strong></div>
+                <a class="product-action" href="./ordina.html" aria-label="Ordina Menù Birra">Ordina <span aria-hidden="true">↗</span></a>
+              </div>
+            </div>
+          </article>
         </div>
-        <div id="panel-extra" class="menu-panel" role="tabpanel" aria-labelledby="tab-extra">
-          <article class="menu-card mint-card" data-tilt><div class="card-heading"><span class="eyebrow">C’È SEMPRE SPAZIO</span><span class="pill-label">SWEET ENDING</span></div><div class="menu-card-body"><h3>ONE MORE<br />BITE.</h3><span class="food-icon" data-icon="ice" aria-hidden="true"></span></div><p>Un finale dolce per il tuo smash.<br />Il morso che non avevi programmato.</p><div class="price-options"><span>Ice burger <b>€ 4</b></span><span>Ice cup <b>€ 3</b></span></div><div class="card-bottom"><span>Caramello · frutti di bosco · cioccolato</span><button class="view-product" data-product="ice">ESPLORA IN 3D <span>↗</span></button></div></article>
-          <article class="menu-card pink-card drinks-card"><div class="card-heading"><span class="eyebrow">KEEP IT FRESH</span><span class="pill-label">DRINKS</span></div><h3>CHEERS,<br />SMEET!</h3><dl class="drinks-list"><div><dt>Acqua</dt><dd>€ 1,50</dd></div><div><dt>Coca · Fanta · Tè</dt><dd>€ 3</dd></div><div><dt>Birra alla spina</dt><dd>€ 5</dd></div><div><dt>Birra in lattina</dt><dd>€ 5</dd></div></dl><p>Il compagno perfetto per il tuo burger.</p></article>
+        <div id="panel-fries" class="menu-panel product-grid" role="tabpanel" aria-labelledby="tab-fries" hidden>
+          <article class="product-card" data-menu-product="nuggets-di-pollo">
+            <button class="product-photo" type="button" data-product-photo="nuggets-di-pollo" data-photo-src="./images/menu/nuggets-di-pollo.webp" data-photo-title="Nuggets di pollo" aria-label="Guarda la foto di Nuggets di pollo">
+              <img src="./images/menu/nuggets-di-pollo.webp" alt="" width="800" height="800" loading="lazy" decoding="async" />
+              <span class="product-photo-hint" aria-hidden="true">Guarda la foto <span>↗</span></span>
+            </button>
+            <div class="product-info product-content">
+              
+              <h3 class="product-name">Nuggets di pollo</h3>
+              <p class="product-description">Bocconcini di pollo croccanti.</p>
+              
+              <div class="product-footer">
+                <div class="product-price"><strong class="price-current">6,50 €</strong></div>
+                <a class="product-action" href="./ordina.html" aria-label="Ordina Nuggets di pollo">Ordina <span aria-hidden="true">↗</span></a>
+              </div>
+            </div>
+          </article>
+          <article class="product-card" data-menu-product="sweet-fries">
+            <button class="product-photo" type="button" data-product-photo="sweet-fries" data-photo-src="./images/menu/sweet-fries.webp" data-photo-title="Sweet Fries" aria-label="Guarda la foto di Sweet Fries">
+              <img src="./images/menu/sweet-fries.webp" alt="" width="800" height="800" loading="lazy" decoding="async" />
+              <span class="product-photo-hint" aria-hidden="true">Guarda la foto <span>↗</span></span>
+            </button>
+            <div class="product-info product-content">
+              
+              <h3 class="product-name">Sweet Fries</h3>
+              <p class="product-description">Patate dolci fritte.</p>
+              
+              <div class="product-footer">
+                <div class="product-price"><strong class="price-current">6,50 €</strong></div>
+                <a class="product-action" href="./ordina.html" aria-label="Ordina Sweet Fries">Ordina <span aria-hidden="true">↗</span></a>
+              </div>
+            </div>
+          </article>
+          <article class="product-card" data-menu-product="classic-fries">
+            <button class="product-photo" type="button" data-product-photo="classic-fries" data-photo-src="./images/menu/classic-fries.webp" data-photo-title="Classic Fries" aria-label="Guarda la foto di Classic Fries">
+              <img src="./images/menu/classic-fries.webp" alt="" width="800" height="800" loading="lazy" decoding="async" />
+              <span class="product-photo-hint" aria-hidden="true">Guarda la foto <span>↗</span></span>
+            </button>
+            <div class="product-info product-content">
+              
+              <h3 class="product-name">Classic Fries</h3>
+              <p class="product-description">Patatine fritte croccanti.</p>
+              
+              <div class="product-footer">
+                <div class="product-price"><strong class="price-current">5,50 €</strong></div>
+                <a class="product-action" href="./ordina.html" aria-label="Ordina Classic Fries">Ordina <span aria-hidden="true">↗</span></a>
+              </div>
+            </div>
+          </article>
         </div>
-        <div class="menu-meta"><p>Prezzi dal menu pubblicato sul sito ufficiale. Disponibilità e prezzi delivery possono variare. Immagini illustrative.</p><a href="./images/original-menu.jpg" target="_blank" rel="noopener">IL MENU ORIGINALE ↗</a></div>
+        <div class="menu-meta menu-price-note"><p><strong>Su Glovo, gli stessi prezzi dei prodotti in negozio.</strong></p><p>Le promozioni indicate sono offerte Glovo, soggette a disponibilità. Verifica il prezzo finale, la consegna e le eventuali commissioni su Glovo.</p></div>
       </section>
       <section class="bag-section" id="ordina" aria-labelledby="bag-title">
         <div class="bag-copy"><p class="eyebrow">IL LIETO FINE? È NEL SACCHETTO.</p><h2 id="bag-title">DALLO SCHERMO.<br /><span>A CASA TUA.</span></h2><p>La parte migliore deve ancora arrivare.<br />Apri il sacchetto e scegli come ordinare.</p><a class="button green" href="./ordina.html">ORDINA QUI <span aria-hidden="true">↗</span></a></div>
@@ -114,6 +257,7 @@
         <div class="visit-bottom"><p>Un piccolo posto.<br /><strong>Un grandissimo prossimo morso.</strong></p><div class="contact-lines"><a href="tel:+3905211792168">0521 1792168 ↗</a><a href="mailto:Mrsmeetburger@gmail.com">Mrsmeetburger@gmail.com ↗</a><a href="https://www.instagram.com/mr_smeet/" target="_blank" rel="noopener noreferrer">Instagram @mr_smeet ↗</a></div></div>
       </section>
     </main>
+    <dialog class="product-dialog" aria-labelledby="product-dialog-title"><button class="dialog-close round-button" aria-label="Chiudi la foto">×</button><div class="product-dialog-layout"><img class="dialog-product-image" alt="" /><div class="dialog-product-info"><p class="eyebrow">IL TUO PROSSIMO MORSO</p><h2 id="product-dialog-title"></h2><p class="dialog-product-description"></p><div class="dialog-product-price"></div><a class="button green" href="./ordina.html">ORDINA QUESTO GUSTO <span aria-hidden="true">↗</span></a><p class="dialog-order-note">Su Glovo, gli stessi prezzi del negozio.<br />Scegli il prodotto e personalizzalo quando ordini.</p></div></div></dialog>
     <footer class="footer"><span>© <span id="year">2026</span> MR SMEET. MEETICO SMASH BURGER.</span><div><button id="replay-intro">RIVEDI LA MASCOTTE ↻</button><button id="toggle-motion" aria-pressed="false">PAUSA ANIMAZIONI Ⅱ</button><a href="#top">TORNA SU ↑</a></div></footer>
   </div>
 </body>
