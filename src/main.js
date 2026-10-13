@@ -1,208 +1,190 @@
-import { createServiceFilms } from "./four-films.js";
-import { installIdeaBriefs } from "./idea-briefs.js";
-import { installConceptShowcase } from "./concept-showcase.js";
-import { installSpatialMotion } from "./spatial-motion.js";
+import { installIdeaBriefs } from './idea-briefs.js';
 
 const root = document.documentElement;
-root.classList.add("js");
-document.querySelectorAll("#motion-toggle, #quality-toggle, .menu-toggle").forEach((control) => { control.hidden = false; });
-const abort = new AbortController();
-const { signal } = abort;
-const spatial = installSpatialMotion({ signal });
-spatial.setBlocked(true);
-const preference = matchMedia("(prefers-reduced-motion: reduce)");
-const films = createServiceFilms({ initiallyBlocked: true });
-const entry = document.querySelector("#studio-entry");
-const entryProgress = document.querySelector("#entry-progress");
-const entryPercentage = document.querySelector("#entry-percentage");
-const entrySkip = document.querySelector("#entry-skip");
-const menu = document.querySelector("#menu-dialog");
-const menuToggle = document.querySelector(".menu-toggle");
-const underlay = [...document.body.children].filter((element) => element !== entry && !["SCRIPT", "STYLE", "LINK"].includes(element.tagName));
-const initialInert = new Map(underlay.map((element) => [element, element.inert]));
-let opened = !entry;
+const lifetime = new AbortController();
+const { signal } = lifetime;
+const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+const connection = navigator.connection;
+const menu = document.querySelector('#menu-dialog');
+const menuToggle = document.querySelector('.menu-toggle');
+const motionToggle = document.querySelector('#motion-toggle');
+const projectDialog = document.querySelector('#project-dialog');
+const projectContent = document.querySelector('[data-project-content]');
+const stage = document.querySelector('#launch-stage');
+const sections = [...document.querySelectorAll('[data-launch-chapter]')];
+const links = [...document.querySelectorAll('[data-chapter-link]')];
+const progressLine = document.querySelector('[data-page-progress]');
+let room;
+let starting = false;
+let roomFailed = false;
+let suspended = false;
+let paused = false;
+let scrollFrame = 0;
+let projectOpener;
+let reveal;
 let disposed = false;
-let completed = 0;
-let deadline;
-let dismissTimer;
-let progress = 0;
-const chapterCopies = [...document.querySelectorAll(".chapter-intro, .chapter-info")];
-const revealedCopies = new WeakSet();
-const copyAnimations = new Set();
-let copyObserver;
-let pageSuspended = false;
+
+root.classList.add('js');
+menuToggle.hidden = false;
 installIdeaBriefs({ signal });
-let showcase;
-showcase = installConceptShowcase({ signal, onOpenChange() {
-  syncFilmBlocking();
-  if (showcase?.isOpen()) cancelCopyReveals();
-} });
-function syncFilmBlocking() {
-  const blocked = !opened || pageSuspended || Boolean(menu?.open) || Boolean(showcase?.isOpen());
-  films.setBlocked(blocked);
-  spatial.setBlocked(blocked);
-}
-function cancelCopyReveals(disconnect = false) {
-  if (disconnect) copyObserver?.disconnect();
-  for (const animation of copyAnimations) animation.cancel();
-  copyAnimations.clear();
-}
-function startCopyReveals() {
-  if (!opened || disposed || pageSuspended || typeof IntersectionObserver !== "function" || !chapterCopies.some((copy) => typeof copy.animate === "function")) return;
-  if (!copyObserver) {
-    copyObserver = new IntersectionObserver((entries) => {
-      for (const { target: copy, isIntersecting } of entries) {
-        if (!isIntersecting || revealedCopies.has(copy) || pageSuspended || disposed) continue;
-        revealedCopies.add(copy);
-        copyObserver.unobserve(copy);
-        if (preference.matches || root.dataset.motion === "paused" || menu?.open || showcase?.isOpen() || document.hidden || copy.contains(document.activeElement)) continue;
-        [...copy.children].slice(0, 6).forEach((element, index) => {
-          if (typeof element.animate !== "function") return;
-          try {
-            const animation = element.animate([
-              { opacity: 0, transform: "translateY(18px)" },
-              { opacity: 1, transform: "translateY(0)" },
-            ], { duration: 560, delay: index * 45, easing: "cubic-bezier(.22,1,.36,1)", fill: "backwards" });
-            if (typeof animation.finished?.then !== "function") { animation.cancel(); return; }
-            copyAnimations.add(animation);
-            const release = () => {
-              copyAnimations.delete(animation);
-              // Final presentation always comes from the ordinary DOM/CSS.
-              animation.cancel();
-            };
-            animation.finished.then(release, release);
-          } catch {
-            // Unsupported animation options leave the native content visible.
-          }
-        });
-      }
-    }, { threshold: 0.18, rootMargin: "0px 0px -8% 0px" });
-  }
-  chapterCopies.forEach((copy) => { if (!revealedCopies.has(copy)) copyObserver.observe(copy); });
-}
-preference.addEventListener("change", () => {
-  if (preference.matches) cancelCopyReveals();
-}, { signal });
-document.querySelector("#motion-toggle")?.addEventListener("click", () => {
-  if (root.dataset.motion === "paused") cancelCopyReveals();
-}, { signal });
-document.addEventListener("visibilitychange", () => {
-  if (document.hidden) cancelCopyReveals();
-}, { signal });
-document.addEventListener("focusin", (event) => {
-  if (chapterCopies.some((copy) => copy.contains(event.target))) cancelCopyReveals();
-}, { signal });
-function setProgress(value) {
-  if (opened || disposed) return;
-  progress = Math.max(progress, Math.min(100, Math.round(value)));
-  if (entryPercentage) entryPercentage.textContent = `${String(progress).padStart(2, "0")}%`;
-  if (entryProgress) {
-    if (entryProgress.tagName === "PROGRESS") entryProgress.value = progress;
-    else entryProgress.setAttribute("aria-valuenow", String(progress));
-    entryProgress.style.setProperty("--load", `${progress}%`);
-  }
-}
-function openSite() {
-  if (opened || disposed) return;
-  const entryFocused = entry?.contains(document.activeElement);
-  setProgress(100);
-  opened = true;
-  clearTimeout(deadline);
-  root.classList.remove("is-loading");
-  root.classList.add("is-ready");
-  underlay.forEach((element) => { element.inert = initialInert.get(element); });
-  if (entry) {
-    entry.classList.add("is-complete");
-    entry.inert = true;
-    entry.setAttribute("aria-hidden", "true");
-    dismissTimer = setTimeout(() => { entry.hidden = true; }, preference.matches ? 0 : 450);
-  }
-  if (entryFocused) {
-    const target = document.querySelector("main");
-    target?.setAttribute("tabindex", "-1");
-    target?.focus({ preventScroll: true });
-  }
-  syncFilmBlocking();
-  startCopyReveals();
-}
-entrySkip?.addEventListener("click", openSite, { signal });
-document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape" && !opened) openSite();
-}, { signal });
-if (entry) {
-  entry.hidden = false;
-  entry.removeAttribute("aria-hidden");
-  root.classList.add("is-loading");
-  underlay.forEach((element) => { element.inert = true; });
-  entrySkip?.focus({ preventScroll: true });
-  deadline = setTimeout(openSite, 5000);
-  const mark = (weight) => { completed += weight; setProgress(completed); };
-  const fonts = Promise.race([document.fonts.ready, new Promise((resolve) => setTimeout(resolve, 1800))])
-    .then(() => mark(10));
-  const poster = document.querySelector(".service-poster");
-  const picture = (poster?.decode ? poster.decode().catch(() => {}) : Promise.resolve()).then(() => mark(25));
-  const film = films.prepareFirst({
-    timeoutMs: 4500,
-    onProgress(value) { setProgress(completed + value * 60); },
-  }).then(() => mark(65));
-  Promise.all([fonts, picture, film]).then(openSite);
-} else {
-  root.classList.add("is-ready");
-  syncFilmBlocking();
-  startCopyReveals();
+const preferredStatic = () => reduced.matches || Boolean(connection?.saveData);
+
+function syncBlocking() {
+  const open = Boolean(menu?.open || projectDialog?.open);
+  document.body.classList.toggle('dialog-open', open);
+  menuToggle.setAttribute('aria-expanded', String(Boolean(menu?.open)));
+  menuToggle.setAttribute('aria-label', menu?.open ? 'Chiudi menu' : 'Apri menu');
+  room?.setBlocked(open || suspended || document.hidden);
+  room?.setPaused(paused || Boolean(document.querySelector('.idea-box[open]')));
+  motionToggle.hidden = !room || roomFailed || preferredStatic();
+  motionToggle.setAttribute('aria-pressed', String(paused));
+  motionToggle.setAttribute('aria-label', paused ? 'Riprendi le animazioni' : 'Metti in pausa le animazioni');
+  motionToggle.firstElementChild.textContent = paused ? '▷' : 'Ⅱ';
 }
 
-function menuState() {
-  const open = Boolean(menu?.open);
-  menuToggle?.setAttribute("aria-expanded", String(open));
-  menuToggle?.setAttribute("aria-label", open ? "Chiudi menu" : "Apri menu");
-  document.body.classList.toggle("dialog-open", open);
-  root.classList.toggle("menu-open", open);
-  syncFilmBlocking();
-  if (open) cancelCopyReveals();
+async function startRoom() {
+  if (starting || room || roomFailed || preferredStatic() || disposed) return;
+  starting = true;
+  try {
+    const { createLaunchRoom } = await import('./launch-room.js');
+    if (disposed) return;
+    room = createLaunchRoom({ signal, onReady: syncBlocking, onError() {
+      roomFailed = true;
+      root.classList.remove('launch-ready');
+      motionToggle.hidden = true;
+    } });
+    syncBlocking();
+  } catch (error) {
+    roomFailed = true;
+    root.classList.remove('launch-ready');
+    stage.dataset.launchState = 'fallback';
+    motionToggle.hidden = true;
+  } finally { starting = false; }
 }
-menuToggle?.addEventListener("click", () => {
-  if (!menu) return;
+
+function updateNavigation() {
+  scrollFrame = 0;
+  const positions = sections.map((section) => section.getBoundingClientRect());
+  let active = 0;
+  let nearest = Infinity;
+  positions.forEach((rect, index) => {
+    const distance = Math.abs(rect.top);
+    if (distance < nearest) { nearest = distance; active = index; }
+  });
+  sections.forEach((section, index) => {
+    const fade = stage.dataset.launchState === 'ready' && !preferredStatic() && !paused
+      && !section.contains(document.activeElement) && !section.querySelector('.idea-box[open]')
+      ? Math.max(0, 1 - Math.abs(positions[index].top) / (innerHeight * .36)) : 1;
+    section.style.setProperty('--copy-opacity', fade.toFixed(3));
+  });
+  const inRoom = positions.length && positions.at(-1).bottom > innerHeight * .25;
+  if (stage.dataset.launchState !== 'ready') root.dataset.launchScene = inRoom ? String(active) : '0';
+  if (!inRoom && document.querySelector('#contatti').getBoundingClientRect().top < innerHeight * .5) root.dataset.launchScene = '2';
+  links.forEach((link) => {
+    if (inRoom && link.getAttribute('href') === `#${sections[active].id}`) link.setAttribute('aria-current', 'location');
+    else link.removeAttribute('aria-current');
+  });
+  if (progressLine && positions.length) {
+    const travel = positions.at(-1).top - positions[0].top;
+    const fraction = travel > 0 ? Math.max(0, Math.min(1, -positions[0].top / travel)) : 0;
+    progressLine.style.transform = `scaleX(${fraction})`;
+  }
+}
+function requestNavigation() {
+  if (!scrollFrame && !disposed) scrollFrame = requestAnimationFrame(updateNavigation);
+}
+window.addEventListener('scroll', requestNavigation, { passive: true, signal });
+window.addEventListener('resize', requestNavigation, { passive: true, signal });
+const stageObserver = new MutationObserver(requestNavigation);
+stageObserver.observe(stage, { attributes: true, attributeFilter: ['data-launch-state'] });
+const layoutObserver = new ResizeObserver(requestNavigation);
+sections.forEach((section) => layoutObserver.observe(section));
+
+motionToggle.addEventListener('click', () => { paused = !paused; syncBlocking(); requestNavigation(); }, { signal });
+function policyChanged() { startRoom(); syncBlocking(); requestNavigation(); }
+reduced.addEventListener('change', policyChanged, { signal });
+connection?.addEventListener?.('change', policyChanged, { signal });
+document.addEventListener('visibilitychange', syncBlocking, { signal });
+document.addEventListener('focusin', requestNavigation, { signal });
+document.addEventListener('focusout', requestNavigation, { signal });
+document.querySelectorAll('.idea-box').forEach((details) => details.addEventListener('toggle', () => { syncBlocking(); requestNavigation(); }, { signal }));
+
+menuToggle.addEventListener('click', () => {
   if (menu.open) menu.close();
   else menu.showModal();
-  menuState();
+  syncBlocking();
 }, { signal });
-menu?.addEventListener("close", menuState, { signal });
-document.querySelector("[data-close-menu]")?.addEventListener("click", () => menu?.close(), { signal });
-menu?.addEventListener("click", (event) => {
-  if (event.target !== menu) return;
-  const rect = menu.getBoundingClientRect();
-  if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) menu.close();
-}, { signal });
-menu?.querySelectorAll('a[href^="#"]').forEach((link) => link.addEventListener("click", (event) => {
-  const hash = link.getAttribute("href");
-  const target = hash && document.getElementById(hash.slice(1));
+document.querySelector('[data-close-menu]').addEventListener('click', () => menu.close(), { signal });
+menu.addEventListener('close', syncBlocking, { signal });
+menu.querySelectorAll('a[href^="#"]').forEach((link) => link.addEventListener('click', (event) => {
+  const target = document.getElementById(link.hash.slice(1));
   if (!target) return;
   event.preventDefault();
   menu.close();
-  requestAnimationFrame(() => {
-    if (disposed) return;
-    history.pushState(null, "", hash);
-    target.scrollIntoView({ behavior: preference.matches ? "instant" : "smooth" });
-    target.setAttribute("tabindex", "-1");
-    target.focus({ preventScroll: true });
-  });
+  syncBlocking();
+  history.pushState(null, '', link.hash);
+  target.scrollIntoView({ behavior: preferredStatic() ? 'auto' : 'smooth', block: 'start' });
+  target.setAttribute('tabindex', '-1');
+  target.focus({ preventScroll: true });
 }, { signal }));
 
-window.addEventListener("pagehide", (event) => {
-  pageSuspended = true;
-  cancelCopyReveals(true);
-  if (event.persisted) { films.setBlocked(true); spatial.setBlocked(true); return; }
-  disposed = true;
-  clearTimeout(deadline);
-  clearTimeout(dismissTimer);
-  films.dispose();
-  abort.abort();
+function cancelReveal() { reveal?.cancel(); reveal = undefined; }
+function openProject(key, opener) {
+  const template = document.querySelector(`#project-${key}[data-project-template]`);
+  if (!template) return;
+  cancelReveal();
+  projectOpener = opener;
+  projectContent.replaceChildren(template.content.cloneNode(true));
+  if (!projectDialog.open) projectDialog.showModal();
+  projectDialog.scrollTop = 0;
+  syncBlocking();
+  if (!preferredStatic() && !paused && typeof projectContent.animate === 'function') {
+    reveal = projectContent.animate([{ opacity: .2, transform: 'translateY(18px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 280, easing: 'cubic-bezier(.22,1,.36,1)' });
+  }
+}
+document.querySelectorAll('[data-open-project]').forEach((button) => {
+  button.hidden = false;
+  button.addEventListener('click', () => openProject(button.dataset.openProject, button), { signal });
+});
+document.querySelector('[data-close-project]').addEventListener('click', () => projectDialog.close(), { signal });
+projectDialog.addEventListener('cancel', cancelReveal, { signal });
+projectDialog.addEventListener('keydown', cancelReveal, { signal });
+projectDialog.addEventListener('close', () => {
+  if (projectDialog.open) return;
+  cancelReveal();
+  projectContent.replaceChildren();
+  syncBlocking();
+  projectOpener?.focus({ preventScroll: true });
 }, { signal });
-window.addEventListener("pageshow", (event) => {
-  if (event.persisted) {
-    pageSuspended = false;
-    syncFilmBlocking();
-    startCopyReveals();
+projectContent.addEventListener('click', (event) => {
+  const button = event.target.closest('[data-project-idea]');
+  if (!button) return;
+  const details = document.querySelector(`#idea-${button.dataset.projectIdea}`);
+  projectOpener = undefined;
+  projectDialog.close();
+  syncBlocking();
+  if (details) {
+    details.open = true;
+    history.pushState(null, '', `#${details.id}`);
+    details.scrollIntoView({ behavior: preferredStatic() ? 'auto' : 'smooth', block: 'center' });
+    details.querySelector('textarea')?.focus({ preventScroll: true });
   }
 }, { signal });
+reduced.addEventListener('change', cancelReveal, { signal });
+connection?.addEventListener?.('change', cancelReveal, { signal });
+window.addEventListener('pageshow', () => { suspended = false; syncBlocking(); requestNavigation(); }, { signal });
+window.addEventListener('pagehide', (event) => {
+  suspended = true;
+  cancelReveal();
+  if (event.persisted) { syncBlocking(); return; }
+  disposed = true;
+  cancelAnimationFrame(scrollFrame);
+  stageObserver.disconnect();
+  layoutObserver.disconnect();
+  lifetime.abort();
+  room?.dispose();
+}, { signal });
+
+document.querySelectorAll('[data-year]').forEach((element) => { element.textContent = String(new Date().getFullYear()); });
+updateNavigation();
+startRoom();

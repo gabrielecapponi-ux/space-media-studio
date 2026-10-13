@@ -1,50 +1,46 @@
-# Space / Creative Objects — 12 ottobre 2026
+# Space / Launch Room — 12 ottobre 2026
 
-La nuova direzione mantiene quattro capitoli commerciali: branding, web, film 3D e campagne. Cambia la regia della pagina: quattro composizioni diverse, tipografia di grande scala e un oggetto protagonista per scena. L’offerta rimane leggibile senza aprire i concept; Progetti & bandi e i cinque box idea restano parte del percorso.
+«**Le idee. In grande.**» introduce una mostra digitale di quattro servizi. La riprogettazione sostituisce i film e i soggetti della versione precedente con un sistema coerente: supporti tridimensionali, immagini curate, camera e passaggi fra stazioni. Il movimento deve spiegare come un'idea diventa identità, spazio digitale, immagine di prodotto e campagna.
 
-## Composizione
+## Regia
 
-La palette approvata resta bianco caldo, nero e giallo lime. Space Grotesk e DM Mono sono locali. Titoli grandi, pochi livelli tipografici, distanze generose e sovrapposizioni controllate danno rilievo agli oggetti. Il linguaggio comune è quello di una mostra creativa, evitando di ripetere quattro volte la stessa coppia testo a sinistra/film a destra.
+La palette mantiene bianco caldo, nero e giallo elettrico. Space Grotesk e DM Mono sono locali. Il titolo, l'offerta e le azioni appartengono all'HTML; la scena Three.js accompagna il contenuto senza inglobare la navigazione o i form nel canvas.
 
-1. **Branding:** scena chiara e asimmetrica, titolo dominante, segno Space e scultura a otto moduli che si scompone e ricompone. Il film di carta e packaging rimane nell’approfondimento del concept.
-2. **Web:** ambiente scuro, laptop a sinistra e titolo a destra. Siti essenziali, e-commerce ed esperienze web 3D restano espliciti.
-3. **Film 3D:** scena calda di prodotto, vetro e luce, titolo ampio e film privo della precedente cornice da scheda. La fragranza Aura conserva il proprio ruolo di esempio dimostrativo.
-4. **Campagne:** campo lime, tipografia “Fatti vedere. Fatti scegliere.” e scena audio scura. Il contrasto evidenzia contenuti, social e creatività pubblicitarie.
+1. **Branding:** un'immagine di identità FORMA su un supporto con spessore, affiancata da un manifesto tipografico e una didascalia. Il packaging è raffigurato nel raster, mentre i supporti sono geometrie 3D.
+2. **Web:** il visual architettonico viene inserito in interfacce originali desktop e mobile. Sono superfici di presentazione tridimensionali di una direzione web possibile, non dispositivi o siti completi già consegnati.
+3. **Prodotto:** ORA, un visual di fragranza con vetro spesso, liquido ambrato, acqua e luce. La scena mette in mostra il visual e la direzione artistica; il flacone non viene simulato come mesh.
+4. **Campagne:** la seta gialla vive su un billboard curvo e su un formato verticale. Una sola direzione visiva mostra la continuità fra i supporti pubblicitari.
 
-La navigazione numerata 01–04 e la linea di avanzamento mantengono l’orientamento. Su telefono la composizione passa a testo, film completo in 16:9 e informazioni; non si ritagliano i soggetti per imitare un video verticale. «Quattro scroll» indica quattro passaggi dell’offerta, senza imporre quattro gesti o quattro altezze esatte a ogni dispositivo.
+I nomi e i visual sono concept originali dimostrativi, non clienti o incarichi inventati. Le immagini vengono dichiarate come generate con AI; la geometria effettivamente interattiva riguarda la mostra, le superfici e la camera.
 
-## Nuova scultura e continuità
+## Movimento e struttura
 
-La scultura Space è originale: otto moduli pieni e arrotondati, con superfici gialle, scure e metalliche. L’animazione deve mostrare separazione ordinata e ricomposizione leggibile del segno. Render nativo Blender verificato: **3840×2160 a 60 fps**, **240 fotogrammi distinti / quattro secondi**, con derivati web 4K e Full HD. Dimensioni, hash, decodifica completa, faststart e continuità sono registrati in `ASSET-SPATIAL-SCULPTURE.json`.
+Quattro stazioni condividono la stessa scena e la camera si sposta tra loro in base alla posizione assoluta dello scroll nativo. Le pose delle superfici dipendono dalla distanza dalla stazione attiva: ingresso, esposizione e uscita appartengono a una sola coreografia reversibile. Non si intercettano wheel o swipe e non si impongono quattro gesti esatti.
 
-La pipeline locale monta due segmenti consecutivi in ComfyUI e prepara i derivati in FFmpeg. È un montaggio CGI deterministico, non nuova generazione AI. Le scene laptop, fragranza e cuffie sono conservate; il packaging originale resta disponibile nel dialog branding mediante gli override dedicati ai media del concept.
+L'apertura aggiunge un breve ingresso della camera. Un mouse con puntatore fine introduce un movimento contenuto; i supporti hanno una lieve oscillazione e l'illuminazione accompagna la mostra. I dettagli non devono trasformarsi in oggetti decorativi slegati dall'offerta.
 
-## Movimento dell’interfaccia
+Il rendering è confinato ai quattro capitoli. Pausa, menu, dialog e documento nascosto impediscono l'animazione; movimento ridotto e risparmio dati mantengono il percorso statico con immagini HTML. L'importazione della scena è dinamica. Il controller possiede listener, observer, geometrie, materiali, texture e risorse del renderer e li rilascia alla chiusura della pagina.
 
-`src/spatial-motion.js` possiede i transform dei quattro `.service-frame`. Il movimento dello scroll resta entro 28 px verticali complessivi, con scala tra 1 e 1,045. Solo il puntatore mouse fine e hover aggiunge inclinazione fino a 2° e spostamenti fino a 7 px. Lo scroll non viene intercettato o trasformato in una navigazione artificiale.
+Il percorso rimane leggibile senza WebGL o JavaScript: titoli, descrizioni, immagini, link e form fanno parte del documento. La navigazione segnala il capitolo attivo e una linea indica l'avanzamento. I capitoli possono crescere quando il contenuto o un box idea aperto richiedono spazio.
 
-Il ciclo di assestamento si arresta da solo. Pausa, loader, menu, concept aperto e documento nascosto interrompono il movimento; movimento ridotto e SaveData ripristinano la posa statica. Le preferenze aggiornate durante la visita, il ritorno della pagina dalla cache e la pulizia di listener e observer fanno parte del contratto del componente. La linea di avanzamento rimane informativa anche con animazioni in pausa.
+## Progetti e richieste
 
-Il dialog amplia il concept selezionato, sospende i film sottostanti e ripristina il focus alla chiusura. Riproduzione, pausa, cursore e concept successivo restano controlli nativi. Il cursore esplora i film guidati dei concept, non un modello 3D ruotabile liberamente. La nuova scultura di apertura e il packaging del dialog sono due media distinti: non si trasferisce fra loro una posa incompatibile.
+Ogni concept apre un dialog nativo con immagine, racconto e attività; l'azione «Partiamo dalla tua idea» porta al box del servizio. Menu e dialog conservano i controlli HTML e il ripristino del focus. I cinque box idea usano form GET nativi verso WhatsApp, con un miglioramento JavaScript per contesto, conteggio e validazione. Il visitatore rilegge la bozza e decide se inviarla.
 
-## Concept e richieste
+Progetti & bandi mantiene tre passaggi: idea e obiettivi, progetto e budget, opportunità e candidatura. Si rivolge ad aziende, APS e ASD e include ambiti europei, nazionali, regionali, provinciali, privati, fondazioni e istituti bancari. Gli esempi di digitalizzazione, cultura e sport sono generali: nessun bando viene dichiarato aperto e nessun contributo viene garantito.
 
-Tutti i visual sono **concept originali dimostrativi**, non incarichi, clienti o risultati commerciali inventati. Le tre anteprime web Seta, Forma e Nova sono direzioni visive originali in SVG, non tre siti completi già pubblicati.
+## Materiali e skill
 
-I cinque moduli in elementi `details` preparano una bozza WhatsApp, uno per servizio più Progetti & bandi. Il form GET funziona anche senza JavaScript; il miglioramento aggiunge contesto, conteggio e validazione. Il visitatore decide se inviare. Il sito non invia messaggi automaticamente, non archivia idee e non usa un backend di raccolta.
+Quattro immagini image_gen a **1672×941 pixel nativi** forniscono una direzione fotografica distinta. Il visual branding ha ricevuto un edit per eliminare microtesti di contatto, indirizzo e anno. I master sono locali e ignorati; i JPEG web sono registrati con hash e byte in `ASSET-LAUNCH-ROOM.json`.
 
-Progetti & bandi diventa una sezione editoriale compatta, con tre passaggi: idea, progetto e budget, opportunità e candidatura. Si rivolge ad aziende, APS e ASD e include fonti europee, nazionali, regionali, provinciali, private, fondazioni e istituti bancari. Digitalizzazione, cultura e sport restano esempi generali; non si annunciano bandi aperti e non si promettono finanziamenti.
+`studio-siti-space`, Studio frontend, UI animation e Siti 3D guidano gerarchia, composizione, movimento e gestione della scena. Three.js 0.186.1 è distribuito con licenza MIT; i font locali mantengono la SIL Open Font License.
 
-## Skill e provenienza
-
-`studio-siti-space` coordina la direzione; Studio frontend e UI animation guidano gerarchia, composizione, continuità e lifecycle. `siti-3d` e Blender guidano la scena originale. La denominazione “City 3D Wow” non corrisponde a una skill presente nel catalogo: si applica `siti-3d` senza dichiarare l’uso di un pacchetto assente.
-
-`video-non-higgsfield` è applicata al montaggio locale ComfyUI dei segmenti consecutivi e agli export FFmpeg. Non vengono dichiarati nuovi video generati da AI, nuovi pesi modello o produzione Higgsfield.
-
-**Horizon CoverFlow non è acquisito né integrato:** la risorsa è stata selezionata, ma l’accesso autenticato resta pendente. La ricerca non costituisce integrazione. I sorgenti e le anteprime correnti sono originali; nessun codice Horizon entra nel repository pubblico.
+La prova Video Non Higgsfield con ComfyUI/LTX è stata fermata per memoria disponibile prima di generare fotogrammi. Non costituisce un film di produzione e non produce asset del sito. Horizon CoverFlow non è stato acquisito o integrato; la Launch Room usa risorse e supporti originali e non consuma download Horizon.
 
 ## Verifica e pubblicazione
 
-La build finale è stata verificata nel browser su desktop, viewport iPhone 390×844 e 320×667 e orientamento orizzontale 844×390: nessun overflow laterale; menu, focus, dialog, pausa e formato responsive funzionano. I controlli deterministici coprono anche preferenze, errori media e cleanup. Queste prove non certificano consumi o prestazioni su un iPhone fisico. I media della nuova apertura hanno il proprio manifest verificato; quello dei film precedenti conserva il proprio ambito.
+La build è stata controllata nel browser a 1200×728, 390×844, 320×667 e 844×390: nessun overflow laterale, foto complete negli slot mobile, copy libero dalle superfici alle quattro posizioni di lettura, menu e dialog nativi, focus e passaggio al box idea corretti. Pausa e box aperti mostrano il ripiego fotografico; la ripresa si riallinea al capitolo corrente. 39 gruppi di contratti locali coprono preferenze, errori, caricamento, cleanup, focus e form. Sono prove su browser desktop con viewport simulati, non su iPhone fisico.
 
-Il deploy sostituisce soltanto le radici Space dichiarate nello script, preservando altri siti, cartelle estranee e `CNAME` nel ramo di pubblicazione. Diritti e fonti restano documentati in `ASSET-SOURCES.md`; codice e composizioni originali non ricevono una licenza generale di riutilizzo con la pubblicazione dei sorgenti.
+Nella build locale, Chrome a 1200×728 ha mostrato il primo render 3D a 355 ms dalla navigazione (189 ms di setup, import escluso), con asset e ambiente locali/cache e senza throttling. Invio CPU per un render osservato fra circa 0,5 e 1,6 ms; 10 draw call e 2072 triangoli nella hero. In simulazione mobile le superfici secondarie vengono nascoste: 3 draw call, circa 690 triangoli. Questi dati non misurano la durata GPU né certificano frame rate o tempi su rete mobile. Le immagini totalizzano 1.145.984 byte; build statica circa 1,9 MB.
+
+Il deploy aggiorna soltanto le radici Space dichiarate nello script, preservando siti e cartelle estranee nel ramo di pubblicazione. Le scene e i film precedenti rimangono archivio storico e non fanno parte della versione corrente.

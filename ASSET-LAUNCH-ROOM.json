@@ -1,0 +1,195 @@
+{
+  "schema_version": 1,
+  "project": "Space Media Studio",
+  "release_direction": "Space / Launch Room",
+  "date": "2026-10-12",
+  "hero_title": "Le idee. In grande.",
+  "scope": "Current website: four original AI-generated raster artworks used on real Three.js exhibition surfaces, plus HTML image fallbacks. No historical film is a current production asset.",
+  "commercial_status": "Original fictional concept cases, not clients, commissions, delivered products or commercial results.",
+  "production": {
+    "image_provider": "OpenAI built-in image_gen",
+    "image_mode": "generate; one subsequent precise-object edit for the branding image",
+    "image_count": 4,
+    "tool_calls_for_selected_images": 5,
+    "encoding": "FFmpeg JPEG encoding from selected PNG masters at original resolution; no visual editing in Python and no upscaling",
+    "public_image_total_bytes": 1145984,
+    "master_directory": "outputs/launch-room/",
+    "masters_publicly_distributed": false,
+    "stock_media_used": false,
+    "higgsfield_used": false,
+    "public_film_count": 0
+  },
+  "assets": [
+    {
+      "id": "launch-brand",
+      "path": "public/images/launch-brand.jpg",
+      "master": "outputs/launch-room/launch-brand-master.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 249192,
+      "sha256": "de45b97f65652697b84e586daf46158b2bfbdae33da4341e58ddb8d20f9b30a4",
+      "generation_id": "exec-99b4a3d8-b3ce-46fa-be7d-556bbd9909d8",
+      "final_edit_id": "exec-e796ee30-3d7f-4598-aaea-15fe0d259dfd",
+      "prompt_summary": "FORMA luxury Italian coffee identity: tactile yellow bag, black typography, espresso, travertine and print. Edit removes only all small contact, address and year microcopy, retaining FORMA and CAFFÈ CONTEMPORANEO.",
+      "scene_role": "Raster image on a 3D identity presentation board; the depicted coffee and packaging are not modeled product geometry.",
+      "concept_status": "Illustrative fictional coffee identity, not a client or commission."
+    },
+    {
+      "id": "launch-architecture",
+      "path": "public/images/launch-architecture.jpg",
+      "master": "outputs/launch-room/launch-architecture-master.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 383589,
+      "sha256": "e701effaa5f6e9b10e5364b4f198909e04a3d650017fa197f3533c93c47c2489",
+      "generation_id": "exec-9a6f5a0b-9042-4742-9d97-c0da7493a567",
+      "prompt_summary": "Premium architectural editorial image of a contemporary Italian facade with pale travertine, a projecting rectangular upper volume, precise black metal glazing, pale blue sky and crisp natural shadows. Plausible built geometry, no people, cars, logos, lettering or watermarks.",
+      "scene_role": "Raster architecture image within original desktop and mobile website interfaces drawn onto 3D presentation surfaces; the building is not a 3D mesh.",
+      "concept_status": "Illustrative fictional architecture case, not a photographed client building or a delivered website."
+    },
+    {
+      "id": "launch-product",
+      "path": "public/images/launch-product.jpg",
+      "master": "outputs/launch-room/launch-product-master.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 208651,
+      "sha256": "fa43d34434fbced30b9bc13b2748c3e7b12154f4b69727a8c1984fb2b387ada3",
+      "generation_id": "exec-91f4325c-5997-4928-a38e-2f34a9c426ee",
+      "prompt_summary": "Photoreal luxury ORA fragrance campaign: thick clear square glass bottle, amber liquid, dark water and black studio. The only product typography is ORA and EAU DE PARFUM.",
+      "scene_role": "Raster product artwork on a 3D presentation surface; the bottle, liquid and water are not mesh geometry or a simulated fluid film.",
+      "concept_status": "Illustrative fictional fragrance visual, not a real product commission or a rendered CGI film."
+    },
+    {
+      "id": "launch-campaign",
+      "path": "public/images/launch-campaign.jpg",
+      "master": "outputs/launch-room/launch-campaign-master.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 304552,
+      "sha256": "c5e01073a4c117b1ede8f889754987bb8530b8859c7305572dbe2f5c837486cc",
+      "generation_id": "exec-38003240-2d30-424c-93ea-2930681e841f",
+      "prompt_summary": "Original culture and fashion campaign background: large electric-yellow silk installation sweeping diagonally across black space in three physically plausible architectural folds, textile detail and crisp white optical light shafts. Entirely without people, products, logos, text or watermarks.",
+      "scene_role": "Raster campaign image on a curved 3D billboard and a vertical format; the silk folds are not simulated cloth geometry.",
+      "concept_status": "Illustrative fictional cultural campaign, not an event client or commissioned advertisement."
+    }
+  ],
+  "runtime": {
+    "engine": "Three.js",
+    "version": "0.186.1",
+    "license": "MIT",
+    "license_copy": "public/licenses/three-MIT.txt",
+    "controller": "src/launch-room.js",
+    "actual_geometry": [
+      "Exhibition boards with thickness and bevels",
+      "Desktop and mobile interface presentation surfaces",
+      "Curved billboard and metal rails",
+      "Room floor, lights and perspective camera"
+    ],
+    "not_modeled": [
+      "Coffee or its packaging",
+      "The depicted building",
+      "Fragrance bottle, liquid or water",
+      "Silk cloth folds"
+    ],
+    "motion": "Camera and support poses derived from native scroll, with restrained fine-pointer response, entrance and ambient motion. No wheel or touch hijacking.",
+    "fallback": "Semantic HTML content and original raster images remain available without WebGL or JavaScript. Reduced motion and SaveData retain the static presentation.",
+    "performance_claim": "Browser QA completed at desktop and simulated iPhone viewports. No physical-iPhone or 4K/60 fps certification."
+  },
+  "fonts": [
+    {
+      "family": "Space Grotesk",
+      "local_file": "public/fonts/SpaceGrotesk-Variable.woff2",
+      "license": "SIL Open Font License 1.1",
+      "license_copy": "public/fonts/SpaceGrotesk-OFL.txt"
+    },
+    {
+      "family": "DM Mono",
+      "local_file": "public/fonts/DMMono-Regular.ttf",
+      "license": "SIL Open Font License",
+      "license_copy": "public/fonts/DMMono-OFL.txt"
+    }
+  ],
+  "local_video_attempt": {
+    "workflow": "Video Non Higgsfield / local ComfyUI and LTX",
+    "status": "attempted_no_output",
+    "production_asset": false,
+    "frames_generated": 0,
+    "videos_generated": 0,
+    "models_downloaded": false,
+    "reason": "Stopped before frame generation when available memory reached approximately 2.51 GiB, below the configured 3 GiB threshold.",
+    "diagnostics": "outputs/launch-room/video-preview/provenance.json",
+    "own_server_stopped": true
+  },
+  "horizon": {
+    "selected_reference": "CoverFlow Carousel",
+    "acquired": false,
+    "integrated": false,
+    "downloads_for_this_release": 0,
+    "quota_consumed_for_this_release": 0,
+    "note": "Current scene, surfaces and interactions are original project resources. No Horizon source or asset is distributed."
+  },
+  "service_content": {
+    "idea_boxes": 5,
+    "form_method": "Native GET to WhatsApp, enhanced with service context; visitor decides whether to send the draft.",
+    "automatic_message_sending": false,
+    "backend_idea_storage": false,
+    "projects_and_funding": "General project development and opportunity research for companies, APS and ASD. No open call, eligibility decision or funding guarantee is claimed."
+  },
+  "history": {
+    "local_archive": "outputs/launch-room/previous-public/",
+    "publicly_distributed": false,
+    "note": "Historical film, poster and sculpture manifests retain their original historical scope and do not describe current production assets."
+  },
+  "validation": {
+    "build": "passed",
+    "contract_groups": 39,
+    "browser_viewports": [
+      [
+        1200,
+        728
+      ],
+      [
+        390,
+        844
+      ],
+      [
+        320,
+        667
+      ],
+      [
+        844,
+        390
+      ]
+    ],
+    "horizontal_overflow": false,
+    "checks": [
+      "four native chapter anchors",
+      "whole mobile artworks inside measured HTML slots",
+      "menu and project dialog focus",
+      "project to matching brief",
+      "render suspension for pause/dialog/brief/hidden/off-room",
+      "static fallback",
+      "five native WhatsApp draft forms"
+    ],
+    "physical_iphone_test": false,
+    "local_chrome_observation": {
+      "conditions": "Local production preview, desktop Chrome, 1200x728 CSS pixels, unthrottled, cache/local assets; one observed navigation, not a loading guarantee",
+      "first_3d_render_navigation_ms": 355.2,
+      "setup_ms_excluding_import": 189.3,
+      "render_cpu_submit_ms_observed": [
+        0.5,
+        1.6
+      ],
+      "hero_draw_calls": 10,
+      "hero_triangles": 2072,
+      "mobile_draw_calls": 3,
+      "mobile_triangles": 690,
+      "desktop_buffer_pixels": [
+        1920,
+        1164
+      ],
+      "gpu_frame_time_measured": false
+    }
+  }
+}
