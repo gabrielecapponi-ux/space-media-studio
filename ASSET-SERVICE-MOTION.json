@@ -1,0 +1,876 @@
+{
+  "schema_version": 1,
+  "project": "Space Media Studio / Atelier",
+  "id": "service-cinema-20261103",
+  "scope": "Four new original service films for branding, web, product/motion and project/funding design. The existing SPAZIO typographic film remains the fifth service motion scene and is documented separately in ASSET-ATELIER-MOTION.json.",
+  "commercial_status": "Original, non-commissioned service demonstrations. No actual client, paid commission, award, grant approval or commercial result is claimed.",
+  "method": "Offline-rendered original Blender geometry, typography, PBR materials, photographic lighting, perspective cameras and periodic absolute animation. The web scene includes a declared existing AI still as a raster texture. These media are authored 3D film renders, not live configurable GLB meshes, stock footage or image-to-video generations.",
+  "source_scripts": [
+    {
+      "path": "scripts/render-service-scenes-a.py",
+      "sha256": "9f950a38e5dbbeab5ae7610d2ecf0f076b6b1c923eee328a9269a33bdd9673f3"
+    },
+    {
+      "path": "scripts/render-service-scenes-b.py",
+      "sha256": "166ddf5a386ad20fddaf5b8472f44341671abff4ecfeb32faec828d94c3b6d56"
+    }
+  ],
+  "native_profile": {
+    "width": 1440,
+    "height": 900,
+    "fps": 24,
+    "frames_per_film": 72,
+    "duration_seconds_per_film": 3,
+    "colour": "AgX Medium High Contrast to SDR PNG8 masters; MP4 BT.709 primaries/matrix with sRGB transfer as actually probed",
+    "upscale": false,
+    "synthetic_frame_interpolation": false,
+    "reverse_playback": false,
+    "audio": false
+  },
+  "loop": "72 chronological forward poses; master frame73 equals frame1 within reported transform tolerances. Periodic camera, assembly and reflection choreography avoids reversed playback or duplicated endpoint frames.",
+  "fonts": "System Arial regular/bold and Times New Roman are rendered as typography in the final film pixels. Public movies/posters do not distribute font binaries. Source masters retain local system font references.",
+  "external_stock": false,
+  "ai_video_generation": false,
+  "paid_apis": false,
+  "models_downloaded": false,
+  "ai_vs_cgi": "Original existing AI photography in the concept details remains raster imagery. Three-dimensional geometry, materials and motion for these service films were authored in Blender. The AVANT architecture photograph is an explicitly declared texture, not a mesh.",
+  "memory_guard": {
+    "minimum_estimated_available_gib": 3,
+    "method": "Local vm_stat free+inactive+speculative pages before every frame, not a GPU-memory reading",
+    "stop": "Cancels subsequent frames and preserves completed outputs below the threshold"
+  },
+  "assets": [
+    {
+      "id": "service-brand",
+      "service": "Branding, logo and identity",
+      "concept": "FORMA / Torrefazione indipendente",
+      "authored_scene": "Thick cotton-board identity cards, yellow wrapped coffee carton, authored three-stroke F monogram and printed type. The three physical foil strokes separate and reassemble; the paper/carton anchors stay grounded.",
+      "source_script": "scripts/render-service-scenes-a.py",
+      "render": {
+        "blender": "5.2.1 LTS",
+        "engine": "BLENDER_EEVEE",
+        "samples": 48
+      },
+      "assets": [
+        {
+          "path": "public/films/service-brand.mp4",
+          "role": "Original 3D service film",
+          "bytes": 519143,
+          "sha256": "638bf0f636ffc58f0f1b2fb62fc504968870cdc881084e343e1456fce5355078",
+          "metadata": {
+            "codec_name": "h264",
+            "profile": "High",
+            "codec_type": "video",
+            "width": 1440,
+            "height": 900,
+            "pix_fmt": "yuv420p",
+            "level": 41,
+            "color_range": "tv",
+            "color_space": "bt709",
+            "color_transfer": "iec61966-2-1",
+            "color_primaries": "bt709",
+            "r_frame_rate": "24/1",
+            "avg_frame_rate": "24/1",
+            "nb_frames": "72"
+          },
+          "duration_seconds": 3.0,
+          "audio": false,
+          "fast_start": true,
+          "full_decode": "passed"
+        },
+        {
+          "path": "public/images/service-brand.jpg",
+          "role": "First native frame poster",
+          "bytes": 65629,
+          "sha256": "58d5b65fa973a4fcc103210814b55ac8d8ddff3a42d3a4521012667df81fb70e",
+          "width": 1440,
+          "height": 900,
+          "source_frame": 1
+        }
+      ],
+      "encoded_sample_checks": {
+        "sampled_encoded_frames_match_native": "passed",
+        "frames": [
+          1,
+          37,
+          72
+        ],
+        "samples": [
+          {
+            "source_frame": 1,
+            "encoded_vs_native_mean_abs_rgb": [
+              0.5698842592592592,
+              0.6821134259259259,
+              1.0602862654320988
+            ]
+          },
+          {
+            "source_frame": 37,
+            "encoded_vs_native_mean_abs_rgb": [
+              0.6073356481481481,
+              0.7216458333333333,
+              1.115008487654321
+            ]
+          },
+          {
+            "source_frame": 72,
+            "encoded_vs_native_mean_abs_rgb": [
+              0.6365339506172839,
+              0.7276072530864197,
+              1.1190817901234569
+            ]
+          }
+        ],
+        "encoded_loop_first_last_mean_abs_rgb": [
+          0.7008317901234568,
+          0.6861952160493827,
+          0.8737353395061729
+        ]
+      }
+    },
+    {
+      "id": "service-web",
+      "service": "Websites, landing pages and responsive interfaces",
+      "concept": "AVANT / Studio di architettura",
+      "authored_scene": "Dimensional desktop webpage, separate architectural-image plane, back content layer and portrait responsive page. Components articulate in depth; no laptop/phone hardware is imitated.",
+      "source_script": "scripts/render-service-scenes-a.py",
+      "render": {
+        "blender": "5.2.1 LTS",
+        "engine": "BLENDER_EEVEE",
+        "samples": 48
+      },
+      "assets": [
+        {
+          "path": "public/films/service-web.mp4",
+          "role": "Original 3D service film",
+          "bytes": 571592,
+          "sha256": "daa0bf370043e290b50c7aaa6b634231352fbe11de0d23a0c672fbc287310222",
+          "metadata": {
+            "codec_name": "h264",
+            "profile": "High",
+            "codec_type": "video",
+            "width": 1440,
+            "height": 900,
+            "pix_fmt": "yuv420p",
+            "level": 41,
+            "color_range": "tv",
+            "color_space": "bt709",
+            "color_transfer": "iec61966-2-1",
+            "color_primaries": "bt709",
+            "r_frame_rate": "24/1",
+            "avg_frame_rate": "24/1",
+            "nb_frames": "72"
+          },
+          "duration_seconds": 3.0,
+          "audio": false,
+          "fast_start": true,
+          "full_decode": "passed"
+        },
+        {
+          "path": "public/images/service-web.jpg",
+          "role": "First native frame poster",
+          "bytes": 84712,
+          "sha256": "765b9f37324a66f5b5f1b231a055f8f6c181b24a4fb03f49c0d4850728ed0e6f",
+          "width": 1440,
+          "height": 900,
+          "source_frame": 1
+        }
+      ],
+      "raster_texture": {
+        "path": "public/images/launch-architecture.jpg",
+        "sha256": "e701effaa5f6e9b10e5364b4f198909e04a3d650017fa197f3533c93c47c2489",
+        "provenance": "Existing original AI-generated architectural concept still; see ASSET-LAUNCH-ROOM.json. Packed as a texture on authored geometry, not reconstructed geometry.",
+        "uv_mapping": "Cover crop preserves source aspect ratio on desktop and portrait planes; no stretched architecture."
+      },
+      "encoded_sample_checks": {
+        "sampled_encoded_frames_match_native": "passed",
+        "frames": [
+          1,
+          37,
+          72
+        ],
+        "samples": [
+          {
+            "source_frame": 1,
+            "encoded_vs_native_mean_abs_rgb": [
+              0.7987422839506173,
+              0.7751311728395062,
+              1.0376766975308642
+            ]
+          },
+          {
+            "source_frame": 37,
+            "encoded_vs_native_mean_abs_rgb": [
+              0.8393587962962963,
+              0.7904390432098766,
+              1.067692901234568
+            ]
+          },
+          {
+            "source_frame": 72,
+            "encoded_vs_native_mean_abs_rgb": [
+              0.8810393518518519,
+              0.878349537037037,
+              1.1375640432098766
+            ]
+          }
+        ],
+        "encoded_loop_first_last_mean_abs_rgb": [
+          0.8826026234567901,
+          0.8418449074074074,
+          1.0245640432098766
+        ]
+      }
+    },
+    {
+      "id": "service-product",
+      "service": "Product imagery, CGI and motion design",
+      "concept": "ORA / Fragranza",
+      "authored_scene": "Authored thick glass vessel, amber contents, paper label, collar and graphite cap with controlled cap assembly, studio reflection and camera choreography.",
+      "source_script": "scripts/render-service-scenes-b.py",
+      "render": {
+        "blender": "5.2.1 LTS",
+        "engine": "CYCLES",
+        "samples": 32,
+        "cycles_device": "METAL",
+        "enabled_cycles_devices": [
+          {
+            "name": "Apple M3 Pro (GPU - 14 cores)",
+            "type": "METAL"
+          }
+        ]
+      },
+      "assets": [
+        {
+          "path": "public/films/service-product.mp4",
+          "role": "Original 3D service film",
+          "bytes": 1001730,
+          "sha256": "1c7e0951b33d5112fd8fa625f955eb2cf8e04423b122f5087dbc8565daeb0887",
+          "metadata": {
+            "codec_name": "h264",
+            "profile": "High",
+            "codec_type": "video",
+            "width": 1440,
+            "height": 900,
+            "pix_fmt": "yuv420p",
+            "level": 41,
+            "color_range": "tv",
+            "color_space": "bt709",
+            "color_transfer": "iec61966-2-1",
+            "color_primaries": "bt709",
+            "r_frame_rate": "24/1",
+            "avg_frame_rate": "24/1",
+            "nb_frames": "72"
+          },
+          "duration_seconds": 3.0,
+          "audio": false,
+          "fast_start": true,
+          "full_decode": "passed"
+        },
+        {
+          "path": "public/images/service-product.jpg",
+          "role": "First native frame poster",
+          "bytes": 84650,
+          "sha256": "e81eeb41eb044fdc520f94eefa86957d89ffbdd15274e549fc868270d8324b41",
+          "width": 1440,
+          "height": 900,
+          "source_frame": 1
+        }
+      ],
+      "encoded_sample_checks": {
+        "sampled_encoded_frames_match_native": "passed",
+        "frames": [
+          1,
+          37,
+          72
+        ],
+        "samples": [
+          {
+            "source_frame": 1,
+            "encoded_vs_native_mean_abs_rgb": [
+              0.7696489197530865,
+              0.5700347222222222,
+              0.7841273148148148
+            ]
+          },
+          {
+            "source_frame": 37,
+            "encoded_vs_native_mean_abs_rgb": [
+              0.8350285493827161,
+              0.6013117283950618,
+              0.8498757716049383
+            ]
+          },
+          {
+            "source_frame": 72,
+            "encoded_vs_native_mean_abs_rgb": [
+              0.8843796296296297,
+              0.7050277777777778,
+              0.8965177469135802
+            ]
+          }
+        ],
+        "encoded_loop_first_last_mean_abs_rgb": [
+          1.29610262345679,
+          1.1928341049382716,
+          1.249258487654321
+        ]
+      }
+    },
+    {
+      "id": "service-funding",
+      "service": "Project design for businesses, APS and ASD; funding proposals",
+      "concept": "IDEA / PROGETTO",
+      "authored_scene": "A physical project dossier and separate paper plan layers, with authored proposal typography. A visual explanation of structuring a project, not an announcement of an open call or a financing result.",
+      "source_script": "scripts/render-service-scenes-b.py",
+      "render": {
+        "blender": "5.2.1 LTS",
+        "engine": "BLENDER_EEVEE",
+        "samples": 64
+      },
+      "assets": [
+        {
+          "path": "public/films/service-funding.mp4",
+          "role": "Original 3D service film",
+          "bytes": 538600,
+          "sha256": "a117ee519d58a0acc744d8da36e5e64cbbdc3e85b3516350c7f094b0fd5c6933",
+          "metadata": {
+            "codec_name": "h264",
+            "profile": "High",
+            "codec_type": "video",
+            "width": 1440,
+            "height": 900,
+            "pix_fmt": "yuv420p",
+            "level": 41,
+            "color_range": "tv",
+            "color_space": "bt709",
+            "color_transfer": "iec61966-2-1",
+            "color_primaries": "bt709",
+            "r_frame_rate": "24/1",
+            "avg_frame_rate": "24/1",
+            "nb_frames": "72"
+          },
+          "duration_seconds": 3.0,
+          "audio": false,
+          "fast_start": true,
+          "full_decode": "passed"
+        },
+        {
+          "path": "public/images/service-funding.jpg",
+          "role": "First native frame poster",
+          "bytes": 66781,
+          "sha256": "91c9bc13bf73655a4d74d28a4a56e1fed6371d04ac296112137fa20ca6595d40",
+          "width": 1440,
+          "height": 900,
+          "source_frame": 1
+        }
+      ],
+      "encoded_sample_checks": {
+        "sampled_encoded_frames_match_native": "passed",
+        "frames": [
+          1,
+          37,
+          72
+        ],
+        "samples": [
+          {
+            "source_frame": 1,
+            "encoded_vs_native_mean_abs_rgb": [
+              0.7076072530864198,
+              0.6214158950617283,
+              0.888570987654321
+            ]
+          },
+          {
+            "source_frame": 37,
+            "encoded_vs_native_mean_abs_rgb": [
+              0.730087962962963,
+              0.6507461419753087,
+              0.9485424382716049
+            ]
+          },
+          {
+            "source_frame": 72,
+            "encoded_vs_native_mean_abs_rgb": [
+              0.7987669753086419,
+              0.700991512345679,
+              0.9898765432098765
+            ]
+          }
+        ],
+        "encoded_loop_first_last_mean_abs_rgb": [
+          0.648195987654321,
+          0.6234645061728395,
+          0.7220061728395062
+        ]
+      }
+    }
+  ],
+  "masters": [
+    {
+      "id": "brand",
+      "path": "outputs/motion-services/a/brand/service-brand-master.blend",
+      "bytes": 131518,
+      "sha256": "c2db61d436e6941e078ee2c3040a28f875c4179de43ac5fa15671dda0c264c62",
+      "render_metrics": {
+        "scene": "brand",
+        "native_resolution": [
+          1440,
+          900
+        ],
+        "fps": 24,
+        "frames": 72,
+        "duration_seconds": 3.0,
+        "blender": "5.2.1 LTS",
+        "engine": "BLENDER_EEVEE",
+        "samples": 48,
+        "batch_seconds": 101.982,
+        "rendered_frames": 72,
+        "mean_frame_seconds": 1.4066572766249819
+      },
+      "reimport_validation": {
+        "scene": "brand",
+        "ground_contact_gaps_scene_units": {
+          "Lower warm identity card": -3.725290298461914e-09,
+          "Cotton carton structure": 1.4901161193847656e-08,
+          "Foil to yellow board": 7.450580596923828e-09
+        },
+        "reimport": "passed",
+        "animated_objects": [
+          "Cinematic camera",
+          "Long reflected strip",
+          "FORMA paper assembly",
+          "F vertical foil",
+          "F upper foil",
+          "F middle foil"
+        ],
+        "scene_objects": 25,
+        "mesh_objects": 12,
+        "loop_transform_error": 0.0,
+        "observed_transform_change": 0.7000000029802322,
+        "poses_checked": [
+          1,
+          19,
+          37,
+          55,
+          73
+        ],
+        "projected_safe_margins_all_72_poses": {
+          "left": 0.14032863080501556,
+          "bottom": 0.07946906238794327,
+          "right": 0.17334002256393433,
+          "top": 0.15399539470672607
+        },
+        "full_decode": "passed"
+      },
+      "pixel_motion_checks": {
+        "native_master_frame_count": 72,
+        "first_vs_middle_mean_abs_rgb": [
+          6.749202932098766,
+          6.756600308641976,
+          5.84579475308642
+        ],
+        "first_vs_last_mean_abs_rgb": [
+          0.37918672839506173,
+          0.375991512345679,
+          0.4459768518518519
+        ],
+        "median_adjacent_mean_abs_rgb": 0.5970450102880659,
+        "largest_adjacent_transition": {
+          "from": 26,
+          "to": 27,
+          "mean_abs_rgb": [
+            0.739016975308642,
+            0.7291728395061728,
+            0.7957962962962963
+          ]
+        },
+        "continuity_jump_threshold_rgb": 3.0,
+        "native_image_continuity": "passed; no abrupt internal jump or optical loop seam"
+      }
+    },
+    {
+      "id": "web",
+      "path": "outputs/motion-services/a/web/service-web-master.blend",
+      "bytes": 515238,
+      "sha256": "0e8a8962e0a1b2cc051c35913033085c2117959bdc47f64bff76d4a759c141a7",
+      "render_metrics": {
+        "scene": "web",
+        "native_resolution": [
+          1440,
+          900
+        ],
+        "fps": 24,
+        "frames": 72,
+        "duration_seconds": 3.0,
+        "blender": "5.2.1 LTS",
+        "engine": "BLENDER_EEVEE",
+        "samples": 48,
+        "batch_seconds": 95.313,
+        "rendered_frames": 72,
+        "mean_frame_seconds": 1.3124622887222712
+      },
+      "reimport_validation": {
+        "scene": "web",
+        "ground_contact_gaps_scene_units": {},
+        "reimport": "passed",
+        "animated_objects": [
+          "Cinematic camera",
+          "Long reflected strip",
+          "AVANT responsive assembly",
+          "Project content back layer",
+          "Desktop architectural photograph",
+          "AVANT portrait page"
+        ],
+        "scene_objects": 28,
+        "mesh_objects": 8,
+        "loop_transform_error": 4.408728321890747e-18,
+        "observed_transform_change": 0.6000000238418579,
+        "poses_checked": [
+          1,
+          19,
+          37,
+          55,
+          73
+        ],
+        "projected_safe_margins_all_72_poses": {
+          "left": 0.19314424693584442,
+          "bottom": 0.09774013608694077,
+          "right": 0.21473950147628784,
+          "top": 0.08765804767608643
+        },
+        "full_decode": "passed"
+      },
+      "pixel_motion_checks": {
+        "native_master_frame_count": 72,
+        "first_vs_middle_mean_abs_rgb": [
+          8.919224537037037,
+          9.109756172839505,
+          9.932445216049382
+        ],
+        "first_vs_last_mean_abs_rgb": [
+          0.44062191358024694,
+          0.45149382716049385,
+          0.4851026234567901
+        ],
+        "median_adjacent_mean_abs_rgb": 0.8777268518518518,
+        "largest_adjacent_transition": {
+          "from": 58,
+          "to": 59,
+          "mean_abs_rgb": [
+            1.0235378086419753,
+            1.05897762345679,
+            1.1464938271604939
+          ]
+        },
+        "continuity_jump_threshold_rgb": 4.388634259259259,
+        "native_image_continuity": "passed; no abrupt internal jump or optical loop seam"
+      }
+    },
+    {
+      "id": "product",
+      "path": "outputs/motion-services/b/product/service-product-master.blend",
+      "bytes": 1505260,
+      "sha256": "c9524d3c6d471fa5132e7e480ce308e0f1f25a8769741e2ee24926e05d70f920",
+      "render_metrics": {
+        "scene": "product",
+        "blender": "5.2.1 LTS",
+        "engine": "CYCLES",
+        "samples": 32,
+        "cycles_device": "METAL",
+        "cycles_persistent_data": false,
+        "metal_kernel_optimization": "OFF",
+        "enabled_cycles_devices": [
+          {
+            "name": "Apple M3 Pro (GPU - 14 cores)",
+            "type": "METAL"
+          }
+        ],
+        "resolution": [
+          1440,
+          900
+        ],
+        "frames": 72,
+        "fps": 24,
+        "duration_seconds": 3,
+        "ground_contact": {
+          "anchor_base_z": -0.03000009059906006,
+          "ground_top_z": -0.030000001192092896,
+          "gap": -8.940696716308594e-08,
+          "checked_at_frame": 1,
+          "expected": "physical contact, no hover"
+        },
+        "camera_lens_mm": 56.0,
+        "preflight_projected_safe_margins_all_72_poses": {
+          "left": 0.32676321268081665,
+          "right": 0.3335000276565552,
+          "bottom": 0.07133147120475769,
+          "top": 0.06717342138290405
+        },
+        "rendered_frames": 72,
+        "batch_seconds": 468.545,
+        "mean_frame_seconds": 4.9806944444444445,
+        "render_resolution": [
+          1440,
+          900
+        ],
+        "actual_samples": 32,
+        "final_source_frames": 72,
+        "render_attempt_frames": 100,
+        "retained_range": [
+          1,
+          44
+        ],
+        "repaired_range": [
+          45,
+          72
+        ],
+        "retry_rendered_frames": 28,
+        "original_attempt": {
+          "receipt": "render-original-rejected-tail-metrics.json",
+          "rendered_frames": 72,
+          "retained_frames": 44,
+          "rejected_frames": 28,
+          "batch_seconds": 315.249,
+          "persistent_data": true,
+          "metal_kernel_optimization": "factory default FULL"
+        },
+        "repair": {
+          "receipt": "render-repair-tail-metrics.json",
+          "range": [
+            45,
+            72
+          ],
+          "rendered_frames": 28,
+          "batch_seconds": 153.296,
+          "persistent_data": false,
+          "metal_kernel_optimization": "OFF",
+          "pixel_guard": "Every repaired frame checked against prior native PNG; rejects at mean RGB >=3"
+        },
+        "final_used_frame_render_seconds": 358.61,
+        "minimum_available_gib_before_final_frames": 3.5916748046875,
+        "optical_correction": "Native frame45 lost glass shading during initial optimized/persistent Metal session. Fresh frame72 with generic kernels and persistent data disabled restored correct optics. First44 retained,45–72 replaced; final native adjacency+seam gates required."
+      },
+      "reimport_validation": {
+        "reimport": "passed",
+        "master": "outputs/motion-services/b/product/service-product-master.blend",
+        "objects": 20,
+        "mesh_objects": 8,
+        "mesh_vertices": 5080,
+        "loop_transform_error": 6.123233849335533e-18,
+        "transform_change": 0.7768733501434326,
+        "poses": [
+          1,
+          25,
+          49,
+          73
+        ],
+        "projected_safe_margins_all_72_poses": {
+          "left": 0.32676321268081665,
+          "right": 0.3335000276565552,
+          "bottom": 0.07133147120475769,
+          "top": 0.06717342138290405
+        },
+        "maximum_anchor_contact_gap_all_72_poses": 8.940696716308594e-08,
+        "native_pixel_continuity": {
+          "passed": true,
+          "maximum_adjacent_mean_rgb": 0.9562242798353909,
+          "loop_seam_72_to_1": {
+            "rgb": [
+              0.9726990740740741,
+              0.8945694444444444,
+              0.8195208333333334
+            ],
+            "mean": 0.8955964506172839
+          }
+        },
+        "full_decode": "passed",
+        "faststart_verified": true,
+        "mp4_top_level_atom_offsets": {
+          "ftyp": 0,
+          "moov": 32,
+          "free": 1734,
+          "mdat": 1742
+        }
+      },
+      "pixel_motion_checks": {
+        "native_master_frame_count": 72,
+        "first_vs_middle_mean_abs_rgb": [
+          4.799607253086419,
+          4.687126543209876,
+          4.444766975308642
+        ],
+        "first_vs_last_mean_abs_rgb": [
+          0.9726990740740741,
+          0.8945694444444444,
+          0.8195208333333334
+        ],
+        "median_adjacent_mean_abs_rgb": 0.8852839506172839,
+        "largest_adjacent_transition": {
+          "from": 31,
+          "to": 32,
+          "mean_abs_rgb": [
+            1.0384529320987654,
+            0.9555324074074074,
+            0.8746875
+          ]
+        },
+        "continuity_jump_threshold_rgb": 4.42641975308642,
+        "native_image_continuity": "passed; no abrupt internal jump or optical loop seam"
+      }
+    },
+    {
+      "id": "funding",
+      "path": "outputs/motion-services/b/funding/service-funding-master.blend",
+      "bytes": 1419965,
+      "sha256": "5cc7c2f6b9f1957f8b1b2b9270ae85a20d98287b55ef11247801bd68fb78a6d2",
+      "render_metrics": {
+        "scene": "funding",
+        "blender": "5.2.1 LTS",
+        "engine": "BLENDER_EEVEE",
+        "samples": 64,
+        "cycles_device": null,
+        "enabled_cycles_devices": [],
+        "resolution": [
+          1440,
+          900
+        ],
+        "frames": 72,
+        "fps": 24,
+        "duration_seconds": 3,
+        "ground_contact": {
+          "anchor_base_z": -0.04999999701976776,
+          "ground_top_z": -0.05000000447034836,
+          "gap": 7.450580596923828e-09,
+          "checked_at_frame": 1,
+          "expected": "physical contact, no hover"
+        },
+        "camera_lens_mm": 47.0,
+        "preflight_projected_safe_margins_all_72_poses": {
+          "left": 0.18613460659980774,
+          "right": 0.18193423748016357,
+          "bottom": 0.07597286254167557,
+          "top": 0.13534051179885864
+        },
+        "rendered_frames": 72,
+        "batch_seconds": 132.66,
+        "mean_frame_seconds": 1.8306141655277013,
+        "render_resolution": [
+          1440,
+          900
+        ],
+        "actual_samples": 64
+      },
+      "reimport_validation": {
+        "reimport": "passed",
+        "master": "outputs/motion-services/b/funding/service-funding-master.blend",
+        "objects": 72,
+        "mesh_objects": 43,
+        "mesh_vertices": 4008,
+        "loop_transform_error": 6.123233849335533e-18,
+        "transform_change": 0.4874999523162842,
+        "poses": [
+          1,
+          25,
+          49,
+          73
+        ],
+        "projected_safe_margins_all_72_poses": {
+          "left": 0.18613460659980774,
+          "right": 0.18193423748016357,
+          "bottom": 0.07597286254167557,
+          "top": 0.13534051179885864
+        },
+        "maximum_anchor_contact_gap_all_72_poses": 7.450580596923828e-09,
+        "full_decode": "passed",
+        "faststart_verified": true,
+        "mp4_top_level_atom_offsets": {
+          "ftyp": 0,
+          "moov": 32,
+          "free": 1734,
+          "mdat": 1742
+        }
+      },
+      "pixel_motion_checks": {
+        "native_master_frame_count": 72,
+        "first_vs_middle_mean_abs_rgb": [
+          5.316427469135802,
+          5.2199128086419755,
+          6.31208024691358
+        ],
+        "first_vs_last_mean_abs_rgb": [
+          0.2534266975308642,
+          0.2518240740740741,
+          0.2935462962962963
+        ],
+        "median_adjacent_mean_abs_rgb": 0.8279704218106995,
+        "largest_adjacent_transition": {
+          "from": 53,
+          "to": 54,
+          "mean_abs_rgb": [
+            0.9078657407407408,
+            0.8928032407407407,
+            1.1972932098765432
+          ]
+        },
+        "continuity_jump_threshold_rgb": 4.139852109053497,
+        "native_image_continuity": "passed; no abrupt internal jump or optical loop seam"
+      }
+    }
+  ],
+  "totals": {
+    "new_films": 4,
+    "native_frames_in_final_films": 288,
+    "film_and_poster_bytes": 2932837
+  },
+  "integration_guidance": {
+    "aspect": "8:5 native, object-fit:contain or matching aspect; avoid filling a portrait crop that clips the assembled objects",
+    "opening": "Do not add these below-hero films to the approved studio-entry loading sequence",
+    "loading": "Warm near viewport and play only the most visible service film, stop offscreen/hidden/menu/entry states",
+    "reduced_motion": "Static first-frame poster; explicit user play remains available",
+    "text_and_actions": "Service descriptions, navigation and idea forms remain HTML"
+  },
+  "browser_validation": {
+    "status": "passed local production integration",
+    "browser": "isolated headless Chrome via Playwright CLI 0.1.23",
+    "desktop": [
+      1440,
+      900
+    ],
+    "mobile_emulation": [
+      393,
+      852
+    ],
+    "additional_layouts": [
+      [
+        320,
+        667
+      ],
+      [
+        667,
+        900
+      ],
+      [
+        844,
+        390
+      ]
+    ],
+    "checks": [
+      "all five service films play with correct native dimensions",
+      "one foreground service film at a time",
+      "explicit pause preserved across viewport cycles",
+      "accessible controls at least44px",
+      "menu and brief form validation",
+      "fresh reduced-motion navigation loads no video sources; manual playback works",
+      "induced transient video failure recovers after explicit retry",
+      "approved opening and intro sources unchanged"
+    ],
+    "javascript_errors": 0,
+    "external_submission": false,
+    "physical_iphone": false,
+    "gpu_fps_certification": false
+  },
+  "render_receipt_note": "Per-master receipts preserve actual render measurements. Repaired product frames45–72 use a separate measured pass; frames1–44 were retained. This is not described as one clean72-frame render.",
+  "known_limits": "Native 1440×900 at 24 fps, not 4K or 60 fps. Offline film camera paths are predetermined and do not provide arbitrary product rotation or live configuration.",
+  "production_status": "All native and encoded film checks and local production browser integration passed; publication verification follows deployment"
+}

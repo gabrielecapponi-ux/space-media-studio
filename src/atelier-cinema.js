@@ -9,11 +9,12 @@ export function installAtelierCinema({ signal, menu } = {}) {
   const players = [...document.querySelectorAll('[data-atelier-media]')].map(video => ({
     video, stage: video.closest('.atelier-media-stage'),
     button: document.querySelector(`[data-media-toggle][aria-controls="${video.id}"]`),
-    visible: false, warm: false, userPaused: false, manual: false, pending: false,
+    visible: false, ratio: 0, warm: false, userPaused: false, manual: false, pending: false,
   }));
   let frame = 0;
   let disposed = false;
   let suspended = false;
+  let requestedPlayer;
   const motionAllowed = () => !reduced.matches && !connection?.saveData;
   const pageAvailable = () => !document.hidden && !suspended && !menu?.open
     && !document.documentElement.classList.contains('entry-pending');
@@ -36,12 +37,17 @@ export function installAtelierCinema({ signal, menu } = {}) {
     const playing = !player.video.paused && !player.video.ended;
     player.button.hidden = false;
     player.button.setAttribute('aria-pressed', String(playing));
-    player.button.setAttribute('aria-label', playing ? 'Metti in pausa il film tipografico SPAZIO' : 'Riproduci il film tipografico SPAZIO');
+    const subject = player.video.dataset.mediaLabel || 'il film 3D';
+    player.button.setAttribute('aria-label', `${playing ? 'Metti in pausa' : 'Riproduci'} ${subject}`);
     player.button.querySelector('[data-media-symbol]').textContent = playing ? 'Ⅱ' : '▷';
     player.button.querySelector('[data-media-label]').textContent = playing ? 'Pausa' : 'Riproduci';
   }
-  const mayPlay = player => !disposed && pageAvailable() && player.visible && !player.userPaused
-    && (motionAllowed() || player.manual);
+  function foregroundPlayer() {
+    const eligible = player => player.visible && !player.userPaused && (motionAllowed() || player.manual);
+    if (requestedPlayer && eligible(requestedPlayer)) return requestedPlayer;
+    return players.reduce((winner, player) => eligible(player) && (!winner || player.ratio > winner.ratio) ? player : winner, undefined);
+  }
+  const mayPlay = player => !disposed && pageAvailable() && player === foregroundPlayer();
   async function sync(player) {
     if (disposed) return;
     if (player.warm && motionAllowed() && pageAvailable()) source(player);
@@ -92,21 +98,31 @@ export function installAtelierCinema({ signal, menu } = {}) {
   const videoObserver = new IntersectionObserver(items => {
     items.forEach(item => {
       const player = players.find(value => value.stage === item.target);
-      if (player) { player.visible = item.isIntersecting && item.intersectionRatio > .14; sync(player); }
+      if (player) {
+        player.visible = item.isIntersecting && item.intersectionRatio > .14;
+        player.ratio = item.intersectionRatio;
+      }
     });
-  }, { threshold: [0, .14, .5] });
+    players.forEach(sync);
+  }, { threshold: [0, .14, .5, .75, 1] });
   players.forEach(player => {
     poster(player); player.video.muted = true; control(player);
     warmObserver.observe(player.stage); videoObserver.observe(player.stage);
     player.button?.addEventListener('click', () => {
       if (!player.video.paused || player.pending) { player.userPaused = true; player.manual = false; }
-      else { player.userPaused = false; player.manual = true; }
-      sync(player);
+      else {
+        player.userPaused = false; player.manual = true;
+        requestedPlayer = player;
+        // A transient network failure needs a new load, only on explicit retry.
+        if (player.video.error) player.video.load();
+      }
+      players.forEach(sync);
     }, { signal: life.signal });
     ['play', 'pause', 'ended', 'error'].forEach(type => player.video.addEventListener(type, () => control(player), { signal: life.signal }));
   });
   function refresh() { players.forEach(sync); request(); }
   function policyChanged() {
+    requestedPlayer = undefined;
     players.forEach(player => { player.manual = false; });
     if (!motionAllowed()) shots.forEach(shot => {
       const image = shot.querySelector('img'); if (image) image.style.transform = '';

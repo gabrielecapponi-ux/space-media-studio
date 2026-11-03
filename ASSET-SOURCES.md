@@ -1,6 +1,6 @@
 # Provenienza dei materiali — Space Media Studio
 
-La homepage corrente (`index.html`) e l’alias `atelier.html` conservano l’ingresso nello studio e l’apertura con acqua. Il resto del percorso usa sette immagini concept AI, composizioni web HTML e un film tipografico Blender originale. I materiali hanno origini e funzioni diverse.
+La homepage corrente (`index.html`) e l’alias `atelier.html` conservano l’ingresso nello studio e l’apertura con acqua. Il resto del percorso usa cinque film Blender originali, tre dettagli fotografici AI e una texture architettonica AI incorporata nel film web. Le immagini concept precedenti rimangono documentate come archivio. I materiali hanno origini e funzioni diverse.
 
 ## Studio 3D e film d’acqua
 
@@ -24,7 +24,7 @@ Gli export `atelier-water-desktop.mp4` e `atelier-water-mobile.mp4` sono rispett
 
 Le sette immagini sono raster **1672×941 nativi**, senza upscaling. Le quattro originali totalizzano 1.145.984 byte; i tre nuovi JPEG 812.292 byte. Master PNG locali, prompt, identificatori e SHA-256 sono documentati in [ASSET-LAUNCH-ROOM.json](./ASSET-LAUNCH-ROOM.json) e [ASSET-ATELIER-VISUALS.json](./ASSET-ATELIER-VISUALS.json).
 
-FORMA, AVANT, ORA e SPAZIO sono scenari dimostrativi, non clienti o commesse. I visual non documentano prodotti, edifici o eventi reali; non sono dichiarati stock di pubblico dominio. Parallasse e movimento d’impaginazione non trasformano le fotografie in mesh o fotogrammi di un film 3D. Le viste AVANT sono composizioni HTML originali con l’immagine architettonica incorporata.
+FORMA, AVANT, ORA e SPAZIO sono scenari dimostrativi, non clienti o commesse. I visual non documentano prodotti, edifici o eventi reali; non sono dichiarati stock di pubblico dominio. Parallasse e movimento d’impaginazione non trasformano le fotografie in mesh o fotogrammi di un film 3D. La scena AVANT è ora un render Blender di superfici di interfaccia; incorpora il visual architettonico come texture. Non è un sito cliente né una mesh web navigabile.
 
 ## Film tipografico originale
 
@@ -32,14 +32,20 @@ FORMA, AVANT, ORA e SPAZIO sono scenari dimostrativi, non clienti o commesse. I 
 
 I profili web verificati sono **1920×1080 e 720×900**, cinque secondi a 24 fps nativi, 120 fotogrammi. Master `.blend` e sequenze PNG rimangono in `outputs/nov26/motion/`; poster e MP4 sono le copie web. [ASSET-ATELIER-MOTION.json](./ASSET-ATELIER-MOTION.json) registra gli esiti finali di produzione, reimportazione, codifica e decodifica. Non vengono dichiarati 4K, 60 fps o interpolazione.
 
+## Quattro nuovi film di servizio
+
+I film `service-brand.mp4`, `service-web.mp4`, `service-product.mp4` e `service-funding.mp4` sono originali Blender. Modellazione, superfici, tipografia, camera, luci e trasformazioni periodiche sono create per questa pagina. FORMA rende fisico un sistema di identità; AVANT mostra livelli desktop/mobile; ORA mette in scena il flacone e il vetro; il dossier illustra la progettazione. Il film SPAZIO già approvato resta il quinto capitolo.
+
+Master e fotogrammi numerati sono conservati in `outputs/motion-services/`. Gli script riproducibili sono `scripts/render-service-scenes-a.py` e `scripts/render-service-scenes-b.py`. Specifiche native, motore, tempi di rendering, hash, verifica dei master e decodifica sono registrati in [ASSET-SERVICE-MOTION.json](./ASSET-SERVICE-MOTION.json). Nessun film nuovo proviene da stock, API a pagamento o interpolazione di immagini AI. L’unica texture AI nei nuovi render è l’architettura dichiarata di AVANT.
+
 ## Software, font e contenuti
 
 - Three.js 0.186.1: MIT; avviso in `public/licenses/three-MIT.txt`.
 - Space Grotesk: [repository ufficiale](https://github.com/floriankarsten/space-grotesk), SIL Open Font License 1.1; copia locale in `public/fonts/SpaceGrotesk-OFL.txt`.
 - DM Mono: pacchetto skill fornito dall’utente, SIL Open Font License; copia locale in `public/fonts/DMMono-OFL.txt`.
-- Logo, testi, interfacce, diagramma progettuale, scena dello studio e motion tipografico: composizioni originali del progetto.
+- Logo, testi, interfacce, dossier progettuale, scena dello studio e motion tipografico: composizioni originali del progetto.
 
-Font, film e immagini sono serviti localmente. I cinque form preparano bozze WhatsApp; non inviano messaggi automaticamente. Il diagramma di progetti e bandi contiene tempi e categorie illustrativi, senza importi o finanziamenti attribuiti e senza promesse di ammissibilità.
+Font, film e immagini sono serviti localmente. I cinque form preparano bozze WhatsApp; non inviano messaggi automaticamente. Il dossier di progetti e bandi contiene categorie e diagrammi illustrativi, senza importi o finanziamenti attribuiti e senza promesse di ammissibilità.
 
 Lusion e il linguaggio editoriale Apple sono riferimenti di composizione e movimento; non vengono incorporati loro asset o codice. Horizon CoverFlow non è acquisito o integrato. La vecchia prova ComfyUI/LTX non ha prodotto fotogrammi e non fornisce media al sito corrente.
 
@@ -47,6 +53,4 @@ Lusion e il linguaggio editoriale Apple sono riferimenti di composizione e movim
 
 `src/launch-room.js`, `src/scene-objects.js` e i relativi studi documentano un percorso sperimentale precedente, non caricato dalla homepage attuale. I media e i manifest storici conservano il proprio ambito e le eventuali licenze di terzi. La pubblicazione dei sorgenti non concede una licenza generale delle composizioni originali.
 
-Build di produzione e `npm test` superati: 23 contratti correnti, undici per l’ingresso e dodici per il cinema. Verifica reale in Chrome headless isolato con Playwright CLI 0.1.23: desktop 1280×720 e formati emulati 393×852, 320×667 e 844×390, senza overflow laterale. Provati ingresso e ritorno dei controlli, film desktop/verticale, pausa mantenuta dopo lo scroll, riproduzione manuale, menu, apertura e validazione dei brief. Nessun invio esterno effettuato e nessun errore JavaScript osservato nei due flussi completi.
-
-Con movimento ridotto, una nuova navigazione mantiene entrambe le sorgenti video non assegnate; la riproduzione manuale resta disponibile. Poster, ritaglio e impaginazione sono stati controllati nelle schermate catturate. Si tratta di emulazione Chromium, non di una prova su iPhone fisico o di una certificazione GPU/FPS. I 31 controlli del percorso precedente rimangono separati in `npm run test:legacy`.
+Le verifiche correnti del sito, i viewport e le condizioni delle misure sono raccolti nel [README](./README.md#verifiche). I manifest dei film registrano separatamente verifiche di master, inquadratura, contatto, decodifica e continuità. Le immagini native e il confronto dei fotogrammi completano i controlli strutturali delle animazioni: la sola chiusura delle trasformazioni non attesta la continuità ottica.

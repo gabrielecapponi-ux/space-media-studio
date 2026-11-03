@@ -38,7 +38,7 @@ class Node extends Events {
   getAttribute(name) { return this.attrs.get(name) ?? null; }
   setAttribute(name, value) { this.attrs.set(name, String(value)); }
 }
-function fixture({ reduced = false, saveData = false, portrait = false, entry = false, signal } = {}) {
+function fixture({ reduced = false, saveData = false, portrait = false, entry = false, signal, playerCount = 1 } = {}) {
   const pref = new Events(); pref.matches = reduced;
   const connection = new Events(); connection.saveData = saveData;
   const orientation = new Events(); orientation.matches = portrait;
@@ -50,28 +50,32 @@ function fixture({ reduced = false, saveData = false, portrait = false, entry = 
   const web = new Node(); web.kind = 'web'; web.matches = () => true; web.querySelector = () => null;
   web.getBoundingClientRect = () => ({ top: 150, height: 450 });
   const shots = [photo, web];
-  const stage = new Node();
-  const button = new Node(); const symbol = new Node(); const label = new Node();
-  button.querySelector = selector => selector === '[data-media-symbol]' ? symbol : label;
-  const video = new Node(); video.id = 'atelier-campaign-video'; video.closest = () => stage;
-  video.dataset = { srcDesktop: './films/type-desktop.mp4', srcMobile: './films/type-mobile.mp4', posterDesktop: './images/type-desktop.jpg', posterMobile: './images/type-mobile.jpg' };
-  let src = ''; Object.defineProperty(video, 'src', { get: () => src, set: value => { src = value; video.setAttribute('src', value); } });
-  video.paused = true; video.ended = false; video.muted = false; video.loads = 0; video.plays = 0; video.pauses = 0;
-  video.mode = 'resolve'; let pendingResolve;
-  video.load = () => { video.loads++; };
-  video.pause = () => { video.pauses++; const changed = !video.paused; video.paused = true; if (changed) video.emit('pause'); };
-  video.play = () => {
-    video.plays++;
-    if (video.mode === 'reject') { video.paused = true; return Promise.reject(new Error('Autoplay refused')); }
-    video.paused = false; video.emit('play');
-    if (video.mode === 'pending') return new Promise(resolve => { pendingResolve = resolve; });
-    return Promise.resolve();
-  };
+  const media = Array.from({ length: playerCount }, (_, index) => {
+    const stage = new Node();
+    const button = new Node(), symbol = new Node(), label = new Node();
+    button.querySelector = selector => selector === '[data-media-symbol]' ? symbol : label;
+    const video = new Node(); video.id = `atelier-service-video-${index}`; video.closest = () => stage;
+    video.dataset = { srcDesktop: './films/type-desktop.mp4', srcMobile: './films/type-mobile.mp4', posterDesktop: './images/type-desktop.jpg', posterMobile: './images/type-mobile.jpg', mediaLabel: `il film del servizio ${index + 1}` };
+    let src = ''; Object.defineProperty(video, 'src', { get: () => src, set: value => { src = value; video.setAttribute('src', value); } });
+    video.paused = true; video.ended = false; video.muted = false; video.loads = 0; video.plays = 0; video.pauses = 0;
+    video.mode = 'resolve'; let pendingResolve;
+    video.load = () => { video.loads++; };
+    video.pause = () => { video.pauses++; const changed = !video.paused; video.paused = true; if (changed) video.emit('pause'); };
+    video.play = () => {
+      video.plays++;
+      if (video.mode === 'reject') { video.paused = true; return Promise.reject(new Error('Autoplay refused')); }
+      video.paused = false; video.emit('play');
+      if (video.mode === 'pending') return new Promise(resolve => { pendingResolve = resolve; });
+      return Promise.resolve();
+    };
+    return { stage, button, symbol, label, video, resolvePlay: () => pendingResolve?.() };
+  });
+  const { stage, button, symbol, label, video, resolvePlay } = media[0];
   const menu = new Events(); menu.open = false;
   const doc = new Events(); doc.hidden = false; doc.documentElement = root;
   doc.baseURI = 'https://example.test/space/atelier.html';
-  doc.querySelectorAll = selector => selector === '[data-atelier-media]' ? [video] : shots;
-  doc.querySelector = () => button;
+  doc.querySelectorAll = selector => selector === '[data-atelier-media]' ? media.map(item => item.video) : shots;
+  doc.querySelector = selector => media.find(item => selector.includes(`"${item.video.id}"`))?.button;
   const win = new Events();
   const intersections = []; const mutations = [];
   let nextID = 1; const frames = new Map();
@@ -98,8 +102,8 @@ function fixture({ reduced = false, saveData = false, portrait = false, entry = 
   const shotObserver = intersections[0], warmObserver = intersections[1], visibleObserver = intersections[2];
   const tick = () => { const callbacks = [...frames.values()]; frames.clear(); callbacks.forEach(callback => callback(16)); };
   return { api, pref, connection, orientation, root, doc, win, menu, photo, web, image, stage, video, button, symbol, label,
-    shotObserver, warmObserver, visibleObserver, intersections, mutations, tick, pendingFrames: () => frames.size,
-    resolvePlay: () => pendingResolve?.(), flush,
+    shotObserver, warmObserver, visibleObserver, intersections, mutations, tick, media, pendingFrames: () => frames.size,
+    resolvePlay, flush,
     show: async () => { warmObserver.fire(stage); visibleObserver.fire(stage, true, .8); await flush(); },
   };
 }
@@ -203,6 +207,76 @@ await test('Final disposal is idempotent, cancels queued work and disconnects li
   assert.ok(f.intersections.every(o => o.disconnected)); assert.ok(f.mutations.every(o => o.disconnected));
   const count = f.video.plays; f.win.emit('pageshow'); f.menu.emit('toggle'); f.button.emit('click'); await f.flush();
   assert.equal(f.video.plays, count); assert.equal(f.win.listenerCount(), 0); assert.equal(f.doc.listenerCount(), 0); assert.equal(f.menu.listenerCount(), 0);
+  f.api.dispose();
+});
+await test('A failed film reloads only when its own control is explicitly retried', async () => {
+  const f = fixture({ playerCount: 5 });
+  const target = f.media[2]; target.video.mode = 'reject';
+  f.warmObserver.fire(target.stage); f.visibleObserver.fire(target.stage, true, .9); await f.flush();
+  target.video.error = { code: 2 }; target.video.emit('error');
+  f.visibleObserver.fire(target.stage, false, 0); f.visibleObserver.fire(target.stage, true, .9); await f.flush();
+  assert.equal(target.video.loads, 1); assert.equal(target.video.paused, true);
+  target.video.load = () => { target.video.loads++; target.video.error = null; target.video.mode = 'resolve'; };
+  target.button.emit('click'); await f.flush();
+  assert.equal(target.video.loads, 2); assert.equal(target.video.paused, false);
+  assert.ok(f.media.filter(item => item !== target).every(item => item.video.loads === 0));
+  f.api.dispose();
+});
+await test('Five service films keep their own labels, source preparation and explicit pause state', async () => {
+  const f = fixture({ playerCount: 5 });
+  for (const [index, item] of f.media.entries()) {
+    assert.equal(item.video.loads, 0);
+    assert.equal(item.button.getAttribute('aria-label'), `Riproduci il film del servizio ${index + 1}`);
+  }
+  for (const [index, item] of f.media.entries()) {
+    f.warmObserver.fire(item.stage); f.visibleObserver.fire(item.stage, true, .9); await f.flush();
+    assert.equal(item.video.loads, 1); assert.equal(item.video.paused, false);
+    assert.equal(item.button.getAttribute('aria-label'), `Metti in pausa il film del servizio ${index + 1}`);
+    item.button.emit('click'); await f.flush();
+    assert.equal(item.video.paused, true);
+    f.visibleObserver.fire(item.stage, false, 0);
+    f.visibleObserver.fire(item.stage, true, .9); await f.flush();
+    assert.equal(item.video.paused, true);
+    f.visibleObserver.fire(item.stage, false, 0);
+  }
+  f.media[2].button.emit('click'); f.visibleObserver.fire(f.media[2].stage, true, .9); await f.flush();
+  assert.equal(f.media[2].video.paused, false);
+  assert.ok(f.media.filter((_, index) => index !== 2).every(item => item.video.paused));
+  f.menu.open = true; f.menu.emit('toggle'); await f.flush();
+  assert.ok(f.media.every(item => item.video.paused));
+  f.api.dispose();
+});
+await test('Five films in reduced motion defer all media until a specific manual request', async () => {
+  const f = fixture({ reduced: true, playerCount: 5 });
+  f.media.forEach(item => { f.warmObserver.fire(item.stage); f.visibleObserver.fire(item.stage, true, .9); });
+  await f.flush(); assert.ok(f.media.every(item => item.video.loads === 0));
+  f.media[3].button.emit('click'); await f.flush();
+  assert.equal(f.media[3].video.loads, 1); assert.equal(f.media[3].video.paused, false);
+  assert.ok(f.media.filter((_, index) => index !== 3).every(item => item.video.loads === 0));
+  f.pref.emit('change'); await f.flush();
+  assert.ok(f.media.every(item => item.video.paused));
+  f.api.dispose();
+});
+await test('Overlapping service stages elect one foreground film and respect a direct playback request', async () => {
+  const f = fixture({ playerCount: 5 }), [first, second] = f.media;
+  f.visibleObserver.fire(first.stage, true, .8); f.visibleObserver.fire(second.stage, true, .3); await f.flush();
+  assert.equal(first.video.paused, false); assert.equal(second.video.paused, true);
+  f.visibleObserver.fire(second.stage, true, .95); await f.flush();
+  assert.equal(first.video.paused, true); assert.equal(second.video.paused, false);
+  first.button.emit('click'); await f.flush();
+  assert.equal(first.video.paused, false); assert.equal(second.video.paused, true);
+  f.visibleObserver.fire(first.stage, false, 0); await f.flush();
+  assert.equal(first.video.paused, true); assert.equal(second.video.paused, false);
+  assert.equal(f.media.filter(item => !item.video.paused).length, 1);
+  f.api.dispose();
+});
+await test('A delayed playback promise cannot reclaim the foreground from a newer visible scene', async () => {
+  const f = fixture({ playerCount: 5 }), [first, second] = f.media;
+  first.video.mode = 'pending'; f.visibleObserver.fire(first.stage, true, .5);
+  f.visibleObserver.fire(second.stage, true, 1); await f.flush();
+  first.resolvePlay(); await f.flush();
+  assert.equal(first.video.paused, true); assert.equal(second.video.paused, false);
+  assert.equal(f.media.filter(item => !item.video.paused).length, 1);
   f.api.dispose();
 });
 console.log(JSON.stringify({ groups: groups.length, source: 'actual src/atelier-cinema.js', browser: false, externalRequests: false }, null, 2));
