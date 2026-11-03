@@ -1,0 +1,938 @@
+{
+  "schema_version": 1,
+  "id": "cinema-blender-20261103",
+  "project": "Space Media Studio",
+  "scope": "Original refined identity/packaging and project-design demonstration films, plus independently framed native portrait versions. They replace historical service-brand and service-funding in the current homepage.",
+  "commercial_status": "Original fictional, non-commissioned concepts. No existing client, commission, grant approval or business result is claimed.",
+  "method": "Authored Blender geometry, curved and flat typography, materials, light, perspective camera and periodic deterministic pose animation. Offline EEVEE renders; these are actual 3D film pixels, not live interactive GLBs and not AI generated video.",
+  "scenes": {
+    "brand": {
+      "concept": "FORMA / Coffee roasters identity",
+      "authored_geometry": "Hollow double-wall coffee tin with actual visible interior and metal rolled rim, independent removable spun lid with concentric rings, custom curved physical type, dimensional f. signature and cotton identity card stock. Lid and identity card assemble in a continuous original four-second loop."
+    },
+    "funding": {
+      "concept": "Dall’idea al progetto / Space Progetti",
+      "authored_geometry": "Citron-backed folio, eighteen bound sheet edges, three independently animated printed planning pages and connected AZIENDE/APS/ASD section tabs. Graphite cover presents original IDEA/PIANO/IMPATTO planning diagram. A project-design concept, not an announcement of an open call."
+    }
+  },
+  "source_scripts": [
+    {
+      "path": "scripts/cinema-20261103.py",
+      "sha256": "9dd44440ca63c5284ca51b908c5452dd17b30f5dec6f5df18787e61dd20c5b6e"
+    },
+    {
+      "path": "scripts/cinema-20261103-runner.py",
+      "sha256": "a4921b285781405f4a04fa561aabe3d0bacbc4bf97852befaeae41ff36f1a21c"
+    },
+    {
+      "path": "scripts/cinema-20261103-pixels.py",
+      "sha256": "e004ba486f60470e064d80548a4411dbcadf7c87071ec79afec092ca3bff982e"
+    },
+    {
+      "path": "scripts/cinema-20261103-manifest.py",
+      "sha256": "142648f9231c162cedbd1e1a58c53db2c97de6a9590355cfc343b118ec66e4b7"
+    }
+  ],
+  "master_policy": "Editable .blend files and original native PNG frame sequences retained in ignored outputs/cinema-20261103. Only compressed movies, first-frame posters, authored scripts and this provenance receipt are published.",
+  "fonts": "System Arial Regular/Bold and Times New Roman, rendered into final film pixels; no font binaries distributed. Editable masters reference system-installed font files.",
+  "colour": "AgX Medium High Contrast, exposure-0.3, native PNG8 display masters; H.264 BT709 primaries/matrix with sRGB transfer. Ray-traced indirect-light effects use EEVEE half-resolution reconstruction; final scene and output rasters use stated native resolutions.",
+  "mobile": "Separate native 720×900 Blender camera/profile; brand objects are rearranged for portrait, with the secondary citron signature card hidden to preserve physical separation and a clean phone composition. Not an automatic crop of desktop or final resolution upscale.",
+  "source_media_external": false,
+  "models_downloaded": false,
+  "ai_images_or_video": false,
+  "paid_apis": false,
+  "synthetic_frame_interpolation": false,
+  "reverse_playback": false,
+  "audio": false,
+  "loop": "120 successive chronological frames at 30 fps. Master frame 121 equals frame 1. No duplicate endpoint appended and no reversed or interpolated tail. Every native adjacent pair and seam independently pixel-gated.",
+  "verification": "All four masters reimported; periodic transforms, actual ground-anchor contact and all 120 pose frustum bounds checked. Near-edge circular bounds refined against actual evaluated mesh vertices. Visible identity cards are also checked for physical clearance against the tin at all 120 poses. Native pixel-continuity gate plus full FFmpeg decode, codec probe and actual moov-before-mdat atom verification passed.",
+  "assets": [
+    {
+      "scene": "brand",
+      "master": "outputs/cinema-20261103/brand/desktop/cinema-brand.blend",
+      "master_reimport": "passed",
+      "original_authored_geometry": true,
+      "external_models": false,
+      "ai_video": false,
+      "engine": "BLENDER_EEVEE",
+      "blender": "5.2.1 LTS",
+      "native_width": 1920,
+      "native_height": 1080,
+      "fps": 30,
+      "frames": 120,
+      "duration_seconds": 4.0,
+      "upscaled": false,
+      "interpolated": false,
+      "audio": false,
+      "periodic_transform_error": 1.3597292847331195e-16,
+      "observed_transform_change": 0.5899999141693115,
+      "projected_safe_margins_all_frames": {
+        "left": 0.08758147805929184,
+        "right": 0.1423209309577942,
+        "bottom": 0.0858173817396164,
+        "top": 0.02501547336578369
+      },
+      "anchor_ground_contact_gaps": {
+        "Rolled aluminium base": 0.0,
+        "Lower white cotton card": 0.0
+      },
+      "funding_title_to_audiences_vertical_gap": null,
+      "minimum_paper_to_tin_clearance_all_120_poses": 0.045174251055043024,
+      "samples": 48,
+      "ray_tracing_resolution_scale": "2",
+      "full_decode": "passed",
+      "native_pixel_continuity": {
+        "method": "Native full-resolution PNG pixels, mean absolute RGB on0–255scale",
+        "frames": 120,
+        "size": [
+          1920,
+          1080
+        ],
+        "maximum_adjacent_mean_absolute_rgb": 1.3669274048353908,
+        "first_last_mean_absolute_rgb": 0.308847254372428,
+        "frame_luma_mean_min": 173.64228105709876,
+        "frame_luma_mean_max": 179.3872866833848,
+        "ordered_frames_sha256": "c4e1b769eb950b97f748ae92e1391bbdcd10b4b25b862ff966a0ece1d27346f1",
+        "threshold_maximum_adjacent": 6,
+        "threshold_loop_seam": 2,
+        "passed": true
+      },
+      "encoded_native_pixel_checks": {
+        "method": "Encoded H264 frames decoded back to PNG and compared with actual native Blender PNGs",
+        "samples": [
+          {
+            "native_frame": 1,
+            "mean_absolute_rgb": [
+              0.7341449652777777,
+              0.668671875,
+              1.0451533564814814
+            ],
+            "mean": 0.8159900655864197
+          },
+          {
+            "native_frame": 61,
+            "mean_absolute_rgb": [
+              0.7123895640432099,
+              0.6553448109567901,
+              1.0500617283950617
+            ],
+            "mean": 0.8059320344650205
+          },
+          {
+            "native_frame": 120,
+            "mean_absolute_rgb": [
+              0.8137326388888889,
+              0.7656418788580247,
+              1.1419608410493827
+            ],
+            "mean": 0.9071117862654322
+          }
+        ],
+        "threshold_mean": 3.5,
+        "passed": true
+      },
+      "faststart_verified": true,
+      "mp4_atom_offsets": {
+        "ftyp": 0,
+        "moov": 32,
+        "free": 2327,
+        "mdat": 2335
+      },
+      "ffprobe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "mime_codec_string": "avc1.640029",
+            "width": 1920,
+            "height": 1080,
+            "coded_width": 1920,
+            "coded_height": 1080,
+            "has_b_frames": 2,
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "16:9",
+            "pix_fmt": "yuv420p",
+            "level": 41,
+            "color_range": "tv",
+            "color_space": "bt709",
+            "color_transfer": "iec61966-2-1",
+            "color_primaries": "bt709",
+            "chroma_location": "left",
+            "field_order": "progressive",
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "30/1",
+            "avg_frame_rate": "30/1",
+            "time_base": "1/15360",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 61440,
+            "duration": "4.000000",
+            "bit_rate": "2449676",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "120",
+            "extradata_size": 51,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "encoder": "Lavc62.28.102 libx264"
+            }
+          }
+        ],
+        "format": {
+          "filename": "public/films/cinema-brand.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "4.000000",
+          "size": "1227181",
+          "bit_rate": "2454362",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf62.12.102"
+          }
+        }
+      },
+      "assets": [
+        {
+          "path": "public/films/cinema-brand.mp4",
+          "bytes": 1227181,
+          "sha256": "571e4971a725a29f9fe16239158e61773c6f3ae9d44e26baba7728c7684fe16f"
+        },
+        {
+          "path": "public/images/cinema-brand.jpg",
+          "bytes": 116399,
+          "sha256": "a8ec72fa5789d22d6d1884b12f7958c3ad93da43b42c16ea49ef4ba1c8fff1c8"
+        }
+      ],
+      "profile": "desktop",
+      "source_scene": "brand",
+      "native_frames_directory": "outputs/cinema-20261103/brand/desktop/frames",
+      "master_sha256": "a6554159247506a4ee7924534807b4da42eea050b73bc1614b863239b9a235f7"
+    },
+    {
+      "scene": "brand",
+      "master": "outputs/cinema-20261103/brand/mobile/cinema-brand-mobile.blend",
+      "master_reimport": "passed",
+      "original_authored_geometry": true,
+      "external_models": false,
+      "ai_video": false,
+      "engine": "BLENDER_EEVEE",
+      "blender": "5.2.1 LTS",
+      "native_width": 720,
+      "native_height": 900,
+      "fps": 30,
+      "frames": 120,
+      "duration_seconds": 4.0,
+      "upscaled": false,
+      "interpolated": false,
+      "audio": false,
+      "periodic_transform_error": 1.3597292847331195e-16,
+      "observed_transform_change": 0.5899999141693115,
+      "projected_safe_margins_all_frames": {
+        "left": 0.0956011638045311,
+        "right": 0.11670464277267456,
+        "bottom": 0.1842973232269287,
+        "top": 0.15149050951004028
+      },
+      "anchor_ground_contact_gaps": {
+        "Rolled aluminium base": 0.0,
+        "Lower white cotton card": 0.0
+      },
+      "funding_title_to_audiences_vertical_gap": null,
+      "minimum_paper_to_tin_clearance_all_120_poses": 0.34722227617969414,
+      "samples": 48,
+      "ray_tracing_resolution_scale": "2",
+      "full_decode": "passed",
+      "native_pixel_continuity": {
+        "method": "Native full-resolution PNG pixels, mean absolute RGB on0–255scale",
+        "frames": 120,
+        "size": [
+          720,
+          900
+        ],
+        "maximum_adjacent_mean_absolute_rgb": 0.6788528806584363,
+        "first_last_mean_absolute_rgb": 0.13822530864197533,
+        "frame_luma_mean_min": 172.43556430041153,
+        "frame_luma_mean_max": 175.57197479423868,
+        "ordered_frames_sha256": "f3a535da23290808c565529d852e1368de661417572df222732b650aa1117040",
+        "threshold_maximum_adjacent": 6,
+        "threshold_loop_seam": 2,
+        "passed": true
+      },
+      "encoded_native_pixel_checks": {
+        "method": "Encoded H264 frames decoded back to PNG and compared with actual native Blender PNGs",
+        "samples": [
+          {
+            "native_frame": 1,
+            "mean_absolute_rgb": [
+              0.7396018518518519,
+              0.6234907407407407,
+              1.0314212962962963
+            ],
+            "mean": 0.7981712962962964
+          },
+          {
+            "native_frame": 61,
+            "mean_absolute_rgb": [
+              0.7631033950617284,
+              0.6267716049382716,
+              0.9758395061728395
+            ],
+            "mean": 0.7885715020576131
+          },
+          {
+            "native_frame": 120,
+            "mean_absolute_rgb": [
+              0.8344475308641975,
+              0.7386049382716049,
+              1.1332685185185185
+            ],
+            "mean": 0.9021069958847736
+          }
+        ],
+        "threshold_mean": 3.5,
+        "passed": true
+      },
+      "faststart_verified": true,
+      "mp4_atom_offsets": {
+        "ftyp": 0,
+        "moov": 32,
+        "free": 2319,
+        "mdat": 2327
+      },
+      "ffprobe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "mime_codec_string": "avc1.640029",
+            "width": 720,
+            "height": 900,
+            "coded_width": 720,
+            "coded_height": 900,
+            "has_b_frames": 2,
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "4:5",
+            "pix_fmt": "yuv420p",
+            "level": 41,
+            "color_range": "tv",
+            "color_space": "bt709",
+            "color_transfer": "iec61966-2-1",
+            "color_primaries": "bt709",
+            "chroma_location": "left",
+            "field_order": "progressive",
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "30/1",
+            "avg_frame_rate": "30/1",
+            "time_base": "1/15360",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 61440,
+            "duration": "4.000000",
+            "bit_rate": "641476",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "120",
+            "extradata_size": 51,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "encoder": "Lavc62.28.102 libx264"
+            }
+          }
+        ],
+        "format": {
+          "filename": "public/films/cinema-brand-mobile.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "4.000000",
+          "size": "323073",
+          "bit_rate": "646146",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf62.12.102"
+          }
+        }
+      },
+      "assets": [
+        {
+          "path": "public/films/cinema-brand-mobile.mp4",
+          "bytes": 323073,
+          "sha256": "1236dcab396e8aa6777779ecc7c32435b2a52e6d3c9995a367273754f1ec9fe2"
+        },
+        {
+          "path": "public/images/cinema-brand-mobile.jpg",
+          "bytes": 41808,
+          "sha256": "77f276cdb2c4f6ac269764b15c0b945ebdb3c51fc13a50d7941f80d48b1bdf6e"
+        }
+      ],
+      "frozen_look_match": {
+        "method": "Full native proof frames compared against completed native batch frames at matching absolute poses",
+        "scene": "brand",
+        "profile": "mobile",
+        "samples": [
+          {
+            "frame": 1,
+            "mean_absolute_rgb": [
+              7.71604938271605e-06,
+              3.0864197530864196e-06,
+              1.54320987654321e-05
+            ],
+            "mean": 8.74485596707819e-06
+          },
+          {
+            "frame": 61,
+            "mean_absolute_rgb": [
+              4.1666666666666665e-05,
+              4.3209876543209875e-05,
+              5.246913580246914e-05
+            ],
+            "mean": 4.578189300411523e-05
+          },
+          {
+            "frame": 120,
+            "mean_absolute_rgb": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "mean": 0.0
+          }
+        ],
+        "passed": true
+      },
+      "profile": "mobile",
+      "source_scene": "brand",
+      "native_frames_directory": "outputs/cinema-20261103/brand/mobile/frames",
+      "master_sha256": "31c77aced6dbde0e84379186b2398c26fa35c00468b561f20976aefe9500e7a8"
+    },
+    {
+      "scene": "funding",
+      "master": "outputs/cinema-20261103/funding/desktop/cinema-funding.blend",
+      "master_reimport": "passed",
+      "original_authored_geometry": true,
+      "external_models": false,
+      "ai_video": false,
+      "engine": "BLENDER_EEVEE",
+      "blender": "5.2.1 LTS",
+      "native_width": 1920,
+      "native_height": 1080,
+      "fps": 30,
+      "frames": 120,
+      "duration_seconds": 4.0,
+      "upscaled": false,
+      "interpolated": false,
+      "audio": false,
+      "periodic_transform_error": 0.0,
+      "observed_transform_change": 0.8999999463558197,
+      "projected_safe_margins_all_frames": {
+        "left": 0.14928162097930908,
+        "right": 0.1781296730041504,
+        "bottom": 0.025018861517310143,
+        "top": 0.07069265842437744
+      },
+      "anchor_ground_contact_gaps": {
+        "Citron cloth back cover": 0.0
+      },
+      "funding_title_to_audiences_vertical_gap": 0.331290140748024,
+      "minimum_paper_to_tin_clearance_all_120_poses": null,
+      "samples": 48,
+      "ray_tracing_resolution_scale": "2",
+      "full_decode": "passed",
+      "native_pixel_continuity": {
+        "method": "Native full-resolution PNG pixels, mean absolute RGB on0–255scale",
+        "frames": 120,
+        "size": [
+          1920,
+          1080
+        ],
+        "maximum_adjacent_mean_absolute_rgb": 2.2193410815329218,
+        "first_last_mean_absolute_rgb": 0.3194701646090535,
+        "frame_luma_mean_min": 173.83843460648146,
+        "frame_luma_mean_max": 180.9452126736111,
+        "ordered_frames_sha256": "8ab7568824aa8e941b40d3dde76fa186face141ea4d7725b537e0f7c826de439",
+        "threshold_maximum_adjacent": 6,
+        "threshold_loop_seam": 2,
+        "passed": true
+      },
+      "encoded_native_pixel_checks": {
+        "method": "Encoded H264 frames decoded back to PNG and compared with actual native Blender PNGs",
+        "samples": [
+          {
+            "native_frame": 1,
+            "mean_absolute_rgb": [
+              0.6754832175925926,
+              0.6632952353395062,
+              0.8792655285493827
+            ],
+            "mean": 0.7393479938271605
+          },
+          {
+            "native_frame": 61,
+            "mean_absolute_rgb": [
+              0.7750279706790123,
+              0.7258516589506173,
+              0.9738334297839506
+            ],
+            "mean": 0.82490435313786
+          },
+          {
+            "native_frame": 120,
+            "mean_absolute_rgb": [
+              0.7451938657407408,
+              0.7676027199074074,
+              0.9881201774691358
+            ],
+            "mean": 0.8336389210390948
+          }
+        ],
+        "threshold_mean": 3.5,
+        "passed": true
+      },
+      "faststart_verified": true,
+      "mp4_atom_offsets": {
+        "ftyp": 0,
+        "moov": 32,
+        "free": 2327,
+        "mdat": 2335
+      },
+      "ffprobe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "mime_codec_string": "avc1.640029",
+            "width": 1920,
+            "height": 1080,
+            "coded_width": 1920,
+            "coded_height": 1080,
+            "has_b_frames": 2,
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "16:9",
+            "pix_fmt": "yuv420p",
+            "level": 41,
+            "color_range": "tv",
+            "color_space": "bt709",
+            "color_transfer": "iec61966-2-1",
+            "color_primaries": "bt709",
+            "chroma_location": "left",
+            "field_order": "progressive",
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "30/1",
+            "avg_frame_rate": "30/1",
+            "time_base": "1/15360",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 61440,
+            "duration": "4.000000",
+            "bit_rate": "2623002",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "120",
+            "extradata_size": 51,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "encoder": "Lavc62.28.102 libx264"
+            }
+          }
+        ],
+        "format": {
+          "filename": "public/films/cinema-funding.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "4.000000",
+          "size": "1313844",
+          "bit_rate": "2627688",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf62.12.102"
+          }
+        }
+      },
+      "assets": [
+        {
+          "path": "public/films/cinema-funding.mp4",
+          "bytes": 1313844,
+          "sha256": "9ec596359d5b0d9ce098ae959fa5ad41133f2750085f2edceedc2078b94928f9"
+        },
+        {
+          "path": "public/images/cinema-funding.jpg",
+          "bytes": 105672,
+          "sha256": "16b48249c6dca99840afedbad23461a90b2f624b3abef5577e4df2d2bc09c1d3"
+        }
+      ],
+      "frozen_look_match": {
+        "method": "Full native proof frames compared against completed native batch frames at matching absolute poses",
+        "scene": "funding",
+        "profile": "desktop",
+        "samples": [
+          {
+            "frame": 1,
+            "mean_absolute_rgb": [
+              1.398533950617284e-05,
+              4.822530864197531e-07,
+              9.645061728395062e-07
+            ],
+            "mean": 5.1440329218107e-06
+          },
+          {
+            "frame": 61,
+            "mean_absolute_rgb": [
+              9.645061728395062e-07,
+              4.822530864197531e-07,
+              1.4467592592592592e-06
+            ],
+            "mean": 9.645061728395062e-07
+          },
+          {
+            "frame": 120,
+            "mean_absolute_rgb": [
+              5.787037037037037e-06,
+              9.645061728395062e-07,
+              2.4112654320987654e-06
+            ],
+            "mean": 3.054269547325103e-06
+          }
+        ],
+        "passed": true
+      },
+      "profile": "desktop",
+      "source_scene": "funding",
+      "native_frames_directory": "outputs/cinema-20261103/funding/desktop/frames",
+      "master_sha256": "a690b64c3ee16f5843e0f56f24abad7d4159b27c5ccba7068bf22f09936106c0"
+    },
+    {
+      "scene": "funding",
+      "master": "outputs/cinema-20261103/funding/mobile/cinema-funding-mobile.blend",
+      "master_reimport": "passed",
+      "original_authored_geometry": true,
+      "external_models": false,
+      "ai_video": false,
+      "engine": "BLENDER_EEVEE",
+      "blender": "5.2.1 LTS",
+      "native_width": 720,
+      "native_height": 900,
+      "fps": 30,
+      "frames": 120,
+      "duration_seconds": 4.0,
+      "upscaled": false,
+      "interpolated": false,
+      "audio": false,
+      "periodic_transform_error": 0.0,
+      "observed_transform_change": 0.8999999463558197,
+      "projected_safe_margins_all_frames": {
+        "left": 0.05421502888202667,
+        "right": 0.09766131639480591,
+        "bottom": 0.21683818101882935,
+        "top": 0.24782949686050415
+      },
+      "anchor_ground_contact_gaps": {
+        "Citron cloth back cover": 0.0
+      },
+      "funding_title_to_audiences_vertical_gap": 0.331290140748024,
+      "minimum_paper_to_tin_clearance_all_120_poses": null,
+      "samples": 48,
+      "ray_tracing_resolution_scale": "2",
+      "full_decode": "passed",
+      "native_pixel_continuity": {
+        "method": "Native full-resolution PNG pixels, mean absolute RGB on0–255scale",
+        "frames": 120,
+        "size": [
+          720,
+          900
+        ],
+        "maximum_adjacent_mean_absolute_rgb": 1.6301908436213992,
+        "first_last_mean_absolute_rgb": 0.2066466049382716,
+        "frame_luma_mean_min": 172.45030349794237,
+        "frame_luma_mean_max": 177.98389300411523,
+        "ordered_frames_sha256": "0e06ceefcb9933687be605b3f7d403a721e577953c8ca47c65a13da00b27f97d",
+        "threshold_maximum_adjacent": 6,
+        "threshold_loop_seam": 2,
+        "passed": true
+      },
+      "encoded_native_pixel_checks": {
+        "method": "Encoded H264 frames decoded back to PNG and compared with actual native Blender PNGs",
+        "samples": [
+          {
+            "native_frame": 1,
+            "mean_absolute_rgb": [
+              0.7025848765432099,
+              0.6591697530864198,
+              0.9639197530864198
+            ],
+            "mean": 0.7752247942386831
+          },
+          {
+            "native_frame": 61,
+            "mean_absolute_rgb": [
+              0.7445324074074074,
+              0.6780123456790124,
+              1.026854938271605
+            ],
+            "mean": 0.8164665637860082
+          },
+          {
+            "native_frame": 120,
+            "mean_absolute_rgb": [
+              0.7749444444444444,
+              0.7715509259259259,
+              1.0966929012345679
+            ],
+            "mean": 0.881062757201646
+          }
+        ],
+        "threshold_mean": 3.5,
+        "passed": true
+      },
+      "faststart_verified": true,
+      "mp4_atom_offsets": {
+        "ftyp": 0,
+        "moov": 32,
+        "free": 2311,
+        "mdat": 2319
+      },
+      "ffprobe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "mime_codec_string": "avc1.640029",
+            "width": 720,
+            "height": 900,
+            "coded_width": 720,
+            "coded_height": 900,
+            "has_b_frames": 2,
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "4:5",
+            "pix_fmt": "yuv420p",
+            "level": 41,
+            "color_range": "tv",
+            "color_space": "bt709",
+            "color_transfer": "iec61966-2-1",
+            "color_primaries": "bt709",
+            "chroma_location": "left",
+            "field_order": "progressive",
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "30/1",
+            "avg_frame_rate": "30/1",
+            "time_base": "1/15360",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 61440,
+            "duration": "4.000000",
+            "bit_rate": "859094",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "120",
+            "extradata_size": 51,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "encoder": "Lavc62.28.102 libx264"
+            }
+          }
+        ],
+        "format": {
+          "filename": "public/films/cinema-funding-mobile.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "4.000000",
+          "size": "431874",
+          "bit_rate": "863748",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf62.12.102"
+          }
+        }
+      },
+      "assets": [
+        {
+          "path": "public/films/cinema-funding-mobile.mp4",
+          "bytes": 431874,
+          "sha256": "9abfc8f91bf34957d7532f3c858c85e23b8118b179b07fab6b219227f0f3b7fd"
+        },
+        {
+          "path": "public/images/cinema-funding-mobile.jpg",
+          "bytes": 43146,
+          "sha256": "0a60ea5ef4fd7960e85b3e648d7b16734759f2c7099e87135b45452403cdad9b"
+        }
+      ],
+      "frozen_look_match": {
+        "method": "Full native proof frames compared against completed native batch frames at matching absolute poses",
+        "scene": "funding",
+        "profile": "mobile",
+        "samples": [
+          {
+            "frame": 1,
+            "mean_absolute_rgb": [
+              3.0864197530864196e-06,
+              0.0,
+              0.0
+            ],
+            "mean": 1.0288065843621398e-06
+          },
+          {
+            "frame": 61,
+            "mean_absolute_rgb": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "mean": 0.0
+          },
+          {
+            "frame": 120,
+            "mean_absolute_rgb": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "mean": 0.0
+          }
+        ],
+        "passed": true
+      },
+      "profile": "mobile",
+      "source_scene": "funding",
+      "native_frames_directory": "outputs/cinema-20261103/funding/mobile/frames",
+      "master_sha256": "dabe118288f8a18635743b0a6cd1ea4b533c865afee2611e547a7b227f25ab09"
+    }
+  ]
+}

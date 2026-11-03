@@ -1,0 +1,591 @@
+{
+  "schema_version": 1,
+  "id": "cinema-campaign-20261103",
+  "project": "Space Media Studio",
+  "concept": "SHIFT / One campaign in three formats",
+  "commercial_status": "Original fictional campaign concept. Not a registered brand, actual client, paid commission, or commercial result. No registered-trademark symbol is used.",
+  "runtime": {
+    "capture": "PlaywrightCLI0.1.23, isolated ephemeral Chromium session, local file URL, native viewport screenshots",
+    "encoding": "ffmpeg version 8.1.2 Copyright (c) 2000-2026 the FFmpeg developers",
+    "reproduce": [
+      "node scripts/cinema-campaign-render.mjs --mode=prepare",
+      "node scripts/cinema-campaign-render.mjs --mode=open",
+      "node scripts/cinema-campaign-render.mjs --mode=frames --motion",
+      "node scripts/cinema-campaign-render.mjs --mode=encode",
+      "python3 scripts/cinema-campaign-verify.py",
+      "node scripts/cinema-campaign-render.mjs --mode=close"
+    ]
+  },
+  "method": "Original HTML typography and campaign artwork on CSS3D perspective planes, native deterministic Chromium captures, then H.264 encoding. These are composited screen planes, not live product meshes or Blender geometry.",
+  "timeline": {
+    "fps": 30,
+    "frames": 180,
+    "duration_seconds": 6,
+    "pose": "Absolute periodic trigonometric placement, scale and perspective; frame180 equals frame0. No wall-clock autoplay capture.",
+    "motion_source": "Paused Higgsfield video, absolute seek f/30 with seeked and two compositor frame gates. Closing18frames dissolve to the first source frame; no reverse playback or synthetic frame interpolation."
+  },
+  "sources": [
+    {
+      "path": "scripts/cinema-campaign-stage.html",
+      "bytes": 10295,
+      "sha256": "f620dc5df3df91dd1fcf1ef4ef9a40d034b87e111e2835d8f7c02e18075dd5ab"
+    },
+    {
+      "path": "scripts/cinema-campaign-render.mjs",
+      "bytes": 4806,
+      "sha256": "d79c4ac5d0261578a0f7e4f9cb12c09d70a9fde4ea4de4f362235e749010fee7"
+    },
+    {
+      "path": "scripts/cinema-campaign-verify.py",
+      "bytes": 6849,
+      "sha256": "639ccff9a8827bdc49b1b8246b21ff8fdeb5eeafb399367f93cbdd18b1b8e021"
+    },
+    {
+      "path": "public/images/reel-sneaker.jpg",
+      "bytes": 282378,
+      "sha256": "4745adfe34751f69db9e694c013ece3c9e9e2827e5fdc729bbfec9b819f2a649"
+    },
+    {
+      "path": "public/fonts/SpaceGrotesk-Variable.woff2",
+      "bytes": 49256,
+      "sha256": "8e085aa438094f11487a836652edd5c054fa6a96f63fc7c282105ee3a4b08c07"
+    }
+  ],
+  "assets": [
+    {
+      "path": "public/films/cinema-campaign.mp4",
+      "role": "Original campaign composition with integrated Higgsfield product film",
+      "variant": "desktop",
+      "bytes": 3092933,
+      "sha256": "926d65d8fd8c86d501b4b668025c4ff0748137252a2f16c18b2a820395a8960e",
+      "native_dimensions": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "public/images/cinema-campaign.jpg",
+      "role": "Native authored frame55 poster",
+      "variant": "desktop",
+      "bytes": 246763,
+      "sha256": "0d2c911098006e7de8edf3570bd393b239088ab0daace0baed9975274ba4fd4f",
+      "native_dimensions": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "public/films/cinema-campaign-mobile.mp4",
+      "role": "Original campaign composition with integrated Higgsfield product film",
+      "variant": "mobile",
+      "bytes": 1609452,
+      "sha256": "9bec158785ba4549ada75112aedcdb6db4bb8d19f007da849d6ab259775e8ea7",
+      "native_dimensions": [
+        720,
+        900
+      ]
+    },
+    {
+      "path": "public/images/cinema-campaign-mobile.jpg",
+      "role": "Native authored frame55 poster",
+      "variant": "mobile",
+      "bytes": 114408,
+      "sha256": "a4630ca88b1410d9e8e3c389064927d2df093dff23b06020e6a883faf4c00eee",
+      "native_dimensions": [
+        720,
+        900
+      ]
+    }
+  ],
+  "checks": {
+    "desktop": {
+      "full_decode": "passed",
+      "native_frames": 180,
+      "native_frame_sequence_sha256": "6a1217387f2b1061b6c8d51fcd38b30fd84068a3ef88eaf2e8dfba6a8f610d0e",
+      "all_native_frame_mean_rgb_range": [
+        31.196759259259256,
+        37.43472286522634
+      ],
+      "loop_first_vs_last_mean_abs_rgb": [
+        1.0097738233024691,
+        0.9726485339506172,
+        0.8578356481481482
+      ],
+      "encoded_sample_checks": [
+        {
+          "frame": 0,
+          "encoded_vs_native_mean_abs_rgb": [
+            1.8456529706790124,
+            0.755339988425926,
+            1.988244598765432
+          ]
+        },
+        {
+          "frame": 55,
+          "encoded_vs_native_mean_abs_rgb": [
+            1.8861930941358025,
+            0.8505338541666667,
+            2.037048611111111
+          ]
+        },
+        {
+          "frame": 90,
+          "encoded_vs_native_mean_abs_rgb": [
+            1.8988657407407408,
+            0.8536246141975309,
+            2.0391112075617284
+          ]
+        },
+        {
+          "frame": 179,
+          "encoded_vs_native_mean_abs_rgb": [
+            1.8992717978395062,
+            0.8456264467592592,
+            1.9753838734567901
+          ]
+        }
+      ],
+      "container": {
+        "atoms": [
+          "ftyp",
+          "moov",
+          "free",
+          "mdat"
+        ],
+        "moov_before_mdat": true
+      },
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "mime_codec_string": "avc1.640029",
+            "width": 1920,
+            "height": 1080,
+            "coded_width": 1920,
+            "coded_height": 1080,
+            "has_b_frames": 2,
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "16:9",
+            "pix_fmt": "yuv420p",
+            "level": 41,
+            "color_range": "tv",
+            "color_space": "bt709",
+            "chroma_location": "left",
+            "field_order": "progressive",
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "30/1",
+            "avg_frame_rate": "30/1",
+            "time_base": "1/15360",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 92160,
+            "duration": "6.000000",
+            "bit_rate": "4119212",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "180",
+            "extradata_size": 51,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "encoder": "Lavc62.28.102 libx264"
+            },
+            "side_data_list": [
+              {
+                "side_data_type": "ICC Profile"
+              }
+            ]
+          }
+        ],
+        "format": {
+          "filename": "public/films/cinema-campaign.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "6.000000",
+          "size": "3092933",
+          "bit_rate": "4123910",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf62.12.102"
+          }
+        }
+      }
+    },
+    "mobile": {
+      "full_decode": "passed",
+      "native_frames": 180,
+      "native_frame_sequence_sha256": "9aac26154a5f70e8569118e3509e473010d44ba720a82eb8a2eefa6fdc913be0",
+      "all_native_frame_mean_rgb_range": [
+        34.67610493827161,
+        39.10855349794239
+      ],
+      "loop_first_vs_last_mean_abs_rgb": [
+        1.2163456790123457,
+        1.145375,
+        1.0932947530864197
+      ],
+      "encoded_sample_checks": [
+        {
+          "frame": 0,
+          "encoded_vs_native_mean_abs_rgb": [
+            1.9345462962962963,
+            0.9118086419753086,
+            2.422733024691358
+          ]
+        },
+        {
+          "frame": 55,
+          "encoded_vs_native_mean_abs_rgb": [
+            1.9619583333333332,
+            1.068304012345679,
+            2.477679012345679
+          ]
+        },
+        {
+          "frame": 90,
+          "encoded_vs_native_mean_abs_rgb": [
+            2.038828703703704,
+            1.123655864197531,
+            2.5223487654320986
+          ]
+        },
+        {
+          "frame": 179,
+          "encoded_vs_native_mean_abs_rgb": [
+            2.098891975308642,
+            1.1315679012345679,
+            2.433941358024691
+          ]
+        }
+      ],
+      "container": {
+        "atoms": [
+          "ftyp",
+          "moov",
+          "free",
+          "mdat"
+        ],
+        "moov_before_mdat": true
+      },
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "mime_codec_string": "avc1.640029",
+            "width": 720,
+            "height": 900,
+            "coded_width": 720,
+            "coded_height": 900,
+            "has_b_frames": 2,
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "4:5",
+            "pix_fmt": "yuv420p",
+            "level": 41,
+            "color_range": "tv",
+            "color_space": "bt709",
+            "chroma_location": "left",
+            "field_order": "progressive",
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "30/1",
+            "avg_frame_rate": "30/1",
+            "time_base": "1/15360",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 92160,
+            "duration": "6.000000",
+            "bit_rate": "2141258",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "180",
+            "extradata_size": 51,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "encoder": "Lavc62.28.102 libx264"
+            },
+            "side_data_list": [
+              {
+                "side_data_type": "ICC Profile"
+              }
+            ]
+          }
+        ],
+        "format": {
+          "filename": "public/films/cinema-campaign-mobile.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "6.000000",
+          "size": "1609452",
+          "bit_rate": "2145936",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf62.12.102"
+          }
+        }
+      }
+    }
+  },
+  "fonts": "Project-local Space Grotesk variable WOFF2 rendered to movie pixels; no extra font binaries added.",
+  "display_profiles": "Separate native desktop1920x1080 and portrait720x900 compositions. No final resolution upscale. Existing1536x1024 original AI raster sneaker is resampled into smaller perspective graphic planes.",
+  "audio": false,
+  "synthetic_frame_interpolation": false,
+  "reverse_playback": false,
+  "source_plugin_job_id": "81af6305-30fb-4ff1-88dc-7e1b26635568",
+  "higgsfield_source": {
+    "local_master": "outputs/cinema-campaign/source/higgsfield-shift.mp4",
+    "bytes": 19953014,
+    "sha256": "5d4dd4b0b44a52aa5c9d6a6865303c902c3a6e5420a2f66ae21fe56be9408347",
+    "probe": {
+      "streams": [
+        {
+          "index": 0,
+          "codec_name": "hevc",
+          "codec_long_name": "H.265 / HEVC (High Efficiency Video Coding)",
+          "profile": "Main 10",
+          "codec_type": "video",
+          "codec_tag_string": "hvc1",
+          "codec_tag": "0x31637668",
+          "width": 1920,
+          "height": 1080,
+          "coded_width": 1920,
+          "coded_height": 1080,
+          "has_b_frames": 2,
+          "pix_fmt": "yuv420p10le",
+          "level": 120,
+          "color_range": "tv",
+          "color_space": "bt709",
+          "color_transfer": "bt709",
+          "color_primaries": "bt709",
+          "chroma_location": "left",
+          "field_order": "progressive",
+          "view_ids_available": "",
+          "view_pos_available": "",
+          "id": "0x1",
+          "r_frame_rate": "24/1",
+          "avg_frame_rate": "24/1",
+          "time_base": "1/90000",
+          "start_pts": 0,
+          "start_time": "0.000000",
+          "duration_ts": 723750,
+          "duration": "8.041667",
+          "bit_rate": "19822286",
+          "nb_frames": "193",
+          "extradata_size": 2441,
+          "disposition": {
+            "default": 1,
+            "dub": 0,
+            "original": 0,
+            "comment": 0,
+            "lyrics": 0,
+            "karaoke": 0,
+            "forced": 0,
+            "hearing_impaired": 0,
+            "visual_impaired": 0,
+            "clean_effects": 0,
+            "attached_pic": 0,
+            "timed_thumbnails": 0,
+            "non_diegetic": 0,
+            "captions": 0,
+            "descriptions": 0,
+            "metadata": 0,
+            "dependent": 0,
+            "still_image": 0,
+            "multilayer": 0
+          },
+          "tags": {
+            "language": "und",
+            "handler_name": "VideoHandler"
+          }
+        }
+      ],
+      "format": {
+        "filename": "outputs/cinema-campaign/source/higgsfield-shift.mp4",
+        "nb_streams": 1,
+        "nb_programs": 0,
+        "nb_stream_groups": 0,
+        "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+        "format_long_name": "QuickTime / MOV",
+        "start_time": "0.000000",
+        "duration": "8.041667",
+        "size": "19953014",
+        "bit_rate": "19849629",
+        "probe_score": 100,
+        "tags": {
+          "major_brand": "isom",
+          "minor_version": "512",
+          "compatible_brands": "isomiso2mp41",
+          "encoder": "Lavf58.76.100"
+        }
+      }
+    },
+    "generation_model": "Seedance2.5 via Higgsfield",
+    "input_raster": "public/images/reel-sneaker.jpg",
+    "native_fps": 24,
+    "composition_sampling": "Native24fps source is sampled/held at30fps composition times; no optical-flow or invented motion frames",
+    "quoted_credits": 128,
+    "prepared_h264": {
+      "path": "outputs/cinema-campaign/source/motion-source.mp4",
+      "sha256": "c77c11ec2ea453e9d4ca7a1d3bf0d8028c84044d63d62bc3ca266a73fced3039",
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "mime_codec_string": "avc1.640028",
+            "width": 1920,
+            "height": 1080,
+            "coded_width": 1920,
+            "coded_height": 1080,
+            "has_b_frames": 2,
+            "pix_fmt": "yuv420p",
+            "level": 40,
+            "color_range": "tv",
+            "color_space": "bt709",
+            "color_transfer": "bt709",
+            "color_primaries": "bt709",
+            "chroma_location": "left",
+            "field_order": "progressive",
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "24/1",
+            "avg_frame_rate": "24/1",
+            "time_base": "1/12288",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 98816,
+            "duration": "8.041667",
+            "bit_rate": "6688858",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "193",
+            "extradata_size": 50,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "encoder": "Lavc62.28.102 libx264"
+            }
+          }
+        ],
+        "format": {
+          "filename": "outputs/cinema-campaign/source/motion-source.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "8.041667",
+          "size": "6726958",
+          "bit_rate": "6692103",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf62.12.102"
+          }
+        }
+      }
+    },
+    "first_frame": {
+      "path": "outputs/cinema-campaign/source/higgsfield-shift-first.jpg",
+      "sha256": "fda69bc727af36514cef2db7bacf9eb57a2b862c4a6befbda23b40d25775cd51"
+    }
+  }
+}

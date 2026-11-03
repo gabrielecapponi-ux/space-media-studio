@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="it"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>SHIFT / Campaign deployment / Authored CSS3D composition</title>
+<style>
+@font-face{font-family:Space;src:url('../public/fonts/SpaceGrotesk-Variable.woff2') format('woff2');font-weight:300 700;font-display:block}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#0a0b0a;color:#f5f5ed;font-family:Space,Arial,sans-serif}body{background:radial-gradient(ellipse at 50% 86%,#292e1c 0,#10120d 34%,#090a09 75%)}#camera{position:absolute;inset:0;perspective:1800px;perspective-origin:50% 48%;overflow:hidden}#world{position:absolute;inset:0;transform-style:preserve-3d}.ground{position:absolute;left:5%;right:5%;bottom:7%;height:16%;background:radial-gradient(ellipse,#c6ed3454,transparent 62%);filter:blur(28px);opacity:.24}.line{position:absolute;left:9%;right:9%;top:84%;height:1px;background:linear-gradient(90deg,transparent,#b1c64233,transparent)}.card{position:absolute;left:50%;top:46%;transform-style:preserve-3d;transform-origin:50% 50%;will-change:transform}.surface{position:relative;width:100%;height:100%;overflow:hidden;border:1px solid #fbffe74a;box-shadow:0 30px 45px #0009,0 3px 1px #ffffff23;isolation:isolate}.card::after{content:'';position:absolute;inset:0;transform:translateZ(-3px);background:#515344;border:1px solid #b3bca07d;box-shadow:0 30px 75px #000b}.format{position:absolute;left:0;right:0;bottom:-52px;font-size:16px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;text-align:center;color:#b5b8a9}.format b{font-weight:500;color:#e1ff66;margin-left:12px}.logo{position:absolute;left:7%;top:6%;font-size:34px;font-weight:700;line-height:1;letter-spacing:-.07em;z-index:4}.logo sup{font-size:.32em;vertical-align:top;position:relative;top:.3em;margin-left:4px}.product{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform-origin:50% 60%;will-change:transform}.fine{position:absolute;z-index:4;font-size:11px;font-weight:600;letter-spacing:.14em;line-height:1.4}.square{width:480px;height:480px;z-index:1}.square .surface{background:#dcf52c;color:#141b0c}.square .logo{font-size:40px;left:7%;top:7%}.square .product{top:22%;height:70%;object-fit:cover;mix-blend-mode:multiply;object-position:50% 45%}.square .claim{position:absolute;z-index:3;left:7%;bottom:7%;margin:0;font-size:57px;line-height:.85;letter-spacing:-.075em;font-weight:700}.square .fine{right:7%;top:8%;font-size:9px}.square .disc{position:absolute;z-index:2;width:100px;height:100px;border:1px solid #151b0b;border-radius:50%;right:6%;bottom:8%;display:grid;place-items:center;font-size:39px}.social{width:360px;height:640px;z-index:3}.social .surface{background:#161b11}.social .product{width:170%;height:68%;left:-35%;top:18%;object-fit:cover;object-position:50% 50%}.social .product{mask-image:linear-gradient(transparent,#000 12%,#000 83%,transparent)}.social .veil{position:absolute;inset:0;z-index:2;background:linear-gradient(#11190b 1%,transparent 23%,transparent 65%,#11190b 86%)}.social .logo{color:#def735;font-size:39px}.social .fine{top:13%;left:7%;font-size:8px;color:#f8ffcb}.social .claim{position:absolute;z-index:3;left:7%;bottom:15%;margin:0;font-size:67px;line-height:.86;letter-spacing:-.075em;font-weight:700;color:#e0f647}.social .cta{position:absolute;left:7%;right:7%;bottom:6%;height:36px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid #c6d2895c;font-size:9px;font-weight:600;letter-spacing:.03em;color:#e8eadf}.social .cta b{font-size:20px;font-weight:400}.banner{width:600px;height:337.5px;z-index:2}.banner .surface{background:#d8ef2e;color:#141b0c}.banner .product{width:74%;left:36%;object-fit:cover;object-position:48% 50%;mix-blend-mode:multiply}.banner .logo{font-size:37px;top:9%;left:6%}.banner .claim{position:absolute;left:6%;bottom:19%;z-index:3;margin:0;font-size:66px;line-height:.86;letter-spacing:-.075em;font-weight:700}.banner .fine{left:6%;bottom:7%;font-size:8px}.banner .arrow{position:absolute;right:6%;bottom:7%;font-size:40px;z-index:4}.rail{position:absolute;left:5%;right:5%;bottom:5%;display:flex;justify-content:space-between;align-items:center;font-size:12px;letter-spacing:.13em;text-transform:uppercase;color:#a5aa98}.rail strong{font-weight:500;color:#e7fdbc}.rail span:last-child{color:#6c7561}.rail i{display:inline-block;background:#ddf745;width:5px;height:5px;margin-right:10px;border-radius:50%}.social .surface::after{content:'';pointer-events:none;position:absolute;inset:0;border:1px solid #ffffff0c;z-index:7}
+ .motion-mode .social .product{width:100%;left:0;top:20%;height:47%;object-fit:contain;object-position:50% 50%;mask-image:linear-gradient(transparent,#000 12%,#000 85%,transparent)}
+</style></head><body>
+<div class="ground"></div><div class="line"></div><div id="camera"><div id="world">
+<div class="card square" id="square"><div class="surface"><img class="product" src="../public/images/reel-sneaker.jpg" alt=""><div class="logo">SHIFT</div><div class="fine">R01 / CARBON—LIME</div><h1 class="claim">OGNI<br>PASSO.</h1><div class="disc">↗</div></div><div class="format">Annuncio <b>1:1</b></div></div>
+<div class="card social" id="social"><div class="surface"><img class="product" src="../public/images/reel-sneaker.jpg" alt=""><div class="veil"></div><div class="logo">SHIFT</div><div class="fine">R01 / EVERYDAY RUNNER</div><h1 class="claim">UN PASSO<br>AVANTI.</h1><div class="cta">SCOPRI LA NUOVA COLLEZIONE <b>↗</b></div></div><div class="format">Social <b>9:16</b></div></div>
+<div class="card banner" id="banner"><div class="surface"><img class="product" src="../public/images/reel-sneaker.jpg" alt=""><div class="logo">SHIFT</div><h1 class="claim">IL RITMO<br>È TUO.</h1><div class="fine">R01 / LA NUOVA COLLEZIONE</div><span class="arrow">↗</span></div><div class="format">Banner <b>16:9</b></div></div>
+</div></div><div class="rail"><strong><i></i>Una campagna. Ogni formato.</strong><span>SHIFT / Concept Space</span></div>
+<script>
+const square=document.querySelector('#square'),social=document.querySelector('#social'),banner=document.querySelector('#banner'),world=document.querySelector('#world'),camera=document.querySelector('#camera');
+const tau=Math.PI*2,frames=180;
+const motionEnabled=new URLSearchParams(location.search).get('motion')==='1';
+let motion=null,motionReady=Promise.resolve();
+if(motionEnabled){
+ document.body.classList.add('motion-mode');
+ const first=social.querySelector('img.product');first.src='../outputs/cinema-campaign/source/higgsfield-shift-first.jpg';
+ motion=document.createElement('video');motion.className='product';motion.muted=true;motion.playsInline=true;motion.preload='auto';motion.src='../outputs/cinema-campaign/source/motion-source.mp4';
+ social.querySelector('.surface').insertBefore(motion,social.querySelector('.veil'));
+ motionReady=new Promise((resolve,reject)=>{motion.addEventListener('loadeddata',resolve,{once:true});motion.addEventListener('error',()=>reject(Error('Campaign source video failed')), {once:true});});motion.load();
+}
+const seek=async(video,time)=>{
+ video.pause();
+ if(Math.abs(video.currentTime-time)>.00001){await new Promise((resolve,reject)=>{const timeout=setTimeout(()=>reject(Error('Video seek timeout')),7000);video.addEventListener('seeked',()=>{clearTimeout(timeout);resolve();},{once:true});video.currentTime=time;});}
+ // Two compositor frames after seek, rather than recording a wall-clock autoplay.
+ await new Promise(requestAnimationFrame);await new Promise(requestAnimationFrame);
+};
+window.renderCampaignFrame=async frame=>{
+ const f=((Math.trunc(frame)%frames)+frames)%frames,phase=f/frames,t=tau*phase;
+ const deploy=.5-.5*Math.cos(t),breathe=Math.sin(t),portrait=innerWidth<innerHeight;
+ const scale=portrait?innerWidth/1050:Math.min(innerWidth/1920,innerHeight/1080);
+ const w=innerWidth,h=innerHeight,spread=.67+.33*deploy;
+ camera.style.perspective=`${portrait?1450:1800}px`;
+ const position=(el,x,y,z,rx,ry,rz)=>el.style.transform=`translate(-50%,-50%) translate3d(${x*scale}px,${y*scale}px,${z*scale}px) rotateX(${rx}deg) rotateY(${ry}deg) rotateZ(${rz}deg) scale(${scale})`;
+ if(portrait){
+  // Native portrait art direction: the full three silhouettes stay inside the frame.
+  position(social,35,-25,150+12*deploy,-2,3*breathe,-2*breathe);
+  position(square,-230*spread,-270-10*breathe,-70,4,-16+8*deploy,-8+3*deploy);
+  position(banner,92*spread,360+10*breathe,0,-4,18-9*deploy,7-3*deploy);
+ }else{
+  position(social,0,-10,135+20*deploy,-2,3*breathe,-1.5*breathe);
+  position(square,-565*spread,10-12*breathe,-45,3,-18+10*deploy,-7+4*deploy);
+  position(banner,610*spread,40+12*breathe,-55,-3,18-10*deploy,6-3*deploy);
+ }
+ document.querySelectorAll('.card').forEach((card,i)=>card.querySelectorAll('.product').forEach(image=>image.style.transform=`translate(${breathe*(i-1)*1.1}%,${(.5-.5*Math.cos(t+.2*i))*1.4}%) scale(${1.025+.025*deploy})`));
+ document.querySelector('.ground').style.opacity=String(.18+.16*deploy);
+ document.querySelectorAll('.format').forEach(el=>{el.style.fontSize=portrait?'17px':'16px';el.style.bottom=portrait?'-43px':'-52px';});
+ if(portrait){square.querySelector('.format').style.cssText='font-size:16px;bottom:auto;top:16px;left:auto;right:16px;background:#090a09;padding:8px;color:#d7d7c5;letter-spacing:.02em;';social.querySelector('.format').style.cssText='font-size:16px;bottom:auto;top:30px;left:auto;right:16px;letter-spacing:.02em;color:#d7d7c5;';}else{square.querySelector('.format').style.cssText='';social.querySelector('.format').style.cssText='';}
+ document.querySelector('.rail').style.fontSize=portrait?'9px':'12px';
+ document.querySelector('.rail span:last-child').style.display=portrait?'none':'';
+ if(motion){
+  await seek(motion,Math.min(f/30,Math.max(0,motion.duration-.001)));
+  const q=Math.max(0,Math.min(1,(f-162)/17));const close=q*q*(3-2*q);
+  motion.style.opacity=String(1-close);
+ }
+ document.documentElement.dataset.frame=String(f);
+ return {frame:f,phase,deploy,portrait,width:w,height:h};
+};
+window.campaignReady=Promise.all([document.fonts.ready,motionReady,...[...document.images].map(image=>image.decode())]).then(()=>window.renderCampaignFrame(0));
+</script></body></html>

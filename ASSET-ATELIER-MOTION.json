@@ -2,6 +2,7 @@
   "schema_version": 1,
   "project": "Space Media Studio / Atelier",
   "id": "atelier-kinetic-type",
+  "current_integration": {"status": "Historical typography film; superseded in the homepage by the SHIFT campaign", "replacement_manifest": "ASSET-CINEMA-CAMPAIGN.json", "original_asset_facts_preserved": true},
   "commercial_status": "Original non-commissioned motion-design demonstration, not a real client case or claimed event production",
   "title": "MAKE / IT MOVE.",
   "method": "True offline-rendered 3D typography authored in Blender: converted text outlines from the declared system font, physical bevels, PBR materials, procedural resin, softbox lighting, perspective camera and periodic absolute animation. Not image-to-video, stock footage or a live interactive model.",
