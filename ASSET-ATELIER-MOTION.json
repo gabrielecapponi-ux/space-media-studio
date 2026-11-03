@@ -1,0 +1,219 @@
+{
+  "schema_version": 1,
+  "project": "Space Media Studio / Atelier",
+  "id": "atelier-kinetic-type",
+  "commercial_status": "Original non-commissioned motion-design demonstration, not a real client case or claimed event production",
+  "title": "MAKE / IT MOVE.",
+  "method": "True offline-rendered 3D typography authored in Blender: converted text outlines from the declared system font, physical bevels, PBR materials, procedural resin, softbox lighting, perspective camera and periodic absolute animation. Not image-to-video, stock footage or a live interactive model.",
+  "source_script": "scripts/render-atelier-motion.py",
+  "source_script_sha256": "b9117d24b203d7ab683cf30b7137093690c4a511a7240da7ca101d01ddd69052",
+  "engine": "Blender 5.2.1 LTS / EEVEE",
+  "samples": 96,
+  "source_colour": "AgX, Medium High Contrast, SDR PNG8 masters; H.264 BT.709 primaries/matrix with sRGB transfer as probed",
+  "duration_seconds": 5,
+  "fps": 24,
+  "native_frames_per_variant": 120,
+  "upscale": false,
+  "synthetic_frame_interpolation": false,
+  "reverse_playback": false,
+  "loop": "Analytic periodic camera/body/light poses; master frame121 equals frame1 to below 1e-16. Video contains frames1..120, so the next-loop frame1 is the next chronological phase, not a repeated hold or reversed sequence.",
+  "font": "System Arial Bold converted to outlines for rendered typography; no font file distributed with public media.",
+  "external_stock": false,
+  "ai_generation": false,
+  "paid_apis": false,
+  "models_downloaded": false,
+  "memory_guard": {
+    "minimum_estimated_available_gib": 3,
+    "estimate": "Mach vm_stat free+inactive+speculative pages before every frame; not a measured GPU-memory counter",
+    "stops": "Outputs retained and next frame cancelled if the threshold is crossed"
+  },
+  "assets": [
+    {
+      "path": "public/films/atelier-type-desktop.mp4",
+      "role": "desktop original 3D typography film",
+      "bytes": 1735037,
+      "sha256": "32dd58f61cc303d80e2cb758498a4ffbecf413da7d6ae0fe0749eb93728f5862",
+      "metadata": {
+        "codec_name": "h264",
+        "profile": "High",
+        "codec_type": "video",
+        "width": 1920,
+        "height": 1080,
+        "pix_fmt": "yuv420p",
+        "level": 41,
+        "color_range": "tv",
+        "color_space": "bt709",
+        "color_transfer": "iec61966-2-1",
+        "color_primaries": "bt709",
+        "r_frame_rate": "24/1",
+        "nb_frames": "120"
+      },
+      "duration_seconds": 5.0,
+      "audio": false,
+      "full_decode": "passed",
+      "fast_start": true
+    },
+    {
+      "path": "public/images/atelier-type-desktop.jpg",
+      "role": "desktop first-frame poster",
+      "bytes": 120895,
+      "sha256": "2ec2db8c4609854a8213d47cd4d763e6129e484dc393d84fa1f9b87f8a3e0a00",
+      "width": 1920,
+      "height": 1080,
+      "source_frame": 1
+    },
+    {
+      "path": "public/films/atelier-type-mobile.mp4",
+      "role": "mobile original 3D typography film",
+      "bytes": 638335,
+      "sha256": "41a7bfe6d193cec4a5d861488a573629561eb4c264b16d644e7ec37c68f065da",
+      "metadata": {
+        "codec_name": "h264",
+        "profile": "High",
+        "codec_type": "video",
+        "width": 720,
+        "height": 900,
+        "pix_fmt": "yuv420p",
+        "level": 41,
+        "color_range": "tv",
+        "color_space": "bt709",
+        "color_transfer": "iec61966-2-1",
+        "color_primaries": "bt709",
+        "r_frame_rate": "24/1",
+        "nb_frames": "120"
+      },
+      "duration_seconds": 5.0,
+      "audio": false,
+      "full_decode": "passed",
+      "fast_start": true
+    },
+    {
+      "path": "public/images/atelier-type-mobile.jpg",
+      "role": "mobile first-frame poster",
+      "bytes": 47579,
+      "sha256": "49041798a51c72091b3c6c41a5a4302ebce0c98148994abd7186bd53423bca59",
+      "width": 720,
+      "height": 900,
+      "source_frame": 1
+    }
+  ],
+  "masters": [
+    {
+      "path": "outputs/nov26/motion/desktop/atelier-type-master.blend",
+      "bytes": 247182,
+      "sha256": "c7d5022ae29427afd4c17d353bc57f539106eb4e3b69357519b3054255f0fa99",
+      "render": {
+        "variant": "desktop",
+        "engine": "BLENDER_EEVEE",
+        "blender": "5.2.1 LTS",
+        "samples": 96,
+        "resolution": [
+          1920,
+          1080
+        ],
+        "fps": 24,
+        "frames": 120,
+        "duration_seconds": 5,
+        "source": "Original authored 3D text geometry, materials, lighting, animation and camera",
+        "font": "System Arial Bold rendered as glyph outlines; no font file distributed",
+        "loop": "120 periodic poses; pose121 equals pose1; chronological forward motion, no interpolation, no reverse",
+        "master": "outputs/nov26/motion/desktop/atelier-type-master.blend",
+        "batch_seconds": 538.863,
+        "rendered_frames": 120,
+        "mean_frame_seconds": 4.4808587153251365
+      },
+      "reimport_validation": {
+        "reimport": "passed",
+        "scene_objects": 10,
+        "mesh_objects": 3,
+        "mesh_vertices": 4372,
+        "loop_transform_error": 6.798646423665598e-17,
+        "observed_transform_change": 1.905255913734436,
+        "poses_checked": [
+          1,
+          41,
+          81,
+          121
+        ]
+      }
+    },
+    {
+      "path": "outputs/nov26/motion/mobile/atelier-type-master.blend",
+      "bytes": 248226,
+      "sha256": "95f1e83f80f2e40bdb9b0a525464096f333e2d6898dabcd2f632ea6119e5b65e",
+      "render": {
+        "variant": "mobile",
+        "engine": "BLENDER_EEVEE",
+        "blender": "5.2.1 LTS",
+        "samples": 96,
+        "resolution": [
+          720,
+          900
+        ],
+        "fps": 24,
+        "frames": 120,
+        "duration_seconds": 5,
+        "source": "Original authored 3D text geometry, materials, lighting, animation and camera",
+        "font": "System Arial Bold rendered as glyph outlines; no font file distributed",
+        "loop": "120 periodic poses; pose121 equals pose1; chronological forward motion, no interpolation, no reverse",
+        "master": "outputs/nov26/motion/mobile/atelier-type-master.blend",
+        "batch_seconds": 188.394,
+        "rendered_frames": 120,
+        "mean_frame_seconds": 1.5604022097749446
+      },
+      "reimport_validation": {
+        "reimport": "passed",
+        "scene_objects": 11,
+        "mesh_objects": 4,
+        "mesh_vertices": 4372,
+        "loop_transform_error": 6.798646423665598e-17,
+        "observed_transform_change": 1.905255913734436,
+        "poses_checked": [
+          1,
+          41,
+          81,
+          121
+        ]
+      }
+    }
+  ],
+  "visual_and_motion_checks": [
+    {
+      "variant": "desktop",
+      "visual_inspection": "Proof frames 1,41,81 and final native frames 1,60,120 inspected. Lettering remains contained and readable; physical depth, controlled perspective and moving reflections are visible.",
+      "first_vs_middle_mean_abs_rgb": [
+        28.707310956790124,
+        29.614996141975308,
+        23.487515914351853
+      ],
+      "first_vs_last_mean_abs_rgb": [
+        1.2806621334876542,
+        1.3064867862654321,
+        1.191680652006173
+      ],
+      "native_master_frame_count": 120
+    },
+    {
+      "variant": "mobile",
+      "visual_inspection": "Proof frames 1,41,81 and final native frames 1,60,120 inspected. Lettering remains contained and readable; physical depth, controlled perspective and moving reflections are visible.",
+      "first_vs_middle_mean_abs_rgb": [
+        21.144587962962962,
+        21.614566358024693,
+        17.894476851851852
+      ],
+      "first_vs_last_mean_abs_rgb": [
+        1.0214182098765432,
+        1.021003086419753,
+        0.9943827160493827
+      ],
+      "native_master_frame_count": 120
+    }
+  ],
+  "web_integration_guidance": {
+    "desktop_aspect": "16:9; use contain or matching frame, avoid a4:3 crop that cuts lettering",
+    "mobile_aspect": "4:5 dedicated composition; use contain or matching frame",
+    "reduced_motion": "Use first-frame poster rather than automatic playback",
+    "loading": "Load progressively when the section approaches the viewport; do not add this film to the approved opening loader"
+  },
+  "browser_validation": "Not performed by this asset-production subtask; parent owns browser integration and performance checks."
+}

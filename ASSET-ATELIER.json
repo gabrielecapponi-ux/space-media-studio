@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "preview": "atelier.html",
-  "scope": "Assets for the isolated Atelier preview only; the existing index.html scene remains a separate release.",
+  "preview": "index.html; atelier.html alias",
+  "scope": "Water hero assets for the current canonical cinematic site and its noindex Atelier alias.",
   "asset": "Water macro",
   "provenance": "Licensed photographic slow-motion stock. Not a CGI fluid simulation, AI video, Space shoot, client commission or interactive 3D model.",
   "creator": "Film Composite",
@@ -112,14 +112,14 @@
     "visual_scope": "Four existing JPEG posters inspected as image artifacts; no browser or GPU performance claim."
   },
   "integration": {
-    "page": "atelier.html",
-    "status": "isolated_visual_direction_preview",
+    "page": "index.html",
+    "status": "current_site",
     "entry": "Original studio assembly and camera; optional monitor artwork matches this page",
     "first_automatic_seek_seconds": 4.6,
     "playback": "Forward to end, then native loop from time zero; no reverse",
     "motion_policy": "No automatic video source or 3D room under reduced motion or SaveData; manual playback is available",
     "source_selection": "Responsive variant selected once; source is retained on device rotation",
     "checks": "Full decode and media metadata passed; entry contracts and production build passed",
-    "browser_visual_check": "Not run: local browser use disabled in Work settings"
+    "browser_visual_check": "Chrome headless desktop and emulated phone verified with Playwright CLI; see DESIGN-NOTES.md"
   }
 }

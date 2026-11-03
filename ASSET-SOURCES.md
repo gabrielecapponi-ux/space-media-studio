@@ -1,54 +1,52 @@
-# Provenienza dei materiali — Space / Launch Room
+# Provenienza dei materiali — Space Media Studio
 
-L’anteprima indipendente `atelier.html` riusa inoltre il film d’acqua stock storico di Film Composite/Pexels con quattro nomi `atelier-water-*`. Specifiche e licenza sono in [ASSET-ATELIER.json](./ASSET-ATELIER.json); l’ambito della pagina è in [ATELIER-PREVIEW.md](./ATELIER-PREVIEW.md). Il film non è attribuito a Space e non è una simulazione 3D.
+La homepage corrente (`index.html`) e l’alias `atelier.html` conservano l’ingresso nello studio e l’apertura con acqua. Il resto del percorso usa sette immagini concept AI, composizioni web HTML e un film tipografico Blender originale. I materiali hanno origini e funzioni diverse.
 
-La scena corrente usa **modelli tridimensionali originali costruiti nel codice** e quattro immagini image_gen già presenti nel progetto. Le immagini rimangono nei concept e nei ripieghi HTML; l'architettura è anche una texture delle interfacce web. Questa revisione non aggiunge generazioni AI, immagini stock, film CGI storici o risorse Horizon.
+## Studio 3D e film d’acqua
 
-## Immagini correnti
+La stanza in `src/studio-room.js` è una scena Three.js originale: pareti, arredi, computer, luci e logo vengono assemblati prima dello zoom nel monitor. È uno spazio immaginario, non una fotografia o un rilievo della sede di Parma. Non richiede GLB, HDR o modelli esterni. Il ripiego CSS è originale. La callback `drawScreen` adatta il display alla pagina in arrivo; geometrie e camera dell’introduzione approvata sono conservate.
 
-| File pubblico | Contenuto | Produzione |
-| --- | --- | --- |
-| `public/images/launch-brand.jpg` | FORMA, identità illustrativa per un caffè contemporaneo: packaging giallo, tipografia nera, espresso, pietra e stampa | Generazione image_gen; successivo edit con lo stesso tool per rimuovere microtesti di contatto, indirizzo e anno |
-| `public/images/launch-architecture.jpg` | Architettura contemporanea in travertino, vetrate scure e luce naturale | Generazione image_gen |
-| `public/images/launch-product.jpg` | ORA, fragranza illustrativa in vetro spesso, liquido ambrato, acqua e set scuro | Generazione image_gen |
-| `public/images/launch-campaign.jpg` | Installazione di seta gialla, pieghe e fasci di luce su nero | Generazione image_gen |
+Il film macro dell’acqua è **fotografia stock in slow motion di Film Composite**, [Pexels 16392049](https://www.pexels.com/video/a-drop-of-water-in-a-bowl-with-a-black-background-16392049/), con [licenza Pexels](https://www.pexels.com/license/). È autorizzato per uso web secondo le condizioni della licenza; non è pubblico dominio, una ripresa Space o una simulazione CGI. Crediti e natura stock sono riportati nel footer.
 
-Le immagini sono **1672×941 pixel nativi**, circa 16:9, e totalizzano **1.145.984 byte**. I master PNG sono in `outputs/launch-room/`; FFmpeg ha prodotto i JPEG alla risoluzione originale, senza upscaling. Prompt, identificatori di generazione, byte e SHA-256 sono registrati in [ASSET-LAUNCH-ROOM.json](./ASSET-LAUNCH-ROOM.json). Master e prove locali non sono distribuiti dal sito.
+Gli export `atelier-water-desktop.mp4` e `atelier-water-mobile.mp4` sono rispettivamente 1920×1080 e 640×900, 11,5 secondi a 24 fps, H.264 senza audio. Poster e primo avvio automatico usano il momento della colonna a circa 4,6 secondi; i loop successivi ripartono in avanti dall’inizio. [ASSET-ATELIER.json](./ASSET-ATELIER.json) e i documenti storici `ASSET-WATER.*` conservano origine, lavorazioni, specifiche e hash.
 
-Sono **concept dimostrativi generati con AI**, non fotografie documentarie di beni reali, incarichi ricevuti, clienti o prodotti commerciali in vendita. FORMA, AVANT, ORA e SPAZIO hanno una funzione narrativa e non dichiarano affiliazioni. Le immagini non sono materiali dichiarati di pubblico dominio o «senza copyright».
+## Immagini dei quattro concept
 
-## Modelli, materiali e animazione
+| File | Contenuto e origine |
+| --- | --- |
+| `public/images/launch-brand.jpg` | Identità FORMA: generazione image_gen, poi edit con lo stesso tool per rimuovere microtesti di contatto, indirizzo e anno |
+| `public/images/launch-architecture.jpg` | Architettura contemporanea in travertino: generazione image_gen |
+| `public/images/launch-product.jpg` | Fragranza ORA, vetro e liquido ambrato: generazione image_gen |
+| `public/images/launch-campaign.jpg` | Installazione di seta gialla per SPAZIO: generazione image_gen |
+| `public/images/atelier-brand-detail.jpg` | Nuovo dettaglio FORMA, generato con image_gen usando il visual originale come riferimento |
+| `public/images/atelier-product-detail.jpg` | Nuovo dettaglio ORA, generato con image_gen usando il visual originale come riferimento |
+| `public/images/atelier-campaign-detail.jpg` | Nuovo dettaglio SPAZIO, generato con image_gen usando il visual originale come riferimento |
 
-`src/scene-objects.js` costruisce i quattro allestimenti originali; `src/launch-room.js` coordina scena, ambiente, luci e camera:
+Le sette immagini sono raster **1672×941 nativi**, senza upscaling. Le quattro originali totalizzano 1.145.984 byte; i tre nuovi JPEG 812.292 byte. Master PNG locali, prompt, identificatori e SHA-256 sono documentati in [ASSET-LAUNCH-ROOM.json](./ASSET-LAUNCH-ROOM.json) e [ASSET-ATELIER-VISUALS.json](./ASSET-ATELIER-VISUALS.json).
 
-- **Bussola Space:** quattro elementi smussati, separabili e animati, con materiali giallo e metallo; carta, campioni e supporto tipografico completano l'identità.
-- **Interfacce web:** superfici originali desktop e mobile, con bordi e retro, più un modulo di navigazione. Layout e texture Canvas sono composti nel progetto; l'edificio raffigurato resta raster.
-- **Flacone ORA:** geometrie originali per corpo, contenuto ambrato, collo, collare, erogatore, tappo, etichetta e base. Il vetro usa materiale fisico con trasmissione; il contenuto è geometria, non una simulazione di fluido. Il modello non è un CAD di un prodotto reale né una conversione automatica della foto.
-- **Campagna motion:** manifesto tipografico e tre nastri con sezione e percorso geometrici, animati separatamente. Non sono una simulazione di tessuto e non ricostruiscono le pieghe del raster.
+FORMA, AVANT, ORA e SPAZIO sono scenari dimostrativi, non clienti o commesse. I visual non documentano prodotti, edifici o eventi reali; non sono dichiarati stock di pubblico dominio. Parallasse e movimento d’impaginazione non trasformano le fotografie in mesh o fotogrammi di un film 3D. Le viste AVANT sono composizioni HTML originali con l’immagine architettonica incorporata.
 
-I modelli procedurali hanno come sorgente editabile i file JavaScript. Non vengono forniti master Blender o asset GLB per questi allestimenti. Poster, etichette e interfacce sono texture Canvas originali con i font locali. Caffè, packaging, architettura e seta raffigurati nelle immagini non diventano mesh.
+## Film tipografico originale
 
-Camera e pose rispondono allo scroll nativo e al puntatore fine; i cicli locali danno continuità alle scene ferme. Il sito non distribuisce film Blender o video 4K a 60 fps. Opzioni del renderer e cadenze del controller non certificano prestazioni sul dispositivo del visitatore.
+`public/films/atelier-type-desktop.mp4` e `atelier-type-mobile.mp4` presentano il motion study di SPAZIO. La produzione avviene localmente in Blender: geometrie tipografiche, materiali, luci e camera originali. Il film è distinto dalle immagini AI della seta e non ne simula il tessuto.
 
-## Software, font e identità
+I profili web verificati sono **1920×1080 e 720×900**, cinque secondi a 24 fps nativi, 120 fotogrammi. Master `.blend` e sequenze PNG rimangono in `outputs/nov26/motion/`; poster e MP4 sono le copie web. [ASSET-ATELIER-MOTION.json](./ASSET-ATELIER-MOTION.json) registra gli esiti finali di produzione, reimportazione, codifica e decodifica. Non vengono dichiarati 4K, 60 fps o interpolazione.
 
-- **Three.js 0.186.1**, incluse le utility `RoomEnvironment`: licenza MIT; copia locale in `public/licenses/three-MIT.txt`.
-- **Space Grotesk:** font variabile dal [repository ufficiale di Florian Karsten](https://github.com/floriankarsten/space-grotesk), SIL Open Font License 1.1; copia in `public/fonts/SpaceGrotesk-OFL.txt`.
-- **DM Mono:** dal pacchetto skill fornito dall'utente, SIL Open Font License; copia in `public/fonts/DMMono-OFL.txt`.
-- Logo Space, testi, composizioni, modelli procedurali, coreografie e texture Canvas: originali del progetto.
+## Software, font e contenuti
 
-Font e librerie vengono serviti localmente o incorporati nella build, senza un CDN durante la visita. Le licenze di terze parti mantengono il proprio ambito; la pubblicazione dei sorgenti non concede una licenza generale delle composizioni originali.
+- Three.js 0.186.1: MIT; avviso in `public/licenses/three-MIT.txt`.
+- Space Grotesk: [repository ufficiale](https://github.com/floriankarsten/space-grotesk), SIL Open Font License 1.1; copia locale in `public/fonts/SpaceGrotesk-OFL.txt`.
+- DM Mono: pacchetto skill fornito dall’utente, SIL Open Font License; copia locale in `public/fonts/DMMono-OFL.txt`.
+- Logo, testi, interfacce, diagramma progettuale, scena dello studio e motion tipografico: composizioni originali del progetto.
 
-## Video Non Higgsfield e Horizon
+Font, film e immagini sono serviti localmente. I cinque form preparano bozze WhatsApp; non inviano messaggi automaticamente. Il diagramma di progetti e bandi contiene tempi e categorie illustrativi, senza importi o finanziamenti attribuiti e senza promesse di ammissibilità.
 
-La precedente **prova locale ComfyUI/LTX** è separata dal sito. È stata interrotta quando la memoria disponibile è scesa a circa 2,51 GiB, sotto la soglia impostata di 3 GiB, prima di produrre fotogrammi. Stato: `attempted_no_output`. Nessun video di quella prova è incluso nella build; non sono stati scaricati nuovi modelli. I dettagli restano in `outputs/launch-room/video-preview/`.
+Lusion e il linguaggio editoriale Apple sono riferimenti di composizione e movimento; non vengono incorporati loro asset o codice. Horizon CoverFlow non è acquisito o integrato. La vecchia prova ComfyUI/LTX non ha prodotto fotogrammi e non fornisce media al sito corrente.
 
-**Horizon CoverFlow non è acquisito né integrato.** La scelta precedente non equivale a un download. Nessun sorgente Horizon è nel repository o nella build; questa scena non consuma download Horizon. I modelli e le interazioni correnti sono originali.
+## Archivio e verifica
 
-## Contenuti di servizio, verifiche e archivio
+`src/launch-room.js`, `src/scene-objects.js` e i relativi studi documentano un percorso sperimentale precedente, non caricato dalla homepage attuale. I media e i manifest storici conservano il proprio ambito e le eventuali licenze di terzi. La pubblicazione dei sorgenti non concede una licenza generale delle composizioni originali.
 
-Progetti & bandi contiene testi originali ed esempi generali per aziende, APS e ASD. Non riporta bandi aperti, scadenze o finanziamenti verificati e non promette ammissibilità o contributi. I cinque form preparano una bozza WhatsApp tramite GET; non inviano messaggi automaticamente e non usano un backend di raccolta.
+Build di produzione e `npm test` superati: 23 contratti correnti, undici per l’ingresso e dodici per il cinema. Verifica reale in Chrome headless isolato con Playwright CLI 0.1.23: desktop 1280×720 e formati emulati 393×852, 320×667 e 844×390, senza overflow laterale. Provati ingresso e ritorno dei controlli, film desktop/verticale, pausa mantenuta dopo lo scroll, riproduzione manuale, menu, apertura e validazione dei brief. Nessun invio esterno effettuato e nessun errore JavaScript osservato nei due flussi completi.
 
-La build e i controlli riproducibili `npm test` sono superati; risultati e limiti sono registrati nel manifest. Quattro render diagnostici locali in Blender 5.2.1 controllano geometrie e materiali, con luci e font sostitutivi; non sono asset distribuiti o schermate del sito. La verifica visiva WebGL resta da eseguire perché l’uso del browser è disabilitato nelle impostazioni Work. Le prove e le misure della precedente scena a pannelli non attestano la versione corrente. I media e i manifest storici rimangono nella cronologia e nell'archivio locale `outputs/launch-room/previous-public/`, fuori dalla distribuzione. Le fotografie storiche soggette a licenze di terzi mantengono quei diritti e non sono dichiarate di pubblico dominio.
-
-Lusion e il linguaggio di presentazione Apple sono riferimenti di composizione e movimento; il sito non ne incorpora codice o asset. Il manuale 3D WEB LAB fornito dall'utente è un riferimento interno, escluso dalla distribuzione. Nessuna demo commerciale viene ridistribuita come asset del sito.
+Con movimento ridotto, una nuova navigazione mantiene entrambe le sorgenti video non assegnate; la riproduzione manuale resta disponibile. Poster, ritaglio e impaginazione sono stati controllati nelle schermate catturate. Si tratta di emulazione Chromium, non di una prova su iPhone fisico o di una certificazione GPU/FPS. I 31 controlli del percorso precedente rimangono separati in `npm run test:legacy`.

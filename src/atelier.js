@@ -1,5 +1,7 @@
 import { installIdeaBriefs } from './idea-briefs.js';
 import { createAtelierEntry } from './atelier-entry.js';
+import { installAtelierCinema } from './atelier-cinema.js';
+import './atelier-cinema.css';
 
 const lifetime = new AbortController();
 const { signal } = lifetime;
@@ -19,7 +21,7 @@ let playPending = false;
 let disposed = false;
 let suspended = false;
 let entry;
-const imageReveals = new Set();
+installAtelierCinema({ signal, menu });
 
 installIdeaBriefs({ signal });
 document.querySelectorAll('[data-year]').forEach(node => { node.textContent = String(new Date().getFullYear()); });
@@ -82,7 +84,6 @@ menu.querySelectorAll('a').forEach(link => link.addEventListener('click', () => 
 portrait.addEventListener('change', () => { if (!film.getAttribute('src')) film.poster = selectedPoster(); }, { signal });
 function policyChanged() {
   manualPlayback = false;
-  if (!automaticMotion()) imageReveals.forEach(animation => animation.cancel());
   syncPlayback();
 }
 reduced.addEventListener('change', policyChanged, { signal });
@@ -94,22 +95,6 @@ const visibility = new IntersectionObserver(([item]) => {
   syncPlayback();
 }, { threshold: [0, .18, .5] });
 visibility.observe(hero);
-const gallery = new IntersectionObserver(items => {
-  items.forEach(item => {
-    if (!item.isIntersecting) return;
-    gallery.unobserve(item.target);
-    if (!automaticMotion()) return;
-    const image = item.target.querySelector('img');
-    if (typeof image?.animate !== 'function') return;
-    const animation = image.animate(
-      [{ transform: 'scale(1.065)' }, { transform: 'scale(1)' }],
-      { duration: 1300, easing: 'cubic-bezier(.22,1,.36,1)' },
-    );
-    imageReveals.add(animation);
-    animation.finished.then(() => imageReveals.delete(animation), () => imageReveals.delete(animation));
-  });
-}, { threshold: .12 });
-document.querySelectorAll('.atelier-concept-visual').forEach(visual => gallery.observe(visual));
 
 function openIdeaFromHash() {
   let key;
@@ -174,8 +159,6 @@ window.addEventListener('pagehide', event => {
   disposed = true;
   entry?.dispose();
   visibility.disconnect();
-  gallery.disconnect();
-  imageReveals.forEach(animation => animation.cancel());
   lifetime.abort();
 }, { signal });
 syncControl();

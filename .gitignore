@@ -12,3 +12,5 @@ STUDIO-SKILLS.md
 !.env.example
 
 __pycache__/
+
+.playwright-cli/

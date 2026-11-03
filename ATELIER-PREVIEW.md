@@ -1,38 +1,31 @@
-# Dentro Space — anteprima editoriale
+# Atelier — dalla direzione approvata alla homepage
 
-`atelier.html` è una pagina indipendente per valutare la direzione visiva. La pagina principale e i suoi quattro modelli rimangono separati: l’anteprima non li richiama. La pagina ha `noindex, nofollow` e non è collegata dalla navigazione principale.
+La direzione inizialmente pubblicata in `atelier.html` è ora la base della homepage canonica **`index.html`**. `atelier.html` resta un alias storico dello stesso percorso, con `noindex, nofollow`. Il vecchio sito Launch Room a quattro modelli non descrive più l’esperienza principale.
 
-## Esperienza
+## Elementi conservati e ampliamento
 
-Il caricamento recupera lo studio originale, con pareti, arredi, postazioni e scritta Space in giallo. La camera entra nel monitor, la cui grafica usa il poster e la tipografia della nuova apertura. Geometrie e percorso della stanza sono conservati; il parametro opzionale `drawScreen` cambia soltanto la texture del display.
+Caricamento dello studio, assemblaggio, zoom nel monitor e hero con acqua sono conservati. Seguono quattro concept, ora sviluppati con immagini d’insieme e dettagli, tre viste HTML AVANT e un film tipografico originale SPAZIO. Servizi, progetti e bandi, cinque form idea e contatti completano il percorso.
 
-L’apertura presenta il film macro dell’acqua a pieno schermo e «Brand. Web. Motion.». Seguono quattro concept fotografici ampi: FORMA, AVANT, ORA e SPAZIO. Il concept web è una composizione HTML originale. Quattro righe di servizi precedono la sezione progetti e bandi per aziende, APS e ASD e i contatti. Cinque form nativi preparano bozze WhatsApp, senza inviarle automaticamente.
+L’ingresso prepara font, poster, primo frame e scena, non tutti i byte dell’intero sito. «Entra subito», Escape e un limite di dodici secondi visibili mantengono accessibile la pagina. Movimento ridotto e SaveData conservano la presentazione statica; nessun film viene riprodotto dietro l’introduzione. La stanza è immaginaria, non una ricostruzione documentaria della sede.
 
-Le fotografie concept sono le immagini AI già documentate in `ASSET-LAUNCH-ROOM.json`; non sono commesse o clienti. Il film è stock di Film Composite/Pexels, non una produzione Space o una simulazione 3D. L’introduzione è invece una vera scena Three.js originale di uno studio immaginario.
+Il film d’acqua di Film Composite/Pexels rimane fotografia stock, non produzione Space o CGI. I sette visual dei concept sono immagini AI; la sequenza tipografica è invece un film Blender originale. I nomi rappresentano progetti possibili, senza clienti o incarichi attribuiti. Il diagramma di dodici mesi per i bandi è illustrativo, senza importi o finanziamenti attribuiti.
 
-## Media e comportamento
+## Sorgenti e media
 
-Gli export d’acqua storici sono riusati con nomi `atelier-water-*`. Sono H.264 senza audio, 11,5 secondi a 24 fps: 1920×1080 desktop, 640×900 sul formato verticale. I poster mostrano la colonna a 4,6 s. Il primo fotogramma automatico viene preparato allo stesso punto; la riproduzione prosegue in avanti e i successivi loop tornano all’inizio, senza inversione o interpolazione.
+- `src/atelier-entry.js`, `src/studio-room.js`, `src/entry-shell.js`, `src/entry.css`: introduzione approvata.
+- `src/atelier.js`, `src/atelier.css`: apertura e base editoriale.
+- `src/atelier-cinema.js`, `src/atelier-cinema.css`: movimento successivo, scene, formati e playback differito.
+- `ASSET-ATELIER.json`: film d’acqua e poster.
+- `ASSET-LAUNCH-ROOM.json`: quattro immagini concept originali, con ambito storico delle vecchie scene.
+- `ASSET-ATELIER-VISUALS.json`: tre dettagli AI aggiunti agli stessi concept.
+- `ASSET-ATELIER-MOTION.json`: sequenza tipografica Blender, export web e verifiche.
 
-Il contatore misura la preparazione ponderata di font, poster, primo frame e stanza; non promette che ogni byte o tutti i concept della pagina siano già in memoria. «Entra subito», Escape e un limite di dodici secondi visibili rilasciano sempre la pagina. La riduzione del movimento e SaveData mantengono il poster e non caricano automaticamente video o stanza. Il film parte dopo la rimozione dell’ingresso e si ferma fuori dalla hero, a documento nascosto, con il menu aperto o su pausa esplicita. La sorgente viene scelta al primo caricamento; ruotare il dispositivo durante il playback non scarica una seconda variante.
+Master AI, `.blend` e sequenze numerate sono locali in `outputs/nov26/` e non distribuiti dal sito. Foto, film offline e geometria live non vengono presentati come equivalenti.
 
-Provenienza, licenza, hash e specifiche dei quattro file riusati sono in `ASSET-ATELIER.json`. I crediti sono anche nel footer.
+## Verifiche
 
-## Controlli e limite di verifica
+Build di produzione e `npm test` superati: 23 contratti correnti, undici per l’ingresso e dodici per il cinema. Verifica reale in Chrome headless isolato con Playwright CLI 0.1.23: desktop 1280×720 e formati emulati 393×852, 320×667 e 844×390, senza overflow laterale. Provati ingresso e ritorno dei controlli, film desktop/verticale, pausa mantenuta dopo lo scroll, riproduzione manuale, menu, apertura e validazione dei brief. Nessun invio esterno effettuato e nessun errore JavaScript osservato nei due flussi completi.
 
-- `npm run build`: build con due pagine indipendenti.
-- `npm run test:atelier`: undici contratti sul controller dell’introduzione, con DOM/video/renderer simulati.
-- `npm test`: contratti della pagina principale e modelli precedenti, per verificare che l’anteprima non ne cambi il comportamento.
-- Entrambe le pagine: ID attivi unici, ancore e risorse locali valide, cinque form GET verso il numero corretto. I due film sono stati decodificati integralmente e verificati con FFprobe.
+Con movimento ridotto, una nuova navigazione mantiene entrambe le sorgenti video non assegnate; la riproduzione manuale resta disponibile. Poster, ritaglio e impaginazione sono stati controllati nelle schermate catturate. Si tratta di emulazione Chromium, non di una prova su iPhone fisico o di una certificazione GPU/FPS. I 31 controlli del percorso precedente rimangono separati in `npm run test:legacy`.
 
-Il browser locale è disabilitato nelle impostazioni Work: non viene dichiarato un collaudo visivo nel browser o su iPhone fisico. I controlli automatici non costituiscono approvazione della qualità estetica. L’anteprima serve alla valutazione visiva della direzione prima di sostituire il sito principale.
-
-## Sorgenti
-
-- `atelier.html`: contenuti e componenti HTML.
-- `src/atelier.css`: composizione editoriale e responsive.
-- `src/atelier.js`: playback, preferenze, navigazione e lifecycle.
-- `src/atelier-entry.js`: preparazione e ingresso nello studio.
-- `src/studio-room.js`, `src/entry-shell.js`, `src/entry.css`: stanza e presentazione originali.
-
-Il deploy aggiunge soltanto la radice esplicita `atelier.html` e gli asset Space ai percorsi già dichiarati. Le radici di altri siti nel ramo di pubblicazione vengono preservate.
+La pubblicazione usa il deploy selettivo già presente, preservando le radici degli altri siti.

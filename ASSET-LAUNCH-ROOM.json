@@ -3,7 +3,7 @@
   "project": "Space Media Studio",
   "release_direction": "Space / Launch Room — Cinematic Studio",
   "hero_title": "Le idee. In azione.",
-  "scope": "Current revision: four original procedural Three.js exhibits, supported by existing original AI raster concept images and HTML fallbacks. No historical film is a current production asset.",
+  "scope": "Historical Launch Room implementation. Retained as provenance for its original four images, which the current cinematic site reuses. Its procedural exhibition models are no longer loaded by index.html.",
   "commercial_status": "Original fictional concept cases, not clients, commissions, delivered products or commercial results.",
   "production": {
     "image_provider": "OpenAI built-in image_gen",
@@ -208,5 +208,11 @@
     },
     "bundle_size_scope": "Main-only build before the independent Atelier preview entry and its media were added; not the combined current dist directory"
   },
-  "revision": "cinematic-objects"
+  "revision": "cinematic-objects",
+  "historical": true,
+  "superseded_by": [
+    "ASSET-ATELIER.json",
+    "ASSET-ATELIER-VISUALS.json",
+    "ASSET-ATELIER-MOTION.json"
+  ]
 }

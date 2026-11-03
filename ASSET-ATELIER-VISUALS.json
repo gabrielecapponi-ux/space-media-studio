@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "project": "Space Media Studio",
+  "page": "atelier.html",
+  "scope": "Three original companion raster concept images for the approved Atelier direction. These extend the same FORMA, ORA and SPAZIO fictional concept cases; they do not add clients, commissions or delivered products.",
+  "provider": "OpenAI built-in image_gen",
+  "execution": "Three independent reference-based image generations; no Higgsfield, paid external API, CLI fallback or model download.",
+  "format": "Original generated PNG masters retained; JPEG encoding for website at native dimensions, no upscaling.",
+  "assets": [
+    {
+      "id": "atelier-brand-detail",
+      "path": "public/images/atelier-brand-detail.jpg",
+      "master": "outputs/nov26/visuals/master-brand.png",
+      "reference": "public/images/launch-brand.jpg",
+      "generation_id": "exec-9e5188f0-b00d-44c5-97df-db369f6c4896",
+      "prompt": "Use case: product-mockup. Create a NEW companion photograph for the same fictional FORMA coffee identity shown in the reference; the reference is identity/material guidance, not a scene to reproduce. Asset: cinematic editorial detail image for a creative agency's concept case. Landscape 16:9. A precise close-up of the yellow paper coffee bag and an ivory cotton card on pale natural travertine, with a thin sliver of black stone; a dramatically cropped espresso cup may sit at the distant edge. Show tactile yellow paper fibers, a small natural fold, crisp black typographic ink and the delicate edge of the card. The main composition is tightly designed, museum-quality still life, not a catalog grid or collage. Strong low late-afternoon light creates a long clean diagonal shadow; warm ivory, pale yellow, charcoal. Shallow but controlled depth of field, premium real product photography, credible small imperfections and material thickness. Preserve the original FORMA wordmark style and bag proportions. Only readable text is exactly 'FORMA' and optionally small 'CAFFÈ CONTEMPORANEO'. No contact details, addresses, dates, fake certification, other branding, people, captions, UI or watermark. This is a new angle/detail in the same identity, with a distinct composition from the original wide shot.",
+      "visual_check": "Inspected generated output: coherent identity/materials, accurate visible lettering where requested, detailed photographic surfaces; no watermark or unrelated brand.",
+      "width": 1672,
+      "height": 941,
+      "bytes": 260066,
+      "sha256": "ee532fb206cf2512d8b6a095699b483cc02351786c4fe99f1606e4eb01c57152",
+      "artifact_type": "AI-generated raster concept still; not documentary photography, a video frame, a simulated cloth/liquid or an interactive 3D mesh.",
+      "master_bytes": 2385578,
+      "master_sha256": "c4b16d7657302850ea6d00044123044c22539cea50dfe9c4a0b6896f8a676908"
+    },
+    {
+      "id": "atelier-product-detail",
+      "path": "public/images/atelier-product-detail.jpg",
+      "master": "outputs/nov26/visuals/master-product.png",
+      "reference": "public/images/launch-product.jpg",
+      "generation_id": "exec-7d9dfb52-5d30-4455-81da-0a0f33cbdf7e",
+      "prompt": "Use case: product-mockup. Create a NEW cinematic macro companion photograph for the same fictional ORA fragrance bottle shown in the reference, preserving its thick clear square glass, rounded edge profile, warm amber liquid, rectangular black cap, ivory paper label and exact ORA typography. Landscape 16:9. Very tight editorial three-quarter detail of the bottle shoulder and glass edge, with a graceful black cap silhouette and a portion of the paper label visible. The heavy transparent glass bends a thin warm-white light into a clean caustic; warm amber glow inside, black studio void and a small restrained reflection/ripple at the lower edge. It should feel like a luxury fragrance campaign photographed with a macro cinema lens: optically plausible glass refraction, precise highlights, exceptionally detailed paper grain and slight natural glass variation. The bottle is upright and physically credible. One strong diagonal composition with calm black negative space. Exact text if visible: 'ORA' and 'EAU DE PARFUM' only; no new wording, dates, addresses, fake logos, people, UI, added props or watermark. Keep identity consistent with reference while making this a genuinely different close cinematic view, not a repeat of the full bottle wide shot.",
+      "visual_check": "Inspected generated output: coherent identity/materials, accurate visible lettering where requested, detailed photographic surfaces; no watermark or unrelated brand.",
+      "width": 1672,
+      "height": 941,
+      "bytes": 238266,
+      "sha256": "ca94e0409c704dde43baafc354a702670863a0b5653f911ba935582385f172a2",
+      "artifact_type": "AI-generated raster concept still; not documentary photography, a video frame, a simulated cloth/liquid or an interactive 3D mesh.",
+      "master_bytes": 2063734,
+      "master_sha256": "7dd2b2aabe580a7c08533ec90abcfc2f59b3d04c17f0f7b621d0e553b93c6d88"
+    },
+    {
+      "id": "atelier-campaign-detail",
+      "path": "public/images/atelier-campaign-detail.jpg",
+      "master": "outputs/nov26/visuals/master-campaign.png",
+      "reference": "public/images/launch-campaign.jpg",
+      "generation_id": "exec-bc9d1d99-6a0a-4351-b41f-a86e5fcb974f",
+      "prompt": "Use case: ads-marketing. Create a NEW cinematic detail image in the same fictional SPAZIO cultural campaign's visual world as the reference. Reference role: preserve the luminous electric-yellow silk, credible fabric texture, dramatic black architectural void and white optical lighting; do not repeat its entire wide composition. Landscape 16:9. A close low angle along one broad flowing yellow silk fold, shaped like an architectural landscape; the silk rises into a deep sculptural valley and a fine edge catches a narrow white light. Rich weave detail, thin translucent fabric at the rim, physically believable layered folds with gravity and tension. Deep black negative space beyond; one distant soft vertical light shaft suggests the same exhibition set, no extra clutter. High-end fashion/art direction campaign photography with cinematic contrast and restrained specular highlights; yellow feels luminous without neon clipping. Entire image has one coherent real textile form, not tubes, plastic ribbons, a torus, a 3D sketch or a collage. No letters, text, logos, people, products, UI or watermark. This is an original still concept, not an actual event photograph.",
+      "visual_check": "Inspected generated output: coherent identity/materials, accurate visible lettering where requested, detailed photographic surfaces; no watermark or unrelated brand.",
+      "width": 1672,
+      "height": 941,
+      "bytes": 313960,
+      "sha256": "d2040e1e9829e53983c1a28d144e6c4e5cc590fd3b76465471787f4ca1afd963",
+      "artifact_type": "AI-generated raster concept still; not documentary photography, a video frame, a simulated cloth/liquid or an interactive 3D mesh.",
+      "master_bytes": 2230985,
+      "master_sha256": "f1f45340e574aef5828fb99617f530aec271efe5d97de43fc3fd19cf7b76f111"
+    }
+  ],
+  "validation": {
+    "native_resolution": true,
+    "upscale": false,
+    "web_encoding": "FFmpeg JPEG q:v 3; yuvj444p",
+    "browser_checked": false,
+    "notes": "Image-artifact inspection only. Browser integration and performance remain parent agent responsibilities."
+  },
+  "public_total_bytes": 812292
+}
