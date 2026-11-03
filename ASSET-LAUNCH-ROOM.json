@@ -1,10 +1,9 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "project": "Space Media Studio",
-  "release_direction": "Space / Launch Room",
-  "date": "2026-10-12",
-  "hero_title": "Le idee. In grande.",
-  "scope": "Current website: four original AI-generated raster artworks used on real Three.js exhibition surfaces, plus HTML image fallbacks. No historical film is a current production asset.",
+  "release_direction": "Space / Launch Room — Cinematic Studio",
+  "hero_title": "Le idee. In azione.",
+  "scope": "Current revision: four original procedural Three.js exhibits, supported by existing original AI raster concept images and HTML fallbacks. No historical film is a current production asset.",
   "commercial_status": "Original fictional concept cases, not clients, commissions, delivered products or commercial results.",
   "production": {
     "image_provider": "OpenAI built-in image_gen",
@@ -17,7 +16,11 @@
     "masters_publicly_distributed": false,
     "stock_media_used": false,
     "higgsfield_used": false,
-    "public_film_count": 0
+    "public_film_count": 0,
+    "image_generation_release": "2026-10-12",
+    "new_image_generations_in_current_revision": 0,
+    "model_source": "Original procedural JavaScript geometry in src/scene-objects.js; not generated meshes or raster-to-3D conversions",
+    "blender_master_or_glb_included": false
   },
   "assets": [
     {
@@ -31,7 +34,7 @@
       "generation_id": "exec-99b4a3d8-b3ce-46fa-be7d-556bbd9909d8",
       "final_edit_id": "exec-e796ee30-3d7f-4598-aaea-15fe0d259dfd",
       "prompt_summary": "FORMA luxury Italian coffee identity: tactile yellow bag, black typography, espresso, travertine and print. Edit removes only all small contact, address and year microcopy, retaining FORMA and CAFFÈ CONTEMPORANEO.",
-      "scene_role": "Raster image on a 3D identity presentation board; the depicted coffee and packaging are not modeled product geometry.",
+      "scene_role": "Raster image in the FORMA concept dialog and HTML fallback. Coffee and packaging in the image are not modeled; the live branding scene uses the separate original Space compass model.",
       "concept_status": "Illustrative fictional coffee identity, not a client or commission."
     },
     {
@@ -44,7 +47,7 @@
       "sha256": "e701effaa5f6e9b10e5364b4f198909e04a3d650017fa197f3533c93c47c2489",
       "generation_id": "exec-9a6f5a0b-9042-4742-9d97-c0da7493a567",
       "prompt_summary": "Premium architectural editorial image of a contemporary Italian facade with pale travertine, a projecting rectangular upper volume, precise black metal glazing, pale blue sky and crisp natural shadows. Plausible built geometry, no people, cars, logos, lettering or watermarks.",
-      "scene_role": "Raster architecture image within original desktop and mobile website interfaces drawn onto 3D presentation surfaces; the building is not a 3D mesh.",
+      "scene_role": "Raster architecture image within original desktop/mobile interface textures, concept dialog and HTML fallback; the building is not a mesh.",
       "concept_status": "Illustrative fictional architecture case, not a photographed client building or a delivered website."
     },
     {
@@ -57,7 +60,7 @@
       "sha256": "fa43d34434fbced30b9bc13b2748c3e7b12154f4b69727a8c1984fb2b387ada3",
       "generation_id": "exec-91f4325c-5997-4928-a38e-2f34a9c426ee",
       "prompt_summary": "Photoreal luxury ORA fragrance campaign: thick clear square glass bottle, amber liquid, dark water and black studio. The only product typography is ORA and EAU DE PARFUM.",
-      "scene_role": "Raster product artwork on a 3D presentation surface; the bottle, liquid and water are not mesh geometry or a simulated fluid film.",
+      "scene_role": "Raster product artwork in the ORA concept dialog and HTML fallback. The live scene uses an independently built original fragrance model; it is not the photograph converted to a mesh or a simulated fluid film.",
       "concept_status": "Illustrative fictional fragrance visual, not a real product commission or a rendered CGI film."
     },
     {
@@ -70,7 +73,7 @@
       "sha256": "c5e01073a4c117b1ede8f889754987bb8530b8859c7305572dbe2f5c837486cc",
       "generation_id": "exec-38003240-2d30-424c-93ea-2930681e841f",
       "prompt_summary": "Original culture and fashion campaign background: large electric-yellow silk installation sweeping diagonally across black space in three physically plausible architectural folds, textile detail and crisp white optical light shafts. Entirely without people, products, logos, text or watermarks.",
-      "scene_role": "Raster campaign image on a curved 3D billboard and a vertical format; the silk folds are not simulated cloth geometry.",
+      "scene_role": "Raster campaign image in the SPAZIO concept dialog and HTML fallback. The live scene uses an independent typographic poster and geometric ribbons, not a cloth simulation of the image.",
       "concept_status": "Illustrative fictional cultural campaign, not an event client or commissioned advertisement."
     }
   ],
@@ -81,20 +84,30 @@
     "license_copy": "public/licenses/three-MIT.txt",
     "controller": "src/launch-room.js",
     "actual_geometry": [
-      "Exhibition boards with thickness and bevels",
-      "Desktop and mobile interface presentation surfaces",
-      "Curved billboard and metal rails",
-      "Room floor, lights and perspective camera"
+      "Four separate beveled components of the Space compass mark, plus identity card and colour samples",
+      "Desktop and mobile web interface surfaces and a navigation module with physical depth",
+      "Original ORA bottle body, amber content, shoulder, collar, pump, separate cap, label and display base",
+      "Typographic campaign poster and three geometric ribbons",
+      "Room floor, environment, lights and perspective camera"
     ],
     "not_modeled": [
-      "Coffee or its packaging",
+      "Coffee or its packaging shown in the raster image",
       "The depicted building",
-      "Fragrance bottle, liquid or water",
-      "Silk cloth folds"
+      "Water or physically simulated fragrance fluid",
+      "Physically simulated silk cloth folds"
     ],
-    "motion": "Camera and support poses derived from native scroll, with restrained fine-pointer response, entrance and ambient motion. No wheel or touch hijacking.",
+    "motion": "Native-scroll camera and absolute station poses, timed mark assembly/reassembly, layered interface motion, cap reveal and geometric ribbon choreography. Restrained fine-pointer response; no wheel or touch hijacking.",
     "fallback": "Semantic HTML content and original raster images remain available without WebGL or JavaScript. Reduced motion and SaveData retain the static presentation.",
-    "performance_claim": "Browser QA completed at desktop and simulated iPhone viewports. No physical-iPhone or 4K/60 fps certification."
+    "performance_claim": "No current browser timing, frame-rate, physical-iPhone or 4K/60 fps certification. Configured render cadence is not a measured frame rate.",
+    "object_builder": "src/scene-objects.js",
+    "model_limits": "Original illustrative models, not CAD-accurate commercial products. Amber content is a mesh; ribbons are geometry rather than fluid or cloth simulations. The photo and live fragrance model are distinct original assets.",
+    "semantic_content": "HTML titles, service descriptions and actions remain readable during camera transitions; no chapter-copy opacity removal.",
+    "mobile_layout": "Below 901px, a measured 4:3 HTML slot and fixed-canvas clipping follow native scroll; chapter backgrounds retain text contrast. Numeric clipping checks passed; current browser visual verification was unavailable.",
+    "configured_render_cadence_hz": {
+      "desktop": 60,
+      "narrow": 30,
+      "measured_fps": false
+    }
   },
   "fonts": [
     {
@@ -127,7 +140,7 @@
     "integrated": false,
     "downloads_for_this_release": 0,
     "quota_consumed_for_this_release": 0,
-    "note": "Current scene, surfaces and interactions are original project resources. No Horizon source or asset is distributed."
+    "note": "Current models, surfaces and interactions are original project resources. No Horizon source or asset is distributed."
   },
   "service_content": {
     "idea_boxes": 5,
@@ -142,54 +155,57 @@
     "note": "Historical film, poster and sculpture manifests retain their original historical scope and do not describe current production assets."
   },
   "validation": {
+    "revision": "cinematic-objects",
+    "status": "source_checks_passed_browser_visual_not_run",
     "build": "passed",
-    "contract_groups": 39,
-    "browser_viewports": [
-      [
-        1200,
-        728
+    "bundle_bytes": 1901750,
+    "contract_tests": {
+      "status": "passed",
+      "command": "npm test",
+      "html_and_brief_groups": 19,
+      "room_groups": 12,
+      "real_three_geometry": true,
+      "renderer_and_dom": "test doubles",
+      "object_checks": "finite vertices, deterministic absolute poses, projected bounds for all four models",
+      "numeric_mobile_clip_samples": 256,
+      "numeric_viewports": [
+        "1200x728",
+        "390x844",
+        "320x667",
+        "844x390",
+        "900x800"
       ],
-      [
-        390,
-        844
-      ],
-      [
-        320,
-        667
-      ],
-      [
-        844,
-        390
+      "scripts": [
+        "scripts/check-cinematic-main.mjs",
+        "scripts/check-cinematic-objects.mjs",
+        "scripts/check-cinematic-scene.mjs"
       ]
-    ],
-    "horizontal_overflow": false,
-    "checks": [
-      "four native chapter anchors",
-      "whole mobile artworks inside measured HTML slots",
-      "menu and project dialog focus",
-      "project to matching brief",
-      "render suspension for pause/dialog/brief/hidden/off-room",
-      "static fallback",
-      "five native WhatsApp draft forms"
-    ],
-    "physical_iphone_test": false,
-    "local_chrome_observation": {
-      "conditions": "Local production preview, desktop Chrome, 1200x728 CSS pixels, unthrottled, cache/local assets; one observed navigation, not a loading guarantee",
-      "first_3d_render_navigation_ms": 355.2,
-      "setup_ms_excluding_import": 189.3,
-      "render_cpu_submit_ms_observed": [
-        0.5,
-        1.6
+    },
+    "offline_visual_studies": {
+      "renderer": "Blender 5.2.1 LTS / Cycles",
+      "count": 4,
+      "geometry": "exported from actual original model factory",
+      "resolution": "680x680",
+      "samples": 24,
+      "directory": "outputs/cinematic-qa/",
+      "browser_parity": false,
+      "diagnostic_differences": [
+        "different lighting/environment and tone mapping",
+        "Arial diagnostic font substitute",
+        "separate studio camera"
       ],
-      "hero_draw_calls": 10,
-      "hero_triangles": 2072,
-      "mobile_draw_calls": 3,
-      "mobile_triangles": 690,
-      "desktop_buffer_pixels": [
-        1920,
-        1164
-      ],
-      "gpu_frame_time_measured": false
+      "distributed": false
+    },
+    "browser_qa": {
+      "status": "not_run_for_current_scene",
+      "reason": "Local browser use disabled in Work settings; no alternate browser-control workaround used.",
+      "physical_iphone_test": false
+    },
+    "performance": {
+      "current_metrics": "bundle size only; no browser runtime or GPU metrics",
+      "gpu_frame_time_measured": false,
+      "note": "Configured cadence is not a measured frame rate. Prior panel-scene timings are not current measurements."
     }
-  }
+  },
+  "revision": "cinematic-objects"
 }

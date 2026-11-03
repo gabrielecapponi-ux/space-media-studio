@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { buildCinematicExhibits } from './scene-objects.js';
 
 const clamp = (value, low = 0, high = 1) => Math.max(low, Math.min(high, value));
 const mix = (a, b, amount) => a + (b - a) * amount;
@@ -7,11 +8,10 @@ const smooth = (value) => { const t = clamp(value); return t * t * (3 - 2 * t); 
 const BASE = import.meta.env.BASE_URL;
 const STATION_GAP = 10.4;
 const BACKGROUNDS = ['#f2f0eb', '#0b0d0d', '#101112', '#e8ff00'];
-const IMAGES = ['brand', 'architecture', 'product', 'campaign'];
+const IMAGES = ['architecture'];
 
 /**
- * A cinematic exhibition of original artwork, not a simulation of the depicted
- * products. All principal motion is an absolute pose derived from native scroll.
+ * A cinematic exhibition of original, addressable 3D models and artwork. All principal motion is an absolute pose derived from native scroll.
  * HTML owns the content, poster fallback, navigation and user controls.
  */
 export function createLaunchRoom({ signal, onReady, onError } = {}) {
@@ -183,39 +183,6 @@ export function createLaunchRoom({ signal, onReady, onError } = {}) {
     context.drawImage(image, x + (width - drawWidth) / 2, y + (height - drawHeight) / 2, drawWidth, drawHeight);
   }
 
-  function typePoster({ background, ink, eyebrow, title, footer }) {
-    return canvasTexture(800, 1200, (ctx, width, height) => {
-      ctx.fillStyle = background;
-      ctx.fillRect(0, 0, width, height);
-      ctx.fillStyle = ink;
-      ctx.font = '22px "DM Mono", monospace';
-      ctx.fillText(eyebrow, 58, 75);
-      ctx.fillRect(58, 119, width - 116, 2);
-      ctx.font = '500 160px "Space Grotesk", sans-serif';
-      title.split('\n').forEach((line, index) => ctx.fillText(line, 49, 385 + index * 158));
-      ctx.font = '21px "DM Mono", monospace';
-      footer.split('\n').forEach((line, index) => ctx.fillText(line, 58, height - 110 + index * 33));
-    });
-  }
-
-  function captionTexture(title, detail, background = '#161817', ink = '#e8ff00') {
-    return canvasTexture(1200, 450, (ctx, width, height) => {
-      ctx.fillStyle = background;
-      ctx.fillRect(0, 0, width, height);
-      ctx.fillStyle = ink;
-      let titleSize = 110;
-      ctx.font = `500 ${titleSize}px "Space Grotesk", sans-serif`;
-      while (ctx.measureText(title).width > width - 122 && titleSize > 60) {
-        titleSize -= 2;
-        ctx.font = `500 ${titleSize}px "Space Grotesk", sans-serif`;
-      }
-      ctx.fillText(title, 61, 203);
-      ctx.fillRect(65, 274, width - 130, 2);
-      ctx.font = '24px "DM Mono", monospace';
-      ctx.fillText(detail, 65, 350);
-    });
-  }
-
   function browserTexture(image, portrait = false) {
     const width = portrait ? 700 : 1700;
     const height = portrait ? 1320 : 1080;
@@ -270,95 +237,29 @@ export function createLaunchRoom({ signal, onReady, onError } = {}) {
     });
   }
 
-  function campaignFormat(image) {
-    return canvasTexture(700, 1120, (ctx, width, height) => {
-      ctx.fillStyle = '#111413';
-      ctx.fillRect(0, 0, width, height);
-      ctx.fillStyle = '#e8ff00';
-      ctx.font = '20px "DM Mono", monospace';
-      ctx.fillText('SPACE / CAMPAIGN STUDY', 43, 62);
-      drawContained(ctx, image, 0, 126, width, 500);
-      ctx.font = '500 112px "Space Grotesk", sans-serif';
-      ctx.fillText('MAKE', 39, 778);
-      ctx.fillText('IT MOVE.', 39, 889);
-      ctx.fillRect(43, 972, width - 86, 2);
-      ctx.font = '20px "DM Mono", monospace';
-      ctx.fillText('UN’IDEA. OGNI FORMATO.', 43, height - 65);
-    });
-  }
-
-  function curvedBillboard(texture, width, height) {
-    const geometry = ownGeometry(new THREE.PlaneGeometry(width, height, 48, 1));
-    const positions = geometry.attributes.position;
-    const radius = 12;
-    for (let index = 0; index < positions.count; index += 1) {
-      const angle = positions.getX(index) / radius;
-      positions.setX(index, Math.sin(angle) * radius);
-      positions.setZ(index, (Math.cos(angle) - 1) * radius);
-    }
-    geometry.computeVertexNormals();
-    const group = new THREE.Group();
-    const backMaterial = ownMaterial(new THREE.MeshStandardMaterial({
-      color: '#262924', metalness: 0.8, roughness: 0.32, side: THREE.DoubleSide,
-    }));
-    const back = new THREE.Mesh(geometry, backMaterial);
-    back.position.z = -0.045;
-    back.castShadow = true;
-    group.add(back);
-    const frontMaterial = ownMaterial(new THREE.MeshBasicMaterial({ map: texture, toneMapped: false }));
-    const front = new THREE.Mesh(geometry, frontMaterial);
-    group.add(front);
-    // A pair of slender, curved aluminum rails makes the billboard's physical
-    // depth legible without adding an unrelated decorative object.
-    const railMaterial = ownMaterial(new THREE.MeshStandardMaterial({ color: '#44483e', metalness: 0.9, roughness: 0.27 }));
-    [-1, 1].forEach((side) => {
-      const points = [];
-      for (let index = 0; index <= 48; index += 1) {
-        const angle = mix(-width / 2, width / 2, index / 48) / radius;
-        points.push(new THREE.Vector3(Math.sin(angle) * radius, side * (height / 2 + 0.012), (Math.cos(angle) - 1) * radius - 0.012));
-      }
-      const rail = new THREE.Mesh(ownGeometry(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(points), 48, 0.025, 6, false)), railMaterial);
-      group.add(rail);
-    });
-    return group;
-  }
-
-  function addStation(index, pieces) {
-    const group = new THREE.Group();
-    group.position.x = index * STATION_GAP;
-    pieces.forEach((piece) => group.add(piece));
-    scene.add(group);
-    const mainGeometry = pieces[0].children[1].geometry;
-    mainGeometry.computeBoundingBox();
-    const size = new THREE.Vector3();
-    mainGeometry.boundingBox.getSize(size);
-    stations.push({ group, pieces, width: size.x, height: size.y });
-  }
-
   function buildStations(artwork) {
-    const photoRatio = (texture) => texture.image.width / texture.image.height;
-    const brandPoster = typePoster({ background: '#e8ff00', ink: '#151715', eyebrow: 'IDENTITY / 01', title: 'FOR\nMA.', footer: 'COFFEE HOUSE\nA BRAND, IN EVERY DETAIL.' });
-    addStation(0, [
-      surface(artwork[0], 6.9, 6.9 / photoRatio(artwork[0]), { edge: '#e9e5d9', depth: 0.09 }),
-      surface(brandPoster, 1.8, 2.7, { edge: '#d2de1c', depth: 0.05 }),
-      surface(captionTexture('Forma.', 'IDENTITÀ / PACKAGING / DIREZIONE ARTISTICA'), 2.8, 1.05, { edge: '#20251d', depth: 0.05 }),
-    ]);
-    addStation(1, [
-      surface(browserTexture(artwork[1].image), 7.4, 7.4 * 1080 / 1700, { edge: '#323936', depth: 0.12, radius: 0.13, metallic: true }),
-      surface(browserTexture(artwork[1].image, true), 1.7, 1.7 * 1320 / 700, { edge: '#666b60', depth: 0.075, radius: 0.105, metallic: true }),
-      surface(captionTexture('Il tuo spazio digitale.', 'DESKTOP / MOBILE / ESPERIENZA', '#e8ff00', '#111413'), 2.8, 1.05, { edge: '#d7e629', depth: 0.05 }),
-    ]);
-    const productPoster = typePoster({ background: '#151817', ink: '#e3e1d9', eyebrow: 'ART DIRECTION / 03', title: 'ORA.', footer: 'MATERIA. LUCE. DESIDERIO.\nPRODUCT VISUAL STUDY.' });
-    addStation(2, [
-      surface(artwork[2], 7.1, 7.1 / photoRatio(artwork[2]), { edge: '#353a36', depth: 0.085, radius: 0.035, metallic: true }),
-      surface(productPoster, 1.8, 2.7, { edge: '#323630', depth: 0.055, metallic: true }),
-      surface(captionTexture('Il dettaglio è desiderio.', 'IMMAGINI / FILM / LANCIO', '#ede9de', '#181b17'), 2.8, 1.05, { edge: '#c4c0b6', depth: 0.05 }),
-    ]);
-    addStation(3, [
-      curvedBillboard(artwork[3], 7.5, 7.5 / photoRatio(artwork[3])),
-      surface(campaignFormat(artwork[3].image), 1.8, 2.88, { edge: '#262b22', depth: 0.07 }),
-      surface(captionTexture('Make it move.', 'REEL / SOCIAL / CAMPAGNE', '#111413', '#e8ff00'), 2.8, 1.05, { edge: '#272c20', depth: 0.05 }),
-    ]);
+    const exhibits = buildCinematicExhibits({ ownGeometry, ownMaterial, canvasTexture, surface, browserTexture, roundedShape, architecture: artwork[0] });
+    exhibits.forEach((exhibit, index) => {
+      const group = new THREE.Group();
+      group.position.x = index * STATION_GAP;
+      group.add(exhibit.root);
+      scene.add(group);
+      stations.push({ group, ...exhibit });
+    });
+  }
+
+  function clipToMobileSlot() {
+    if (!mobile || mobileSlots.length !== 4) {
+      mount.style.clipPath = '';
+      return 0;
+    }
+    const nearest = Math.round(progress);
+    const slot = mobileSlots[nearest];
+    const centerY = anchors[nearest] + slot.centerY - window.scrollY;
+    const top = clamp(centerY - slot.height / 2, 0, viewportHeight);
+    const bottom = clamp(centerY + slot.height / 2, 0, viewportHeight);
+    mount.style.clipPath = `inset(${top.toFixed(2)}px 0 ${(viewportHeight - bottom).toFixed(2)}px 0)`;
+    return centerY;
   }
 
   function readScroll() {
@@ -375,6 +276,8 @@ export function createLaunchRoom({ signal, onReady, onError } = {}) {
     inRoom = scroll < roomEnd - Math.min(80, viewportHeight * 0.08);
     const sceneIndex = String(Math.round(targetProgress));
     if (document.documentElement.dataset.launchScene !== sceneIndex) document.documentElement.dataset.launchScene = sceneIndex;
+    // Clipping follows native scroll immediately, independently of render FPS.
+    clipToMobileSlot();
     updateVisibility();
   }
 
@@ -383,7 +286,7 @@ export function createLaunchRoom({ signal, onReady, onError } = {}) {
     const bounds = mount.getBoundingClientRect();
     viewportWidth = Math.max(1, bounds.width || window.innerWidth);
     viewportHeight = Math.max(1, bounds.height || window.innerHeight);
-    mobile = viewportWidth <= 760;
+    mobile = viewportWidth <= 900;
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, mobile ? 1.25 : 1.6));
     renderer.setSize(viewportWidth, viewportHeight, false);
     camera.aspect = viewportWidth / viewportHeight;
@@ -417,43 +320,32 @@ export function createLaunchRoom({ signal, onReady, onError } = {}) {
     const upper = Math.min(3, lower + 1);
     const blend = smooth(progress - lower);
     scene.background.copy(backgroundColors[lower]).lerp(backgroundColors[upper], blend);
-    const intro = 1 - smooth(introElapsed / 1.3);
+    const intro = 1 - smooth(introElapsed / 1.6);
     const introWeight = intro * (1 - clamp(progress / 0.45));
     const stageX = progress * STATION_GAP;
     const cameraZ = mix([10.8, 11.5, 10.4, 11.9][lower], [10.8, 11.5, 10.4, 11.9][upper], blend);
     const frustumHeight = 2 * cameraZ * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
     const frustumWidth = frustumHeight * camera.aspect;
-    const ambient = Math.sin(elapsed * 0.28);
-    camera.position.set(stageX + currentPointerX * 0.3 + introWeight * 1.8, mobile ? 0.1 : mix(0.45, 0.1, blend), cameraZ + introWeight * 1.3);
+    camera.position.set(stageX + currentPointerX * 0.3 + introWeight * 1.8, mobile ? 0.1 : 0.28, cameraZ + introWeight * 1.3);
     lookTarget.set(stageX, mobile ? 0.05 : 0.15 + currentPointerY * 0.12, 0);
     camera.lookAt(lookTarget);
     keyLight.position.set(stageX - 3 + Math.sin(elapsed * 0.17) * 0.8, 7, 7);
     keyLight.target.position.set(stageX, 0, 0);
-    stations.forEach(({ group, pieces, width, height }, index) => {
+    stations.forEach(({ group, root, width, height, animate }, index) => {
       const distance = progress - index;
       const departure = clamp(Math.abs(distance), 0, 1.3);
-      const direction = Math.sign(distance) || 1;
       group.visible = Math.abs(distance) < 0.97;
       const slot = mobileSlots[index];
       const exhibitScale = mobile ? Math.min(
         frustumWidth * (slot.width / viewportWidth) / width,
         frustumHeight * (slot.height / viewportHeight) / height,
-      ) * 0.94 : 0.8;
+      ) * 0.93 : index === 0 ? .7 : .8;
       group.scale.setScalar(exhibitScale);
-      group.position.set(index * STATION_GAP, 0, -departure * 0.55);
-      group.rotation.set(0, -distance * 0.12, 0);
-      const float = ambient * 0.035 * (1 - Math.min(1, departure));
-      const principal = pieces[0];
-      principal.position.set(0, mobile ? -0.15 + float : 0.05 + float, 0.24);
-      principal.rotation.set(mobile ? -0.015 : -0.025 + currentPointerY * 0.018, -0.12 + direction * departure * 0.5 + introWeight * 1.05 + ambient * 0.012, -0.035 + currentPointerX * 0.012);
-      const vertical = pieces[1];
-      vertical.visible = !mobile;
-      vertical.position.set(mobile ? 1.8 : -2.65 - departure * 0.8, mobile ? 1.45 : 0.72 + departure * 0.35, mobile ? -1.1 : -0.75 - departure * 1.1);
-      vertical.rotation.set(0.015, mobile ? -0.2 : 0.2 - direction * departure * 0.8 - introWeight * 0.65, mobile ? -0.09 : -0.075);
-      const caption = pieces[2];
-      caption.visible = !mobile;
-      caption.position.set(mobile ? -0.8 : 0.95 + departure * 1.3, mobile ? -2.55 : -1.7 - departure * 0.5, mobile ? 0.65 : 0.8 + departure * 0.4);
-      caption.rotation.set(-0.03, -0.22 + direction * departure * 0.65 + introWeight * 0.4, mobile ? 0.045 : 0.055);
+      group.position.set(index * STATION_GAP, 0, -departure * .65);
+      group.rotation.set(0, -distance * .17, 0);
+      root.position.set(0, (!mobile && index === 0 ? .25 : 0) + Math.sin(elapsed * .42) * .035, .24);
+      root.rotation.set(currentPointerY * .045, currentPointerX * .095 + distance * .26, -.025);
+      animate(elapsed, introWeight, departure, mobile);
     });
     if (mobile && mobileSlots.length === 4) {
       // The HTML reserves a genuine image slot between heading and offer. Use
@@ -463,11 +355,15 @@ export function createLaunchRoom({ signal, onReady, onError } = {}) {
       camera.updateMatrixWorld(true);
       const station = stations[Math.round(progress)];
       station.group.updateMatrixWorld(true);
-      station.pieces[0].getWorldPosition(visualCenter);
+      station.root.getWorldPosition(visualCenter);
       visualCenter.project(camera);
       const projectedCenterY = (1 - visualCenter.y) * viewportHeight / 2;
-      const desiredCenterY = mix(mobileSlots[lower].centerY, mobileSlots[upper].centerY, blend);
+      // The exhibit follows its actual scrolling HTML slot. Clipping keeps
+      // the model from crossing the copy, even when scroll and pose are easing.
+      const desiredCenterY = clipToMobileSlot();
       camera.setViewOffset(viewportWidth, viewportHeight, 0, projectedCenterY - desiredCenterY, viewportWidth, viewportHeight);
+    } else {
+      mount.style.clipPath = '';
     }
   }
 
@@ -494,22 +390,25 @@ export function createLaunchRoom({ signal, onReady, onError } = {}) {
     const delta = lastTime ? Math.min(0.05, (time - lastTime) / 1000) : 0;
     lastTime = time;
     elapsed += delta;
-    introElapsed = Math.min(1.3, introElapsed + delta);
+    introElapsed = Math.min(1.6, introElapsed + delta);
     const damping = 1 - Math.exp(-delta * 11);
     progress += (targetProgress - progress) * damping;
     if (Math.abs(targetProgress - progress) < 0.0003) progress = targetProgress;
     currentPointerX += (pointerX - currentPointerX) * damping;
     currentPointerY += (pointerY - currentPointerY) * damping;
-    const transitioning = Math.abs(targetProgress - progress) > 0.001 || introElapsed < 1.3
+    const transitioning = Math.abs(targetProgress - progress) > 0.001 || introElapsed < 1.6
       || Math.abs(pointerX - currentPointerX) + Math.abs(pointerY - currentPointerY) > 0.001;
     // Scroll and entrance paint at native rAF. A settled, slowly moving exhibit
-    // paints at 24/30 Hz, and only while its four-chapter room is visible.
-    const interval = transitioning ? 0 : 1000 / (mobile ? 24 : 30);
-    if (time - lastPaint >= interval) {
+    // targets 30/60 Hz, and only while its four-chapter room is visible.
+    const interval = transitioning ? 0 : 1000 / (mobile ? 30 : 60);
+    const paintAge = time - lastPaint;
+    // A small tolerance avoids halving 60 Hz under sub-millisecond rAF jitter.
+    if (paintAge + 0.25 >= interval) {
       try {
         pose();
         paint();
-        lastPaint = time;
+        const carry = interval ? Math.min(interval * .5, Math.max(0, paintAge - interval)) : 0;
+        lastPaint = time - carry;
       } catch (error) { reportError(error); return; }
     }
     schedule();
@@ -528,7 +427,7 @@ export function createLaunchRoom({ signal, onReady, onError } = {}) {
     keyLight?.shadow.map?.dispose();
     renderer?.dispose();
     renderer?.domElement.remove();
-    if (mount) delete mount.dataset.launchState;
+    if (mount) { delete mount.dataset.launchState; mount.style.clipPath = ''; }
     if (mount) ['launchDraws', 'launchTriangles', 'launchBuffer', 'launchFrameCount', 'launchCpuMs', 'launchProgress', 'launchTarget', 'launchReadyMs', 'launchSetupMs'].forEach((key) => { delete mount.dataset[key]; });
     document.documentElement.classList.remove('launch-ready');
     if (!preserveTheme) delete document.documentElement.dataset.launchScene;
@@ -543,10 +442,10 @@ export function createLaunchRoom({ signal, onReady, onError } = {}) {
       const wasPaused = paused;
       paused = Boolean(value);
       if (paused) { stop(); progress = targetProgress; }
-      // Rejoin the photographed fallback at the visitor's current chapter.
+      // Rejoin the static fallback at the visitor's current chapter.
       if (wasPaused && !paused && initialized && !errored && !blocked && !document.hidden && !preferredFallback() && inRoom) {
         progress = targetProgress;
-        introElapsed = 1.3;
+        introElapsed = 1.6;
         try { pose(); paint(); } catch (error) { reportError(error); return; }
       }
       updateVisibility();
@@ -587,10 +486,10 @@ export function createLaunchRoom({ signal, onReady, onError } = {}) {
       const pmrem = new THREE.PMREMGenerator(renderer);
       environmentTarget = pmrem.fromScene(environment, 0.035, 0.1, 100);
       scene.environment = environmentTarget.texture;
-      scene.environmentIntensity = 0.7;
+      scene.environmentIntensity = 1.1;
       environment.dispose();
       pmrem.dispose();
-      scene.add(new THREE.HemisphereLight('#ffffff', '#5c6652', 1.5));
+      scene.add(new THREE.HemisphereLight('#ffffff', '#53584d', 1.7));
       keyLight = new THREE.DirectionalLight('#fff9e9', 2.8);
       keyLight.position.set(-3, 7, 7);
       keyLight.castShadow = true;
@@ -610,7 +509,7 @@ export function createLaunchRoom({ signal, onReady, onError } = {}) {
       scene.add(fill);
       floor = new THREE.Mesh(ownGeometry(new THREE.PlaneGeometry(80, 28)), ownMaterial(new THREE.ShadowMaterial({ color: '#141812', opacity: 0.11 })));
       floor.rotation.x = -Math.PI / 2;
-      floor.position.set(STATION_GAP * 1.5, -2.75, -1);
+      floor.position.set(STATION_GAP * 1.5, -2.55, -1);
       floor.receiveShadow = true;
       scene.add(floor);
       const loader = new THREE.TextureLoader();
@@ -624,7 +523,7 @@ export function createLaunchRoom({ signal, onReady, onError } = {}) {
       buildStations(artwork);
       measure();
       progress = targetProgress;
-      introElapsed = targetProgress > 0.45 ? 1.3 : 0;
+      introElapsed = targetProgress > 0.45 ? 1.6 : 0;
       pose();
       paint();
       const readyAt = performance.now();

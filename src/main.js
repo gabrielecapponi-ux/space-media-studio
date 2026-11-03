@@ -28,6 +28,7 @@ root.classList.add('js');
 menuToggle.hidden = false;
 installIdeaBriefs({ signal });
 const preferredStatic = () => reduced.matches || Boolean(connection?.saveData);
+root.dataset.uiMotion = preferredStatic() ? 'off' : 'on';
 
 function syncBlocking() {
   const open = Boolean(menu?.open || projectDialog?.open);
@@ -40,6 +41,7 @@ function syncBlocking() {
   motionToggle.setAttribute('aria-pressed', String(paused));
   motionToggle.setAttribute('aria-label', paused ? 'Riprendi le animazioni' : 'Metti in pausa le animazioni');
   motionToggle.firstElementChild.textContent = paused ? '▷' : 'Ⅱ';
+  root.dataset.uiMotion = paused || preferredStatic() ? 'off' : 'on';
 }
 
 async function startRoom() {
@@ -71,13 +73,10 @@ function updateNavigation() {
     const distance = Math.abs(rect.top);
     if (distance < nearest) { nearest = distance; active = index; }
   });
-  sections.forEach((section, index) => {
-    const fade = stage.dataset.launchState === 'ready' && !preferredStatic() && !paused
-      && !section.contains(document.activeElement) && !section.querySelector('.idea-box[open]')
-      ? Math.max(0, 1 - Math.abs(positions[index].top) / (innerHeight * .36)) : 1;
-    section.style.setProperty('--copy-opacity', fade.toFixed(3));
-  });
+  // The camera owns the spectacle. Native content stays readable at every
+  // scroll position, including a visitor stopping between chapter anchors.
   const inRoom = positions.length && positions.at(-1).bottom > innerHeight * .25;
+  root.classList.toggle('in-launch-room', Boolean(inRoom));
   if (stage.dataset.launchState !== 'ready') root.dataset.launchScene = inRoom ? String(active) : '0';
   if (!inRoom && document.querySelector('#contatti').getBoundingClientRect().top < innerHeight * .5) root.dataset.launchScene = '2';
   links.forEach((link) => {
