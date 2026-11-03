@@ -1,5 +1,7 @@
 # Provenienza dei materiali — Space / Launch Room
 
+L’anteprima indipendente `atelier.html` riusa inoltre il film d’acqua stock storico di Film Composite/Pexels con quattro nomi `atelier-water-*`. Specifiche e licenza sono in [ASSET-ATELIER.json](./ASSET-ATELIER.json); l’ambito della pagina è in [ATELIER-PREVIEW.md](./ATELIER-PREVIEW.md). Il film non è attribuito a Space e non è una simulazione 3D.
+
 La scena corrente usa **modelli tridimensionali originali costruiti nel codice** e quattro immagini image_gen già presenti nel progetto. Le immagini rimangono nei concept e nei ripieghi HTML; l'architettura è anche una texture delle interfacce web. Questa revisione non aggiunge generazioni AI, immagini stock, film CGI storici o risorse Horizon.
 
 ## Immagini correnti

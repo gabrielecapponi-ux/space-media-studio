@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#101110" />
+    <title>Space Media Studio — Anteprima Atelier</title>
+    <meta name="description" content="Brand identity, siti web, motion design e campagne. Un’anteprima della nuova direzione Space Media Studio, Parma." />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preload" href="/fonts/SpaceGrotesk-Variable.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="/src/atelier.css" />
+  </head>
+  <body>
+    <a class="atelier-skip" href="#main">Vai al contenuto</a>
+
+    <header class="atelier-header" id="top">
+      <a class="atelier-brand" href="#top" aria-label="Space Media Studio, inizio" translate="no">
+        <svg class="atelier-symbol" viewBox="0 0 48 48" aria-hidden="true">
+          <path d="M24 2 30 18 46 24 30 30 24 46 18 30 2 24 18 18Z" fill="currentColor" />
+          <circle cx="24" cy="24" r="5.5" fill="var(--atelier-header-bg, #101110)" />
+        </svg>
+        <span>space<small>media studio</small></span>
+      </a>
+
+      <nav class="atelier-nav" aria-label="Navigazione principale">
+        <a href="#concepts">Progetti</a>
+        <a href="#services">Servizi</a>
+        <a href="#funding">Progetti &amp; bandi</a>
+      </nav>
+
+      <div class="atelier-header-actions">
+        <a class="atelier-contact-link" href="#contact">Parliamone <span aria-hidden="true">↗</span></a>
+        <details class="atelier-mobile-menu">
+          <summary><span>Menu</span><span aria-hidden="true">+</span></summary>
+          <nav aria-label="Navigazione mobile">
+            <a href="#concepts">Progetti <span aria-hidden="true">↗</span></a>
+            <a href="#services">Servizi <span aria-hidden="true">↗</span></a>
+            <a href="#funding">Progetti &amp; bandi <span aria-hidden="true">↗</span></a>
+            <a href="#contact">Parliamone <span aria-hidden="true">↗</span></a>
+          </nav>
+        </details>
+      </div>
+    </header>
+
+    <main id="main" tabindex="-1">
+      <section class="atelier-hero" aria-labelledby="atelier-title">
+        <div class="atelier-hero-media" aria-hidden="true">
+          <video id="atelier-film" class="atelier-film" muted playsinline loop preload="none" poster="/images/atelier-water-desktop.jpg"></video>
+          <div class="atelier-hero-shade"></div>
+        </div>
+        <div class="atelier-hero-content">
+          <p class="atelier-eyebrow">Studio creativo indipendente · Parma</p>
+          <h1 id="atelier-title">Brand. Web.<br /><em>Motion.</em></h1>
+          <div class="atelier-hero-bottom">
+            <p class="atelier-hero-promise">Identità, siti ed esperienze digitali.</p>
+            <a class="atelier-scroll-link" href="#concepts">Guarda cosa possiamo creare <span aria-hidden="true">↓</span></a>
+          </div>
+        </div>
+        <div class="atelier-hero-controls">
+          <span class="atelier-preview-label">Space / Nuova direzione</span>
+          <button type="button" id="atelier-film-toggle" class="atelier-film-toggle" aria-label="Riproduci il film" aria-pressed="false" hidden>
+            <span data-film-symbol aria-hidden="true">▷</span>
+            <span data-film-label>Riproduci</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="atelier-concepts" id="concepts" aria-labelledby="concepts-title">
+        <div class="atelier-section-heading">
+          <p class="atelier-eyebrow">Quattro possibilità. Una direzione precisa.</p>
+          <h2 id="concepts-title">Il prossimo progetto<br />potrebbe essere il tuo.</h2>
+          <p class="atelier-section-intro">Dal primo segno all’esperienza finale: quattro concept originali per mostrare cosa possiamo costruire insieme.</p>
+        </div>
+
+        <div class="atelier-concept-grid">
+          <article class="atelier-concept atelier-concept-brand" aria-labelledby="forma-title">
+            <figure class="atelier-concept-visual">
+              <img src="/images/launch-brand.jpg" width="1672" height="941" alt="Concept FORMA: confezione gialla di caffè, tazza e materiali stampati su pietra naturale." loading="lazy" decoding="async" />
+              <figcaption class="atelier-concept-index">01 / Brand identity</figcaption>
+            </figure>
+            <div class="atelier-concept-caption">
+              <div class="atelier-concept-heading">
+                <p class="atelier-eyebrow">FORMA / Torrefazione indipendente</p>
+                <h3 id="forma-title">Un’identità che<br />si riconosce.</h3>
+              </div>
+              <div class="atelier-concept-description">
+                <p>Dal caffè allo scaffale: un sistema visivo che dà carattere al prodotto e tiene insieme ogni applicazione.</p>
+                <p class="atelier-deliverables">Naming · Logo · Packaging · Direzione artistica</p>
+              </div>
+            </div>
+            <details class="atelier-brief" id="atelier-idea-brand">
+              <summary><span>Descrivi la tua idea di brand</span><span aria-hidden="true">+</span></summary>
+              <form data-idea-form data-service-label="Branding &amp; identità" action="https://wa.me/393479623498" method="get" target="_blank" rel="noopener noreferrer">
+                <label for="atelier-brief-brand">Che cosa vuoi creare o cambiare nel tuo brand?</label>
+                <textarea id="atelier-brief-brand" name="text" rows="3" required minlength="12" maxlength="1200" placeholder="Raccontaci la tua attività, il pubblico e il punto da cui parti." aria-describedby="atelier-brief-brand-help"></textarea>
+                <div class="atelier-brief-bottom">
+                  <span class="idea-count" data-idea-count aria-hidden="true">0 / 1200</span>
+                  <button type="submit">Prepara su WhatsApp <span aria-hidden="true">↗</span></button>
+                </div>
+                <p class="idea-help" id="atelier-brief-brand-help">Il testo si apre su WhatsApp: rileggilo e scegli tu quando inviarlo.</p>
+                <p class="idea-status" data-idea-status role="status" aria-live="polite"></p>
+              </form>
+            </details>
+            <p class="atelier-concept-note">Concept originale, non commissionato. Immagine generata con AI.</p>
+          </article>
+
+          <article class="atelier-concept atelier-concept-web" aria-labelledby="avant-title">
+            <figure class="atelier-concept-visual">
+              <div class="atelier-web-sample" aria-label="Esempio visivo di un sito per uno studio di architettura">
+                <div class="atelier-web-nav"><strong>AVANT</strong><span>Progetti&nbsp;&nbsp; Studio&nbsp;&nbsp; Contatti ↗</span></div>
+                <p class="atelier-web-title">Spazi da vivere.</p>
+                <div class="atelier-web-image"><img src="/images/launch-architecture.jpg" width="1672" height="941" alt="Architettura contemporanea in travertino, nella pagina iniziale del concept web AVANT." loading="lazy" decoding="async" /></div>
+                <div class="atelier-web-bottom"><span>Casa nella luce / Progetto 01</span><span>Esplora ↗</span></div>
+              </div>
+              <figcaption class="atelier-concept-index">02 / Siti web</figcaption>
+            </figure>
+            <div class="atelier-concept-caption">
+              <div class="atelier-concept-heading">
+                <p class="atelier-eyebrow">AVANT / Studio di architettura</p>
+                <h3 id="avant-title">Lo spazio diventa<br />esperienza digitale.</h3>
+              </div>
+              <div class="atelier-concept-description">
+                <p>Una direzione web essenziale: immagini protagoniste, progetti facili da esplorare e un percorso chiaro verso il contatto.</p>
+                <p class="atelier-deliverables">Direzione web · UI design · Sviluppo · Responsive</p>
+              </div>
+            </div>
+            <details class="atelier-brief" id="atelier-idea-web">
+              <summary><span>Descrivi il sito che immagini</span><span aria-hidden="true">+</span></summary>
+              <form data-idea-form data-service-label="Siti web &amp; esperienze digitali" action="https://wa.me/393479623498" method="get" target="_blank" rel="noopener noreferrer">
+                <label for="atelier-brief-web">Che cosa dovrebbe raccontare e permettere di fare il tuo sito?</label>
+                <textarea id="atelier-brief-web" name="text" rows="3" required minlength="12" maxlength="1200" placeholder="Un sito vetrina, un e-commerce, una landing o un’esperienza 3D?" aria-describedby="atelier-brief-web-help"></textarea>
+                <div class="atelier-brief-bottom">
+                  <span class="idea-count" data-idea-count aria-hidden="true">0 / 1200</span>
+                  <button type="submit">Prepara su WhatsApp <span aria-hidden="true">↗</span></button>
+                </div>
+                <p class="idea-help" id="atelier-brief-web-help">Il testo si apre su WhatsApp: rileggilo e scegli tu quando inviarlo.</p>
+                <p class="idea-status" data-idea-status role="status" aria-live="polite"></p>
+              </form>
+            </details>
+            <p class="atelier-concept-note">Concept originale, non commissionato. Architettura generata con AI; il sito è una direzione progettuale possibile.</p>
+          </article>
+
+          <article class="atelier-concept atelier-concept-motion" aria-labelledby="ora-title">
+            <figure class="atelier-concept-visual">
+              <img src="/images/launch-product.jpg" width="1672" height="941" alt="Concept ORA: flacone di profumo in vetro con liquido ambrato, acqua scura e luce radente." loading="lazy" decoding="async" />
+              <figcaption class="atelier-concept-index">03 / Motion &amp; immagini di prodotto</figcaption>
+            </figure>
+            <div class="atelier-concept-caption">
+              <div class="atelier-concept-heading">
+                <p class="atelier-eyebrow">ORA / Lancio di una fragranza</p>
+                <h3 id="ora-title">Materia. Luce.<br />Carattere.</h3>
+              </div>
+              <div class="atelier-concept-description">
+                <p>Un’atmosfera costruita intorno al prodotto. Il punto di partenza per immagini, animazioni e contenuti di un lancio.</p>
+                <p class="atelier-deliverables">Concept visivo · Storyboard · CGI · Film di prodotto</p>
+              </div>
+            </div>
+            <details class="atelier-brief" id="atelier-idea-motion">
+              <summary><span>Descrivi la tua idea in movimento</span><span aria-hidden="true">+</span></summary>
+              <form data-idea-form data-service-label="Motion design &amp; immagini di prodotto" action="https://wa.me/393479623498" method="get" target="_blank" rel="noopener noreferrer">
+                <label for="atelier-brief-motion">Che cosa vuoi mettere in scena?</label>
+                <textarea id="atelier-brief-motion" name="text" rows="3" required minlength="12" maxlength="1200" placeholder="Un prodotto, un logo animato, un film di lancio: raccontaci il soggetto e l’obiettivo." aria-describedby="atelier-brief-motion-help"></textarea>
+                <div class="atelier-brief-bottom">
+                  <span class="idea-count" data-idea-count aria-hidden="true">0 / 1200</span>
+                  <button type="submit">Prepara su WhatsApp <span aria-hidden="true">↗</span></button>
+                </div>
+                <p class="idea-help" id="atelier-brief-motion-help">Il testo si apre su WhatsApp: rileggilo e scegli tu quando inviarlo.</p>
+                <p class="idea-status" data-idea-status role="status" aria-live="polite"></p>
+              </form>
+            </details>
+            <p class="atelier-concept-note">Concept visivo originale, non commissionato. Immagine generata con AI; non è un fotogramma di un film realizzato.</p>
+          </article>
+
+          <article class="atelier-concept atelier-concept-campaign" aria-labelledby="spazio-title">
+            <figure class="atelier-concept-visual">
+              <img src="/images/launch-campaign.jpg" width="1672" height="941" alt="Concept SPAZIO: una grande installazione di seta gialla attraversa un ambiente nero con fasci di luce bianca." loading="lazy" decoding="async" />
+              <figcaption class="atelier-concept-index">04 / Contenuti &amp; campagne</figcaption>
+            </figure>
+            <div class="atelier-concept-caption">
+              <div class="atelier-concept-heading">
+                <p class="atelier-eyebrow">SPAZIO / Rassegna culturale di un’APS</p>
+                <h3 id="spazio-title">Un evento.<br />Una presenza.</h3>
+              </div>
+              <div class="atelier-concept-description">
+                <p>Una direzione visiva per portare una rassegna in città: manifesti, teaser e contenuti che accompagnano le persone all’iscrizione.</p>
+                <p class="atelier-deliverables">Identità evento · Video · Social · Campagna</p>
+              </div>
+            </div>
+            <details class="atelier-brief" id="atelier-idea-campaign">
+              <summary><span>Descrivi la campagna che vuoi creare</span><span aria-hidden="true">+</span></summary>
+              <form data-idea-form data-service-label="Contenuti &amp; campagne" action="https://wa.me/393479623498" method="get" target="_blank" rel="noopener noreferrer">
+                <label for="atelier-brief-campaign">Che cosa vuoi promuovere e a chi vuoi arrivare?</label>
+                <textarea id="atelier-brief-campaign" name="text" rows="3" required minlength="12" maxlength="1200" placeholder="Raccontaci il brand, l’evento o l’iniziativa e il pubblico che vuoi coinvolgere." aria-describedby="atelier-brief-campaign-help"></textarea>
+                <div class="atelier-brief-bottom">
+                  <span class="idea-count" data-idea-count aria-hidden="true">0 / 1200</span>
+                  <button type="submit">Prepara su WhatsApp <span aria-hidden="true">↗</span></button>
+                </div>
+                <p class="idea-help" id="atelier-brief-campaign-help">Il testo si apre su WhatsApp: rileggilo e scegli tu quando inviarlo.</p>
+                <p class="idea-status" data-idea-status role="status" aria-live="polite"></p>
+              </form>
+            </details>
+            <p class="atelier-concept-note">Concept originale, non commissionato da un’associazione reale. Immagine generata con AI.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="atelier-services" id="services" aria-labelledby="services-title">
+        <div class="atelier-section-heading">
+          <p class="atelier-eyebrow">Dall’idea al lancio</p>
+          <h2 id="services-title">Quello che facciamo.</h2>
+        </div>
+        <div class="atelier-service-list">
+          <a class="atelier-service-row" href="#atelier-idea-brand">
+            <span class="atelier-service-number">01</span>
+            <h3>Brand identity</h3>
+            <p>Naming, loghi, identità visive e packaging.</p>
+            <span aria-hidden="true">↗</span>
+          </a>
+          <a class="atelier-service-row" href="#atelier-idea-web">
+            <span class="atelier-service-number">02</span>
+            <h3>Siti ed esperienze digitali</h3>
+            <p>Siti vetrina, e-commerce, landing page e web 3D.</p>
+            <span aria-hidden="true">↗</span>
+          </a>
+          <a class="atelier-service-row" href="#atelier-idea-motion">
+            <span class="atelier-service-number">03</span>
+            <h3>Motion design &amp; CGI</h3>
+            <p>Loghi animati, immagini e film di prodotto.</p>
+            <span aria-hidden="true">↗</span>
+          </a>
+          <a class="atelier-service-row" href="#atelier-idea-campaign">
+            <span class="atelier-service-number">04</span>
+            <h3>Contenuti e campagne</h3>
+            <p>Video, social e creatività per Meta e Google.</p>
+            <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="atelier-funding" id="funding" aria-labelledby="funding-title">
+        <div class="atelier-funding-heading">
+          <p class="atelier-eyebrow">Aziende · APS · ASD</p>
+          <h2 id="funding-title">La tua idea.<br />Un progetto concreto.</h2>
+          <p>Sviluppiamo progetti e candidature a bandi: mettiamo a fuoco obiettivi, attività, partner e budget, poi cerchiamo le opportunità adatte.</p>
+        </div>
+        <div class="atelier-funding-content">
+          <ol class="atelier-funding-steps">
+            <li><span>01</span><div><h3>Progettazione</h3><p>Bisogni, destinatari, risultati e piano di lavoro.</p></div></li>
+            <li><span>02</span><div><h3>Budget e partner</h3><p>Risorse, calendario e collaborazioni necessarie.</p></div></li>
+            <li><span>03</span><div><h3>Ricerca e candidatura</h3><p>Opportunità, requisiti e dossier da presentare.</p></div></li>
+          </ol>
+          <p class="atelier-funding-sources">Bandi europei, nazionali, regionali e provinciali. Opportunità private, fondazioni e istituti bancari.</p>
+          <details class="atelier-brief" id="atelier-idea-funding">
+            <summary><span>Descrivi il tuo progetto</span><span aria-hidden="true">+</span></summary>
+            <form data-idea-form data-service-label="Progetti &amp; bandi" action="https://wa.me/393479623498" method="get" target="_blank" rel="noopener noreferrer">
+              <label for="atelier-brief-funding">Qual è l’idea e per quale organizzazione?</label>
+              <textarea id="atelier-brief-funding" name="text" rows="3" required minlength="12" maxlength="1200" placeholder="Un’impresa, un’APS o un’ASD: descrivi l’iniziativa, il territorio e l’obiettivo." aria-describedby="atelier-brief-funding-help"></textarea>
+              <div class="atelier-brief-bottom">
+                <span class="idea-count" data-idea-count aria-hidden="true">0 / 1200</span>
+                <button type="submit">Prepara su WhatsApp <span aria-hidden="true">↗</span></button>
+              </div>
+              <p class="idea-help" id="atelier-brief-funding-help">Il testo si apre su WhatsApp: rileggilo e scegli tu quando inviarlo.</p>
+              <p class="idea-status" data-idea-status role="status" aria-live="polite"></p>
+            </form>
+          </details>
+          <p class="atelier-funding-note">Ogni percorso parte dalla verifica del bando e dei requisiti.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="atelier-footer" id="contact" aria-labelledby="contact-title">
+      <div class="atelier-contact-top">
+        <div>
+          <p class="atelier-eyebrow">Hai qualcosa in mente?</p>
+          <h2 id="contact-title">Diamogli<br /><em>spazio.</em></h2>
+        </div>
+        <div class="atelier-contact-actions">
+          <a class="atelier-button" href="https://wa.me/393479623498?text=Ciao%20Space%20Media%20Studio%2C%20vorrei%20parlare%20di%20un%20progetto." target="_blank" rel="noopener noreferrer">Parliamone su WhatsApp <span aria-hidden="true">↗</span></a>
+          <a class="atelier-phone" href="tel:+393479623498">347 962 3498 <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+      <div class="atelier-footer-details">
+        <p><strong>Space Media Studio</strong><br />Gabriele Capponi &amp; Mattia Tanzi</p>
+        <a href="https://www.google.com/maps/search/?api=1&amp;query=Stradello%20Conrad%20Marca%20Relli%201%2C%20Parma" target="_blank" rel="noopener noreferrer">Stradello Conrad Marca Relli 1<br />Parma, Italia <span aria-hidden="true">↗</span></a>
+        <a href="#top">Torna all’inizio <span aria-hidden="true">↑</span></a>
+      </div>
+      <div class="atelier-footer-bottom">
+        <span>© <span data-year>2026</span> Space Media Studio</span>
+        <span>Atelier / Anteprima della nuova direzione</span>
+      </div>
+      <div class="atelier-credits">
+        <p>Film macro dell’acqua: <a href="https://www.pexels.com/video/a-drop-of-water-in-a-bowl-with-a-black-background-16392049/" target="_blank" rel="noopener noreferrer">Film Composite / Pexels 16392049</a> · <a href="https://www.pexels.com/license/" target="_blank" rel="noopener noreferrer">Licenza Pexels</a>. Filmato stock, non una produzione dello studio.</p>
+        <p>L’ambiente 3D di apertura è uno studio immaginario. I quattro case sono concept originali con immagini AI, non lavori commissionati o clienti acquisiti.</p>
+      </div>
+    </footer>
+
+    <script type="module" src="/src/atelier.js"></script>
+  </body>
+</html>

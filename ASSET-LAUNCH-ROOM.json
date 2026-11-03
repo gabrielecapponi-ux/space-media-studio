@@ -205,7 +205,8 @@
       "current_metrics": "bundle size only; no browser runtime or GPU metrics",
       "gpu_frame_time_measured": false,
       "note": "Configured cadence is not a measured frame rate. Prior panel-scene timings are not current measurements."
-    }
+    },
+    "bundle_size_scope": "Main-only build before the independent Atelier preview entry and its media were added; not the combined current dist directory"
   },
   "revision": "cinematic-objects"
 }

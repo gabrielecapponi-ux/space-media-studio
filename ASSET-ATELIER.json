@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "preview": "atelier.html",
+  "scope": "Assets for the isolated Atelier preview only; the existing index.html scene remains a separate release.",
+  "asset": "Water macro",
+  "provenance": "Licensed photographic slow-motion stock. Not a CGI fluid simulation, AI video, Space shoot, client commission or interactive 3D model.",
+  "creator": "Film Composite",
+  "source_page": "https://www.pexels.com/video/a-drop-of-water-in-a-bowl-with-a-black-background-16392049/",
+  "source_profile": "https://www.pexels.com/@film-composite-518472883/",
+  "license": {
+    "name": "Pexels License",
+    "url": "https://www.pexels.com/license/",
+    "verification": "Official license page reviewed in the current task by the parent agent; original file provenance retained in ASSET-WATER.md and ASSET-WATER.json.",
+    "website_use": "Permits free website use, editing and marketing integration subject to its restrictions.",
+    "restrictions": "Do not imply endorsement, redistribute as stock, sell unaltered copies or claim public-domain status.",
+    "credit": "Film Composite / Pexels 16392049"
+  },
+  "original": {
+    "source": "Preserved 4K photographic master; this task copies existing approved derivatives without downloading or transcoding.",
+    "width": 3840,
+    "height": 2160,
+    "fps": 24,
+    "duration_seconds": 18.791667,
+    "sha256": "564f001b84bc027847e7bfa26a1850e7e5a714bc2df0d6a5295d98e8c40dfe6a"
+  },
+  "edit": {
+    "source_in_seconds": 1,
+    "source_out_seconds": 12.5,
+    "duration_seconds": 11.5,
+    "chronology": "Natural forward motion: falling drop, impact/crown, rebound column, expanding ripples. No reversal or synthetic interpolation.",
+    "grade": "Existing monochrome grade",
+    "transcode_in_current_task": false,
+    "new_generation": false,
+    "upscale": false,
+    "preview_first_start_seconds": 4.6,
+    "preview_subsequent_loop": "Natural forward playback from frame zero after the first end; no reverse playback."
+  },
+  "poster_choice": {
+    "selection": "Dramatic still at edit time 4.6 seconds, selected after viewing both frame-zero and rebound-column versions in desktop and portrait.",
+    "reason": "The column/drop is immediately legible for static, reduced-motion, data-saving or autoplay-blocked states. Frame zero is mostly empty dark water.",
+    "playback_caveat": "These posters are not frame-zero matches. The preview controller plans to seek to edit time 4.6 seconds after metadata/seeked for the first entrance, then play forward to the end; later native loops restart at frame zero. This aligns the editorial cue approximately, not a certified pixel-exact poster/video-frame match.",
+    "alternate_start_posters_preserved": "outputs/water-retired/water-start-desktop.jpg and water-start-mobile.jpg remain local; not copied into the four preview assets."
+  },
+  "assets": [
+    {
+      "path": "public/films/atelier-water-desktop.mp4",
+      "role": "desktop responsive hero video",
+      "source_local": "outputs/water-retired/water-desktop.mp4",
+      "bytes": 2819899,
+      "sha256": "b6484bb03e73abfbba221f826343a10b5d39dfd09617300c387661efd2cb1f23",
+      "width": 1920,
+      "height": 1080,
+      "duration_seconds": 11.5,
+      "frame_count": 276,
+      "fps": 24,
+      "codec": "H.264 High Level 4.1",
+      "pixel_format": "yuv420p",
+      "audio": false,
+      "mp4_fast_start": true,
+      "full_decode": "passed"
+    },
+    {
+      "path": "public/images/atelier-water-desktop.jpg",
+      "role": "desktop dramatic still / hero fallback poster",
+      "source_local": "outputs/water-retired/water-desktop.jpg",
+      "bytes": 56803,
+      "sha256": "bdea1e1a75644328483f58e95ca44e25a0ed60b363684ae10579b1219d5417c5",
+      "width": 1600,
+      "height": 900,
+      "edit_time_seconds": 4.6,
+      "source_time_seconds": 5.6,
+      "frame_zero_match": false,
+      "visual_inspection": "Central rebound column and separated droplet remain visible; portrait crop preserves both subject and surrounding ripple."
+    },
+    {
+      "path": "public/films/atelier-water-mobile.mp4",
+      "role": "mobile responsive hero video",
+      "source_local": "outputs/water-retired/water-mobile.mp4",
+      "bytes": 1424906,
+      "sha256": "116d3166149715df48847f749ab1bd184dfd93a553cbd4e3f891fab00c6c4930",
+      "width": 640,
+      "height": 900,
+      "duration_seconds": 11.5,
+      "frame_count": 276,
+      "fps": 24,
+      "codec": "H.264 High Level 4.1",
+      "pixel_format": "yuv420p",
+      "audio": false,
+      "mp4_fast_start": true,
+      "full_decode": "passed"
+    },
+    {
+      "path": "public/images/atelier-water-mobile.jpg",
+      "role": "mobile dramatic still / hero fallback poster",
+      "source_local": "outputs/water-retired/water-mobile.jpg",
+      "bytes": 36023,
+      "sha256": "a48a2b3c3c7e3e00a14f21ac670d0fde9c19be5185010d3d582349d1700e885e",
+      "width": 640,
+      "height": 900,
+      "edit_time_seconds": 4.6,
+      "source_time_seconds": 5.6,
+      "frame_zero_match": false,
+      "visual_inspection": "Central rebound column and separated droplet remain visible; portrait crop preserves both subject and surrounding ripple."
+    }
+  ],
+  "validation": {
+    "files": 4,
+    "full_video_decodes": "Both passed with ffmpeg -v error to a null sink",
+    "metadata": "FFprobe confirms exact dimensions, 276 frames, 24 fps, 11.5 seconds, H.264/YUV420P and no audio",
+    "mp4_atoms": "moov precedes mdat in both files",
+    "hashes": "Recorded from the copied preview files",
+    "visual_scope": "Four existing JPEG posters inspected as image artifacts; no browser or GPU performance claim."
+  },
+  "integration": {
+    "page": "atelier.html",
+    "status": "isolated_visual_direction_preview",
+    "entry": "Original studio assembly and camera; optional monitor artwork matches this page",
+    "first_automatic_seek_seconds": 4.6,
+    "playback": "Forward to end, then native loop from time zero; no reverse",
+    "motion_policy": "No automatic video source or 3D room under reduced motion or SaveData; manual playback is available",
+    "source_selection": "Responsive variant selected once; source is retained on device rotation",
+    "checks": "Full decode and media metadata passed; entry contracts and production build passed",
+    "browser_visual_check": "Not run: local browser use disabled in Work settings"
+  }
+}

@@ -46,7 +46,7 @@ I master raster sono locali e ignorati; i JPEG sono registrati con hash e byte i
 
 ## Verifica e pubblicazione
 
-Build e 31 gruppi di contratti passano con `npm test`: controller, brief e scena con geometrie Three reali, renderer e DOM simulati. I controlli separati dei modelli verificano pose reversibili, vertici finiti e proiezioni desktop/mobile; 256 campioni verificano il clipping nei quattro formati stretti. La build pesa 1.901.750 byte. La scena scarica inizialmente una sola immagine, quella architettonica.
+Build e 31 gruppi di contratti passano con `npm test`: controller, brief e scena con geometrie Three reali, renderer e DOM simulati. I controlli separati dei modelli verificano pose reversibili, vertici finiti e proiezioni desktop/mobile; 256 campioni verificano il clipping nei quattro formati stretti. La build dedicata alla sola pagina principale, prima dell’anteprima Atelier, pesava 1.901.750 byte. La scena scarica inizialmente una sola immagine, quella architettonica.
 
 Sotto 901 px lo spazio 4:3 segue il layout nativo: il canvas è ritagliato sul suo slot, sopra i fondi solidi dei capitoli, e non attraversa i testi. Sul desktop una superficie di lettura a sinistra mantiene il contrasto quando il colore della scena cambia. Titoli e azioni non scompaiono durante lo scroll.
 

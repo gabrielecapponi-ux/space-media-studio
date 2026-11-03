@@ -4,6 +4,8 @@ Studio creativo di **Gabriele Capponi e Mattia Tanzi**, a Parma. «**Le idee. In
 
 [Apri il sito](https://gabrielecapponi-ux.github.io/space-media-studio/)
 
+È disponibile anche una [anteprima editoriale indipendente](https://gabrielecapponi-ux.github.io/space-media-studio/atelier.html), che recupera il caricamento dello studio. Stato, media e limiti sono in [ATELIER-PREVIEW.md](./ATELIER-PREVIEW.md).
+
 ## Sviluppo e pubblicazione
 
 Node.js compatibile con Vite 8. La scena usa **Three.js 0.186.1**; non è richiesto un framework UI o un servizio remoto per il sito.
@@ -55,7 +57,7 @@ La scena viene importata dinamicamente quando le preferenze permettono il movime
 
 ## Stato delle verifiche
 
-La build di produzione e `npm test` passano: 19 gruppi coprono controller HTML e brief, 12 gruppi coprono il controller 3D con geometrie Three reali e renderer/DOM simulati. I controlli degli oggetti verificano vertici finiti, ripetibilità delle pose e proiezioni numeriche a 1200×728 e 390×844. Altri 256 campioni verificano il ritaglio durante lo scroll a 320×667, 390×844, 844×390 e 900×800. I tre controlli riproducibili sono in `scripts/check-cinematic-*.mjs`. La build completa occupa 1.901.750 byte; il 3D richiede inizialmente soltanto il JPEG architettura da 383.589 byte, mentre gli altri concept rimangono nei ripieghi e nei dialog.
+La build di produzione e `npm test` passano: 19 gruppi coprono controller HTML e brief, 12 gruppi coprono il controller 3D con geometrie Three reali e renderer/DOM simulati. I controlli degli oggetti verificano vertici finiti, ripetibilità delle pose e proiezioni numeriche a 1200×728 e 390×844. Altri 256 campioni verificano il ritaglio durante lo scroll a 320×667, 390×844, 844×390 e 900×800. I tre controlli riproducibili sono in `scripts/check-cinematic-*.mjs`. La build della sola pagina principale, prima dell’aggiunta della pagina Atelier, occupava 1.901.750 byte; il 3D richiede inizialmente soltanto il JPEG architettura da 383.589 byte, mentre gli altri concept rimangono nei ripieghi e nei dialog.
 
 Quattro studi locali in Blender 5.2.1 verificano silhouette e materiali dei modelli esportati dal codice. Sono diagnostica in un renderer diverso, con font sostitutivo: non schermate del sito né una prova della resa WebGL. Il browser locale rimane disabilitato nelle impostazioni Work; la verifica visiva della pagina corrente non è stata eseguita. I risultati e i tempi della precedente scena a pannelli non attestano la nuova versione.
 

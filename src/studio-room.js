@@ -178,10 +178,13 @@ function brandArtwork(ctx, width, height) {
  * (0..1), then a finite dolly into the primary display (0..1). No idle loop,
  * downloaded models, external textures, or independent animation clocks.
  */
-export function createStudioRoom(container, { reduced = false } = {}) {
+export function createStudioRoom(container, { reduced = false, drawScreen } = {}) {
   const noop = { setProgress() {}, setZoom() {}, resize() {}, dispose() {} };
   if (!container?.appendChild) return noop;
   const compact = window.matchMedia("(max-width: 760px)").matches;
+  // The entry architecture is shared; an isolated preview can supply the
+  // page it will reveal without changing the original room or camera.
+  const screenArtwork = typeof drawScreen === "function" ? drawScreen : homeArtwork;
   const geometries = new Set(), materials = new Set(), textures = new Set();
   const boxGeometries = new Map();
   const tracks = [];
@@ -349,7 +352,7 @@ export function createStudioRoom(container, { reduced = false } = {}) {
 
     const bounds = container.getBoundingClientRect();
     artworkAspect = bounds.width / Math.max(1, bounds.height);
-    homeMap = texture(2048, 1152, (ctx, w, h) => homeArtwork(ctx, w, h, artworkAspect));
+    homeMap = texture(2048, 1152, (ctx, w, h) => screenArtwork(ctx, w, h, artworkAspect));
     const brandMap = texture(1280, 800, brandArtwork);
     const homeMaterial = ownMaterial(new THREE.MeshBasicMaterial({ map: homeMap, toneMapped: false }));
     const brandMaterial = ownMaterial(new THREE.MeshBasicMaterial({ map: brandMap, toneMapped: false }));
@@ -576,7 +579,7 @@ export function createStudioRoom(container, { reduced = false } = {}) {
     if (homeMap && ((nextAspect < 0.8) !== (artworkAspect < 0.8) ||
       (nextAspect < 0.8 && Math.abs(nextAspect - artworkAspect) > 0.005))) {
       artworkAspect = nextAspect;
-      homeMap.image = canvas(2048, 1152, (ctx, w, h) => homeArtwork(ctx, w, h, artworkAspect));
+      homeMap.image = canvas(2048, 1152, (ctx, w, h) => screenArtwork(ctx, w, h, artworkAspect));
       homeMap.needsUpdate = true;
     }
     const mobile = width <= 760 || (navigator.maxTouchPoints > 0 && width < 1025);
