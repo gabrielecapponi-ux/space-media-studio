@@ -10,45 +10,54 @@
   <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
   <link rel="preload" href="./fonts/DynaPuff.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="./fonts/InstrumentSans-Regular.woff2" as="font" type="font/woff2" crossorigin />
-  <script type="module" crossorigin src="./assets/main-lAXB2r6n.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/main-BUdg62Cl.css">
-  <link rel="stylesheet" crossorigin href="./assets/refinement-roxzzyor.css">
+  <script type="module" crossorigin src="./assets/menu-CgNHmhIq.js"></script>
+  <script type="module" crossorigin src="./assets/main-DwfRMwwm.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/menu-Czrl_DAx.css">
+  <link rel="stylesheet" crossorigin href="./assets/main-DS8haIkR.css">
 </head>
-<body class="quick-experience variant-b">
+<body class="quick-experience mascot-world variant-b">
   <a class="skip-link" href="#menu">Vai al menu</a>
   <div id="site">
     <header class="header">
       <a class="brand" href="#top" aria-label="Mr Smeet, inizio"><img src="./images/wordmark.png" alt="Mr Smeet" width="900" height="600" /></a>
-      <a class="header-location" href="#dove-siamo">PARMA<span>Via D’Azeglio 84/A</span></a><nav class="nav" aria-label="Navigazione principale"><a href="#menu">Il menu</a><a href="#storia">Il nostro mondo</a><a href="#truck">Food truck</a><a href="#dove-siamo">Dove siamo</a></nav>
-      <a class="button small pink" href="./ordina-b.html">ORDINA QUI <span aria-hidden="true">↗</span></a>
+      <nav class="nav" aria-label="Navigazione principale"><a href="#menu">Il menu</a><a href="#storia">Il nostro mondo</a><a href="#truck">Food truck</a><a href="#dove-siamo">Dove siamo</a></nav>
+      <a class="button small pink header-bag" href="./ordina-b.html" data-cart-open>IL SACCHETTO <span data-cart-count>0</span></a>
       <button class="mobile-menu" aria-label="Apri navigazione" aria-expanded="false" aria-controls="mobile-navigation"><span></span><span></span></button>
     </header>
-    <nav id="mobile-navigation" class="mobile-navigation" aria-label="Navigazione mobile" hidden><a href="#menu">Il menu ↗</a><a href="#storia">Il nostro mondo ↗</a><a href="#truck">Food truck ↗</a><a href="#dove-siamo">Dove siamo ↗</a><a href="./ordina-b.html">Ordina qui ↗</a></nav>
+    <nav id="mobile-navigation" class="mobile-navigation" aria-label="Navigazione mobile" hidden><a href="#menu">Il menu ↗</a><a href="#storia">Il nostro mondo ↗</a><a href="#truck">Food truck ↗</a><a href="#dove-siamo">Dove siamo ↗</a><a href="./ordina-b.html" data-cart-open>Il tuo sacchetto ↗</a></nav>
     <main>
-      <section class="hero" id="top" aria-labelledby="hero-title">
-        <div class="hero-intro">
-          <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span> IL MEETICO SMASH BURGER · PARMA</p>
-          <h1 id="hero-title">SMASH.<br /><span>CHE STILE.</span></h1>
-          <p class="hero-description">Bordi croccanti. Cheddar che cola.<br />Un carattere che riconosci al primo morso.</p>
-          <a class="button cream" href="#menu">SCEGLI IL TUO BURGER <span aria-hidden="true">↓</span></a>
-          <p class="hero-footnote">Su Glovo, gli stessi prezzi del negozio.</p>
+      <section class="mascot-hero" id="top" aria-labelledby="hero-title">
+        <div class="hero-welcome"><span>PARMA, OLTRETORRENTE</span><span>IL MEETICO SMASH BURGER</span><span aria-hidden="true">EST. BUONUMORE ✦</span></div>
+        <div class="mascot-hero-copy">
+          <p class="eyebrow">NICE TO SMEET YOU!</p>
+          <h1 id="hero-title">BAFFI SU.<br /><span>MORSI GIÙ.</span></h1>
+          <p class="mascot-hero-description">Sono Mr Smeet. Smash burger, cheddar<br class="desktop-break" /> e un certo savoir-faire. Ci diamo del tu?</p>
+          <a class="button cream hero-menu-cta" href="#menu">FAMMI VENIRE FAME <span aria-hidden="true">↓</span></a>
+          <a class="hero-address" href="#dove-siamo">Un piccolo mondo in via D’Azeglio 84/A ↗</a>
         </div>
-        <div class="hero-visual">
-          <span class="hero-star star-one" aria-hidden="true">✦</span><span class="hero-star star-two" aria-hidden="true">✧</span>
-          <div class="hero-seal" aria-hidden="true">NICE TO<br /><b>SMEET YOU!</b><span>☺</span></div>
-          <div class="product-stage photo-stage" id="hero-scene" aria-label="Classic Smash Burger Triplo">
-            <div class="photo-surface"><img class="hero-original-photo" src="./images/menu/classic-smash-burger-triplo.webp" alt="Il Classic Smash Burger Triplo di Mr Smeet, con cheddar fuso e cetrioli" width="1226" height="920" fetchpriority="high" /><video id="hero-film" muted playsinline loop preload="none" data-mobile-src="./films/classic-triplo-photo-mobile.mp4" data-desktop-src="./films/classic-triplo-photo.mp4" aria-hidden="true"></video></div>
-            <button class="film-toggle" id="hero-motion" aria-pressed="false">▷ Anima il burger</button>
-            <a class="photo-zoom" href="https://glovoapp.com/it/it/parma/stores/mr-smeet-pmf" target="_blank" rel="noopener noreferrer" data-product-photo="classic-smash-burger-triplo" aria-label="Foto e dettagli del Classic Triplo">＋</a>
+        <div class="mascot-hero-visual">
+          <span class="hero-handwritten" aria-hidden="true">Il piacere è tutto mio.</span>
+          <div id="mascot-stage" aria-label="La mascotte Mr Smeet ti dà il benvenuto">
+            <div class="mascot-figure"><img class="mascot-hero-art" src="./images/mascot-studio.webp" alt="Mr Smeet: burger con baffi, monocolo e cilindro, che saluta alzando il cappello" width="1100" height="854" fetchpriority="high" /><div class="mascot-fallback" aria-hidden="true"><img src="./images/original-logo.png" alt="" width="500" height="491" /></div></div>
+            <p class="mascot-stamp">PIACERE, MR SMEET.</p>
           </div>
-          <div class="hero-product-caption"><div><span class="eyebrow">IL CLASSIC TRIPLO</span><p>Tre volte <em>meetico.</em></p></div><div class="hero-price"><span>−20% SU GLOVO</span><div><s>16,00 €</s> <strong>12,80 €</strong></div></div></div>
-          <p class="film-credit">FOTO REALE · VIDEO CON IA SU RICHIESTA.</p>
+          <a class="hero-snack" href="#signature" aria-label="Scopri il Classic Triplo"><img src="./images/campaign/classic-triplo.webp" alt="" width="1100" height="826" decoding="async" /><span>Il mio lato<br /><b>più goloso.</b> ↙</span></a>
         </div>
-        <div class="hero-bottom"><span>BUON GUSTO. OTTIME MANIERE.</span><a href="#menu">IL PROSSIMO MORSO È QUI ↓</a></div>
+        <div class="hero-bottomline"><span>EDUCAZIONE INGLESE. FAME MOLTO ITALIANA.</span><a href="#menu">GIÙ C’È DA MORDERE ↓</a></div>
       </section>
       <div class="brand-ribbon" aria-hidden="true"><span>SMASH IT.</span><i>✳</i><span>LOVE IT.</span><i>✳</i><span>SMEET AGAIN.</span><i>✳</i><span>SMASH IT.</span><i>✳</i><span>LOVE IT.</span></div>
+      <section class="signature-section section-pad" id="signature" aria-labelledby="signature-title">
+        <div class="signature-visual" id="hero-scene">
+          <span class="signature-orbit" aria-hidden="true"></span><span class="signature-spark" aria-hidden="true">✦</span>
+          <a class="signature-photo" href="./ordina-b.html" data-product-photo="classic-smash-burger-triplo" aria-label="Scopri gli ingredienti del Classic Triplo"><img src="./images/campaign/classic-triplo.webp" alt="Classic Smash Burger Triplo: pane rustico, carne croccante, cheddar e cetrioli" width="1100" height="826" loading="lazy" /></a>
+          <video id="hero-film" muted playsinline loop preload="none" data-mobile-src="./films/classic-triplo-photo-mobile.mp4" data-desktop-src="./films/classic-triplo-photo.mp4" aria-hidden="true"></video>
+          <button class="film-toggle" id="hero-motion" aria-pressed="false">▷ Anima il burger</button>
+          <span class="signature-number" aria-hidden="true">01 / THE CLASSICS</span>
+        </div>
+        <div class="signature-copy"><p class="eyebrow">SCELTO DAL BAFFO</p><h2 id="signature-title">È LUI.<br /><span>IL TRIPLO.</span></h2><p>Il pane, la crosticina, quel cheddar.<br />Basta guardarlo per capirsi.</p><div class="ingredient-pills"><span>Carne</span><span>Cheddar</span><span>Cetrioli</span><span>Salsa</span></div><div class="signature-purchase"><div><span class="signature-offer">−20% su Glovo</span><p><s>16,00 €</s> <strong>12,80 €</strong></p></div><a class="button green" href="./ordina-b.html" data-add-to-cart="classic-smash-burger-triplo">NEL SACCHETTO <span aria-hidden="true">＋</span></a></div><a class="signature-details" href="./ordina-b.html" data-product-photo="classic-smash-burger-triplo">Foto originale e ingredienti ↗</a></div>
+      </section>
       <section class="menu-section simple-menu section-pad" id="menu" aria-labelledby="menu-title">
-        <div class="section-heading"><div><p class="eyebrow">FATTI VENIRE FAME</p><h2 id="menu-title">IL MENU.</h2></div><p>Foto, ingredienti e prezzi.<br />Scegli il tuo prossimo morso.</p></div>
+        <div class="section-heading"><div><p class="eyebrow">FATTI VENIRE FAME</p><h2 id="menu-title">UN MORSO<br /><span>E CI SIAMO.</span></h2></div><p>Scegli quello che ti va. Al sacchetto ci pensiamo insieme.</p></div>
         <div class="simple-menu-filters" role="group" aria-label="Filtra il menu per categoria">
           <button type="button" data-menu-filter="all" aria-pressed="true" aria-controls="simple-menu-groups" disabled>Tutto <span>10</span></button>
           <button type="button" data-menu-filter="burger" aria-pressed="false" aria-controls="simple-menu-groups" disabled>Burger <span>4</span></button>
@@ -60,68 +69,68 @@
           <section class="simple-menu-group" data-menu-group="burger" aria-labelledby="group-burger-title">
             <div class="simple-group-heading"><h3 id="group-burger-title">Burger</h3><span>4 proposte</span></div>
             <div class="simple-product-grid">
-            <article class="product-card" data-menu-product="classic-smash-burger-triplo">
-              <a class="product-photo" href="https://glovoapp.com/it/it/parma/stores/mr-smeet-pmf" target="_blank" rel="noopener noreferrer" data-product-photo="classic-smash-burger-triplo" aria-label="Foto e dettagli di Classic Smash Burger Triplo">
-                <img src="./images/menu/classic-smash-burger-triplo.webp" alt="Classic Smash Burger Triplo" width="800" height="800" loading="lazy" decoding="async" />
+            <article class="product-card campaign-product" data-menu-product="classic-smash-burger-triplo" data-photo-original="./images/menu/classic-smash-burger-triplo.webp">
+              <a class="product-photo" href="./ordina-b.html" data-product-photo="classic-smash-burger-triplo" aria-label="Foto e dettagli di Classic Smash Burger Triplo">
+                <img src="./images/campaign/classic-triplo.webp" alt="Classic Smash Burger Triplo" width="800" height="800" loading="lazy" decoding="async" />
                 <span class="simple-photo-detail" aria-hidden="true">＋</span>
               </a>
               <div class="product-info product-content">
                 <div class="product-badges"><span class="promo-badge">−20% su Glovo</span></div>
-                <h3 class="product-name"><a href="https://glovoapp.com/it/it/parma/stores/mr-smeet-pmf" target="_blank" rel="noopener noreferrer" data-product-photo="classic-smash-burger-triplo">Classic Smash Burger Triplo</a></h3>
+                <h3 class="product-name"><a href="./ordina-b.html" data-product-photo="classic-smash-burger-triplo">Classic Smash Burger Triplo</a></h3>
                 <p class="product-description">Carne, cheddar, cetrioli e salsa.</p>
                 
               </div>
               <div class="product-footer">
                   <div class="product-price"><s class="price-original">16,00 €</s> <strong class="price-current">12,80 €</strong></div>
-                  <a class="product-action" href="https://glovoapp.com/it/it/parma/stores/mr-smeet-pmf" target="_blank" rel="noopener noreferrer" aria-label="Apri il menu Glovo per ordinare Classic Smash Burger Triplo">Ordina su Glovo <span aria-hidden="true">↗</span></a>
+                  <a class="product-action" href="./ordina-b.html" data-add-to-cart="classic-smash-burger-triplo" aria-label="Aggiungi Classic Smash Burger Triplo al sacchetto">Aggiungi <span aria-hidden="true">+</span></a>
               </div>
             </article>
             <article class="product-card" data-menu-product="classic-smash-burger-doppio">
-              <a class="product-photo" href="https://glovoapp.com/it/it/parma/stores/mr-smeet-pmf" target="_blank" rel="noopener noreferrer" data-product-photo="classic-smash-burger-doppio" aria-label="Foto e dettagli di Classic Smash Burger Doppio">
+              <a class="product-photo" href="./ordina-b.html" data-product-photo="classic-smash-burger-doppio" aria-label="Foto e dettagli di Classic Smash Burger Doppio">
                 <img src="./images/menu/classic-smash-burger-doppio.webp" alt="Classic Smash Burger Doppio" width="800" height="800" loading="lazy" decoding="async" />
                 <span class="simple-photo-detail" aria-hidden="true">＋</span>
               </a>
               <div class="product-info product-content">
                 
-                <h3 class="product-name"><a href="https://glovoapp.com/it/it/parma/stores/mr-smeet-pmf" target="_blank" rel="noopener noreferrer" data-product-photo="classic-smash-burger-doppio">Classic Smash Burger Doppio</a></h3>
+                <h3 class="product-name"><a href="./ordina-b.html" data-product-photo="classic-smash-burger-doppio">Classic Smash Burger Doppio</a></h3>
                 <p class="product-description">Doppio burger di carne, cheddar, cetrioli e salsa.</p>
                 
               </div>
               <div class="product-footer">
                   <div class="product-price"><strong class="price-current">12,00 €</strong></div>
-                  <a class="product-action" href="https://glovoapp.com/it/it/parma/stores/mr-smeet-pmf" target="_blank" rel="noopener noreferrer" aria-label="Apri il menu Glovo per ordinare Classic Smash Burger Doppio">Ordina su Glovo <span aria-hidden="true">↗</span></a>
+                  <a class="product-action" href="./ordina-b.html" data-add-to-cart="classic-smash-burger-doppio" aria-label="Aggiungi Classic Smash Burger Doppio al sacchetto">Aggiungi <span aria-hidden="true">+</span></a>
               </div>
             </article>
             <article class="product-card" data-menu-product="100-percento-vegano">
-              <a class="product-photo" href="https://glovoapp.com/it/it/parma/stores/mr-smeet-pmf" target="_blank" rel="noopener noreferrer" data-product-photo="100-percento-vegano" aria-label="Foto e dettagli di 100% vegano">
+              <a class="product-photo" href="./ordina-b.html" data-product-photo="100-percento-vegano" aria-label="Foto e dettagli di 100% vegano">
                 <img src="./images/menu/100-percento-vegano.webp" alt="100% vegano" width="800" height="800" loading="lazy" decoding="async" />
                 <span class="simple-photo-detail" aria-hidden="true">＋</span>
               </a>
               <div class="product-info product-content">
                 <div class="product-badges"><span class="diet-badge">Vegano</span></div>
-                <h3 class="product-name"><a href="https://glovoapp.com/it/it/parma/stores/mr-smeet-pmf" target="_blank" rel="noopener noreferrer" data-product-photo="100-percento-vegano">100% vegano</a></h3>
+                <h3 class="product-name"><a href="./ordina-b.html" data-product-photo="100-percento-vegano">100% vegano</a></h3>
                 <p class="product-description">Pane vegano, Beyond Meat, maionese vegana, cheddar vegano e cetrioli.</p>
                 
               </div>
               <div class="product-footer">
                   <div class="product-price"><strong class="price-current">12,00 €</strong></div>
-                  <a class="product-action" href="https://glovoapp.com/it/it/parma/stores/mr-smeet-pmf" target="_blank" rel="noopener noreferrer" aria-label="Apri il menu Glovo per ordinare 100% vegano">Ordina su Glovo <span aria-hidden="true">↗</span></a>
+                  <a class="product-action" href="./ordina-b.html" data-add-to-cart="100-percento-vegano" aria-label="Aggiungi 100% vegano al sacchetto">Aggiungi <span aria-hidden="true">+</span></a>
               </div>
             </article>
             <article class="product-card" data-menu-product="plant-based-burger-doppio">
-              <a class="product-photo" href="https://glovoapp.com/it/it/parma/stores/mr-smeet-pmf" target="_blank" rel="noopener noreferrer" data-product-photo="plant-based-burger-doppio" aria-label="Foto e dettagli di Plant Based Burger Doppio">
+              <a class="product-photo" href="./ordina-b.html" data-product-photo="plant-based-burger-doppio" aria-label="Foto e dettagli di Plant Based Burger Doppio">
                 <img src="./images/menu/plant-based-burger-doppio.webp" alt="Plant Based Burger Doppio" width="800" height="800" loading="lazy" decoding="async" />
                 <span class="simple-photo-detail" aria-hidden="true">＋</span>
               </a>
               <div class="product-info product-content">
                 
-                <h3 class="product-name"><a href="https://glovoapp.com/it/it/parma/stores/mr-smeet-pmf" target="_blank" rel="noopener noreferrer" data-product-photo="plant-based-burger-doppio">Plant Based Burger Doppio</a></h3>
+                <h3 class="product-name"><a href="./ordina-b.html" data-product-photo="plant-based-burger-doppio">Plant Based Burger Doppio</a></h3>
                 <p class="product-description">Burger plant based, cheddar e salsa.</p>
                 <p class="product-options">Cipolla +1,50 €</p>
               </div>
               <div class="product-footer">
                   <div class="product-price"><strong class="price-current">15,00 €</strong></div>
-                  <a class="product-action" href="https://glovoapp.com/it/it/parma/stores/mr-smeet-pmf" target="_blank" rel="noopener noreferrer" aria-label="Apri il menu Glovo per ordinare Plant Based Burger Doppio">Ordina su Glovo <span aria-hidden="true">↗</span></a>
+                  <a class="product-action" href="./ordina-b.html" data-add-to-cart="plant-based-burger-doppio" aria-label="Aggiungi Plant Based Burger Doppio al sacchetto">Aggiungi <span aria-hidden="true">+</span></a>
               </div>
             </article>
             </div>
@@ -129,52 +138,52 @@
           <section class="simple-menu-group" data-menu-group="menu" aria-labelledby="group-menu-title">
             <div class="simple-group-heading"><h3 id="group-menu-title">Menù completi</h3><span>3 proposte</span></div>
             <div class="simple-product-grid">
-            <article class="product-card" data-menu-product="classic-smash-menu">
-              <a class="product-photo" href="https://glovoapp.com/it/it/parma/stores/mr-smeet-pmf" target="_blank" rel="noopener noreferrer" data-product-photo="classic-smash-menu" aria-label="Foto e dettagli di Classic Smash Menù">
-                <img src="./images/menu/classic-smash-menu.webp" alt="Classic Smash Menù" width="800" height="800" loading="lazy" decoding="async" />
+            <article class="product-card campaign-product" data-menu-product="classic-smash-menu" data-photo-original="./images/menu/classic-smash-menu.webp">
+              <a class="product-photo" href="./ordina-b.html" data-product-photo="classic-smash-menu" aria-label="Foto e dettagli di Classic Smash Menù">
+                <img src="./images/campaign/classic-menu.webp" alt="Classic Smash Menù" width="800" height="800" loading="lazy" decoding="async" />
                 <span class="simple-photo-detail" aria-hidden="true">＋</span>
               </a>
               <div class="product-info product-content">
                 <div class="product-badges"><span class="promo-badge">−20% su Glovo</span></div>
-                <h3 class="product-name"><a href="https://glovoapp.com/it/it/parma/stores/mr-smeet-pmf" target="_blank" rel="noopener noreferrer" data-product-photo="classic-smash-menu">Classic Smash Menù</a></h3>
+                <h3 class="product-name"><a href="./ordina-b.html" data-product-photo="classic-smash-menu">Classic Smash Menù</a></h3>
                 <p class="product-description">Classic Smash Burger singolo, patatine e bibita.</p>
                 
               </div>
               <div class="product-footer">
                   <div class="product-price"><s class="price-original">18,00 €</s> <strong class="price-current">14,40 €</strong></div>
-                  <a class="product-action" href="https://glovoapp.com/it/it/parma/stores/mr-smeet-pmf" target="_blank" rel="noopener noreferrer" aria-label="Apri il menu Glovo per ordinare Classic Smash Menù">Ordina su Glovo <span aria-hidden="true">↗</span></a>
+                  <a class="product-action" href="./ordina-b.html" data-add-to-cart="classic-smash-menu" aria-label="Aggiungi Classic Smash Menù al sacchetto">Aggiungi <span aria-hidden="true">+</span></a>
               </div>
             </article>
             <article class="product-card" data-menu-product="chicken-burger-menu">
-              <a class="product-photo" href="https://glovoapp.com/it/it/parma/stores/mr-smeet-pmf" target="_blank" rel="noopener noreferrer" data-product-photo="chicken-burger-menu" aria-label="Foto e dettagli di Chicken Burger Menù">
+              <a class="product-photo" href="./ordina-b.html" data-product-photo="chicken-burger-menu" aria-label="Foto e dettagli di Chicken Burger Menù">
                 <img src="./images/menu/chicken-burger-menu.webp" alt="Chicken Burger Menù" width="800" height="800" loading="lazy" decoding="async" />
                 <span class="simple-photo-detail" aria-hidden="true">＋</span>
               </a>
               <div class="product-info product-content">
                 <div class="product-badges"><span class="promo-badge">−20% su Glovo</span></div>
-                <h3 class="product-name"><a href="https://glovoapp.com/it/it/parma/stores/mr-smeet-pmf" target="_blank" rel="noopener noreferrer" data-product-photo="chicken-burger-menu">Chicken Burger Menù</a></h3>
+                <h3 class="product-name"><a href="./ordina-b.html" data-product-photo="chicken-burger-menu">Chicken Burger Menù</a></h3>
                 <p class="product-description">Chicken Burger, patatine e bibita.</p>
                 
               </div>
               <div class="product-footer">
                   <div class="product-price"><s class="price-original">18,00 €</s> <strong class="price-current">14,40 €</strong></div>
-                  <a class="product-action" href="https://glovoapp.com/it/it/parma/stores/mr-smeet-pmf" target="_blank" rel="noopener noreferrer" aria-label="Apri il menu Glovo per ordinare Chicken Burger Menù">Ordina su Glovo <span aria-hidden="true">↗</span></a>
+                  <a class="product-action" href="./ordina-b.html" data-add-to-cart="chicken-burger-menu" aria-label="Aggiungi Chicken Burger Menù al sacchetto">Aggiungi <span aria-hidden="true">+</span></a>
               </div>
             </article>
             <article class="product-card" data-menu-product="menu-birra">
-              <a class="product-photo" href="https://glovoapp.com/it/it/parma/stores/mr-smeet-pmf" target="_blank" rel="noopener noreferrer" data-product-photo="menu-birra" aria-label="Foto e dettagli di Menù Birra">
+              <a class="product-photo" href="./ordina-b.html" data-product-photo="menu-birra" aria-label="Foto e dettagli di Menù Birra">
                 <img src="./images/menu/menu-birra.webp" alt="Menù Birra" width="800" height="800" loading="lazy" decoding="async" />
                 <span class="simple-photo-detail" aria-hidden="true">＋</span>
               </a>
               <div class="product-info product-content">
                 
-                <h3 class="product-name"><a href="https://glovoapp.com/it/it/parma/stores/mr-smeet-pmf" target="_blank" rel="noopener noreferrer" data-product-photo="menu-birra">Menù Birra</a></h3>
+                <h3 class="product-name"><a href="./ordina-b.html" data-product-photo="menu-birra">Menù Birra</a></h3>
                 <p class="product-description">Classic Smash Burger singolo, patatine e birra in lattina.</p>
                 
               </div>
               <div class="product-footer">
                   <div class="product-price"><strong class="price-current">20,00 €</strong></div>
-                  <a class="product-action" href="https://glovoapp.com/it/it/parma/stores/mr-smeet-pmf" target="_blank" rel="noopener noreferrer" aria-label="Apri il menu Glovo per ordinare Menù Birra">Ordina su Glovo <span aria-hidden="true">↗</span></a>
+                  <a class="product-action" href="./ordina-b.html" data-add-to-cart="menu-birra" aria-label="Aggiungi Menù Birra al sacchetto">Aggiungi <span aria-hidden="true">+</span></a>
               </div>
             </article>
             </div>
@@ -183,51 +192,51 @@
             <div class="simple-group-heading"><h3 id="group-fries-title">Contorni</h3><span>3 proposte</span></div>
             <div class="simple-product-grid">
             <article class="product-card" data-menu-product="nuggets-di-pollo">
-              <a class="product-photo" href="https://glovoapp.com/it/it/parma/stores/mr-smeet-pmf" target="_blank" rel="noopener noreferrer" data-product-photo="nuggets-di-pollo" aria-label="Foto e dettagli di Nuggets di pollo">
+              <a class="product-photo" href="./ordina-b.html" data-product-photo="nuggets-di-pollo" aria-label="Foto e dettagli di Nuggets di pollo">
                 <img src="./images/menu/nuggets-di-pollo.webp" alt="Nuggets di pollo" width="800" height="800" loading="lazy" decoding="async" />
                 <span class="simple-photo-detail" aria-hidden="true">＋</span>
               </a>
               <div class="product-info product-content">
                 
-                <h3 class="product-name"><a href="https://glovoapp.com/it/it/parma/stores/mr-smeet-pmf" target="_blank" rel="noopener noreferrer" data-product-photo="nuggets-di-pollo">Nuggets di pollo</a></h3>
+                <h3 class="product-name"><a href="./ordina-b.html" data-product-photo="nuggets-di-pollo">Nuggets di pollo</a></h3>
                 <p class="product-description">Bocconcini di pollo croccanti.</p>
                 
               </div>
               <div class="product-footer">
                   <div class="product-price"><strong class="price-current">6,50 €</strong></div>
-                  <a class="product-action" href="https://glovoapp.com/it/it/parma/stores/mr-smeet-pmf" target="_blank" rel="noopener noreferrer" aria-label="Apri il menu Glovo per ordinare Nuggets di pollo">Ordina su Glovo <span aria-hidden="true">↗</span></a>
+                  <a class="product-action" href="./ordina-b.html" data-add-to-cart="nuggets-di-pollo" aria-label="Aggiungi Nuggets di pollo al sacchetto">Aggiungi <span aria-hidden="true">+</span></a>
               </div>
             </article>
             <article class="product-card" data-menu-product="sweet-fries">
-              <a class="product-photo" href="https://glovoapp.com/it/it/parma/stores/mr-smeet-pmf" target="_blank" rel="noopener noreferrer" data-product-photo="sweet-fries" aria-label="Foto e dettagli di Sweet Fries">
+              <a class="product-photo" href="./ordina-b.html" data-product-photo="sweet-fries" aria-label="Foto e dettagli di Sweet Fries">
                 <img src="./images/menu/sweet-fries.webp" alt="Sweet Fries" width="800" height="800" loading="lazy" decoding="async" />
                 <span class="simple-photo-detail" aria-hidden="true">＋</span>
               </a>
               <div class="product-info product-content">
                 
-                <h3 class="product-name"><a href="https://glovoapp.com/it/it/parma/stores/mr-smeet-pmf" target="_blank" rel="noopener noreferrer" data-product-photo="sweet-fries">Sweet Fries</a></h3>
+                <h3 class="product-name"><a href="./ordina-b.html" data-product-photo="sweet-fries">Sweet Fries</a></h3>
                 <p class="product-description">Patate dolci fritte.</p>
                 
               </div>
               <div class="product-footer">
                   <div class="product-price"><strong class="price-current">6,50 €</strong></div>
-                  <a class="product-action" href="https://glovoapp.com/it/it/parma/stores/mr-smeet-pmf" target="_blank" rel="noopener noreferrer" aria-label="Apri il menu Glovo per ordinare Sweet Fries">Ordina su Glovo <span aria-hidden="true">↗</span></a>
+                  <a class="product-action" href="./ordina-b.html" data-add-to-cart="sweet-fries" aria-label="Aggiungi Sweet Fries al sacchetto">Aggiungi <span aria-hidden="true">+</span></a>
               </div>
             </article>
             <article class="product-card" data-menu-product="classic-fries">
-              <a class="product-photo" href="https://glovoapp.com/it/it/parma/stores/mr-smeet-pmf" target="_blank" rel="noopener noreferrer" data-product-photo="classic-fries" aria-label="Foto e dettagli di Classic Fries">
+              <a class="product-photo" href="./ordina-b.html" data-product-photo="classic-fries" aria-label="Foto e dettagli di Classic Fries">
                 <img src="./images/menu/classic-fries.webp" alt="Classic Fries" width="800" height="800" loading="lazy" decoding="async" />
                 <span class="simple-photo-detail" aria-hidden="true">＋</span>
               </a>
               <div class="product-info product-content">
                 
-                <h3 class="product-name"><a href="https://glovoapp.com/it/it/parma/stores/mr-smeet-pmf" target="_blank" rel="noopener noreferrer" data-product-photo="classic-fries">Classic Fries</a></h3>
+                <h3 class="product-name"><a href="./ordina-b.html" data-product-photo="classic-fries">Classic Fries</a></h3>
                 <p class="product-description">Patatine fritte croccanti.</p>
                 
               </div>
               <div class="product-footer">
                   <div class="product-price"><strong class="price-current">5,50 €</strong></div>
-                  <a class="product-action" href="https://glovoapp.com/it/it/parma/stores/mr-smeet-pmf" target="_blank" rel="noopener noreferrer" aria-label="Apri il menu Glovo per ordinare Classic Fries">Ordina su Glovo <span aria-hidden="true">↗</span></a>
+                  <a class="product-action" href="./ordina-b.html" data-add-to-cart="classic-fries" aria-label="Aggiungi Classic Fries al sacchetto">Aggiungi <span aria-hidden="true">+</span></a>
               </div>
             </article>
             </div>
@@ -237,14 +246,14 @@
       </section>
 
       <section class="bag-section section-pad" id="ordina" aria-labelledby="bag-title">
-        <div class="bag-copy"><p class="eyebrow">DAL NOSTRO MONDO AL TUO DIVANO.</p><h2 id="bag-title">UN SACCO<br />DI <span>FELICITÀ.</span></h2><p>Il tuo prossimo morso è già nei tuoi pensieri.<br />Scegli la consegna o il ritiro in negozio.</p><a class="button green" href="./ordina-b.html">SCEGLI COME ORDINARE <span aria-hidden="true">↗</span></a><span class="bag-price-note">Su Glovo, gli stessi prezzi dei prodotti in negozio.</span></div>
-        <a class="bag-link" href="./ordina-b.html" aria-label="Ordina qui: scegli consegna o ritiro">
+        <div class="bag-copy"><p class="eyebrow">DAL NOSTRO MONDO AL TUO DIVANO.</p><h2 id="bag-title">UN SACCO<br />DI <span>FELICITÀ.</span></h2><p>Il tuo prossimo morso è già nei tuoi pensieri.<br />Metti insieme i tuoi preferiti. Al resto pensiamo dopo.</p><a class="button green" href="./ordina-b.html" data-cart-open>APRI IL TUO SACCHETTO <span data-cart-count>0</span></a><span class="bag-price-note">Scegli, aggiungi, sorridi. La tua lista resta qui.</span></div>
+        <a class="bag-link" href="./ordina-b.html" data-cart-open aria-label="Apri il tuo sacchetto">
           <span class="bag-circle" aria-hidden="true"></span><span class="bag-spark" aria-hidden="true">✦</span>
-          <span class="paper-bag" aria-hidden="true"><span class="bag-handle back-handle"></span><span class="bag-side"></span><span class="bag-top"></span><span class="bag-face"><img src="./images/original-logo.png" width="500" height="491" alt="" loading="lazy" /><span class="bag-message">ORDINA<br />QUI <b>↗</b></span><span class="bag-bottom-line">HAPPINESS. TO GO.</span></span><span class="bag-handle front-handle"></span><span class="bag-fold"></span></span><span class="bag-shadow" aria-hidden="true"></span><span class="bag-invitation">APRI IL SACCHETTO ↗</span>
+          <span class="paper-bag" aria-hidden="true"><span class="bag-handle back-handle"></span><span class="bag-side"></span><span class="bag-top"></span><span class="bag-face"><img src="./images/original-logo.png" width="500" height="491" alt="" loading="lazy" /><span class="bag-message">BUONE<br />COSE. <b>＋</b></span><span class="bag-bottom-line">HAPPINESS. TO GO.</span></span><span class="bag-handle front-handle"></span><span class="bag-fold"></span></span><span class="bag-shadow" aria-hidden="true"></span><span class="bag-invitation">APRI IL SACCHETTO ↗</span>
         </a>
       </section>
       <section class="world-section section-pad" id="storia" aria-labelledby="story-title">
-        <div class="story-heading"><div><p class="eyebrow">DIETRO AL BAFFO</p><h2 id="story-title">PICCOLO POSTO.<br /><span>GRANDE CARATTERE.</span></h2></div><img src="./images/original-logo.png" class="story-mascot" alt="La mascotte originale Mr Smeet" width="500" height="491" loading="lazy" /></div>
+        <div class="story-heading"><div><p class="eyebrow">DIETRO AL BAFFO</p><h2 id="story-title">PICCOLO POSTO.<br /><span>GRANDE CARATTERE.</span></h2></div><img src="./images/mascot-studio.webp" class="story-mascot" alt="La mascotte Mr Smeet" width="1100" height="854" loading="lazy" /></div>
         <div class="story-body"><p>Una piastra, uno smash burger e un indirizzo nell’Oltretorrente: <strong>via D’Azeglio 84/A, a Parma.</strong> È qui che il mondo di Mr Smeet incontra la città, un morso alla volta.</p><p>Il carattere nasce dalla matita di <a href="https://www.isabellabersellini.com/portfolio-item/branding-mr-smeet/" target="_blank" rel="noopener noreferrer">Isabella Bersellini</a>, autrice di logo, mascotte e packaging. Baffi, monocolo e cilindro: un piccolo gentiluomo con una grande passione per lo smash.</p></div>
 <section class="optional-map" aria-labelledby="optional-map-title"><div><div><h3 id="optional-map-title">Parma, un morso alla volta.</h3><p>Una passeggiata animata fino a Mr Smeet.</p></div><button class="button cream" type="button" id="open-parma-map" aria-expanded="false" aria-controls="optional-map-content">ESPLORA LA MAPPA ANIMATA ↗</button></div><p data-map-status role="status" aria-live="polite"></p><div id="optional-map-content"></div><template id="optional-map-template">        <section class="parma-journey" id="parma-arrival" aria-labelledby="parma-title">
           <div class="parma-sticky">
@@ -263,9 +272,9 @@
         <div class="truck-details"><div><div class="event-tags"><span>FESTE PRIVATE</span><span>EVENTI AZIENDALI</span><span>FESTIVAL</span></div><p>Dal <a href="https://www.zebreparma.it/it-it/le-zebre-aspettano-edinburgh-sabato-al-lanfranchi-in-una-giornata-ricca-di-iniziative.aspx" target="_blank" rel="noopener noreferrer">Lanfranchi con le Zebre</a> al <a href="https://gorilla-collective-party.it/" target="_blank" rel="noopener noreferrer">Gorilla Collective</a>: ci piace portare il nostro mondo dove c’è voglia di stare insieme.</p></div><div><a class="button pink" href="mailto:Mrsmeetburger@gmail.com?subject=Food%20truck%20Mr%20Smeet%20%E2%80%94%20richiesta%20evento&body=Ciao!%0AData%3A%0ALuogo%3A%0ANumero%20di%20persone%3A%0ATipo%20di%20evento%3A">PARLIAMO DEL TUO EVENTO <span aria-hidden="true">↗</span></a><p class="truck-note">Dicci dove, quando e quanti sarete.<br />Chiedi disponibilità e una proposta dedicata.</p></div></div>
       </section>
     </main>
-    <dialog class="product-dialog" aria-labelledby="product-dialog-title" aria-describedby="product-dialog-description"><button class="dialog-close round-button" type="button" aria-label="Chiudi i dettagli del prodotto" autofocus>×</button><div class="product-dialog-layout"><img class="dialog-product-image" alt="" width="800" height="800" /><div class="dialog-product-info"><p class="eyebrow">IL TUO PROSSIMO MORSO</p><h2 id="product-dialog-title"></h2><p class="dialog-product-description" id="product-dialog-description"></p><p class="dialog-product-options"></p><p class="dialog-order-note">Su Glovo, gli stessi prezzi dei prodotti in negozio. Promozioni soggette a disponibilità; consegna e commissioni separate.</p><div class="dialog-purchase"><div class="dialog-product-price"></div><a class="button green dialog-glovo" href="https://glovoapp.com/it/it/parma/stores/mr-smeet-pmf" target="_blank" rel="noopener noreferrer">ORDINA SU GLOVO <span aria-hidden="true">↗</span></a><a class="dialog-pickup" href="tel:+3905211792168">Oppure chiama per il ritiro ↗</a></div></div></div></dialog>
+    <dialog class="product-dialog" aria-labelledby="product-dialog-title" aria-describedby="product-dialog-description"><button class="dialog-close round-button" type="button" aria-label="Chiudi i dettagli del prodotto" autofocus>×</button><div class="product-dialog-layout"><img class="dialog-product-image" alt="" width="800" height="800" /><div class="dialog-product-info"><p class="eyebrow">IL TUO PROSSIMO MORSO</p><h2 id="product-dialog-title"></h2><p class="dialog-product-description" id="product-dialog-description"></p><p class="dialog-product-options"></p><p class="dialog-order-note">Questa è la foto originale del prodotto. Aggiungilo alla tua lista, poi scegli come ordinare. Promozioni da verificare al momento dell’ordine.</p><div class="dialog-purchase"><div class="dialog-product-price"></div><button class="button green dialog-add" type="button">AGGIUNGI AL SACCHETTO <span aria-hidden="true">＋</span></button></div></div></div></dialog>
     <footer class="footer"><div class="footer-top"><p>NICE TO<br /><span>SMEET YOU.</span></p><a class="round-button" href="#top" aria-label="Torna all’inizio">↑</a></div><div class="footer-bottom"><span>© <span id="year">2026</span> MR SMEET · PARMA</span><div><button id="replay-intro">RIVEDI LA MASCOTTE ↻</button><button id="toggle-motion" aria-pressed="false" hidden>PAUSA ANIMAZIONI Ⅱ</button><a href="mailto:Mrsmeetburger@gmail.com">SCRIVICI ↗</a></div></div></footer>
   </div>
-<nav class="mobile-quick-nav" aria-label="Azioni rapide"><a href="#menu"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5h14M5 12h14M5 19h14"/><circle cx="3" cy="5" r=".3"/></svg><span>Menu</span></a><a class="quick-order" href="./ordina-b.html"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h12l2 13H4L6 7Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg><span>Ordina</span></a><a href="#dove-siamo"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 0 1 14 0Z"/><circle cx="12" cy="10" r="2.4"/></svg><span>Dove siamo</span></a></nav>
+<nav class="mobile-quick-nav" aria-label="Azioni rapide"><a href="#menu"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5h14M5 12h14M5 19h14"/><circle cx="3" cy="5" r=".3"/></svg><span>Menu</span></a><a class="quick-order" href="./ordina-b.html" data-cart-open><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h12l2 13H4L6 7Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg><span>Sacchetto <b data-cart-count>0</b></span></a><a href="#dove-siamo"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 0 1 14 0Z"/><circle cx="12" cy="10" r="2.4"/></svg><span>Dove siamo</span></a></nav>
 </body>
 </html>

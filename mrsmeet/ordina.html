@@ -3,42 +3,60 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#f2bbd1" />
-  <meta name="description" content="Ordina Mr Smeet su Glovo con gli stessi prezzi del negozio, oppure chiama e ritira in via D’Azeglio 84/A, Parma. Costi di consegna separati." />
+  <meta name="theme-color" content="#39bd9d" />
+  <meta name="description" content="Il tuo sacchetto Mr Smeet: ritrova i burger che hai scelto, modifica le quantità e scegli come ordinare. Il meetico smash burger di Parma." />
   <title>Ordina qui — Mr Smeet, Parma</title>
   <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" crossorigin href="./assets/refinement-roxzzyor.css">
+  <link rel="preload" href="./fonts/DynaPuff.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="./fonts/InstrumentSans-Regular.woff2" as="font" type="font/woff2" crossorigin />
+  <script type="module" crossorigin src="./assets/menu-CgNHmhIq.js"></script>
+  <script type="module" crossorigin src="./assets/order-DnMjja_F.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/menu-Czrl_DAx.css">
+  <link rel="stylesheet" crossorigin href="./assets/order-BlOa9PJa.css">
 </head>
-<body class="order-page">
-  <a class="skip-link" href="#scegli">Vai alle opzioni per ordinare</a>
-  <header class="order-header">
-    <a class="brand" href="./index.html" aria-label="Torna a Mr Smeet"><img src="./images/wordmark.png" alt="Mr Smeet" width="900" height="600" /></a>
-    <a class="order-back" href="./index.html#menu">← TORNA AL MENU</a>
+<body class="order-world">
+  <a class="skip-link" href="#scegli">Vai al tuo sacchetto</a>
+  <header class="bag-world-header">
+    <a class="brand" href="./index.html" aria-label="Mr Smeet, torna all’inizio"><img src="./images/wordmark.png" alt="Mr Smeet" width="900" height="600" /></a>
+    <span class="bag-world-header-note">BUON GUSTO. OTTIME MANIERE.</span>
+    <a class="bag-world-back" href="./index.html#menu" data-order-menu><span aria-hidden="true">↖</span> TORNA AL MENU</a>
   </header>
-  <main class="order-main" id="top">
-    <div class="order-intro">
-      <p class="eyebrow">CONSEGNA O RITIRO. SCEGLI TU.</p>
-      <h1>COME VUOI.<br /><span>DOVE VUOI.</span></h1>
-      <p>Il tuo Mr Smeet a casa con Glovo,<br />oppure da ritirare in negozio a Parma.</p>
-      <img class="order-portrait" loading="lazy" src="./images/original-logo.png" alt="La mascotte Mr Smeet con baffi, monocolo e cilindro" width="500" height="491" />
-    </div>
-    <div class="order-options" id="scegli">
-      <a class="order-option glovo-option" href="https://glovoapp.com/it/it/parma/stores/mr-smeet-pmf" target="_blank" rel="noopener noreferrer">
-        <span>CONSEGNA A DOMICILIO</span>
-        <h2>Glovo <b aria-hidden="true">↗</b></h2>
-        <p><strong>Su Glovo, gli stessi prezzi del negozio.</strong><br />Apri il menu e inserisci il tuo indirizzo per ordinare.</p>
-        <small>Consegna ed eventuali costi di servizio sono calcolati separatamente da Glovo.</small>
-      </a>
-      <a class="order-option" href="tel:+3905211792168">
-        <span>RITIRO IN NEGOZIO</span>
-        <h2>Chiama <b aria-hidden="true">↗</b></h2>
-        <p>Chiama il negozio, scegli il tuo burger e concorda l’orario del ritiro.</p>
-        <small>0521 1792168 · Via D’Azeglio 84/A, Parma.</small>
-      </a>
-      <p>Vieni a trovarci in via D’Azeglio 84/A, Parma.<br /><a href="https://www.google.com/maps/search/?api=1&query=Mr+Smeet+Via+D%27Azeglio+84A+Parma" target="_blank" rel="noopener noreferrer">Apri le indicazioni su Google Maps ↗</a></p>
-    </div>
+  <main id="scegli" class="bag-world-main">
+    <section class="bag-world-hero" aria-labelledby="bag-world-title">
+      <div class="bag-world-copy">
+        <p class="eyebrow"><span aria-hidden="true">✦</span> C’È POSTO PER UN ALTRO MORSO.</p>
+        <h1 id="bag-world-title">IL TUO<br /><span>SACCHETTO.</span></h1>
+        <p class="bag-world-lead">Tu metti la fame.<br />Mr Smeet ci mette lo stile.</p>
+        <p class="bag-world-description">Scegli i tuoi preferiti dal menu, ritrovali nel sacchetto e decidi come ordinarli.</p>
+        <div class="bag-world-actions">
+          <button class="bag-world-launch" type="button" data-cart-open disabled>
+            <svg viewBox="0 0 32 36" width="24" height="27" fill="none" aria-hidden="true"><path d="M5 11h22l2 22H3L5 11Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M11 14V8a5 5 0 0 1 10 0v6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <span>APRI IL SACCHETTO</span><span class="bag-world-count" data-cart-count aria-label="0 prodotti nel sacchetto">0</span>
+          </button>
+          <p class="bag-world-helper">Un’occhiata alle quantità. Poi scegli come ordinare.</p>
+          <p class="bag-world-feedback" data-order-feedback role="status" hidden>Il sacchetto non è disponibile in questo momento. <a href="./index.html#menu">Torna al menu</a> oppure chiamaci al <a href="tel:+3905211792168">0521 1792168</a>.</p>
+        </div>
+        <noscript>
+          <style>.bag-world-launch,.bag-world-helper{display:none}</style>
+          <div class="bag-world-fallback"><p>La fame non aspetta: puoi <a href="https://glovoapp.com/it/it/parma/stores/mr-smeet-pmf" target="_blank" rel="noopener noreferrer">aprire il menu su Glovo ↗</a> oppure <a href="tel:+3905211792168">chiamare per il ritiro</a>.</p></div>
+        </noscript>
+      </div>
+      <div class="bag-world-portrait">
+        <div class="bag-world-orbit" aria-hidden="true"></div>
+        <span class="bag-world-spark bag-world-spark-one" aria-hidden="true">✦</span>
+        <span class="bag-world-spark bag-world-spark-two" aria-hidden="true">✧</span>
+        <img class="bag-world-mascot" src="./images/mascot-studio.webp" alt="Mr Smeet, la mascotte con baffi, monocolo e cilindro, ti dà il benvenuto" width="1100" height="854" fetchpriority="high" decoding="async" />
+        <div class="bag-world-stamp" aria-hidden="true"><span>NICE TO</span><strong>SMEET<br />YOU!</strong><span>✦</span></div>
+        <p class="bag-world-caption">Fame fatta bene, dal primo all’ultimo morso.</p>
+      </div>
+    </section>
+    <div class="bag-world-ribbon" aria-hidden="true"><span>FAME?</span><i>✳</i><span>CI PENSA MR SMEET.</span><i>✳</i><span>FAME?</span><i>✳</i><span>CI PENSA MR SMEET.</span></div>
+    <section class="bag-world-visit" aria-label="Ritiro e contatti">
+      <p><strong>Preferisci chiamare?</strong><br /><a href="tel:+3905211792168">0521 1792168 <span aria-hidden="true">↗</span></a></p>
+      <p>Ci trovi in <strong>via D’Azeglio 84/A, Parma.</strong><br />Un salto in Oltretorrente. Un morso da ricordare.</p>
+      <a class="bag-world-visit-link" href="./index.html#dove-siamo">VIENI DA NOI <span aria-hidden="true">↗</span></a>
+    </section>
   </main>
-  <div class="order-reassurance"><span aria-hidden="true">✦</span><p><strong>Ci trovi anche di persona.</strong><br />Via D’Azeglio 84/A, nell’Oltretorrente a Parma.</p><a href="https://www.google.com/maps/search/?api=1&amp;query=Mr+Smeet+Via+D%27Azeglio+84A+Parma" target="_blank" rel="noopener noreferrer">Apri Maps ↗</a></div>
-  <footer class="order-footer"><span>MR SMEET · MEETICO SMASH BURGER.</span><a href="https://www.instagram.com/mr_smeet/" target="_blank" rel="noopener noreferrer">Seguici su Instagram ↗</a></footer>
+  <footer class="bag-world-footer"><span>MR SMEET · MEETICO SMASH BURGER.</span><a href="https://www.instagram.com/mr_smeet/" target="_blank" rel="noopener noreferrer">Seguici su Instagram <span aria-hidden="true">↗</span></a></footer>
 </body>
 </html>
