@@ -1,19 +1,17 @@
-# Dentro Space — regia visiva
+# Space — regia e chiarezza dell’offerta
 
-L’ingresso approvato rimane il riferimento: studio che si costruisce, zoom nel monitor, apertura «Brand. Web. Motion.» sull’acqua. Bianco caldo, grafite, giallo, Space Grotesk e DM Mono restano invariati.
+L’ingresso conserva studio, assemblaggio, zoom e acqua. I testi della hero e del monitor ora dichiarano il servizio: siti web, e-commerce, loghi e video. La geometria e la regia iniziale restano approvate.
 
-Il seguito usa cinque gesti coerenti con l’offerta, descritti in [MOTION-SERVICES.md](./MOTION-SERVICES.md). Una sequenza principale per servizio, un solo supporto fotografico dove serve, testi brevi e spazio vuoto. Sono rimossi la composizione web duplicata, il diagramma di progetto duplicato e gli elenchi ripetuti nei case. Restano quattro concept dimostrativi, senza clienti o commesse attribuiti, e una sezione distinta per progetti e bandi.
+Il primo capitolo è il nuovo showreel web: cinque attività e cinque linguaggi distinti rendono visibile la varietà dell’offerta. SHIFT vende un prodotto sportivo, VELA presenta il design, NOVA propone servizi, BASILICO prenotazioni e OLTRE iniziative per associazioni. I link aprono demo originali con azioni locali. Il precedente soggetto AVANT/architettura passa in archivio.
 
-## Movimento
+Seguono loghi e identità, video e animazioni, social e campagne; una sezione distinta spiega progettazione e bandi per aziende, APS e ASD. Titoli e verbi descrivono ciò che si può commissionare. Tutti i concept restano esempi non commissionati.
 
-`src/atelier-cinema.js` controlla i film sotto la hero e la parallasse dei dettagli. Il movimento degli oggetti è renderizzato in Blender con fasi periodiche; il sito non simula rotazione libera o configurazione. La camera e i materiali sono parte della composizione originale, con una sola intenzione per scena.
+## Movimento e interazione
 
-Il controller prepara i media vicino allo schermo e riproduce quelli visibili. Rispetta pausa esplicita, menu, pagina nascosta, movimento ridotto e risparmio dati. La rotazione del telefono non scarica di nuovo il film già scelto. La tipografia SPAZIO conserva una variante verticale; gli altri quattro film mantengono la proporzione nativa 16:10, senza tagliare gli oggetti.
+Il reel usa catture HTML native e transizioni CSS in prospettiva, codificate in video. Gli altri quattro film principali sono Blender. Il controller mantiene un solo film di servizio in primo piano, caricamento vicino allo schermo, pausa conservata, movimento ridotto e risparmio dati. Lo stato del reel evidenzia la direzione mostrata senza trasformare i link in falsi checkout.
 
-Scroll, testi, navigazione, cinque form e contatti restano HTML. Il visitatore decide se inviare la bozza su WhatsApp. Il dossier progettuale illustra metodo, attività e risorse, senza annunciare bandi aperti o promettere contributi.
+Il formato web è 16:9 su desktop e 4:5 su telefono, con composizioni dedicate. SPAZIO mantiene la propria variante verticale; gli altri tre film usano 16:10. Testi, navigazione, cinque box idea e contatti restano HTML, su scroll nativo.
 
-## Produzione e verifica
+La palette della homepage rimane carta, grafite e giallo. Le cinque demo hanno identità diverse, così da mostrare capacità progettuale e settori differenti. Descrizioni brevi, un film principale per servizio e immagini di supporto mantengono il percorso leggibile.
 
-La stanza è Three.js originale; l’acqua è stock fotografico dichiarato; i film dei servizi sono Blender; i tre dettagli fotografici sono raster AI. AVANT incorpora una texture architettonica AI. Provenienza e specifiche sono in [ASSET-SOURCES.md](./ASSET-SOURCES.md).
-
-`index.html` è canonico e `atelier.html` rimane un alias con `noindex`. I vecchi diorami Launch Room sono archivio sorgente, senza caricamento nella homepage. Build, prove del controller e verifiche reali nel browser sono documentate nel [README](./README.md#verifiche). Il deploy sostituisce solo le radici Space dichiarate.
+Provenienza e metodi sono in [ASSET-SOURCES.md](./ASSET-SOURCES.md); regia in [MOTION-SERVICES.md](./MOTION-SERVICES.md); verifiche correnti nel [README](./README.md#verifiche). Il deploy sostituisce solo le radici Space dichiarate e preserva gli altri siti.

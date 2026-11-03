@@ -1,17 +1,17 @@
 # Cinque servizi, cinque gesti
 
-Il riferimento approvato rimane l’ingresso nello studio e l’apertura con acqua. Nessuna modifica a camera, geometrie, sequenza o testi di quella parte.
+L’ingresso nello studio, l’assemblaggio, lo zoom e l’acqua restano il riferimento approvato. I testi dichiarano ora esplicitamente siti, e-commerce, loghi e video, con la stessa promessa sul monitor.
 
-Il percorso successivo usa una sola scena cinematografica principale per servizio. Gli oggetti spiegano ciò che si può commissionare; non sono decorazioni indipendenti dall’offerta. I quattro concept restano esempi non commissionati. Progetti e bandi mantiene un ruolo distinto e non promette finanziamenti.
-
-| Servizio | Gesto e oggetto | Funzione |
+| Servizio | Gesto e soggetto | Funzione |
 | --- | --- | --- |
-| Identità e logo | Materia stampata e segno FORMA che si allineano | Mostrare un sistema visivo, dal marchio alle applicazioni |
-| Siti web | Pagina desktop e impaginazione mobile in profondità | Rendere leggibili struttura, UI e responsive |
-| Motion e prodotto | Flacone ORA, cap e riflessi con camera controllata | Mostrare forma, luce, materiali e presentazione di prodotto |
-| Campagne e contenuti | Tipografia MAKE / IT MOVE. | Dare ritmo e riconoscibilità a un messaggio |
-| Progetti e bandi | Dossier e piani che si ordinano | Collegare idea, attività, calendario e budget |
+| Siti web ed e-commerce | Showreel rapido di SHIFT, VELA, NOVA, BASILICO e OLTRE | Mostrare in dieci secondi prodotti, servizi, prenotazioni ed eventi possibili |
+| Loghi e identità | Segno FORMA e materia stampata che si allineano | Collegare logo, packaging e comunicazione |
+| Video e animazioni | Flacone ORA, vetro e riflessi con camera controllata | Presentare un prodotto e il suo carattere |
+| Social e campagne | Tipografia MAKE / IT MOVE. | Dare ritmo e riconoscibilità al messaggio |
+| Progetti e bandi | Dossier e piani che si organizzano | Collegare idea, attività, calendario e budget |
 
-Palette, font e scala editoriale restano quelli approvati: carta, grafite, giallo. Niente nuove particelle, orbite decorative o scroll bloccato. La pausa è disponibile per ogni film. I film entrano nel caricamento solo quando si avvicinano allo schermo, si fermano fuori vista e rispettano movimento ridotto e risparmio dati. Quando due sequenze sono visibili, un solo film principale occupa il primo piano; una richiesta esplicita di riproduzione ha precedenza.
+Il reel web sostituisce AVANT e usa interfacce HTML originali catturate nel browser, con transizioni CSS 3D deterministiche e codifica FFmpeg. Non è un render Blender o un video AI. I quattro altri film sono Blender; le immagini AI rimangono raster di supporto. Le cinque demo sono consultabili e hanno interazioni locali dimostrative, senza pagamenti o invii esterni.
 
-I nuovi film sono render originali Blender, non mesh configurabili. Master e sequenze sono conservati localmente in `outputs/motion-services/`, mentre script, poster e film web fanno parte del progetto. Specifiche, provenienza e risultati effettivi sono raccolti nel manifest di produzione al termine delle verifiche.
+Una sequenza principale per servizio e uno stato di primo piano evitano movimenti concorrenti. La pausa resta disponibile, i film vengono preparati vicino allo schermo, le preferenze di movimento ridotto e risparmio dati mantengono il percorso statico. Navigazione, box idea e descrizioni rimangono HTML, con scroll nativo.
+
+Concept e marchi sono esempi possibili, non commesse. La progettazione resta distinta dai bandi aperti e non promette finanziamenti. Master, frame e catture rimangono locali in `outputs/web-reel/`, `outputs/nov26/` e `outputs/motion-services/`; i relativi manifest riportano provenienza e specifiche. Verifiche correnti nel [README](./README.md#verifiche).

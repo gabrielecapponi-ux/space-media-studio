@@ -1,0 +1,230 @@
+{
+  "schema_version": 1,
+  "project": "Space Media Studio",
+  "id": "web-showreel-20261103",
+  "purpose": "Replace architecture/apartment example with five concrete website directions and a fast immersive reel. Original illustrative concepts, not client commissions or real offers.",
+  "method": "Original responsive HTML interfaces captured natively in isolated headless Chrome. The five native stills are animated with deterministic CSS 3D perspective transforms and encoded into H.264 using local FFmpeg. This is not a Blender film, a live 3D mesh or AI image-to-video output.",
+  "timeline": {
+    "frames": 300,
+    "fps": 30,
+    "duration_seconds": 10,
+    "frames_per_scene": 60,
+    "transition_frames": 12,
+    "sites": [
+      "shift",
+      "vela",
+      "nude",
+      "basilico",
+      "oltre"
+    ],
+    "display_names": [
+      "SHIFT / E-commerce sport",
+      "VELA / Product design",
+      "NOVA / Beauty services",
+      "BASILICO / Restaurant bookings",
+      "OLTRE / Events and associations"
+    ],
+    "loop": "Absolute periodic frame state: frame300 equals frame0; encode contains native frames0..299, chronological forward movement. No interpolation/reversal.",
+    "chapter_label": "Shares the same pure timeline as the rendered movie."
+  },
+  "sources": [
+    {
+      "path": "scripts/render-web-showreel.mjs",
+      "sha256": "ebf2c86a12da42e5f5143933a2b7a6331a597667bdd88143c897a72961d31304"
+    },
+    {
+      "path": "scripts/web-reel-stage.html",
+      "sha256": "315ec8a31f438dbcc67626d2d961e0c512ed50a6745ffd2f262937e36957ec4b"
+    },
+    {
+      "path": "src/web-reel-timeline.js",
+      "sha256": "387966a2adc12d781f4afd9f8420e0a7558d08fbbd763d9b6f4695e59a73637a"
+    },
+    {
+      "path": "public/showcase/index.html",
+      "sha256": "35349c511cc7f92ae161069383a9cbd9f9a877255b4bed81506f793cab03bc40"
+    },
+    {
+      "path": "public/showcase/showcase.css",
+      "sha256": "f4e58d4db0eaa8e6f522ec5370b072b75a3675cb559c973a8ca93ec855b08ad1"
+    },
+    {
+      "path": "public/showcase/showcase.js",
+      "sha256": "bf5c5fa8d2d2eadb7448a51ace57f05ab0f922951b1de66a47dd75165e698727"
+    }
+  ],
+  "visual_provenance": "Four original image_gen bitmap assets in ASSET-WEB-REEL-VISUALS.json; OLTRE reuses the existing original AI yellow silk macro from ASSET-ATELIER-VISUALS.json. Images are not claimed as product meshes.",
+  "fonts": "Local Space Grotesk and DM Mono (OFL), CSS system serif rendered by Chrome. No new font binary distributed.",
+  "capture": {
+    "cli": "@playwright/cli@0.1.23",
+    "stills_jpeg_quality": 96,
+    "frames_jpeg_quality": 94,
+    "external_network_asset_sources": false,
+    "synthetic_frame_interpolation": false,
+    "post_render_resolution_upscale": false
+  },
+  "encoding": "FFmpeg8.1.2, libx264 presetmedium CRF18, H264High/yuv420p, faststart, noaudio; metadata is recorded from ffprobe.",
+  "variants": [
+    {
+      "id": "desktop",
+      "native": [
+        1920,
+        1080
+      ],
+      "duration_seconds": 10,
+      "fps": 30,
+      "frames": 300,
+      "film": {
+        "path": "public/films/web-showreel.mp4",
+        "bytes": 5371675,
+        "sha256": "ec0f5b0f35a8b9f405bab4092203377e50de68fa78ee919865449b45a25ebcc3",
+        "full_decode": "passed",
+        "faststart": true,
+        "mp4_atom_offsets": {
+          "ftyp": 0,
+          "moov": 32,
+          "free": 4820,
+          "mdat": 4828
+        }
+      },
+      "poster": {
+        "path": "public/images/web-showreel.jpg",
+        "bytes": 427256,
+        "sha256": "0f52b497553a8389f6cf53d46dfd835a495909d2167685036baad09d0a00963e",
+        "native": [
+          1920,
+          1080
+        ],
+        "source_frame": 0
+      },
+      "stream": {
+        "codec_name": "h264",
+        "profile": "High",
+        "width": 1920,
+        "height": 1080,
+        "pix_fmt": "yuv420p",
+        "r_frame_rate": "30/1",
+        "nb_frames": "300",
+        "color_space": "bt709",
+        "color_transfer": null,
+        "color_primaries": null
+      },
+      "masters": {
+        "folder": "outputs/web-reel/frames/desktop",
+        "count": 300,
+        "sequence_sha256": "b147d34fcbe11b8cf0edde706987d504891f1693ccb40d27fe33f113a9cacaf7",
+        "source_screenshots": "outputs/web-reel/screens/desktop"
+      },
+      "first_last_mean_absolute_rgb": [
+        4.347301793981481,
+        4.429320505401234,
+        4.177487461419753
+      ]
+    },
+    {
+      "id": "mobile",
+      "native": [
+        720,
+        900
+      ],
+      "duration_seconds": 10,
+      "fps": 30,
+      "frames": 300,
+      "film": {
+        "path": "public/films/web-showreel-mobile.mp4",
+        "bytes": 3131595,
+        "sha256": "c50dab96978f91e251fc4b1bbfea3f48811789bb0e2336f275ad204685393f8e",
+        "full_decode": "passed",
+        "faststart": true,
+        "mp4_atom_offsets": {
+          "ftyp": 0,
+          "moov": 32,
+          "free": 3944,
+          "mdat": 3952
+        }
+      },
+      "poster": {
+        "path": "public/images/web-showreel-mobile.jpg",
+        "bytes": 146385,
+        "sha256": "05d4d5191263295e4f49929aebbb932818f2aeff7479951afa60956990ee1bae",
+        "native": [
+          720,
+          900
+        ],
+        "source_frame": 0
+      },
+      "stream": {
+        "codec_name": "h264",
+        "profile": "High",
+        "width": 720,
+        "height": 900,
+        "pix_fmt": "yuv420p",
+        "r_frame_rate": "30/1",
+        "nb_frames": "300",
+        "color_space": "bt709",
+        "color_transfer": null,
+        "color_primaries": null
+      },
+      "masters": {
+        "folder": "outputs/web-reel/frames/mobile",
+        "count": 300,
+        "sequence_sha256": "bfa0e44bf188c1fbc30b4f6a734fc7da1f137b033d8a044916fe677973562022",
+        "source_screenshots": "outputs/web-reel/screens/mobile"
+      },
+      "first_last_mean_absolute_rgb": [
+        2.6329382716049383,
+        2.660787037037037,
+        2.625645061728395
+      ]
+    }
+  ],
+  "interactive_demos": {
+    "path": "public/showcase/",
+    "public_path": "showcase/index.html?scene=…",
+    "actions": "Local cart and modal request/booking/join forms. No payments, external submission, real inventory or actual bookings.",
+    "robots": "noindex,nofollow"
+  },
+  "integration": {
+    "current_replaces": "service-web.mp4 / AVANT architecture, kept as historical source asset",
+    "loading": "Near-viewport loading; one foreground service video; static poster under reduced motion or SaveData",
+    "opening": "Original studio assembly and water film retained; promise copy clarified and mirrored in monitor canvas"
+  },
+  "browser_validation": {
+    "status": "passed local production",
+    "engine": "isolated headless Chrome / PlaywrightCLI0.1.23",
+    "desktop": [
+      1440,
+      900
+    ],
+    "mobile_emulation": [
+      393,
+      852
+    ],
+    "additional_viewports": [
+      [
+        320,
+        667
+      ],
+      [
+        667,
+        900
+      ],
+      [
+        844,
+        390
+      ]
+    ],
+    "checks": [
+      "native1920x1080 and720x90010secondreel playback",
+      "all five chapter labels and active links match actual video seeks",
+      "all five demo links open and load original interfaces",
+      "local cart and three demo forms work without external request",
+      "five agency idea forms retained",
+      "reduced motion prevents all video source assignment; manual play works",
+      "landscape rotation contains retained portrait source"
+    ],
+    "javascript_errors": 0,
+    "external_submission": false,
+    "physical_iphone": false
+  }
+}

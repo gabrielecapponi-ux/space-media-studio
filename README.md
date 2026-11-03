@@ -1,14 +1,14 @@
 # Space Media Studio
 
-Studio creativo di **Gabriele Capponi e Mattia Tanzi**, a Parma. La homepage «**Brand. Web. Motion.**» unisce il caricamento 3D dello studio, il film macro dell’acqua e quattro concept di lavoro: identità, siti, immagini di prodotto e campagne. Ogni servizio ha una propria sequenza 3D originale. Progetti e bandi estende l’offerta ad aziende, APS e ASD, con un dossier tridimensionale dedicato.
+Studio creativo di **Gabriele Capponi e Mattia Tanzi**, a Parma. Creiamo **siti web, e-commerce, loghi, identità visive, video, animazioni 3D e campagne**. Affianchiamo aziende, APS e ASD nella progettazione e nelle candidature a bandi.
 
 [Apri il sito](https://gabrielecapponi-ux.github.io/space-media-studio/)
 
-`index.html` è la homepage canonica. `atelier.html`, la precedente anteprima, conserva lo stesso percorso come alias con `noindex, nofollow`. [ATELIER-PREVIEW.md](./ATELIER-PREVIEW.md) ne documenta ruolo e integrazione.
+La homepage canonica è `index.html`; `atelier.html` conserva lo stesso percorso come alias con `noindex, nofollow`. Il caricamento dello studio, lo zoom e l’acqua restano la direzione approvata. I testi dell’apertura e il monitor sono aggiornati intenzionalmente per spiegare l’offerta.
 
 ## Sviluppo e pubblicazione
 
-Il progetto usa HTML, CSS, JavaScript, Three.js 0.186.1 e Vite 8, senza un framework UI aggiuntivo. Font e media vengono serviti localmente.
+HTML, CSS, JavaScript, Three.js 0.186.1 e Vite 8. Font e media sono locali; la build usa gli asset già pronti.
 
 ```sh
 npm ci
@@ -19,48 +19,48 @@ npm run preview
 npm run deploy
 ```
 
-`npm test` esegue i controlli correnti di ingresso e contenuti cinematografici: 11 contratti per l’entry e 12 per il controller del percorso. I 31 contratti della vecchia Launch Room sono separati in `npm run test:legacy` e non attestano la resa della homepage attuale.
+`npm test` copre **28 contratti correnti**: undici per l’ingresso e diciassette per il controller dei film. I 31 contratti di Launch Room rimangono separati in `npm run test:legacy` e non attestano la homepage attuale.
 
-La build statica è in `dist/`; i sorgenti sono in `main` e GitHub Pages pubblica `gh-pages`. Il deploy aggiorna solo le radici Space dichiarate in `scripts/deploy-pages.mjs`, preservando cronologia, altre cartelle e configurazioni del ramo di pubblicazione.
+La build statica è in `dist/`; `main` conserva i sorgenti e GitHub Pages pubblica `gh-pages`. Il deploy aggiorna soltanto le radici Space dichiarate in `scripts/deploy-pages.mjs`, preservando le altre cartelle e configurazioni del ramo.
 
-## Percorso visivo e servizi
+## Percorso e offerta
 
-| Concept dimostrativo | Servizio | Materiali mostrati |
+| Capitolo | Cosa proponiamo | Esempio visivo |
 | --- | --- | --- |
-| FORMA / Torrefazione | Naming, logo, brand identity e packaging | Monogramma 3D che si compone su carta, packaging e dettaglio di stampa |
-| AVANT / Architettura | Siti, landing page, e-commerce e web 3D | Film 3D di interfacce desktop e mobile in profondità |
-| ORA / Fragranza | Direzione visiva, motion design e CGI | Flacone 3D con vetro, liquido, luci e movimento di camera |
-| SPAZIO / Cultura | Identità evento, contenuti e campagne | Film tipografico 3D originale e dettaglio di seta gialla |
-| Progetti / Aziende, APS e ASD | Progettazione, budget e candidature | Dossier 3D con piani che si separano e si ricompongono |
+| Siti web ed e-commerce | Vendita online, siti vetrina, landing, prenotazioni ed esperienze 3D | Showreel veloce di cinque direzioni web, con demo apribili |
+| Loghi e identità | Logo, palette, packaging e comunicazione | FORMA: monogramma 3D e materia stampata |
+| Video e animazioni 3D | Film di lancio, CGI e loghi animati | ORA: flacone, vetro, luce e movimento |
+| Social e campagne | Contenuti, creatività pubblicitarie ed eventi | SPAZIO: tipografia 3D e direzione visiva |
+| Progetti e bandi | Obiettivi, attività, partner, budget e candidature | Dossier tridimensionale per aziende, APS e ASD |
 
-Sono esempi originali di lavori possibili, non clienti, commesse o risultati commerciali. I cinque film principali sono render Blender originali; i dettagli fotografici AI sono raster. Il film AVANT incorpora una texture architettonica AI e non rappresenta un configuratore interattivo. Nessuna fotografia viene presentata come mesh navigabile o film prodotto dallo studio.
+Il nuovo capitolo web sostituisce AVANT e il relativo soggetto architettonico. I cinque esempi sono **SHIFT** (e-commerce sportivo), **VELA** (prodotto di design), **NOVA** (servizi beauty), **BASILICO** (ristorazione) e **OLTRE** (eventi e associazioni). Sono accessibili in `public/showcase/index.html?scene=shift|vela|nude|basilico|oltre`; `nova` è un alias di `nude`. Le azioni di carrello e i moduli sono dimostrativi e locali, senza pagamenti o invii esterni.
 
-Il caricamento e l’apertura approvati sono conservati. Sotto la hero, `src/atelier-cinema.js` coordina movimento allo scroll, riproduzione differita dei cinque film. Non intercetta wheel o swipe; testi e azioni restano HTML. Riduzione del movimento, SaveData, pagina nascosta, menu e uscita dall’inquadratura sospendono il lavoro non necessario. I poster mantengono utile il percorso statico.
+Concept, prodotti e marchi dimostrativi non sono clienti, commesse o risultati commerciali. Il web showreel deriva da interfacce HTML originali e transizioni CSS in prospettiva; i quattro altri film principali sono render Blender. Le immagini AI sono raster, distinti dalle mesh e dai film 3D.
 
-I cinque box idea usano form GET nativi verso WhatsApp, con contesto e validazione aggiunti da `src/idea-briefs.js`. Il visitatore decide se inviare la bozza. Non sono presenti invii automatici, backend di raccolta o analytics.
+`src/atelier-cinema.js` coordina caricamento vicino allo schermo, pausa, visibilità e primo piano dei film. La timeline web collega la sequenza ai nomi delle cinque direzioni. Scroll, descrizioni, navigazione e azioni restano HTML; movimento ridotto e risparmio dati mantengono il percorso statico con riproduzione manuale disponibile.
 
-Progetti e bandi comprende obiettivi, attività, partner, calendario, budget e ricerca delle opportunità europee, nazionali, regionali, provinciali, private, di fondazioni e banche. Il dossier è illustrativo, senza importi o finanziamenti attribuiti; non annuncia bandi aperti né garantisce contributi.
+I cinque box idea preparano bozze WhatsApp: il visitatore decide se inviarle. I bandi comprendono opportunità europee, nazionali, regionali, provinciali, private, di fondazioni e banche, senza annunci di aperture o promesse di contributi.
 
 **Space Media Studio — Stradello Conrad Marca Relli 1, Parma. +39 347 962 3498.**
 
-## Produzione e provenienza
+## Media e sorgenti
 
-- [ASSET-ATELIER.json](./ASSET-ATELIER.json): film d’acqua stock di Film Composite/Pexels, riusato nell’apertura con crediti e licenza.
-- [ASSET-LAUNCH-ROOM.json](./ASSET-LAUNCH-ROOM.json): provenienza dei quattro visual AI originali, ancora usati nei concept; le descrizioni della vecchia scena live conservano il proprio ambito storico.
-- [ASSET-ATELIER-VISUALS.json](./ASSET-ATELIER-VISUALS.json): tre nuovi dettagli AI di FORMA, ORA e SPAZIO, 1672×941 nativi, senza upscaling, 812.292 byte complessivi.
-- [ASSET-ATELIER-MOTION.json](./ASSET-ATELIER-MOTION.json): film tipografico Blender originale, profili web, poster, hash e verifiche.
-- [ASSET-SERVICE-MOTION.json](./ASSET-SERVICE-MOTION.json): quattro nuovi film Blender per brand, web, prodotto e progettazione.
-- [MOTION-SERVICES.md](./MOTION-SERVICES.md): direzione e funzione dei cinque gesti.
-- [ASSET-SOURCES.md](./ASSET-SOURCES.md): distinzione dei materiali, font e licenze.
+- [ASSET-WEB-SHOWREEL.json](./ASSET-WEB-SHOWREEL.json): nuovo reel web, pipeline e profili nativi.
+- [ASSET-WEB-REEL-VISUALS.json](./ASSET-WEB-REEL-VISUALS.json): quattro visual originali AI a 1536×1024 per le demo.
+- [ASSET-ATELIER.json](./ASSET-ATELIER.json): film d’acqua stock Film Composite/Pexels, crediti e licenza.
+- [ASSET-SERVICE-MOTION.json](./ASSET-SERVICE-MOTION.json): produzione Blender di FORMA, ORA, dossier e precedente AVANT; quest’ultimo è archivio.
+- [ASSET-ATELIER-MOTION.json](./ASSET-ATELIER-MOTION.json): tipografia Blender SPAZIO.
+- [ASSET-ATELIER-VISUALS.json](./ASSET-ATELIER-VISUALS.json): dettagli AI di FORMA, ORA e SPAZIO.
+- [ASSET-SOURCES.md](./ASSET-SOURCES.md), [MOTION-SERVICES.md](./MOTION-SERVICES.md): provenienza e regia.
 
-I master `.blend`, i PNG numerati e i master AI sono conservati localmente in `outputs/nov26/` e `outputs/motion-services/`, escluse dalla pubblicazione. La build usa gli asset già pronti. La rigenerazione dei film richiede Blender, FFmpeg/ffprobe, Python 3 con Pillow e i font di sistema dichiarati negli script; la produzione corrente usa macOS e Blender 5.2.1 LTS. Il film tipografico usa geometrie e materiali 3D reali; non è una simulazione di fluidi o un video 4K a 60 fps. I vecchi modelli sperimentali di `launch-room.js` e `scene-objects.js` restano archivio sorgente e non vengono caricati dalla homepage.
+Il reel web ha profili **1920×1080 e 720×900**, dieci secondi, 300 fotogrammi a 30 fps, H.264 High/yuv420p con faststart e senza audio. `scripts/render-web-showreel.mjs` compone catture native delle demo con transizioni CSS 3D deterministiche e codifica FFmpeg. È distinto da Blender, da una generazione video AI e da un modello navigabile.
+
+Master, catture e frame rimangono in `outputs/web-reel/`, `outputs/nov26/` e `outputs/motion-services/`, esclusi dal sito pubblico. Il rendering Blender richiede i software e i font dichiarati nei relativi script. I vecchi diorami e i materiali AVANT restano archivio sorgente, senza caricamento nella homepage.
 
 ## Verifiche
 
-Build di produzione e `npm test` superati: **28 contratti correnti**, undici per l’ingresso e diciassette per il controller dei film. I contratti includono cinque player indipendenti, nomi accessibili dedicati, un solo film principale in riproduzione quando le sezioni si sovrappongono, pausa conservata, visibilità, lifecycle, movimento ridotto, risparmio dati e recupero manuale di un errore di rete.
+Build e `npm test` superati: 28 contratti correnti, undici per l’ingresso e diciassette per i film. Verificata anche la timeline periodica di 300 fotogrammi e il deploy del nuovo percorso `showcase`, con preservazione delle cartelle estranee e rifiuto di percorsi non autorizzati.
 
-Prove effettive con Playwright CLI 0.1.23 in Chrome headless isolato: desktop 1440×900, telefono emulato 393×852, layout 320×667, 667×900 e 844×390. Tutti i cinque film vengono caricati e riprodotti; SPAZIO sceglie correttamente la variante verticale. Verificati controlli da 44 px, colonne del testo, assenza di overflow laterale, pausa dopo andata/ritorno, menu e validazione dei brief. Nessun messaggio esterno inviato. Nessun errore JavaScript osservato nei flussi normali.
+Prova effettiva in Chrome headless isolato, Playwright CLI 0.1.23: desktop 1440×900, telefono emulato 393×852 e layout 320×667, 667×900, 844×390. Showreel desktop/verticale e durata verificati; i cinque capitoli aggiornano correttamente etichetta e link attivo. Tutte le demo si aprono dai collegamenti della homepage, caricano immagini e font e hanno interazioni locali funzionanti: carrello, richiesta, prenotazione e iscrizione. Cinque brief dell’agenzia conservati e validati; nessun invio esterno effettuato.
 
-Una navigazione con movimento ridotto mantiene senza sorgente tutti e sei i video (apertura e cinque servizi); il comando manuale resta disponibile. Provati anche ingresso immediato e recupero dopo un errore video indotto, con un errore di rete atteso e nessun errore JavaScript.
-
-Nel passaggio desktop locale l’ingresso è risultato pronto in circa 5,0 secondi, senza throttling; è una misura di laboratorio su Chrome con risorse già visitate, non un dato di campo. Tempi e impostazioni effettivi del rendering Blender sono nel manifest. Le prove non certificano un iPhone fisico, Safari o una frequenza GPU universale. Poster e fotogrammi sono verificati visivamente; la continuità dei film viene controllata sui fotogrammi nativi e sulla chiusura del loop.
+Nessun errore JavaScript o overflow laterale osservato. Con movimento ridotto una nuova navigazione mantiene senza sorgente tutti e sei i video, lasciando disponibile la riproduzione manuale. La rotazione mantiene il film già scelto e ne contiene la composizione in un riquadro orizzontale. Sono prove in emulazione Chromium, non una certificazione su iPhone fisico o Safari.

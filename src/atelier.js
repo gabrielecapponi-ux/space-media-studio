@@ -2,6 +2,7 @@ import { installIdeaBriefs } from './idea-briefs.js';
 import { createAtelierEntry } from './atelier-entry.js';
 import { installAtelierCinema } from './atelier-cinema.js';
 import './atelier-cinema.css';
+import { installWebReel } from './web-reel.js';
 
 const lifetime = new AbortController();
 const { signal } = lifetime;
@@ -22,6 +23,7 @@ let disposed = false;
 let suspended = false;
 let entry;
 installAtelierCinema({ signal, menu });
+installWebReel({ signal });
 
 installIdeaBriefs({ signal });
 document.querySelectorAll('[data-year]').forEach(node => { node.textContent = String(new Date().getFullYear()); });
@@ -138,7 +140,15 @@ function drawScreen(ctx, width, height, aspect, poster) {
   ctx.fillText('Brand. Web.', left + gutter, titleY);
   ctx.fillStyle = '#dfff00'; ctx.fillText('Motion.', left + gutter, titleY + size * (narrow ? .91 : .88));
   ctx.fillStyle = '#efeee8'; ctx.font = `${Math.max(16, viewWidth * .016)}px "Space Grotesk", Arial, sans-serif`;
-  ctx.fillText('Identità, siti ed esperienze digitali.', left + gutter, height * (narrow ? .795 : .82));
+  const subtitle = [];
+  let line = '';
+  for (const word of 'Siti web, e-commerce, loghi e video per la tua attività.'.split(' ')) {
+    const next = line ? `${line} ${word}` : word;
+    if (line && ctx.measureText(next).width > viewWidth - gutter * 2) { subtitle.push(line); line = word; }
+    else line = next;
+  }
+  if (line) subtitle.push(line);
+  subtitle.forEach((text, index) => ctx.fillText(text, left + gutter, height * (narrow ? .795 : .82) + index * Math.max(20, viewWidth * .022)));
   ctx.restore();
 }
 

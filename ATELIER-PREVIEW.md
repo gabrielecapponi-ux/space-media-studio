@@ -1,15 +1,17 @@
 # Atelier — homepage e alias
 
-La direzione approvata di `atelier.html` è la homepage canonica `index.html`. L’alias mantiene lo stesso contenuto con `noindex, nofollow`; il vecchio sito Launch Room resta archivio.
+`index.html` è la homepage canonica; `atelier.html` conserva lo stesso contenuto con `noindex, nofollow`.
 
-Caricamento dello studio, assemblaggio, zoom e apertura con acqua sono conservati. L’ingresso prepara font, poster, primo frame e scena, senza attendere tutti i film del sito. «Entra subito», Escape e un limite di dodici secondi visibili mantengono accessibile la pagina. Movimento ridotto e risparmio dati mantengono il percorso statico. La stanza è immaginaria.
+La stanza 3D, l’assemblaggio, lo zoom e l’acqua rimangono la direzione iniziale approvata. Testi della hero e del monitor sono aggiornati intenzionalmente per spiegare l’offerta. L’ingresso prepara font, poster, primo frame e scena, con ingresso immediato, Escape, limite temporale e presentazione statica disponibili. La stanza resta immaginaria.
 
-Il seguito presenta un film Blender principale per ciascuno dei cinque servizi: identità, web, motion/prodotto, campagne e progettazione. I quattro concept restano esempi originali non commissionati. I tre dettagli AI e la texture architettonica sono distinti dalla geometria renderizzata. Il dossier non promette finanziamenti.
+Il primo capitolo mostra ora cinque siti possibili con un reel rapido e demo HTML apribili: e-commerce, prodotto, servizi, ristorazione ed eventi/associazioni. Seguono FORMA, ORA, SPAZIO e il dossier per progetti e bandi. Il reel deriva da catture browser e transizioni CSS; i quattro film degli altri servizi sono Blender. Immagini AI, film e geometria live restano distinti. Nessun esempio è attribuito a un cliente acquisito.
 
-- Introduzione: `src/atelier-entry.js`, `src/studio-room.js`, `src/entry-shell.js`, `src/entry.css`.
-- Apertura e base: `src/atelier.js`, `src/atelier.css`.
-- Cinema dei servizi: `src/atelier-cinema.js`, `src/atelier-cinema.css`.
-- Regia e provenienza: [MOTION-SERVICES.md](./MOTION-SERVICES.md), [ASSET-SOURCES.md](./ASSET-SOURCES.md).
-- Verifiche correnti e pubblicazione: [README.md](./README.md#verifiche).
+- Ingresso: `src/atelier-entry.js`, `src/studio-room.js`, `src/entry-shell.js`, `src/entry.css`.
+- Apertura: `src/atelier.js`, `src/atelier.css`.
+- Cinema e reel: `src/atelier-cinema.js`, `src/atelier-cinema.css`, `src/web-reel.js`, `src/web-reel-timeline.js`.
+- Demo: `public/showcase/index.html`, `showcase.css`, `showcase.js`.
+- Produzione reel: `scripts/render-web-showreel.mjs` e `scripts/web-reel-stage.html`.
+- Provenienza e regia: [ASSET-SOURCES.md](./ASSET-SOURCES.md), [MOTION-SERVICES.md](./MOTION-SERVICES.md).
+- Verifiche e pubblicazione: [README](./README.md#verifiche).
 
-Master Blender, sequenze numerate e master AI restano locali in `outputs/nov26/` e `outputs/motion-services/`, esclusi dal sito pubblico. La pubblicazione selettiva preserva gli altri siti sul ramo Pages.
+AVANT e Launch Room restano archivio sorgente. Master e sequenze locali in `outputs/` non sono pubblicati. Il deploy selettivo preserva gli altri siti sul ramo Pages.

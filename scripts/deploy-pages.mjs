@@ -16,7 +16,7 @@ const read = (command, args, cwd = root) =>
 // explicit list when Space Media adds a new root entry to its build.
 const ownedProductionPaths = new Set([
   "index.html", "favicon.svg", ".nojekyll", "assets", "films", "fonts",
-  "images", "licenses", "previews", "atelier.html",
+  "images", "licenses", "previews", "atelier.html", "showcase",
 ]);
 
 function validateBundleTree(directory) {

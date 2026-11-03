@@ -2,7 +2,7 @@
   "schema_version": 1,
   "project": "Space Media Studio / Atelier",
   "id": "service-cinema-20261103",
-  "scope": "Four new original service films for branding, web, product/motion and project/funding design. The existing SPAZIO typographic film remains the fifth service motion scene and is documented separately in ASSET-ATELIER-MOTION.json.",
+  "scope": "Historical production record for four original Blender service films: branding, web, product/motion and project/funding design. The web scene AVANT is now superseded in the homepage by ASSET-WEB-SHOWREEL.json. Brand, product and funding films remain active; SPAZIO typography is documented separately in ASSET-ATELIER-MOTION.json.",
   "commercial_status": "Original, non-commissioned service demonstrations. No actual client, paid commission, award, grant approval or commercial result is claimed.",
   "method": "Offline-rendered original Blender geometry, typography, PBR materials, photographic lighting, perspective cameras and periodic absolute animation. The web scene includes a declared existing AI still as a raster texture. These media are authored 3D film renders, not live configurable GLB meshes, stock footage or image-to-video generations.",
   "source_scripts": [
@@ -828,7 +828,8 @@
     "opening": "Do not add these below-hero films to the approved studio-entry loading sequence",
     "loading": "Warm near viewport and play only the most visible service film, stop offscreen/hidden/menu/entry states",
     "reduced_motion": "Static first-frame poster; explicit user play remains available",
-    "text_and_actions": "Service descriptions, navigation and idea forms remain HTML"
+    "text_and_actions": "Service descriptions, navigation and idea forms remain HTML",
+    "scope": "Applies to the native Blender assets in this historical production record; the new web reel uses dedicated desktop and portrait compositions described in ASSET-WEB-SHOWREEL.json."
   },
   "browser_validation": {
     "status": "passed local production integration",
@@ -868,9 +869,27 @@
     "javascript_errors": 0,
     "external_submission": false,
     "physical_iphone": false,
-    "gpu_fps_certification": false
+    "gpu_fps_certification": false,
+    "scope": "Historical browser validation before replacing AVANT with the website showreel; does not attest the new reel or demo interactions. Current verification is documented in README.md#verifiche."
   },
   "render_receipt_note": "Per-master receipts preserve actual render measurements. Repaired product frames45–72 use a separate measured pass; frames1–44 were retained. This is not described as one clean72-frame render.",
   "known_limits": "Native 1440×900 at 24 fps, not 4K or 60 fps. Offline film camera paths are predetermined and do not provide arbitrary product rotation or live configuration.",
-  "production_status": "All native and encoded film checks and local production browser integration passed; publication verification follows deployment"
+  "production_status": "All native and encoded film checks and local production browser integration passed; publication verification follows deployment",
+  "current_integration": {
+    "status": "web scene superseded; other declared CGI integrations retained",
+    "active_asset_ids": [
+      "service-brand",
+      "service-product",
+      "service-funding"
+    ],
+    "superseded_asset_id": "service-web",
+    "replacement": {
+      "manifest": "ASSET-WEB-SHOWREEL.json",
+      "desktop": "public/films/web-showreel.mp4",
+      "mobile": "public/films/web-showreel-mobile.mp4",
+      "method": "Original HTML demo pages captured natively in browser, deterministic CSS perspective transitions, FFmpeg H.264 encoding; not Blender or AI video"
+    },
+    "historical_asset_facts": "All original source, master, render and file hashes below are retained as historical production facts. The AVANT source/asset remains in the repository but is not loaded by the current homepage.",
+    "current_browser_qa": "See README.md#verifiche; new reel integration verification is owned by the parent task."
+  }
 }

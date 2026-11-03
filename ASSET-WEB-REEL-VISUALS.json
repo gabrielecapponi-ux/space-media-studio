@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "project": "Space Media Studio / Website showcase",
+  "id": "web-reel-visuals-20261103",
+  "scope": "Four original product/restaurant raster visuals for fictional website examples, replacing the architectural/apartment showcase.",
+  "generation_method": "Actual builtin image_gen tool, four independent brand-new image generation calls. Not a CLI/API fallback, external stock download, 3D mesh or product photograph.",
+  "commercial_status": "Original, non-commissioned fictional demonstration products and styling. No real client, brand relationship or commercial result is claimed.",
+  "dimensions": {
+    "width": 1536,
+    "height": 1024,
+    "aspect": "3:2",
+    "native": true,
+    "upscale": false,
+    "resize": false
+  },
+  "postprocessing": "Native PNG masters copied into ignored project outputs; only RGB conversion and optimized progressive JPEG encoding, no generative edit, compositing, content crop or geometry alteration.",
+  "generated_image_directory": "$CODEX_HOME/generated_images/01a1a139-4a7a-71b3-a815-35e99e1e08d9",
+  "paid_api_fallback": false,
+  "external_stock": false,
+  "watermarks": false,
+  "assets": [
+    {
+      "id": "sneaker",
+      "path": "public/images/reel-sneaker.jpg",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 282378,
+      "sha256": "4745adfe34751f69db9e694c013ece3c9e9e2827e5fdc729bbfec9b819f2a649",
+      "jpeg_quality": 88,
+      "source_file": "exec-f8312a1b-8172-4ce3-9bd6-62eb72551270.png",
+      "master": "outputs/web-reel/visuals/master-sneaker.png",
+      "master_bytes": 2536355,
+      "master_sha256": "1e60d1317f0095320c8803d899cd3fe85e671e6d7f344a06f7cd6de86dcb2b12",
+      "prompt": "Use case: product-mockup. Asset type: premium ecommerce website hero photograph. Create one original photorealistic luxury performance running sneaker, no existing brand, charcoal engineered knit with acid-lime translucent support details and a realistic sculpted off-white foam outsole, entirely plausible laces, tongue, eyelets, heel and rubber tread. One shoe only, lateral three-quarter view, toe pointing left, centered and fully contained with generous breathing room on all edges. Natural warm limestone seamless surface and pale grey-beige studio backdrop. Expert softbox product photography, sharp material detail, subtle contact shadow, controlled reflections, quiet premium athletic campaign quality. Horizontal 3:2 composition. No text, no logo, no watermark, no extra objects, no floating anatomy or impossible sole pieces. This is an original fictional product for a demonstration ecommerce design.",
+      "visual_inspection": "passed",
+      "tool": "builtin image_gen",
+      "transparent_background": false
+    },
+    {
+      "id": "lamp",
+      "path": "public/images/reel-lamp.jpg",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 170369,
+      "sha256": "ad32abc5afeb4dd9863468a17795996a52e6dec2d3eb9e695c59d4f8a0f2d528",
+      "jpeg_quality": 92,
+      "source_file": "exec-32aa6bef-35da-4c22-b216-5fe4fcb0a45e.png",
+      "master": "outputs/web-reel/visuals/master-lamp.png",
+      "master_bytes": 1851393,
+      "master_sha256": "80ca140fe0378b10f8c682474b1483d393ef53a47a1b26244b010553e17c985a",
+      "prompt": "Use case: product-mockup. Asset type: premium designer furniture ecommerce hero photo. One original sculptural table lamp with a warmly glowing pale ivory opaline-glass oval globe, a beautifully finished burnt-orange powder-coated curved metal stem and stable circular base, elegant plausible industrial design with a small discreet switch and cord trailing minimally behind. The lamp is fully visible and centered, three-quarter view. Warm muted terracotta plaster seamless tabletop and background. Professional architectural product photography, nuanced soft shadows, warm practical glow, tactile metal and glass, beautifully restrained premium Italian design direction. Horizontal 3:2 composition, generous breathing room on all sides. No text, logo, watermark, books or decor, no recognisable existing designer product.",
+      "visual_inspection": "passed",
+      "tool": "builtin image_gen",
+      "transparent_background": false
+    },
+    {
+      "id": "skincare",
+      "path": "public/images/reel-skincare.jpg",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 116754,
+      "sha256": "be5781cf2855f2f06308226dbadcd548dc7151300ac268612fec406d5adcf8d2",
+      "jpeg_quality": 92,
+      "source_file": "exec-c077ef42-7816-4416-85de-d9abdac99a95.png",
+      "master": "outputs/web-reel/visuals/master-skincare.png",
+      "master_bytes": 1666274,
+      "master_sha256": "44dbfd44b97505ea16450a23dc86d2667166df24e468ff6e7149bc60664eba83",
+      "prompt": "Use case: product-mockup. Asset type: original premium skincare ecommerce website hero. A meticulously styled still life of three realistic skincare packages: one pale-lilac frosted glass serum bottle with a white dropper cap, one soft sage-green aluminium cream tube with a pale screw cap, and one low ivory cosmetic jar. Short clean generic label text only, exactly \"NOVA\" in refined dark sans serif, no other lettering or brand. Center the balanced group with generous clear margin around every edge. Pale lilac seamless studio surface, soft directional daylight, elegant tactile material realism, crisp package silhouette, subtle contact shadows and soft natural reflections, elevated clean beauty photography. Horizontal 3:2 composition. No human hands, flowers, water splashes, leaves, excessive props, watermark or recognised brand references.",
+      "visual_inspection": "passed",
+      "tool": "builtin image_gen",
+      "transparent_background": false
+    },
+    {
+      "id": "food",
+      "path": "public/images/reel-food.jpg",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 274819,
+      "sha256": "ca04059985f54bf56b855810305b484fe5bc909b0fce9286c062190df1ab8f23",
+      "jpeg_quality": 86,
+      "source_file": "exec-638aa6b8-8c9c-421a-9e92-43027c287fd1.png",
+      "master": "outputs/web-reel/visuals/master-food.png",
+      "master_bytes": 2716490,
+      "master_sha256": "7d75db6c018588852581a04a3378cabb10c7667969f3360fb53779f67d78a46f",
+      "prompt": "Use case: photorealistic-natural. Asset type: refined Italian restaurant website editorial photograph. A single elegant ivory ceramic plate of beautifully made golden tortelli, with glossy brown butter, a few crisp sage leaves and delicate Parmigiano shavings, appetising and entirely realistic food proportions. Plate fully contained, centered on a warm cream linen tablecloth with subtly blurred warm rust-red restaurant wall behind. Camera at gentle overhead three-quarter angle, premium editorial restaurant photography, natural late-afternoon side light, rich delicate pasta texture, restrained plating, delicious believable food. Horizontal 3:2 composition with breathing room. No text, logo, watermark, people, hands, cutlery crossing the food or cluttered table.",
+      "visual_inspection": "passed",
+      "tool": "builtin image_gen",
+      "transparent_background": false
+    }
+  ],
+  "visual_validation": {
+    "sneaker": "Single plausible running shoe, laces/knit/sole/tread coherent, fully contained, no existing logo or text.",
+    "lamp": "Single plausible orange metal/opal-glass table lamp, contained base/cord, restrained warm glow and tactile surface.",
+    "skincare": "Three package silhouettes contained and coherent; NOVA lettering correct on all three. Generic fictional demonstration label.",
+    "food": "Realistic tortelli, butter, sage and cheese with an ivory plate and warm restaurant setting, no lettering or people."
+  },
+  "totals": {
+    "public_jpeg_bytes": 844320,
+    "asset_count": 4
+  },
+  "integration_guidance": "Use local raster files as editorial/product images within clearly labelled website demonstrations. These assets do not imply the examples are real clients or that the imagery is a navigable 3D model."
+}
