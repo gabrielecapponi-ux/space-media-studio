@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "products": {
     "classic-smash-burger-doppio": {
       "model": "./models/burgers/classic-smash-burger-doppio.glb",
@@ -18,7 +18,7 @@
           "type": "bun",
           "label": "Pane superiore",
           "order": 0,
-          "depth": 0.36,
+          "depth": 1.2354214664769327,
           "pivot": [
             -0.021531100478468956,
             0.44178628389154706,
@@ -34,23 +34,30 @@
             "min": [
               -0.7352472089314195,
               0.18660287081339713,
-              -0.3564762597940113
+              -1.0150000000000001
             ],
             "max": [
               0.6921850079744816,
               0.696969696969697,
-              0.12794448487983998
+              0.22042146647693267
             ]
           },
           "interiorPhotoPatch": null,
-          "interiorVertexColors": "linear-observed-photo"
+          "interiorPhotoGain": null,
+          "interiorPhotoMean": [
+            0.8732440966480138,
+            0.36740092133825863,
+            0.06250435504377297
+          ],
+          "interiorVertexColors": "linear-observed-photo",
+          "construction": "shared-skin-rounded-rings"
         },
         {
           "name": "ingredient_01_pickles",
           "type": "pickle",
           "label": "Cetrioli",
           "order": 1,
-          "depth": 0.18,
+          "depth": 0.6388231654042182,
           "pivot": [
             -0.03748006379585328,
             0.18819776714513556,
@@ -66,23 +73,30 @@
             "min": [
               -0.6905901116427432,
               0.07974481658692185,
-              -0.17998546689015485
+              -0.41500000000000004
             ],
             "max": [
               0.6156299840510366,
               0.2966507177033493,
-              0.12001737469453623
+              0.2238231654042182
             ]
           },
           "interiorPhotoPatch": null,
-          "interiorVertexColors": "linear-observed-photo"
+          "interiorPhotoGain": null,
+          "interiorPhotoMean": [
+            0.3222212913417124,
+            0.13693744122297835,
+            0.014526032959963199
+          ],
+          "interiorVertexColors": "linear-observed-photo",
+          "construction": "shared-skin-rounded-rings"
         },
         {
           "name": "ingredient_02_top_cheddar",
           "type": "cheese",
           "label": "Cheddar superiore",
           "order": 2,
-          "depth": 0.13,
+          "depth": 1.0716372310718878,
           "pivot": [
             -0.027910685805422608,
             0.06698564593301436,
@@ -98,12 +112,12 @@
             "min": [
               -0.7926634768740032,
               -0.06539074960127592,
-              -0.12795447569549265
+              -0.835
             ],
             "max": [
               0.736842105263158,
               0.19936204146730463,
-              0.07795243597865305
+              0.23663723107188778
             ]
           },
           "interiorPhotoPatch": [
@@ -112,14 +126,25 @@
             0.529505582137161,
             0.5645933014354068
           ],
-          "interiorVertexColors": "linear-observed-photo"
+          "interiorPhotoGain": [
+            0.9931919232595672,
+            0.9832650052597036,
+            1.7
+          ],
+          "interiorPhotoMean": [
+            0.9698466723932155,
+            0.5361728164359142,
+            0.03412897023792908
+          ],
+          "interiorVertexColors": "linear-observed-photo",
+          "construction": "shared-skin-rounded-rings"
         },
         {
           "name": "ingredient_03_top_smash",
           "type": "patty",
           "label": "Primo smash burger",
           "order": 3,
-          "depth": 0.32,
+          "depth": 1.1341489914128464,
           "pivot": [
             -0.012759170653907526,
             0.05980861244019138,
@@ -135,12 +160,12 @@
             "min": [
               -0.8755980861244019,
               -0.17862838915470494,
-              -0.32
+              -0.915
             ],
             "max": [
               0.8500797448165869,
               0.2982456140350877,
-              0.10770883713656908
+              0.21914899141284647
             ]
           },
           "interiorPhotoPatch": [
@@ -149,14 +174,25 @@
             0.8803827751196173,
             0.5231259968102073
           ],
-          "interiorVertexColors": "linear-observed-photo"
+          "interiorPhotoGain": [
+            1.507334355330125,
+            1.1363289200642577,
+            0.9436454140581005
+          ],
+          "interiorPhotoMean": [
+            0.2383139818274517,
+            0.04502614557570503,
+            0.020581128733476648
+          ],
+          "interiorVertexColors": "linear-observed-photo",
+          "construction": "shared-skin-rounded-rings"
         },
         {
           "name": "ingredient_04_lower_cheddar",
           "type": "cheese",
           "label": "Cheddar inferiore",
           "order": 4,
-          "depth": 0.13,
+          "depth": 1.0737782182303293,
           "pivot": [
             -0.021531100478468956,
             -0.23125996810207336,
@@ -172,12 +208,12 @@
             "min": [
               -0.7830940988835726,
               -0.36044657097288674,
-              -0.1278671518572282
+              -0.835
             ],
             "max": [
               0.7400318979266347,
               -0.10207336523125997,
-              0.07789256204672794
+              0.23877821823032921
             ]
           },
           "interiorPhotoPatch": [
@@ -186,14 +222,25 @@
             0.5039872408293461,
             0.38437001594896336
           ],
-          "interiorVertexColors": "linear-observed-photo"
+          "interiorPhotoGain": [
+            0.9793737218899948,
+            0.9056110733312833,
+            0.8105995691986768
+          ],
+          "interiorPhotoMean": [
+            0.9584656815241185,
+            0.4950326960514736,
+            0.03361621141253646
+          ],
+          "interiorVertexColors": "linear-observed-photo",
+          "construction": "shared-skin-rounded-rings"
         },
         {
           "name": "ingredient_05_lower_smash",
           "type": "patty",
           "label": "Secondo smash burger",
           "order": 5,
-          "depth": 0.32,
+          "depth": 1.1444858200851773,
           "pivot": [
             0.0,
             -0.32137161084529503,
@@ -209,12 +256,12 @@
             "min": [
               -0.9122807017543859,
               -0.49760765550239233,
-              -0.3199999229790857
+              -0.915
             ],
             "max": [
               0.9122807017543859,
               -0.14513556618819776,
-              0.10837970106956975
+              0.2294858200851773
             ]
           },
           "interiorPhotoPatch": [
@@ -223,14 +270,25 @@
             0.6307814992025519,
             0.2910685805422647
           ],
-          "interiorVertexColors": "linear-observed-photo"
+          "interiorPhotoGain": [
+            1.3779562114817419,
+            1.7,
+            1.7
+          ],
+          "interiorPhotoMean": [
+            0.2590160710519999,
+            0.048179205094104685,
+            0.02054993702218252
+          ],
+          "interiorVertexColors": "linear-observed-photo",
+          "construction": "shared-skin-rounded-rings"
         },
         {
           "name": "ingredient_06_bottom_bun",
           "type": "bun",
           "label": "Pane inferiore",
           "order": 6,
-          "depth": 0.3,
+          "depth": 1.2284041070813614,
           "pivot": [
             0.04784688995215314,
             -0.5614035087719298,
@@ -246,20 +304,27 @@
             "min": [
               -0.7974481658692185,
               -0.7511961722488039,
-              -0.29978284759526097
+              -1.0150000000000001
             ],
             "max": [
               0.8931419457735248,
               -0.37161084529505584,
-              0.12984799331668267
+              0.21340410708136126
             ]
           },
           "interiorPhotoPatch": null,
-          "interiorVertexColors": "linear-observed-photo"
+          "interiorPhotoGain": null,
+          "interiorPhotoMean": [
+            0.6973672534943143,
+            0.2604177113869418,
+            0.0404391705716306
+          ],
+          "interiorVertexColors": "linear-observed-photo",
+          "construction": "shared-skin-rounded-rings"
         }
       ],
-      "triangles": 19400,
-      "modelBytes": 630608,
+      "triangles": 32998,
+      "modelBytes": 1017128,
       "roundtripPassed": true,
       "frontMaterialSuffix": "_photo_front",
       "interiorMaterialSuffix": "_interior"
@@ -281,7 +346,7 @@
           "type": "bun",
           "label": "Pane superiore",
           "order": 0,
-          "depth": 0.36,
+          "depth": 1.2384482881414183,
           "pivot": [
             -0.027113237639553422,
             0.4609250398724083,
@@ -297,23 +362,30 @@
             "min": [
               -0.7655502392344498,
               0.20414673046251994,
-              -0.3587314023244907
+              -1.0150000000000001
             ],
             "max": [
               0.7113237639553429,
               0.7177033492822966,
-              0.12925998468928626
+              0.2234482881414181
             ]
           },
           "interiorPhotoPatch": null,
-          "interiorVertexColors": "linear-observed-photo"
+          "interiorPhotoGain": null,
+          "interiorPhotoMean": [
+            0.7655639892483999,
+            0.2746441834556862,
+            0.02708264537323195
+          ],
+          "interiorVertexColors": "linear-observed-photo",
+          "construction": "shared-skin-rounded-rings"
         },
         {
           "name": "ingredient_01_pickles",
           "type": "pickle",
           "label": "Cetrioli",
           "order": 1,
-          "depth": 0.18,
+          "depth": 0.6397298651393919,
           "pivot": [
             0.02870813397129185,
             0.14752791068580542,
@@ -329,23 +401,30 @@
             "min": [
               -0.620414673046252,
               0.03668261562998405,
-              -0.17974201782443433
+              -0.41500000000000004
             ],
             "max": [
               0.6778309409888357,
               0.2583732057416268,
-              0.11982084571141273
+              0.2247298651393919
             ]
           },
           "interiorPhotoPatch": null,
-          "interiorVertexColors": "linear-observed-photo"
+          "interiorPhotoGain": null,
+          "interiorPhotoMean": [
+            0.24418294759955442,
+            0.11541168511099083,
+            0.007205973704694474
+          ],
+          "interiorVertexColors": "linear-observed-photo",
+          "construction": "shared-skin-rounded-rings"
         },
         {
           "name": "ingredient_02_cheddar",
           "type": "cheese",
           "label": "Cheddar",
           "order": 2,
-          "depth": 0.13,
+          "depth": 1.075019889981159,
           "pivot": [
             -0.050239234449760806,
             -0.039872408293460934,
@@ -361,12 +440,12 @@
             "min": [
               -0.7607655502392344,
               -0.25996810207336524,
-              -0.12782168080129155
+              -0.835
             ],
             "max": [
               0.6602870813397128,
               0.18022328548644337,
-              0.07791206823937126
+              0.24001988998115897
             ]
           },
           "interiorPhotoPatch": [
@@ -375,14 +454,25 @@
             0.6060606060606061,
             0.5127591706539074
           ],
-          "interiorVertexColors": "linear-observed-photo"
+          "interiorPhotoGain": [
+            0.9579056871494729,
+            0.9457244017059059,
+            1.5854332349873248
+          ],
+          "interiorPhotoMean": [
+            0.9318130884927724,
+            0.4567942249423736,
+            0.022975420788691667
+          ],
+          "interiorVertexColors": "linear-observed-photo",
+          "construction": "shared-skin-rounded-rings"
         },
         {
           "name": "ingredient_03_top_plant_patty",
           "type": "patty",
           "label": "Primo burger plant based",
           "order": 3,
-          "depth": 0.32,
+          "depth": 1.136047997370822,
           "pivot": [
             -0.005582137161084522,
             -0.005582137161084522,
@@ -398,12 +488,12 @@
             "min": [
               -0.8245614035087719,
               -0.2711323763955343,
-              -0.31999575236274586
+              -0.915
             ],
             "max": [
               0.8133971291866029,
               0.25996810207336524,
-              0.10566372024091623
+              0.22104799737082187
             ]
           },
           "interiorPhotoPatch": [
@@ -412,14 +502,25 @@
             0.7137161084529505,
             0.4178628389154705
           ],
-          "interiorVertexColors": "linear-observed-photo"
+          "interiorPhotoGain": [
+            1.5592964498688333,
+            1.7,
+            1.7
+          ],
+          "interiorPhotoMean": [
+            0.16693190447056025,
+            0.03652549980932101,
+            0.01356836673191678
+          ],
+          "interiorVertexColors": "linear-observed-photo",
+          "construction": "shared-skin-rounded-rings"
         },
         {
           "name": "ingredient_04_lower_plant_patty",
           "type": "patty",
           "label": "Secondo burger plant based",
           "order": 4,
-          "depth": 0.32,
+          "depth": 1.1321648326136158,
           "pivot": [
             0.015151515151515138,
             -0.33014354066985646,
@@ -435,12 +536,12 @@
             "min": [
               -0.8054226475279107,
               -0.5390749601275917,
-              -0.31999961920547393
+              -0.915
             ],
             "max": [
               0.835725677830941,
               -0.12121212121212122,
-              0.10585472675271365
+              0.21716483261361563
             ]
           },
           "interiorPhotoPatch": [
@@ -449,14 +550,25 @@
             0.8221690590111643,
             0.3197767145135566
           ],
-          "interiorVertexColors": "linear-observed-photo"
+          "interiorPhotoGain": [
+            1.3463914132387615,
+            1.3909041591106033,
+            1.478992065757232
+          ],
+          "interiorPhotoMean": [
+            0.15007535489304694,
+            0.03119170511909261,
+            0.010653634498422314
+          ],
+          "interiorVertexColors": "linear-observed-photo",
+          "construction": "shared-skin-rounded-rings"
         },
         {
           "name": "ingredient_05_bottom_bun",
           "type": "bun",
           "label": "Pane inferiore",
           "order": 5,
-          "depth": 0.3,
+          "depth": 1.2397251364906474,
           "pivot": [
             0.0023923444976076125,
             -0.5334928229665071,
@@ -472,20 +584,27 @@
             "min": [
               -0.7910685805422648,
               -0.7129186602870813,
-              -0.2997762896117924
+              -1.0150000000000001
             ],
             "max": [
               0.79585326953748,
               -0.35406698564593303,
-              0.12984340272825468
+              0.22472513649064732
             ]
           },
           "interiorPhotoPatch": null,
-          "interiorVertexColors": "linear-observed-photo"
+          "interiorPhotoGain": null,
+          "interiorPhotoMean": [
+            0.6531349324921121,
+            0.21387909651825862,
+            0.01177208551954001
+          ],
+          "interiorVertexColors": "linear-observed-photo",
+          "construction": "shared-skin-rounded-rings"
         }
       ],
-      "triangles": 13728,
-      "modelBytes": 451712,
+      "triangles": 21354,
+      "modelBytes": 668356,
       "roundtripPassed": true,
       "frontMaterialSuffix": "_photo_front",
       "interiorMaterialSuffix": "_interior"
@@ -507,7 +626,7 @@
           "type": "bun",
           "label": "Pane vegano superiore",
           "order": 0,
-          "depth": 0.4,
+          "depth": 1.236814574942091,
           "pivot": [
             -0.023923444976076513,
             0.32456140350877194,
@@ -523,23 +642,30 @@
             "min": [
               -0.8149920255183413,
               -0.12759170653907495,
-              -0.39702043942310444
+              -1.0150000000000001
             ],
             "max": [
               0.7671451355661882,
               0.7767145135566188,
-              0.1284357306971298
+              0.22181457494209073
             ]
           },
           "interiorPhotoPatch": null,
-          "interiorVertexColors": "linear-observed-photo"
+          "interiorPhotoGain": null,
+          "interiorPhotoMean": [
+            0.6589639260804381,
+            0.17740697767048338,
+            0.04979094813443789
+          ],
+          "interiorVertexColors": "linear-observed-photo",
+          "construction": "shared-skin-rounded-rings"
         },
         {
           "name": "ingredient_01_mayo",
           "type": "sauce",
           "label": "Maionese vegana",
           "order": 1,
-          "depth": 0.12,
+          "depth": 1.0149182883660486,
           "pivot": [
             0.13955342902711326,
             0.055023923444976086,
@@ -555,23 +681,30 @@
             "min": [
               -0.379585326953748,
               -0.049441786283891544,
-              -0.11784882833999422
+              -0.775
             ],
             "max": [
               0.6586921850079746,
               0.1594896331738437,
-              0.0749739777346003
+              0.23991828836604867
             ]
           },
           "interiorPhotoPatch": null,
-          "interiorVertexColors": "linear-observed-photo"
+          "interiorPhotoGain": null,
+          "interiorPhotoMean": [
+            0.8505566504462383,
+            0.5573562208868296,
+            0.32307546097879547
+          ],
+          "interiorVertexColors": "linear-observed-photo",
+          "construction": "shared-skin-rounded-rings"
         },
         {
           "name": "ingredient_02_vegan_cheddar",
           "type": "cheese",
           "label": "Cheddar vegano",
           "order": 2,
-          "depth": 0.13,
+          "depth": 1.0725308413322594,
           "pivot": [
             -0.08771929824561397,
             -0.14513556618819776,
@@ -587,28 +720,39 @@
             "min": [
               -0.9122807017543859,
               -0.3492822966507177,
-              -0.12783716695258915
+              -0.835
             ],
             "max": [
               0.736842105263158,
               0.05901116427432217,
-              0.07787464927178295
+              0.2375308413322594
             ]
           },
           "interiorPhotoPatch": [
-            0.08692185007974482,
-            0.35167464114832536,
-            0.13636363636363635,
-            0.40111642743221687
+            0.0861244019138756,
+            0.34290271132376393,
+            0.14354066985645933,
+            0.40031897926634774
           ],
-          "interiorVertexColors": "linear-observed-photo"
+          "interiorPhotoGain": [
+            0.9815220217253339,
+            0.8884837295720214,
+            1.2798719391387419
+          ],
+          "interiorPhotoMean": [
+            0.9499361787778196,
+            0.4392160235929106,
+            0.009118127580279349
+          ],
+          "interiorVertexColors": "linear-observed-photo",
+          "construction": "shared-skin-rounded-rings"
         },
         {
           "name": "ingredient_03_beyond_patty",
           "type": "patty",
           "label": "Beyond Meat",
           "order": 3,
-          "depth": 0.32,
+          "depth": 1.1452701169861021,
           "pivot": [
             -0.07416267942583726,
             -0.09011164274322168,
@@ -624,12 +768,12 @@
             "min": [
               -0.9011164274322169,
               -0.37799043062200954,
-              -0.31999944455293017
+              -0.915
             ],
             "max": [
               0.7527910685805423,
               0.19776714513556617,
-              0.10785210524035943
+              0.23027011698610203
             ]
           },
           "interiorPhotoPatch": [
@@ -638,14 +782,25 @@
             0.39952153110047844,
             0.36124401913875603
           ],
-          "interiorVertexColors": "linear-observed-photo"
+          "interiorPhotoGain": [
+            1.2487687360168582,
+            1.4628600211223517,
+            1.7
+          ],
+          "interiorPhotoMean": [
+            0.2317118588922608,
+            0.06107120329425994,
+            0.02044710064593834
+          ],
+          "interiorVertexColors": "linear-observed-photo",
+          "construction": "shared-skin-rounded-rings"
         },
         {
           "name": "ingredient_04_pickle",
           "type": "pickle",
           "label": "Cetriolo laterale",
           "order": 4,
-          "depth": 0.17,
+          "depth": 0.31956223563150427,
           "pivot": [
             0.7799043062200957,
             -0.094896331738437,
@@ -661,23 +816,30 @@
             "min": [
               0.7192982456140351,
               -0.16427432216905902,
-              -0.16965476465422827
+              -0.09500000000000001
             ],
             "max": [
               0.8405103668261562,
               -0.025518341307814992,
-              0.11974615048105018
+              0.22456223563150424
             ]
           },
           "interiorPhotoPatch": null,
-          "interiorVertexColors": "linear-observed-photo"
+          "interiorPhotoGain": null,
+          "interiorPhotoMean": [
+            0.47586858108173763,
+            0.2643992845889699,
+            0.03784738303370993
+          ],
+          "interiorVertexColors": "linear-observed-photo",
+          "construction": "shared-skin-rounded-rings"
         },
         {
           "name": "ingredient_05_bottom_mayo",
           "type": "sauce",
           "label": "Maionese vegana inferiore",
           "order": 5,
-          "depth": 0.1,
+          "depth": 1.0079004083141567,
           "pivot": [
             0.5741626794258373,
             -0.18740031897926634,
@@ -693,23 +855,30 @@
             "min": [
               0.23923444976076547,
               -0.266347687400319,
-              -0.09793216652905579
+              -0.775
             ],
             "max": [
               0.9090909090909092,
               -0.10845295055821372,
-              0.07489965745770766
+              0.23290040831415673
             ]
           },
           "interiorPhotoPatch": null,
-          "interiorVertexColors": "linear-observed-photo"
+          "interiorPhotoGain": null,
+          "interiorPhotoMean": [
+            0.5693987967081224,
+            0.3388427652464393,
+            0.21303845065084548
+          ],
+          "interiorVertexColors": "linear-observed-photo",
+          "construction": "shared-skin-rounded-rings"
         },
         {
           "name": "ingredient_06_bottom_bun",
           "type": "bun",
           "label": "Pane vegano inferiore",
           "order": 6,
-          "depth": 0.32,
+          "depth": 1.235468680636879,
           "pivot": [
             0.03269537480063789,
             -0.5023923444976076,
@@ -725,20 +894,27 @@
             "min": [
               -0.8452950558213717,
               -0.8309409888357256,
-              -0.3170710144771661
+              -1.0150000000000001
             ],
             "max": [
               0.9106858054226474,
               -0.17384370015948963,
-              0.12807785325064025
+              0.2204686806368789
             ]
           },
           "interiorPhotoPatch": null,
-          "interiorVertexColors": "linear-observed-photo"
+          "interiorPhotoGain": null,
+          "interiorPhotoMean": [
+            0.6952100734133139,
+            0.2747258974269397,
+            0.07307854331807917
+          ],
+          "interiorVertexColors": "linear-observed-photo",
+          "construction": "shared-skin-rounded-rings"
         }
       ],
-      "triangles": 11232,
-      "modelBytes": 374088,
+      "triangles": 19620,
+      "modelBytes": 612184,
       "roundtripPassed": true,
       "frontMaterialSuffix": "_photo_front",
       "interiorMaterialSuffix": "_interior"
@@ -760,7 +936,7 @@
           "type": "bun",
           "label": "Pane rustico superiore",
           "order": 0,
-          "depth": 0.4,
+          "depth": 1.2369200437856223,
           "pivot": [
             -0.045454545454545525,
             0.3936363636363637,
@@ -776,23 +952,30 @@
             "min": [
               -0.750909090909091,
               0.056363636363636366,
-              -0.3993730637250929
+              -1.0150000000000001
             ],
             "max": [
               0.6599999999999999,
               0.730909090909091,
-              0.12967085845567375
+              0.22192004378562208
             ]
           },
           "interiorPhotoPatch": null,
-          "interiorVertexColors": "linear-observed-photo"
+          "interiorVertexColors": "linear-observed-photo",
+          "construction": "shared-skin-rounded-rings",
+          "interiorPhotoGain": null,
+          "interiorPhotoMean": [
+            0.7639944618802783,
+            0.2366518625195336,
+            0.03980889838350442
+          ]
         },
         {
           "name": "ingredient_01_upper_pickles",
           "type": "pickle",
           "label": "Cetrioli superiori",
           "order": 1,
-          "depth": 0.18,
+          "depth": 0.6392976951428289,
           "pivot": [
             0.20636363636363636,
             0.23454545454545456,
@@ -808,23 +991,30 @@
             "min": [
               -0.31999999999999995,
               0.06,
-              -0.17990453292330674
+              -0.41500000000000004
             ],
             "max": [
               0.7327272727272727,
               0.4090909090909091,
-              0.11993370341896302
+              0.22429769514282877
             ]
           },
           "interiorPhotoPatch": null,
-          "interiorVertexColors": "linear-observed-photo"
+          "interiorVertexColors": "linear-observed-photo",
+          "construction": "shared-skin-rounded-rings",
+          "interiorPhotoGain": null,
+          "interiorPhotoMean": [
+            0.3581181746683619,
+            0.20876491660621682,
+            0.05438703992809942
+          ]
         },
         {
           "name": "ingredient_02_melted_cheddar",
           "type": "cheese",
           "label": "Cheddar fuso",
           "order": 2,
-          "depth": 0.15,
+          "depth": 1.0715696904277074,
           "pivot": [
             0.0763636363636363,
             -0.09727272727272727,
@@ -840,12 +1030,12 @@
             "min": [
               -0.7272727272727273,
               -0.40545454545454546,
-              -0.1479455610624881
+              -0.835
             ],
             "max": [
               0.8799999999999999,
               0.2109090909090909,
-              0.07799356610366785
+              0.2365696904277075
             ]
           },
           "interiorPhotoPatch": [
@@ -854,14 +1044,25 @@
             0.8063636363636364,
             0.5254237288135593
           ],
-          "interiorVertexColors": "linear-observed-photo"
+          "interiorVertexColors": "linear-observed-photo",
+          "construction": "shared-skin-rounded-rings",
+          "interiorPhotoGain": [
+            0.8170573109485678,
+            0.75,
+            1.5124578295050082
+          ],
+          "interiorPhotoMean": [
+            0.7557366889302976,
+            0.35148643940691526,
+            0.0855237561000866
+          ]
         },
         {
           "name": "ingredient_03_triple_smash",
           "type": "patty",
           "label": "Triplo smash \u2014 carne",
           "order": 3,
-          "depth": 0.4,
+          "depth": 1.127849025752797,
           "pivot": [
             0.009999999999999953,
             -0.0009090909090908872,
@@ -877,12 +1078,12 @@
             "min": [
               -0.9127272727272727,
               -0.41818181818181815,
-              -0.4
+              -0.915
             ],
             "max": [
               0.9327272727272726,
               0.4163636363636364,
-              0.10562164048641318
+              0.212849025752797
             ]
           },
           "interiorPhotoPatch": [
@@ -891,14 +1092,25 @@
             0.7981818181818182,
             0.29176755447941893
           ],
-          "interiorVertexColors": "linear-observed-photo"
+          "interiorVertexColors": "linear-observed-photo",
+          "construction": "shared-skin-rounded-rings",
+          "interiorPhotoGain": [
+            1.7,
+            1.7,
+            1.7
+          ],
+          "interiorPhotoMean": [
+            0.1812127301906806,
+            0.04483844422014079,
+            0.014409674566239601
+          ]
         },
         {
           "name": "ingredient_04_lower_pickles",
           "type": "pickle",
           "label": "Cetrioli inferiori",
           "order": 4,
-          "depth": 0.18,
+          "depth": 0.6367994313250607,
           "pivot": [
             -0.14999999999999997,
             -0.3381818181818182,
@@ -914,23 +1126,30 @@
             "min": [
               -0.84,
               -0.5709090909090909,
-              -0.17937962082056824
+              -0.41498
             ],
             "max": [
               0.54,
               -0.10545454545454545,
-              0.11956918112539462
+              0.22181943132506066
             ]
           },
           "interiorPhotoPatch": null,
-          "interiorVertexColors": "linear-observed-photo"
+          "interiorVertexColors": "linear-observed-photo",
+          "construction": "shared-skin-rounded-rings",
+          "interiorPhotoGain": null,
+          "interiorPhotoMean": [
+            0.4053784720304567,
+            0.2071164675352238,
+            0.043685628137589125
+          ]
         },
         {
           "name": "ingredient_05_bottom_bun",
           "type": "bun",
           "label": "Pane rustico inferiore",
           "order": 5,
-          "depth": 0.34,
+          "depth": 1.23370256920365,
           "pivot": [
             -0.025454545454545452,
             -0.39545454545454545,
@@ -946,20 +1165,27 @@
             "min": [
               -0.9127272727272727,
               -0.7345454545454545,
-              -0.33107921859062256
+              -1.0150000000000001
             ],
             "max": [
               0.8618181818181818,
               -0.056363636363636366,
-              0.12449010560009038
+              0.21870256920364994
             ]
           },
           "interiorPhotoPatch": null,
-          "interiorVertexColors": "linear-observed-photo"
+          "interiorVertexColors": "linear-observed-photo",
+          "construction": "shared-skin-rounded-rings",
+          "interiorPhotoGain": null,
+          "interiorPhotoMean": [
+            0.7300664529089242,
+            0.3729720636434995,
+            0.11120244559959
+          ]
         }
       ],
-      "triangles": 19488,
-      "modelBytes": 635768,
+      "triangles": 22944,
+      "modelBytes": 710312,
       "roundtripPassed": true,
       "frontMaterialSuffix": "_photo_front",
       "interiorMaterialSuffix": "_interior"
