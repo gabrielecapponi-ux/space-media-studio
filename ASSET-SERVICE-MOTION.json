@@ -2,7 +2,7 @@
   "schema_version": 1,
   "project": "Space Media Studio / Atelier",
   "id": "service-cinema-20261103",
-  "scope": "Historical production record for four original Blender service films. ORA product/motion remains active. Web is superseded by ASSET-WEB-SHOWREEL.json; branding and funding are superseded by ASSET-CINEMA-BLENDER.json. Historical SPAZIO typography is documented separately in ASSET-ATELIER-MOTION.json and superseded by ASSET-CINEMA-CAMPAIGN.json.",
+  "scope": "Historical production record for four original Blender service films. All are now archived in the current homepage: web replaced by ASSET-MOTION-WEB-20261104.json, branding by ASSET-MOTION-BLENDER-20261104.json, ORA product by the AI film in ASSET-MOTION-PRODUCT-20261104.json, funding by ASSET-CINEMA-BLENDER.json.",
   "commercial_status": "Original, non-commissioned service demonstrations. No actual client, paid commission, award, grant approval or commercial result is claimed.",
   "method": "Offline-rendered original Blender geometry, typography, PBR materials, photographic lighting, perspective cameras and periodic absolute animation. The web scene includes a declared existing AI still as a raster texture. These media are authored 3D film renders, not live configurable GLB meshes, stock footage or image-to-video generations.",
   "source_scripts": [
@@ -876,20 +876,15 @@
   "known_limits": "Native 1440×900 at 24 fps, not 4K or 60 fps. Offline film camera paths are predetermined and do not provide arbitrary product rotation or live configuration.",
   "production_status": "All native and encoded film checks and local production browser integration passed; publication verification follows deployment",
   "current_integration": {
-    "status": "ORA product integration retained; historical web, branding and funding scenes superseded",
-    "active_asset_ids": [
-      "service-product"
-    ],
-    "superseded_asset_id": "service-web",
-    "additional_superseded_asset_ids": ["service-brand", "service-funding"],
-    "additional_replacement_manifest": "ASSET-CINEMA-BLENDER.json",
-    "replacement": {
-      "manifest": "ASSET-WEB-SHOWREEL.json",
-      "desktop": "public/films/web-showreel.mp4",
-      "mobile": "public/films/web-showreel-mobile.mp4",
-      "method": "Original HTML demo pages captured natively in browser, deterministic CSS perspective transitions, FFmpeg H.264 encoding; not Blender or AI video"
+    "status": "All four films in this historical record are superseded; media/source production facts remain unchanged",
+    "active_asset_ids": [],
+    "replacements": {
+      "service-web": "ASSET-MOTION-WEB-20261104.json",
+      "service-brand": "ASSET-MOTION-BLENDER-20261104.json",
+      "service-product": "ASSET-MOTION-PRODUCT-20261104.json",
+      "service-funding": "ASSET-CINEMA-BLENDER.json"
     },
-    "historical_asset_facts": "All original source, master, render and file hashes are retained as historical production facts. Superseded assets remain in the repository but are not loaded by the current homepage.",
-    "current_browser_qa": "See README.md#verifiche; new reel integration verification is owned by the parent task."
+    "historical_asset_facts": "All original master, render and file hashes are retained. These superseded movies remain in the repository and are not loaded by the current homepage.",
+    "current_browser_qa": "See README.md#verifiche for the current release; original browser evidence above is historical."
   }
 }

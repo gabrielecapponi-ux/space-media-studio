@@ -226,5 +226,8 @@
     "javascript_errors": 0,
     "external_submission": false,
     "physical_iphone": false
+  },
+  "current_integration": {
+    "status": "Historical30fps reel superseded by ASSET-MOTION-WEB-20261104.json; original still-interface masters reused"
   }
 }

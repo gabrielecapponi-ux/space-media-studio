@@ -1,0 +1,441 @@
+{
+  "schema_version": 1,
+  "id": "motion-product-20261104",
+  "concept": "ORA / Product film",
+  "method": "Higgsfield-generated cinematic product footage; cropped/downsampled native-cadence delivery, not an authored Blender mesh",
+  "commercial_status": "Original fictional product concept; no client commission or authentic manufactured product claim",
+  "model": "Seedance 2.5 through Higgsfield",
+  "job_id": "93cbca2c-9156-4a4c-aeb4-21ec50b16606",
+  "source": {
+    "path": "outputs/motion-product-20261104/source-approved.mp4",
+    "bytes": 10226269,
+    "sha256": "62835a6ce662fc70913ef1f4721ea6d9200d0b99896fc38a843ed06035637951",
+    "probe": {
+      "streams": [
+        {
+          "index": 0,
+          "codec_name": "hevc",
+          "codec_long_name": "H.265 / HEVC (High Efficiency Video Coding)",
+          "profile": "Main 10",
+          "codec_type": "video",
+          "codec_tag_string": "hvc1",
+          "codec_tag": "0x31637668",
+          "width": 1920,
+          "height": 1080,
+          "coded_width": 1920,
+          "coded_height": 1080,
+          "has_b_frames": 2,
+          "pix_fmt": "yuv420p10le",
+          "level": 120,
+          "color_range": "tv",
+          "color_space": "bt709",
+          "color_transfer": "bt709",
+          "color_primaries": "bt709",
+          "chroma_location": "left",
+          "field_order": "progressive",
+          "view_ids_available": "",
+          "view_pos_available": "",
+          "id": "0x1",
+          "r_frame_rate": "24/1",
+          "avg_frame_rate": "24/1",
+          "time_base": "1/90000",
+          "start_pts": 0,
+          "start_time": "0.000000",
+          "duration_ts": 723750,
+          "duration": "8.041667",
+          "bit_rate": "10146015",
+          "nb_frames": "193",
+          "extradata_size": 2441,
+          "disposition": {
+            "default": 1,
+            "dub": 0,
+            "original": 0,
+            "comment": 0,
+            "lyrics": 0,
+            "karaoke": 0,
+            "forced": 0,
+            "hearing_impaired": 0,
+            "visual_impaired": 0,
+            "clean_effects": 0,
+            "attached_pic": 0,
+            "timed_thumbnails": 0,
+            "non_diegetic": 0,
+            "captions": 0,
+            "descriptions": 0,
+            "metadata": 0,
+            "dependent": 0,
+            "still_image": 0,
+            "multilayer": 0
+          },
+          "tags": {
+            "language": "und",
+            "handler_name": "VideoHandler"
+          }
+        }
+      ],
+      "format": {
+        "filename": "outputs/motion-product-20261104/source-approved.mp4",
+        "nb_streams": 1,
+        "nb_programs": 0,
+        "nb_stream_groups": 0,
+        "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+        "format_long_name": "QuickTime / MOV",
+        "start_time": "0.000000",
+        "duration": "8.041667",
+        "size": "10226269",
+        "bit_rate": "10173282",
+        "probe_score": 100,
+        "tags": {
+          "major_brand": "isom",
+          "minor_version": "512",
+          "compatible_brands": "isomiso2mp41",
+          "encoder": "Lavf58.76.100"
+        }
+      }
+    }
+  },
+  "generation_anchor": {
+    "path": "outputs/motion-product-20261104/keyframe-for-generation.jpg",
+    "sha256": "914b955e163f66a82f16fe471a12fb22bcccab2456eedab46df747dc9c9a69ec",
+    "roles": [
+      "start_image",
+      "end_image"
+    ],
+    "derived_from_rejected_attempt_frame": 0
+  },
+  "generation_attempts": {
+    "approved_job_id": "93cbca2c-9156-4a4c-aeb4-21ec50b16606",
+    "approved_source_quoted_credits": 128,
+    "rejected_job_id": "4843ab07-828a-458c-b38d-39d852aa39c1",
+    "rejected_source": "outputs/motion-product-20261104/source.mp4",
+    "rejected_source_sha256": "26b7ea75962b293ef79fc08919d2fbbcd555d158d9edb8a2f94bc3fe87658b48",
+    "rejected_reason": "Two-reference product identity transition and double-label ghosting. The rejected video is not used in delivery; only its native frame0 was used as the single consistent regeneration anchor.",
+    "rejected_attempt_quoted_credits": 128
+  },
+  "visual_review": "Source and native portrait crop visually approved by supervising agent at0,1,2,3,4,5,6,7,7.9167,8seconds: one consistent ORA bottle, cap and base fully visible, no two-reference morph. Native source closes sufficiently without an editorial dissolve.",
+  "portrait_crop_native": [
+    528,
+    0,
+    864,
+    1080
+  ],
+  "portrait_delivery": [
+    720,
+    900
+  ],
+  "fps_policy": "All source frames retained at the actual source cadence; no optical interpolation, synthetic motion frames, or speed change",
+  "tail_blend_frames": 0,
+  "loop": "Native first/last-frame closure",
+  "audio": false,
+  "upscale": false,
+  "optical_interpolation": false,
+  "script": {
+    "path": "scripts/motion-product-20261104.py",
+    "sha256": "ca6ee08c96cb6178efa022f712587e8f33701749e5c8cea569e20e412537ec60"
+  },
+  "ffmpeg": "ffmpeg version 8.1.2 Copyright (c) 2000-2026 the FFmpeg developers",
+  "checks": {
+    "desktop": {
+      "native_output": [
+        1920,
+        1080
+      ],
+      "fps": "24",
+      "frames": 193,
+      "all_frames_full_decode": "passed",
+      "pixels": {
+        "decoded_full_resolution_frames": 193,
+        "ordered_decoded_rgb_sha256": "2c05211fc6a0257875f2f186a85a4b1f2ef15eddd99da4fc2747309b53044303",
+        "frame_mean_rgb_range": [
+          30.17207690329218,
+          39.34313818158436
+        ],
+        "maximum_adjacent_mean_absolute_rgb": 4.115483056841564,
+        "last_first_mean_absolute_rgb": 1.7019164737654322,
+        "empty_black_frame_gate": "passed; every full-resolution decoded frame mean above 1/255"
+      },
+      "sampled_encoded_vs_lossless": [
+        {
+          "frame": 0,
+          "encoded_vs_lossless_mean_absolute_rgb": [
+            0.8109818672839506,
+            0.8447820216049383,
+            1.068864776234568
+          ]
+        },
+        {
+          "frame": 96,
+          "encoded_vs_lossless_mean_absolute_rgb": [
+            0.8874455054012346,
+            0.8174049961419753,
+            1.1677305169753087
+          ]
+        },
+        {
+          "frame": 192,
+          "encoded_vs_lossless_mean_absolute_rgb": [
+            0.8767385223765433,
+            0.8251331018518518,
+            1.0752001350308642
+          ]
+        }
+      ],
+      "mp4_atom_offsets": {
+        "ftyp": 0,
+        "moov": 32,
+        "free": 3214,
+        "mdat": 3222
+      },
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "mime_codec_string": "avc1.640029",
+            "width": 1920,
+            "height": 1080,
+            "coded_width": 1920,
+            "coded_height": 1080,
+            "has_b_frames": 2,
+            "pix_fmt": "yuv420p",
+            "level": 41,
+            "color_range": "tv",
+            "color_space": "bt709",
+            "color_transfer": "bt709",
+            "color_primaries": "bt709",
+            "chroma_location": "left",
+            "field_order": "progressive",
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "24/1",
+            "avg_frame_rate": "24/1",
+            "time_base": "1/12288",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 98816,
+            "duration": "8.041667",
+            "bit_rate": "2690876",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "193",
+            "extradata_size": 50,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "encoder": "Lavc62.28.102 libx264"
+            }
+          }
+        ],
+        "format": {
+          "filename": "outputs/motion-product-20261104/desktop/delivery.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "8.041667",
+          "size": "2708121",
+          "bit_rate": "2694089",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf62.12.102"
+          }
+        }
+      }
+    },
+    "mobile": {
+      "native_output": [
+        720,
+        900
+      ],
+      "fps": "24",
+      "frames": 193,
+      "all_frames_full_decode": "passed",
+      "pixels": {
+        "decoded_full_resolution_frames": 193,
+        "ordered_decoded_rgb_sha256": "79b94fc8a1f60a5118d379c9cc7429e946d4ae6f9ebc1ce40393433b99ff3a22",
+        "frame_mean_rgb_range": [
+          59.253476337448554,
+          78.62625
+        ],
+        "maximum_adjacent_mean_absolute_rgb": 8.534368827160494,
+        "last_first_mean_absolute_rgb": 2.578124485596708,
+        "empty_black_frame_gate": "passed; every full-resolution decoded frame mean above 1/255"
+      },
+      "sampled_encoded_vs_lossless": [
+        {
+          "frame": 0,
+          "encoded_vs_lossless_mean_absolute_rgb": [
+            1.2107932098765433,
+            0.9832993827160493,
+            1.3713765432098766
+          ]
+        },
+        {
+          "frame": 96,
+          "encoded_vs_lossless_mean_absolute_rgb": [
+            1.454145061728395,
+            1.0945354938271605,
+            1.6781435185185185
+          ]
+        },
+        {
+          "frame": 192,
+          "encoded_vs_lossless_mean_absolute_rgb": [
+            1.332814814814815,
+            1.091246913580247,
+            1.4742685185185185
+          ]
+        }
+      ],
+      "mp4_atom_offsets": {
+        "ftyp": 0,
+        "moov": 32,
+        "free": 3198,
+        "mdat": 3206
+      },
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "mime_codec_string": "avc1.640029",
+            "width": 720,
+            "height": 900,
+            "coded_width": 720,
+            "coded_height": 900,
+            "has_b_frames": 2,
+            "pix_fmt": "yuv420p",
+            "level": 41,
+            "color_range": "tv",
+            "color_space": "bt709",
+            "color_transfer": "bt709",
+            "color_primaries": "bt709",
+            "chroma_location": "left",
+            "field_order": "progressive",
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "24/1",
+            "avg_frame_rate": "24/1",
+            "time_base": "1/12288",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 98816,
+            "duration": "8.041667",
+            "bit_rate": "1346866",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "193",
+            "extradata_size": 50,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "encoder": "Lavc62.28.102 libx264"
+            }
+          }
+        ],
+        "format": {
+          "filename": "outputs/motion-product-20261104/mobile/delivery.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "8.041667",
+          "size": "1357095",
+          "bit_rate": "1350063",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf62.12.102"
+          }
+        }
+      }
+    }
+  },
+  "assets": [
+    {
+      "path": "public/films/motion-product.mp4",
+      "profile": "desktop",
+      "bytes": 2708121,
+      "sha256": "dedd15407bdb335dc5ee7793249f9a57b8e14a780312c7c8d04ed538abe53a21"
+    },
+    {
+      "path": "public/images/motion-product.jpg",
+      "profile": "desktop",
+      "bytes": 133513,
+      "sha256": "e6a93bc34c495b60349734516267cdabcf5c8ce863207c523d776a44266b49ab"
+    },
+    {
+      "path": "public/films/motion-product-mobile.mp4",
+      "profile": "mobile",
+      "bytes": 1357095,
+      "sha256": "1e9dd39e2e5a21d324a5291bf648a027bed28b562313121a69aed970dc29d428"
+    },
+    {
+      "path": "public/images/motion-product-mobile.jpg",
+      "profile": "mobile",
+      "bytes": 83614,
+      "sha256": "ab0f431564f2e8e3c377fe742c68bf253a397a01216d941b6ad0bb1cbfaa4078"
+    }
+  ]
+}

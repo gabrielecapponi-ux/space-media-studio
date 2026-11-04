@@ -1,0 +1,444 @@
+{
+  "schema_version": 1,
+  "id": "motion-brand-20261104",
+  "project": "Space Media Studio",
+  "commercial_status": "Original fictional non-commissioned FORMA coffee-roaster identity demonstration; no acquired client or campaign result is claimed.",
+  "method": "Actual original Blender geometry, printed curved typography, materials, photographic softboxes, native rendered motion and deliberate camera choreography. Not stock video, generated image-to-video, an optical interpolation or a freely rotatable live mesh.",
+  "refinement": "Existing correct coffee packaging and identity are retained and refined. Curved microcopy has actual word spacing, cards rest on physically aligned paper stock, and the lid/monogram reveal is sequenced rather than repeatedly bobbing. Slow camera arc, moving softbox reflection and controlled photographic focus support the brand.",
+  "timeline": {
+    "fps": 48,
+    "native_frames_per_profile": 288,
+    "duration_seconds": 6,
+    "easing": "Piecewise quintic minimum-jerk reveal/settle with zero velocity and acceleration at boundaries",
+    "sequence": "Assembled hold; lid reveal; monogram card reveal; monogram settles; lid assembles; camera and key settle; assembled hold",
+    "loop": "Master frame289 equals frame1. Output contains chronological frames1..288 including intentional held poses. No duplicated endpoint appended, reverse clip, resolution upscale or optical-flow frames."
+  },
+  "profiles": [
+    {
+      "profile": "desktop",
+      "master": "outputs/motion-20261104/brand/desktop/motion-brand.blend",
+      "master_sha256": "22cdbbb1da9e18ee71082b8a36d3944f3ffa19a204d1be5d4d8317f5fc267956",
+      "master_reimport": "passed",
+      "native": [
+        1920,
+        1080
+      ],
+      "fps": 48,
+      "frames": 288,
+      "duration": 6,
+      "upscaled": false,
+      "optical_interpolation": false,
+      "motion": "Authored minimum-jerk lid/card sequence, slow camera arc and photographic reflection sweep; deliberate assembled holds",
+      "engine": "BLENDER_EEVEE",
+      "blender": "5.2.1 LTS",
+      "samples": 48,
+      "gi_ray_resolution_scale": "2",
+      "preflight": {
+        "all_pose_count": 288,
+        "safe_margins": [
+          0.10096967220306396,
+          0.16484487056732178,
+          0.058682627975940704,
+          0.02502596378326416
+        ],
+        "minimum_paper_to_tin_clearance": 0.04517451583500098,
+        "periodic_transform_error": 0.0,
+        "observed_transform_change": 1.4500000476837158,
+        "ground_contact_gaps": {
+          "Rolled aluminium base": 0.0,
+          "Lower white cotton card": 0.0,
+          "Citron cotton card": 0.0
+        },
+        "graphite_card_to_stock_gap": 0.0,
+        "paper_paper_intersections": 0,
+        "passed": true
+      },
+      "pixels": {
+        "frames": 288,
+        "native_dimensions": [
+          1920,
+          1080
+        ],
+        "sequence_sha256": "bc28a69278a83e57c03ba81f44354dcc1bff77b9a4dd3c5ca3d0cb95e459df52",
+        "native_maximum_adjacent_mean_rgb": 1.4920820473251029,
+        "native_first_vs_last_mean_rgb": 6.430041152263375e-07,
+        "native_mean_rgb_range": [
+          176.30419576260286,
+          178.05198816872428
+        ],
+        "encoded_native_samples": [
+          {
+            "frame": 1,
+            "decoded_vs_native_mean_absolute_rgb": 0.7795225694444444
+          },
+          {
+            "frame": 145,
+            "decoded_vs_native_mean_absolute_rgb": 0.7678949652777778
+          },
+          {
+            "frame": 288,
+            "decoded_vs_native_mean_absolute_rgb": 0.8014375964506173
+          }
+        ],
+        "passed": true
+      },
+      "full_decode": "passed",
+      "faststart": {
+        "ftyp": 0,
+        "moov": 32,
+        "free": 4339,
+        "mdat": 4347
+      },
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "mime_codec_string": "avc1.64002a",
+            "width": 1920,
+            "height": 1080,
+            "coded_width": 1920,
+            "coded_height": 1080,
+            "has_b_frames": 2,
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "16:9",
+            "pix_fmt": "yuv420p",
+            "level": 42,
+            "color_range": "tv",
+            "color_space": "bt709",
+            "color_transfer": "iec61966-2-1",
+            "color_primaries": "bt709",
+            "chroma_location": "left",
+            "field_order": "progressive",
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "48/1",
+            "avg_frame_rate": "48/1",
+            "time_base": "1/12288",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 73728,
+            "duration": "6.000000",
+            "bit_rate": "2143917",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "288",
+            "extradata_size": 51,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "encoder": "Lavc62.28.102 libx264"
+            }
+          }
+        ],
+        "format": {
+          "filename": "public/films/motion-brand.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "6.000000",
+          "size": "1612293",
+          "bit_rate": "2149724",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf62.12.102"
+          }
+        }
+      },
+      "assets": [
+        {
+          "path": "public/films/motion-brand.mp4",
+          "bytes": 1612293,
+          "sha256": "f8e1f47597808a9292fbdd5aa3a98e8bfe89b1f43e178e66ead5d657040f3a09"
+        },
+        {
+          "path": "public/images/motion-brand.jpg",
+          "bytes": 116334,
+          "sha256": "3c260d3a876c824cfb2dda913963f7463f6b086f93619c72914f6242a810cd96"
+        }
+      ],
+      "render_vs_frozen_native_proofs": [
+        {
+          "frame": 1,
+          "mean_absolute_rgb": 8.101851851851852e-05
+        },
+        {
+          "frame": 145,
+          "mean_absolute_rgb": 1.1895576131687241e-05
+        },
+        {
+          "frame": 288,
+          "mean_absolute_rgb": 8.037551440329218e-07
+        }
+      ],
+      "native_frame_directory": "outputs/motion-20261104/brand/desktop/frames",
+      "proofs": [
+        "outputs/motion-20261104/brand/desktop/native-proof/0001.png",
+        "outputs/motion-20261104/brand/desktop/native-proof/0145.png",
+        "outputs/motion-20261104/brand/desktop/native-proof/0288.png"
+      ]
+    },
+    {
+      "profile": "mobile",
+      "master": "outputs/motion-20261104/brand/mobile/motion-brand-mobile.blend",
+      "master_sha256": "8faf6aa24d2247031175ce80d636009a375d9709d0d9b3fee4bd0b076ec58668",
+      "master_reimport": "passed",
+      "native": [
+        720,
+        900
+      ],
+      "fps": 48,
+      "frames": 288,
+      "duration": 6,
+      "upscaled": false,
+      "optical_interpolation": false,
+      "motion": "Authored minimum-jerk lid/card sequence, slow camera arc and photographic reflection sweep; deliberate assembled holds",
+      "engine": "BLENDER_EEVEE",
+      "blender": "5.2.1 LTS",
+      "samples": 48,
+      "gi_ray_resolution_scale": "2",
+      "preflight": {
+        "all_pose_count": 288,
+        "safe_margins": [
+          0.07131485641002655,
+          0.09783816337585449,
+          0.16786886751651764,
+          0.12137919664382935
+        ],
+        "minimum_paper_to_tin_clearance": 0.34722251975583096,
+        "periodic_transform_error": 0.0,
+        "observed_transform_change": 1.4500000476837158,
+        "ground_contact_gaps": {
+          "Rolled aluminium base": 0.0,
+          "Lower white cotton card": 0.0
+        },
+        "graphite_card_to_stock_gap": 0.0,
+        "paper_paper_intersections": 0,
+        "passed": true
+      },
+      "pixels": {
+        "frames": 288,
+        "native_dimensions": [
+          720,
+          900
+        ],
+        "sequence_sha256": "940da9bd73ca797c94f4ed8e23dde65c982b4fab3a6df85db51221a2d6ca9476",
+        "native_maximum_adjacent_mean_rgb": 1.060781378600823,
+        "native_first_vs_last_mean_rgb": 0.0003647119341563786,
+        "native_mean_rgb_range": [
+          174.18085905349793,
+          175.51295421810698
+        ],
+        "encoded_native_samples": [
+          {
+            "frame": 1,
+            "decoded_vs_native_mean_absolute_rgb": 0.7823935185185186
+          },
+          {
+            "frame": 145,
+            "decoded_vs_native_mean_absolute_rgb": 0.7712777777777777
+          },
+          {
+            "frame": 288,
+            "decoded_vs_native_mean_absolute_rgb": 0.801025720164609
+          }
+        ],
+        "passed": true
+      },
+      "full_decode": "passed",
+      "faststart": {
+        "ftyp": 0,
+        "moov": 32,
+        "free": 4323,
+        "mdat": 4331
+      },
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "mime_codec_string": "avc1.640029",
+            "width": 720,
+            "height": 900,
+            "coded_width": 720,
+            "coded_height": 900,
+            "has_b_frames": 2,
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "4:5",
+            "pix_fmt": "yuv420p",
+            "level": 41,
+            "color_range": "tv",
+            "color_space": "bt709",
+            "color_transfer": "iec61966-2-1",
+            "color_primaries": "bt709",
+            "chroma_location": "left",
+            "field_order": "progressive",
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "48/1",
+            "avg_frame_rate": "48/1",
+            "time_base": "1/12288",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 73728,
+            "duration": "6.000000",
+            "bit_rate": "645029",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "288",
+            "extradata_size": 51,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "encoder": "Lavc62.28.102 libx264"
+            }
+          }
+        ],
+        "format": {
+          "filename": "public/films/motion-brand-mobile.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "6.000000",
+          "size": "488111",
+          "bit_rate": "650814",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf62.12.102"
+          }
+        }
+      },
+      "assets": [
+        {
+          "path": "public/films/motion-brand-mobile.mp4",
+          "bytes": 488111,
+          "sha256": "2f4596460c29885fde3098bc23a934a717da4943e7fd8dadfc8b73f7f7684408"
+        },
+        {
+          "path": "public/images/motion-brand-mobile.jpg",
+          "bytes": 44065,
+          "sha256": "b6e68b4fc2500dda805db1466bc7a38d11a1165ed4ca0c1d10f965f9b37c4bc4"
+        }
+      ],
+      "render_vs_frozen_native_proofs": [
+        {
+          "frame": 1,
+          "mean_absolute_rgb": 1.02880658436214e-05
+        },
+        {
+          "frame": 145,
+          "mean_absolute_rgb": 6.6872427983539096e-06
+        },
+        {
+          "frame": 288,
+          "mean_absolute_rgb": 0.0003647119341563786
+        }
+      ],
+      "native_frame_directory": "outputs/motion-20261104/brand/mobile/frames",
+      "proofs": [
+        "outputs/motion-20261104/brand/mobile/native-proof/0001.png",
+        "outputs/motion-20261104/brand/mobile/native-proof/0145.png",
+        "outputs/motion-20261104/brand/mobile/native-proof/0288.png"
+      ]
+    }
+  ],
+  "source_scripts": [
+    {
+      "path": "scripts/motion-20261104-brand.py",
+      "bytes": 21738,
+      "sha256": "35f6bb724193d3456e52ee8bb6c0ac516c7c684c91920bb622f365b4f9c4794c"
+    },
+    {
+      "path": "scripts/motion-20261104-pixels.py",
+      "bytes": 1892,
+      "sha256": "c331e2c749a43004c0de0e8ba1d241a8a7555661e4cacf3622fb715341701ca3"
+    },
+    {
+      "path": "scripts/motion-20261104-runner.py",
+      "bytes": 894,
+      "sha256": "f042d5280be514c292bab3369dcd61c8acb5d1c169df8d566bcb01453527a333"
+    },
+    {
+      "path": "scripts/motion-20261104-manifest.py",
+      "bytes": 4567,
+      "sha256": "f55d1cc699d6d6e39fa9a38d264f1619f80696e8f0fde1511d9051706bdb5873"
+    }
+  ],
+  "renderer": "Blender5.2.1LTS EEVEE48samples with half-resolution indirect-light reconstruction. Output surfaces and final PNG rasters have the stated native dimensions.",
+  "colour": "AgX Medium High Contrast exposure-0.3 to display PNG8; encoded BT709 primaries/matrix and sRGB transfer, H264 High/yuv420p, silent faststart. Level4.2desktop for1080p48; level4.1portrait.",
+  "assets_external": false,
+  "models_downloaded": false,
+  "paid_apis": false,
+  "ai_video_generation": false,
+  "synthetic_frame_interpolation": false,
+  "resolution_upscale": false,
+  "audio": false,
+  "fonts": "System Arial Regular/Bold and Times New Roman rasterized in the movie pixels. Font binaries are not published; editable local masters retain system font references.",
+  "master_policy": "Editable .blend masters, full native PNG sequences, frozen native first/mid/end proofs and detailed validations are retained in ignored outputs/motion-20261104. Only compressed movies/posters, authored scripts and this manifest are source-controlled.",
+  "reproduction": "python3 scripts/motion-20261104-runner.py then python3 scripts/motion-20261104-manifest.py; requires Blender at the inspected local path, FFmpeg/ffprobe and Pillow. Render batch only after native proof and full-pose preflight.",
+  "browser_validation": "Owned by parent integration task; render-file gates do not certify physical device frame presentation."
+}

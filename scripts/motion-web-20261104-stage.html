@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="it"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Space / Cinematic web reel 60fps</title>
+<style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#0b0c0b}#camera{position:absolute;inset:0;perspective:1500px;perspective-origin:50% 50%;overflow:hidden}.shot{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;transform-origin:50% 50%;backface-visibility:hidden;box-shadow:0 0 90px #0008;will-change:transform}#next{z-index:2}#current{z-index:1}</style></head><body><div id="camera"><img id="current" class="shot" alt=""><img id="next" class="shot" alt=""></div>
+<script type="module">
+import { WEB_REEL, webReelFrame } from '../src/web-reel-motion.js';
+const variant = new URLSearchParams(location.search).get('variant') === 'mobile' ? 'mobile' : 'desktop';
+const shots = WEB_REEL.scenes.map(id => { const image=new Image(); image.src=`../outputs/web-reel/screens/${variant}/${id}.jpg`; return image; });
+const current=document.querySelector('#current'), next=document.querySelector('#next'), camera=document.querySelector('#camera');
+let previous=-1;
+window.renderReelFrame = frame => {
+ const state=webReelFrame(frame), w=innerWidth;
+ if(previous!==state.index){current.src=shots[state.index].src;next.src=shots[state.next].src;previous=state.index;}
+ const hold=Math.min(1,state.local/(WEB_REEL.sceneFrames-WEB_REEL.transitionFrames));
+ const e=state.ease, zoom=1+.01*Math.sin(hold*Math.PI/2)**2;
+ camera.style.perspective=`${w*1.2}px`;
+ current.style.transform=`translate3d(${-w*.12*e}px,0,${-w*.12*e}px) rotateY(${9*e}deg) scale(${zoom})`;
+ next.style.transform=`translate3d(${w*(1-e)}px,0,${-w*.03*(1-e)}px) rotateY(${-9*(1-e)}deg)`;
+ next.style.visibility=e>0?'visible':'hidden';current.style.opacity=String(1-.1*e);
+ document.documentElement.dataset.frame=String(state.frame);return state;
+};
+window.reelReady=Promise.all(shots.map(image=>image.decode())).then(()=>{window.renderReelFrame(0);return true;});
+</script></body></html>

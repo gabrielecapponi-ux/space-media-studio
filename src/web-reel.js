@@ -1,4 +1,4 @@
-import { WEB_REEL, webReelFrame } from './web-reel-timeline.js';
+import { WEB_REEL, webReelFrame } from './web-reel-motion.js';
 
 /** Keep native demo links useful; video time only provides a quiet visual index. */
 export function installWebReel({ signal } = {}) {

@@ -1,0 +1,480 @@
+{
+  "schema_version": 1,
+  "id": "motion-web-20261104",
+  "method": "Five original website interface screenshots on authored CSS perspective planes, deterministic native60fps rendering, quintic continuous easing. Not AI video, not live product meshes.",
+  "timeline": {
+    "fps": 60,
+    "frames": 600,
+    "seconds": 10,
+    "scene_seconds": 2,
+    "transition_seconds": 0.6,
+    "easing": "Quintic smootherstep, zero velocity/acceleration at transition endpoints",
+    "periodic": "Frame600 equalsframe0; no duplicated endpoint appended"
+  },
+  "sources": [
+    {
+      "path": "src/web-reel-motion.js",
+      "bytes": 806,
+      "sha256": "3d4b3e69aa2880ccaf7cfa80259336af1f8f166ce0f8f354844a9e1b5cc341f9"
+    },
+    {
+      "path": "scripts/motion-web-20261104.mjs",
+      "bytes": 5331,
+      "sha256": "458d5bf8aadd8489c655c73e965b493a791b835f8c27c36b8785c1cfdc2b4e7d"
+    },
+    {
+      "path": "scripts/motion-web-20261104-stage.html",
+      "bytes": 2057,
+      "sha256": "3a6e60a5029685e7e730e3aaab495b7ad4d48f992248ee84a56aad2ebda36500"
+    },
+    {
+      "path": "scripts/motion-web-20261104-verify.py",
+      "bytes": 5063,
+      "sha256": "e511c948f21d870beac4a406633853fc9bc071adde52cea2e5e2a9f99730cb92"
+    }
+  ],
+  "original_screenshot_masters": [
+    {
+      "path": "outputs/web-reel/screens/desktop/shift.jpg",
+      "sha256": "f2f40c3f52fa3962bf98c082ea667b4dd45913a867f8290af6a73e47ffaa0442",
+      "native_dimensions": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "outputs/web-reel/screens/desktop/vela.jpg",
+      "sha256": "d09ec061986be1c68bafee09eaa65cc033362f3e5b7399dfaf0af9bccadb7774",
+      "native_dimensions": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "outputs/web-reel/screens/desktop/nude.jpg",
+      "sha256": "95f387f29ef92a8f3536ad6fa870d362a60f6afd86352eab826224a02829378b",
+      "native_dimensions": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "outputs/web-reel/screens/desktop/basilico.jpg",
+      "sha256": "4c9eee7388341e362b0a90a4774dd0ced68130b114a8e39cc8fedcd12c60588b",
+      "native_dimensions": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "outputs/web-reel/screens/desktop/oltre.jpg",
+      "sha256": "c59cd08edeb221fbcb5d16ef6788ce739a2be474a39cfb972873fc0bc303f84c",
+      "native_dimensions": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "outputs/web-reel/screens/mobile/shift.jpg",
+      "sha256": "83d3cdba48ea6048865406aacf534490d88c7d572d6519895dba5699ee446f65",
+      "native_dimensions": [
+        720,
+        900
+      ]
+    },
+    {
+      "path": "outputs/web-reel/screens/mobile/vela.jpg",
+      "sha256": "161c6f3012bc381f18b6fc71575340d1fe38e87d240abb805db075deadf82ffe",
+      "native_dimensions": [
+        720,
+        900
+      ]
+    },
+    {
+      "path": "outputs/web-reel/screens/mobile/nude.jpg",
+      "sha256": "2b851ee4a7647d9d3526e9028fb9e28debb9369a34079f97f6fee8f76ece9a4b",
+      "native_dimensions": [
+        720,
+        900
+      ]
+    },
+    {
+      "path": "outputs/web-reel/screens/mobile/basilico.jpg",
+      "sha256": "ea48d8365104a1591ebef98f687c161aae601a8d1e1c17687a47aaa3a980383e",
+      "native_dimensions": [
+        720,
+        900
+      ]
+    },
+    {
+      "path": "outputs/web-reel/screens/mobile/oltre.jpg",
+      "sha256": "6301ace8d02eef87c56b2199d91afe5ed43128e09f0a40204ea561ab28f59362",
+      "native_dimensions": [
+        720,
+        900
+      ]
+    }
+  ],
+  "assets": [
+    {
+      "path": "public/films/motion-web.mp4",
+      "bytes": 7006065,
+      "sha256": "fe12d2c6021cb562b178f5566ab2c4e7a2a9862b0d86da94c8ec58f733870169",
+      "native_dimensions": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "public/images/motion-web.jpg",
+      "bytes": 427256,
+      "sha256": "0f52b497553a8389f6cf53d46dfd835a495909d2167685036baad09d0a00963e",
+      "native_dimensions": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "public/films/motion-web-mobile.mp4",
+      "bytes": 3671039,
+      "sha256": "dd064655dd8692b0b4b34911506367e8bc7fb6bded12144d3229a934cdba4762",
+      "native_dimensions": [
+        720,
+        900
+      ]
+    },
+    {
+      "path": "public/images/motion-web-mobile.jpg",
+      "bytes": 146385,
+      "sha256": "05d4d5191263295e4f49929aebbb932818f2aeff7479951afa60956990ee1bae",
+      "native_dimensions": [
+        720,
+        900
+      ]
+    }
+  ],
+  "checks": {
+    "desktop": {
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "mime_codec_string": "avc1.64002a",
+            "width": 1920,
+            "height": 1080,
+            "coded_width": 1920,
+            "coded_height": 1080,
+            "has_b_frames": 2,
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "16:9",
+            "pix_fmt": "yuv420p",
+            "level": 42,
+            "color_range": "tv",
+            "color_space": "bt709",
+            "chroma_location": "left",
+            "field_order": "progressive",
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "60/1",
+            "avg_frame_rate": "60/1",
+            "time_base": "1/15360",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 153600,
+            "duration": "10.000000",
+            "bit_rate": "5598071",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "600",
+            "extradata_size": 51,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "encoder": "Lavc62.28.102 libx264"
+            },
+            "side_data_list": [
+              {
+                "side_data_type": "ICC Profile"
+              }
+            ]
+          }
+        ],
+        "format": {
+          "filename": "public/films/motion-web.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "10.000000",
+          "size": "7006065",
+          "bit_rate": "5604852",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf62.12.102"
+          }
+        }
+      },
+      "full_decode": "passed",
+      "native_frame_count": 600,
+      "native_sequence_sha256": "b939f9feb7c0e70a9097037790a0aecb39997ca7ae48df798046e0ea3e6e3157",
+      "native_mean_rgb_range": [
+        88.04117476851853,
+        214.9712102944959
+      ],
+      "maximum_adjacent_pixel_mean": 30.324224376286008,
+      "first_last_mean_absolute_rgb": [
+        1.8099971064814815,
+        1.842721836419753,
+        1.8658641975308643
+      ],
+      "encoded_sample_checks": [
+        {
+          "frame": 0,
+          "encoded_native_mean_absolute_rgb": [
+            2.1596383101851853,
+            1.400920138888889,
+            2.769554398148148
+          ]
+        },
+        {
+          "frame": 102,
+          "encoded_native_mean_absolute_rgb": [
+            1.9920264274691357,
+            1.2053337191358025,
+            2.411707175925926
+          ]
+        },
+        {
+          "frame": 120,
+          "encoded_native_mean_absolute_rgb": [
+            1.697810088734568,
+            1.0884408757716049,
+            2.1140041473765434
+          ]
+        },
+        {
+          "frame": 300,
+          "encoded_native_mean_absolute_rgb": [
+            1.3313030478395063,
+            1.0933207947530865,
+            2.557582947530864
+          ]
+        },
+        {
+          "frame": 599,
+          "encoded_native_mean_absolute_rgb": [
+            2.5612172067901233,
+            1.876805073302469,
+            3.1169338348765434
+          ]
+        }
+      ],
+      "mp4_atoms": [
+        "ftyp",
+        "moov",
+        "free",
+        "mdat"
+      ]
+    },
+    "mobile": {
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "mime_codec_string": "avc1.640029",
+            "width": 720,
+            "height": 900,
+            "coded_width": 720,
+            "coded_height": 900,
+            "has_b_frames": 2,
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "4:5",
+            "pix_fmt": "yuv420p",
+            "level": 41,
+            "color_range": "tv",
+            "color_space": "bt709",
+            "chroma_location": "left",
+            "field_order": "progressive",
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "60/1",
+            "avg_frame_rate": "60/1",
+            "time_base": "1/15360",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 153600,
+            "duration": "10.000000",
+            "bit_rate": "2931077",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "600",
+            "extradata_size": 51,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "encoder": "Lavc62.28.102 libx264"
+            },
+            "side_data_list": [
+              {
+                "side_data_type": "ICC Profile"
+              }
+            ]
+          }
+        ],
+        "format": {
+          "filename": "public/films/motion-web-mobile.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "10.000000",
+          "size": "3671039",
+          "bit_rate": "2936831",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf62.12.102"
+          }
+        }
+      },
+      "full_decode": "passed",
+      "native_frame_count": 600,
+      "native_sequence_sha256": "3be9ad1ab8570bb408ceba706e4a3429b4203a5464884e6c335cec6b7463627f",
+      "native_mean_rgb_range": [
+        93.32683281893003,
+        217.62820216049386
+      ],
+      "maximum_adjacent_pixel_mean": 25.511914094650205,
+      "first_last_mean_absolute_rgb": [
+        1.179175925925926,
+        1.1956527777777777,
+        1.2205185185185186
+      ],
+      "encoded_sample_checks": [
+        {
+          "frame": 0,
+          "encoded_native_mean_absolute_rgb": [
+            2.2308225308641974,
+            1.4909660493827162,
+            3.071692901234568
+          ]
+        },
+        {
+          "frame": 102,
+          "encoded_native_mean_absolute_rgb": [
+            2.391842592592593,
+            1.7307175925925926,
+            2.9534243827160496
+          ]
+        },
+        {
+          "frame": 120,
+          "encoded_native_mean_absolute_rgb": [
+            1.6356913580246915,
+            1.1100262345679013,
+            2.1461543209876544
+          ]
+        },
+        {
+          "frame": 300,
+          "encoded_native_mean_absolute_rgb": [
+            1.3064212962962962,
+            1.129354938271605,
+            2.5665864197530865
+          ]
+        },
+        {
+          "frame": 599,
+          "encoded_native_mean_absolute_rgb": [
+            3.0045216049382715,
+            2.3464614197530866,
+            3.642634259259259
+          ]
+        }
+      ],
+      "mp4_atoms": [
+        "ftyp",
+        "moov",
+        "free",
+        "mdat"
+      ]
+    }
+  },
+  "upscaled_output": false,
+  "optical_frame_interpolation": false,
+  "reverse_playback": false,
+  "audio": false,
+  "commercial_status": "Original fictional possible website demonstrations, not acquired clients or completed commissions.",
+  "source_capture": "Original frozen native browser captures from ASSET-WEB-SHOWREEL.json. Recreate with scripts/render-web-showreel.mjs --mode=screens; keep those original still masters before rendering this new sequence.",
+  "reproduce": [
+    "npm run dev -- --port 5184",
+    "node scripts/motion-web-20261104.mjs --mode=open",
+    "node scripts/motion-web-20261104.mjs --mode=frames",
+    "node scripts/motion-web-20261104.mjs --mode=encode",
+    "python3 scripts/motion-web-20261104-verify.py",
+    "node scripts/motion-web-20261104.mjs --mode=close"
+  ]
+}

@@ -587,5 +587,8 @@
       "path": "outputs/cinema-campaign/source/higgsfield-shift-first.jpg",
       "sha256": "fda69bc727af36514cef2db7bacf9eb57a2b862c4a6befbda23b40d25775cd51"
     }
+  },
+  "current_integration": {
+    "status": "Historical30fps composition superseded by ASSET-MOTION-CAMPAIGN-20261104.json; original24fps Higgsfield source reused"
   }
 }

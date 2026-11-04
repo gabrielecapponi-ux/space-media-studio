@@ -934,5 +934,9 @@
       "native_frames_directory": "outputs/cinema-20261103/funding/mobile/frames",
       "master_sha256": "dabe118288f8a18635743b0a6cd1ea4b533c865afee2611e547a7b227f25ab09"
     }
-  ]
+  ],
+  "current_integration": {
+    "brand": "Superseded by native48fps sequence in ASSET-MOTION-BLENDER-20261104.json",
+    "funding": "Retained native30fps cinema-funding sequence"
+  }
 }
