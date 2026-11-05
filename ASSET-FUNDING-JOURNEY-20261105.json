@@ -1,0 +1,149 @@
+{
+  "schema_version": 1,
+  "id": "funding-journey-20261105",
+  "concept": "Space / Dall’idea alla realtà",
+  "method": "Original hand-authored SVG line drawing, camera composition and browser requestAnimationFrame timing; native vector animation, not a Blender or AI video",
+  "commercial_status": "Illustrative shared project process. No real funded project, awarded grant or guaranteed application outcome is claimed.",
+  "rights": {
+    "geometry": "Original authored SVG paths in src/funding-journey.js",
+    "external_assets": [],
+    "horizon_assets_used": [],
+    "horizon_downloads_for_this_asset": 0,
+    "font_binaries_added": false
+  },
+  "motion": {
+    "duration_seconds": 22,
+    "phases": [
+      "Idea",
+      "Progettazione insieme",
+      "Candidatura",
+      "Realizzazione del progetto"
+    ],
+    "drawn_scenes": [
+      "Bulb and filament",
+      "Two people writing a shared plan",
+      "Project dossier and application envelope",
+      "A completed community space and people"
+    ],
+    "camera": "Quintic interpolated camera moves follow the four stages, then pull back to show the completed process. Short final fade allows a new traced loop.",
+    "viewport_layouts": {
+      "wide": {
+        "viewBox": [
+          0,
+          0,
+          1600,
+          900
+        ],
+        "aspect_ratio": "16:9"
+      },
+      "portrait": {
+        "viewBox": [
+          0,
+          0,
+          800,
+          1000
+        ],
+        "aspect_ratio": "4:5",
+        "breakpoint": "max-width 760px and orientation portrait"
+      }
+    },
+    "fixed_video_framerate": null,
+    "raster_upscale": false,
+    "rendered_4k_video": false
+  },
+  "fallbacks": {
+    "without_javascript": "Original completed-process SVG picture with separate portrait source",
+    "reduced_motion": "Completed static composition; explicit play remains available",
+    "save_data": "Completed static composition; explicit play remains available"
+  },
+  "controls": {
+    "pause_resume": true,
+    "button_minimum_css_pixels": [
+      44,
+      44
+    ],
+    "offscreen_pause": true,
+    "document_hidden_pause": true,
+    "menu_open_pause": true,
+    "entry_pending_pause": true,
+    "bfcache_suspend_resume": true,
+    "abort_signal_cleanup": true,
+    "phase_labels_aria_live": false
+  },
+  "files": [
+    {
+      "path": "src/funding-journey.js",
+      "bytes": 11435,
+      "sha256": "1ac30012bc6505882082fe7de4c03d8c3f35a3b1d961307dfa2e7d14ac56f676"
+    },
+    {
+      "path": "src/funding-journey.css",
+      "bytes": 3088,
+      "sha256": "476bbe3d38222f3c1b47e5823ecae545a6d05c7bd4f7df8f1804d36bbd6a246d"
+    },
+    {
+      "path": "public/images/funding-journey.svg",
+      "bytes": 3308,
+      "sha256": "916ba400604f24965c6b7582a0ccae6e20fbdd65c013a6efc156002abb4cb883"
+    },
+    {
+      "path": "public/images/funding-journey-mobile.svg",
+      "bytes": 3416,
+      "sha256": "9590ab18498537c72244c1ed7b80c51ca73a569759c5840b33f14efab5c813f4"
+    }
+  ],
+  "verification": {
+    "scope": "Isolated local Chrome using existing pinned Playwright CLI; no external messages or form submissions. Full homepage integration and public deployment are verified separately by root.",
+    "browser": "Chrome headless desktop, phone viewports emulated; no physical iPhone/Safari certification",
+    "desktop_viewport": [
+      1440,
+      1100
+    ],
+    "phone_viewports": [
+      [
+        393,
+        852
+      ],
+      [
+        320,
+        667
+      ]
+    ],
+    "visible_phase_screenshots": "outputs/funding-journey-qa/desktop-{idea,writing,application,realization,all}.png",
+    "phone_final_screenshots": [
+      "outputs/funding-journey-qa/final-phone-393.png",
+      "outputs/funding-journey-qa/final-phone-320.png"
+    ],
+    "javascript_errors": 0,
+    "horizontal_overflow": false,
+    "pause_retains_time": true,
+    "reduced_motion_static": true,
+    "manual_motion_from_reduced": true,
+    "save_data_static": true,
+    "document_hidden_pause_resume": true,
+    "entry_pause_resume": true,
+    "menu_pause_resume": true,
+    "offscreen_pause_resume": true,
+    "bfcache_pause_resume": true,
+    "dispose_and_abort_stop_time": true,
+    "phone_phase_label_font_css_pixels": 8,
+    "phone_caption_key_font_css_pixels": 8,
+    "rail_320_layout": "2 columns × 2 rows",
+    "policy_receipt": "outputs/funding-journey-qa/policy-result.txt",
+    "lifecycle_receipt": "outputs/funding-journey-qa/lifecycle-result.txt",
+    "public_deployment_verified_by_this_manifest": false,
+    "standalone_svg_xml_valid": true,
+    "standalone_svg_browser_img_decode": {
+      "wide": [
+        1600,
+        900
+      ],
+      "portrait": [
+        800,
+        1000
+      ],
+      "method": "Chrome img.decode from exact standalone bytes as image/svg+xml data URL",
+      "receipt": "outputs/funding-journey-qa/decode-result.txt"
+    }
+  }
+}

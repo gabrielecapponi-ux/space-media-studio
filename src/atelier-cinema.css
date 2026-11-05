@@ -36,7 +36,7 @@
 .atelier-concept.atelier-case-chapter .atelier-campaign-film[data-media-format="portrait"]{aspect-ratio:4/5}
 .atelier-film-caption{position:absolute;left:24px;right:24px;top:21px;display:flex;justify-content:space-between;gap:20px;font:9px/1.7 "DM Mono",monospace;color:#efeee8bd;pointer-events:none;z-index:1}
 .atelier-film-caption>span:last-child{opacity:.7}
-.atelier-service-film[data-service-film="brand"] .atelier-film-caption,.atelier-service-film[data-service-film="web"] .atelier-film-caption,.atelier-service-film[data-service-film="funding"] .atelier-film-caption{color:#151810c2}
+.atelier-service-film[data-service-film="product"] .atelier-film-caption,.atelier-service-film[data-service-film="brand"] .atelier-film-caption,.atelier-service-film[data-service-film="web"] .atelier-film-caption,.atelier-service-film[data-service-film="funding"] .atelier-film-caption{color:#151810c2}
 .atelier-case-film-toggle{position:absolute;right:22px;bottom:20px;z-index:2;display:flex;align-items:center;justify-content:center;gap:0;width:44px;height:44px;padding:10px;border:1px solid #efeee84d;border-radius:50%;background:#080a08d9;color:#efeee8;font-size:11px;transition:background-color .2s,color .2s}
 .atelier-case-film-toggle [data-media-symbol]{font-size:16px;line-height:1}
 .atelier-case-film-toggle [data-media-label]{display:none}

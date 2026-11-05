@@ -936,7 +936,9 @@
     }
   ],
   "current_integration": {
-    "brand": "Superseded by native48fps sequence in ASSET-MOTION-BLENDER-20261104.json",
-    "funding": "Retained native30fps cinema-funding sequence"
+    "as_of": "2026-11-05",
+    "brand": "Archived. FORMA was superseded on November4; the active branding study is now CACAO ATELIER in ASSET-SHOWCASE-BRAND-20261105.json.",
+    "funding": "Archived. The cinema-funding dossier films are replaced by the original SVG journey in src/funding-journey.js and src/funding-journey.css; no funding film is loaded by the current homepage.",
+    "history": "Original scene descriptions, source and delivery hashes, frame cadence and production checks above are preserved unchanged."
   }
 }

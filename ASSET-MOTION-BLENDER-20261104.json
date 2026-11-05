@@ -440,5 +440,11 @@
   "fonts": "System Arial Regular/Bold and Times New Roman rasterized in the movie pixels. Font binaries are not published; editable local masters retain system font references.",
   "master_policy": "Editable .blend masters, full native PNG sequences, frozen native first/mid/end proofs and detailed validations are retained in ignored outputs/motion-20261104. Only compressed movies/posters, authored scripts and this manifest are source-controlled.",
   "reproduction": "python3 scripts/motion-20261104-runner.py then python3 scripts/motion-20261104-manifest.py; requires Blender at the inspected local path, FFmpeg/ffprobe and Pillow. Render batch only after native proof and full-pose preflight.",
-  "browser_validation": "Owned by parent integration task; render-file gates do not certify physical device frame presentation."
+  "browser_validation": "Owned by parent integration task; render-file gates do not certify physical device frame presentation.",
+  "current_integration": {
+    "as_of": "2026-11-05",
+    "status": "Archived production; FORMA cylindrical coffee packaging is no longer used by the homepage or atelier alias.",
+    "replacement": "CACAO ATELIER original Blender chocolate-coffret study, public/films/showcase-brand.mp4 and showcase-brand-mobile.mp4; ASSET-SHOWCASE-BRAND-20261105.json.",
+    "history": "The original scene, native cadence, source hashes and checks above describe the November4 production and are preserved unchanged."
+  }
 }

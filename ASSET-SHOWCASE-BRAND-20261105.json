@@ -1,0 +1,432 @@
+{
+  "schema_version": 1,
+  "id": "showcase-brand-20261105",
+  "project": "Space Media Studio",
+  "commercial_status": "CACAO / ATELIER is an original fictional non-commissioned chocolate brand demonstration. No real client, commissioned work, sales result or third-party brand identity is claimed.",
+  "method": "Actual original Blender geometry, rigid package structure, six physically separated four-section chocolate tablets, leaf embossing, foil text, photographic materials and area lights. Authored native-frame camera and hinge choreography; no downloaded models or AI video.",
+  "replaces": "FORMA cylindrical coffee-tin branding demonstration. Original films remain archived and are not overwritten.",
+  "visible_objects": "Charcoal rigid rectangular base with separate bottom and walls, citron covered hinged lid and interior liner, moulded six-cell tray, six dark/milk/blond tablets, foil wordmark and embossed cacao leaf. No paper sheet, perfume or cylindrical box.",
+  "timeline": {
+    "fps": 48,
+    "native_frames_per_profile": 288,
+    "duration_seconds": 6,
+    "easing": "Piecewise quintic minimum jerk; zero velocity and acceleration at settled endpoints",
+    "sequence": "Closed brand hold; actual rear-hinged lid opens; front-centre chocolate tablet rises and gently tilts; readable hold; tablet returns; lid closes; camera and softbox settle.",
+    "loop": "Masterframe289 equals frame1; delivery contains chronological frames1..288. No endpoint copy appended, reverse clip, optical flow, resolution upscale or artificially manufactured 60fps."
+  },
+  "profiles": [
+    {
+      "profile": "desktop",
+      "master": "outputs/showcase-brand-20261105/desktop/showcase-brand.blend",
+      "master_sha256": "6c3b5a9c6673a4f14002cfebc5215deeb509314b5592074c4bec48a4f93bbb25",
+      "master_reimport": "passed",
+      "native_dimensions": [
+        1920,
+        1080
+      ],
+      "fps": 48,
+      "frames": 288,
+      "duration_seconds": 6,
+      "upscaled": false,
+      "synthetic_interpolation": false,
+      "engine": "BLENDER_EEVEE",
+      "blender": "5.2.1 LTS",
+      "samples": 48,
+      "gi_ray_resolution_scale": "2",
+      "preflight": {
+        "passed": true,
+        "all_poses": 289,
+        "safe_margins": [
+          0.2706229090690613,
+          0.2372177243232727,
+          0.06117493286728859,
+          0.021031618118286133
+        ],
+        "loop_transform_error": 0.0,
+        "transform_change": 1.2756373584270477,
+        "base_ground_contact": 0.0,
+        "lid_wall_obb_intersections": 0,
+        "tablet_tablet_obb_intersections": 0,
+        "construction": "Separate rigid walls, bottom, hinged lid and six moulded tablets with foil typography; hero lift stays in its own front-centre cell. Intentional container/tray structural contacts."
+      },
+      "pixel_validation": {
+        "frames": 288,
+        "native_dimensions": [
+          1920,
+          1080
+        ],
+        "sequence_sha256": "ea43fa93d02987831bacbfaf9e350b5d717f9e95078a74ffdcf5c7f1cd37aab5",
+        "native_maximum_adjacent_mean_rgb": 3.9615674832818932,
+        "native_first_vs_last_mean_rgb": 4.5974794238683126e-05,
+        "native_mean_rgb_range": [
+          165.4039403292181,
+          200.65832159850822
+        ],
+        "encoded_native_samples": [
+          {
+            "frame": 1,
+            "decoded_vs_native_mean_absolute_rgb": 0.7721696566358025
+          },
+          {
+            "frame": 145,
+            "decoded_vs_native_mean_absolute_rgb": 0.8469483024691358
+          },
+          {
+            "frame": 288,
+            "decoded_vs_native_mean_absolute_rgb": 0.7831635802469136
+          }
+        ],
+        "passed": true
+      },
+      "full_decode": "passed",
+      "atoms": {
+        "ftyp": 0,
+        "moov": 32,
+        "free": 4363,
+        "mdat": 4371
+      },
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "mime_codec_string": "avc1.64002a",
+            "width": 1920,
+            "height": 1080,
+            "coded_width": 1920,
+            "coded_height": 1080,
+            "has_b_frames": 2,
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "16:9",
+            "pix_fmt": "yuv420p",
+            "level": 42,
+            "color_range": "tv",
+            "color_space": "bt709",
+            "color_transfer": "iec61966-2-1",
+            "color_primaries": "bt709",
+            "chroma_location": "left",
+            "field_order": "progressive",
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "48/1",
+            "avg_frame_rate": "48/1",
+            "time_base": "1/12288",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 73728,
+            "duration": "6.000000",
+            "bit_rate": "2559445",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "288",
+            "extradata_size": 51,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "encoder": "Lavc62.28.102 libx264"
+            }
+          }
+        ],
+        "format": {
+          "filename": "public/films/showcase-brand.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "6.000000",
+          "size": "1923963",
+          "bit_rate": "2565284",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf62.12.102"
+          }
+        }
+      },
+      "assets": [
+        {
+          "path": "public/films/showcase-brand.mp4",
+          "bytes": 1923963,
+          "sha256": "fbb45b8c1521df40ac573848bdf70ccd8d0b1af272c3b7af69cc41efda3a3431"
+        },
+        {
+          "path": "public/images/showcase-brand.jpg",
+          "bytes": 158742,
+          "sha256": "ea2a138c3f463908a0a177b2ef994ce32ff3a9a883414b164477f4fb0d4d4ee4"
+        }
+      ],
+      "native_frame_directory": "outputs/showcase-brand-20261105/desktop/frames",
+      "frozen_native_proofs": [
+        {
+          "frame": 1,
+          "frozen_proof": "outputs/showcase-brand-20261105/desktop/native-proof/0001.png",
+          "native_proof_mean_absolute_rgb": 4.4206532921810695e-05
+        },
+        {
+          "frame": 145,
+          "frozen_proof": "outputs/showcase-brand-20261105/desktop/native-proof/0145.png",
+          "native_proof_mean_absolute_rgb": 1.2699331275720163e-05
+        },
+        {
+          "frame": 288,
+          "frozen_proof": "outputs/showcase-brand-20261105/desktop/native-proof/0288.png",
+          "native_proof_mean_absolute_rgb": 7.18557098765432e-05
+        }
+      ]
+    },
+    {
+      "profile": "mobile",
+      "master": "outputs/showcase-brand-20261105/mobile/showcase-brand-mobile.blend",
+      "master_sha256": "921b8e1eb3a3de835c5911494effde5f25777bc7b851ec0b65e7dced7dc80158",
+      "master_reimport": "passed",
+      "native_dimensions": [
+        720,
+        900
+      ],
+      "fps": 48,
+      "frames": 288,
+      "duration_seconds": 6,
+      "upscaled": false,
+      "synthetic_interpolation": false,
+      "engine": "BLENDER_EEVEE",
+      "blender": "5.2.1 LTS",
+      "samples": 48,
+      "gi_ray_resolution_scale": "2",
+      "preflight": {
+        "passed": true,
+        "all_poses": 289,
+        "safe_margins": [
+          0.10777835547924042,
+          0.05230194330215454,
+          0.16125692427158356,
+          0.1303914189338684
+        ],
+        "loop_transform_error": 0.0,
+        "transform_change": 1.2756373584270477,
+        "base_ground_contact": 0.0,
+        "lid_wall_obb_intersections": 0,
+        "tablet_tablet_obb_intersections": 0,
+        "construction": "Separate rigid walls, bottom, hinged lid and six moulded tablets with foil typography; hero lift stays in its own front-centre cell. Intentional container/tray structural contacts."
+      },
+      "pixel_validation": {
+        "frames": 288,
+        "native_dimensions": [
+          720,
+          900
+        ],
+        "sequence_sha256": "5cdb3c6eca29889b6951c73534d2763e5ad0c30dcc153e7f23db3d101d8f31c4",
+        "native_maximum_adjacent_mean_rgb": 5.11580195473251,
+        "native_first_vs_last_mean_rgb": 0.0,
+        "native_mean_rgb_range": [
+          149.85712242798354,
+          194.59597016460907
+        ],
+        "encoded_native_samples": [
+          {
+            "frame": 1,
+            "decoded_vs_native_mean_absolute_rgb": 0.8351116255144033
+          },
+          {
+            "frame": 145,
+            "decoded_vs_native_mean_absolute_rgb": 1.021292695473251
+          },
+          {
+            "frame": 288,
+            "decoded_vs_native_mean_absolute_rgb": 0.8593096707818929
+          }
+        ],
+        "passed": true
+      },
+      "full_decode": "passed",
+      "atoms": {
+        "ftyp": 0,
+        "moov": 32,
+        "free": 4315,
+        "mdat": 4323
+      },
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "mime_codec_string": "avc1.640029",
+            "width": 720,
+            "height": 900,
+            "coded_width": 720,
+            "coded_height": 900,
+            "has_b_frames": 2,
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "4:5",
+            "pix_fmt": "yuv420p",
+            "level": 41,
+            "color_range": "tv",
+            "color_space": "bt709",
+            "color_transfer": "iec61966-2-1",
+            "color_primaries": "bt709",
+            "chroma_location": "left",
+            "field_order": "progressive",
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "48/1",
+            "avg_frame_rate": "48/1",
+            "time_base": "1/12288",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 73728,
+            "duration": "6.000000",
+            "bit_rate": "1058530",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "288",
+            "extradata_size": 51,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "encoder": "Lavc62.28.102 libx264"
+            }
+          }
+        ],
+        "format": {
+          "filename": "public/films/showcase-brand-mobile.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "6.000000",
+          "size": "798229",
+          "bit_rate": "1064305",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf62.12.102"
+          }
+        }
+      },
+      "assets": [
+        {
+          "path": "public/films/showcase-brand-mobile.mp4",
+          "bytes": 798229,
+          "sha256": "cb3d4a37f24b046ddf172727b82d461690158e9b26ee37495f188043b0c7dda3"
+        },
+        {
+          "path": "public/images/showcase-brand-mobile.jpg",
+          "bytes": 81239,
+          "sha256": "a8e141c28ba4957ca12a1d3abf4c3e8c6f8b3f48693b8cd827b98041b593925d"
+        }
+      ],
+      "native_frame_directory": "outputs/showcase-brand-20261105/mobile/frames",
+      "frozen_native_proofs": [
+        {
+          "frame": 1,
+          "frozen_proof": "outputs/showcase-brand-20261105/mobile/native-proof/0001.png",
+          "native_proof_mean_absolute_rgb": 0.0
+        },
+        {
+          "frame": 145,
+          "frozen_proof": "outputs/showcase-brand-20261105/mobile/native-proof/0145.png",
+          "native_proof_mean_absolute_rgb": 2.5720164609053497e-05
+        },
+        {
+          "frame": 288,
+          "frozen_proof": "outputs/showcase-brand-20261105/mobile/native-proof/0288.png",
+          "native_proof_mean_absolute_rgb": 0.0
+        }
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "path": "scripts/showcase-brand-20261105.py",
+      "bytes": 17437,
+      "sha256": "47f1767b732ecb1eda6a875fd58ff102a3c9b87bc7e9e777b57a24287f6d6bcc"
+    },
+    {
+      "path": "scripts/showcase-brand-20261105-runner.py",
+      "bytes": 905,
+      "sha256": "0e5a72b65add1762b9bf1f4c0373625291739623b296af74ebf3a56139586a03"
+    },
+    {
+      "path": "scripts/showcase-brand-20261105-pixels.py",
+      "bytes": 1892,
+      "sha256": "c331e2c749a43004c0de0e8ba1d241a8a7555661e4cacf3622fb715341701ca3"
+    },
+    {
+      "path": "scripts/showcase-brand-20261105-manifest.py",
+      "bytes": 5077,
+      "sha256": "5c9c9bb1e634723a2106bc9e109cf1e013b9243ff950f3bb5960692aeeaa7cb3"
+    }
+  ],
+  "renderer": "Blender5.2.1LTS EEVEE48samples with half-resolution indirect ray reconstruction; geometry and output images rendered at actual stated native delivery sizes.",
+  "colour": "AgX Medium High Contrast exposure-0.15 to PNG8; H264High/yuv420p BT709 primaries/matrix with sRGB transfer, silent and faststart. DesktopHigh4.2,portraitHigh4.1.",
+  "fonts": "System Arial Regular/Bold rasterized into movie pixels. No font binaries redistributed; editable local Blender masters keep local system references.",
+  "external_assets": false,
+  "models_downloaded": false,
+  "ai_video_generation": false,
+  "paid_api": false,
+  "synthetic_frame_interpolation": false,
+  "resolution_upscale": false,
+  "audio": false,
+  "validation": "All289masterposes tested for positive camera margins, exact loop transform closure, actual grounded base, oriented-box separation of lid/walls and independent tablets. Full native sequence no-black/continuity tests, frozen-native comparisons, full MP4 decode, sampled native-vs-encoded pixels and faststart atom order. Browser runtime/mobile playback checks belong to integration task, not certified here.",
+  "master_policy": "Editable blend files, native PNG frames, native proof stills and detailed validations remain in ignored outputs/showcase-brand-20261105. Public delivery includes only compressed movies/posters, authored source scripts and factual provenance.",
+  "reproduction": "Render native proofs using scripts/showcase-brand-20261105.py --mode nativeproof for each profile, visually review, then python3 scripts/showcase-brand-20261105-runner.py and python3 scripts/showcase-brand-20261105-manifest.py. Requires Blender, FFmpeg/ffprobe and Pillow."
+}

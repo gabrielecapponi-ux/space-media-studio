@@ -1,0 +1,231 @@
+{
+  "title": "LUMA / Original design-camera CGI concept",
+  "created": "2026-11-05",
+  "status": "active original non-commissioned concept",
+  "provenance": "Original authored Blender geometry, procedural materials and native piecewise minimum-jerk optical-axis assembly. No downloaded models, no external textures, no AI generation. Original fictional brand; no manufacturer/client claim.",
+  "motion": "Three nonintersecting hollow lens groups separate along the optical axis, hold, then return; grounded camera body, camera arc and travelling reflection. No speed change, reverse footage, optical interpolation or resolution upscale.",
+  "rights": "Original project geometry/materials. System Arial rasterized lettering only; no font binaries redistributed.",
+  "sources": [
+    {
+      "path": "scripts/showcase-product-20261105.py",
+      "sha256": "b7a7bc74e8209c87285fa3a5c4928f29cb6d6e22d7878935168af245c3e7c9ea"
+    },
+    {
+      "path": "scripts/showcase-product-20261105-runner.py",
+      "sha256": "157be9de408554c62404dd94c1d740e5c878f36390322cc067e2b1357b385582"
+    },
+    {
+      "path": "scripts/showcase-product-20261105-delivery.py",
+      "sha256": "487e4bae1ecc7e6204f69ffb2e8634b60a413f38b50bac112cdca65b70dfcaf8"
+    }
+  ],
+  "delivery": [
+    {
+      "profile": "desktop",
+      "native": [
+        1920,
+        1080
+      ],
+      "fps": 48,
+      "frames": 288,
+      "duration": 6,
+      "engine": "Blender EEVEE",
+      "samples": 48,
+      "upscaled": false,
+      "optical_interpolation": false,
+      "silent": true,
+      "faststart": true,
+      "all_frames_decoded": true,
+      "native_sequence_sha256": "94ea281eb706a9c02ac79539c56bfef54e3c1992b40d003eebc083629f506e6f",
+      "native_max_adjacent_rgb_difference": 1.844287872942387,
+      "native_seam_rgb_difference": 9.966563786008229e-06,
+      "native_proof_samples": [
+        {
+          "frame": 1,
+          "proof_vs_batch_mae": 4.822530864197531e-07
+        },
+        {
+          "frame": 145,
+          "proof_vs_batch_mae": 1.4146090534979424e-05
+        },
+        {
+          "frame": 288,
+          "proof_vs_batch_mae": 1.0609567901234568e-05
+        }
+      ],
+      "encoded_samples": [
+        {
+          "native_frame": 1,
+          "encoded_mae": 0.7354925411522634
+        },
+        {
+          "native_frame": 145,
+          "encoded_mae": 0.7559473058127573
+        },
+        {
+          "native_frame": 288,
+          "encoded_mae": 0.7561850565843621
+        }
+      ],
+      "scene_check": {
+        "ground_contact_gaps": [
+          -2.8312206259983874e-09,
+          -2.8312206259983874e-09
+        ],
+        "all_pose_count": 289,
+        "safe_frame_margins": [
+          0.24287866055965424,
+          0.22383451461791992,
+          0.1677849292755127,
+          0.1884261965751648
+        ],
+        "optical_group_minimum_gap": 0.009999988079071098,
+        "periodic_transform_error": 0.0,
+        "observed_transform_change": 2.0,
+        "objects": 323,
+        "meshes": 311,
+        "engine": "BLENDER_EEVEE",
+        "blender": "5.2.1 LTS",
+        "samples": 48,
+        "native": [
+          1920,
+          1080
+        ],
+        "fps": 48,
+        "frames": 288,
+        "passed": true
+      },
+      "reimport": {
+        "objects": 323,
+        "fps": 48,
+        "dimensions": [
+          1920,
+          1080
+        ],
+        "passed": true
+      },
+      "master": {
+        "path": "outputs/showcase-product-20261105/desktop/showcase-product.blend",
+        "sha256": "8eb96e7087ea7622fbffc245174134c028465948749b18635aea13928693dfe0"
+      },
+      "assets": [
+        {
+          "path": "public/films/showcase-product.mp4",
+          "bytes": 1801690,
+          "sha256": "22fcaf6e53b29dcb60f21fa4d1c61c35e764a37c19c9151380d40e2a2fc46e8c"
+        },
+        {
+          "path": "public/images/showcase-product.jpg",
+          "bytes": 130438,
+          "sha256": "ec4802563c898b615efb7ea4ba3535eb87056da1582f538ef5cf88a16f1d75cc"
+        }
+      ]
+    },
+    {
+      "profile": "mobile",
+      "native": [
+        720,
+        900
+      ],
+      "fps": 48,
+      "frames": 288,
+      "duration": 6,
+      "engine": "Blender EEVEE",
+      "samples": 48,
+      "upscaled": false,
+      "optical_interpolation": false,
+      "silent": true,
+      "faststart": true,
+      "all_frames_decoded": true,
+      "native_sequence_sha256": "500f05e6415e7038f56d7d1cab46e8c0b25b14a1818660ee4c8d2280a0f578d3",
+      "native_max_adjacent_rgb_difference": 1.9511898148148148,
+      "native_seam_rgb_difference": 5.144032921810699e-07,
+      "native_proof_samples": [
+        {
+          "frame": 1,
+          "proof_vs_batch_mae": 1.0288065843621398e-06
+        },
+        {
+          "frame": 145,
+          "proof_vs_batch_mae": 0.0
+        },
+        {
+          "frame": 288,
+          "proof_vs_batch_mae": 8.230452674897118e-06
+        }
+      ],
+      "encoded_samples": [
+        {
+          "native_frame": 1,
+          "encoded_mae": 0.8293811728395063
+        },
+        {
+          "native_frame": 145,
+          "encoded_mae": 0.8358852880658437
+        },
+        {
+          "native_frame": 288,
+          "encoded_mae": 0.8678240740740741
+        }
+      ],
+      "scene_check": {
+        "ground_contact_gaps": [
+          -2.8312206259983874e-09,
+          -2.8312206259983874e-09
+        ],
+        "all_pose_count": 289,
+        "safe_frame_margins": [
+          0.08116336166858673,
+          0.05572164058685303,
+          0.25291958451271057,
+          0.280803382396698
+        ],
+        "optical_group_minimum_gap": 0.009999988079071098,
+        "periodic_transform_error": 0.0,
+        "observed_transform_change": 2.0,
+        "objects": 323,
+        "meshes": 311,
+        "engine": "BLENDER_EEVEE",
+        "blender": "5.2.1 LTS",
+        "samples": 48,
+        "native": [
+          720,
+          900
+        ],
+        "fps": 48,
+        "frames": 288,
+        "passed": true
+      },
+      "reimport": {
+        "objects": 323,
+        "fps": 48,
+        "dimensions": [
+          720,
+          900
+        ],
+        "passed": true
+      },
+      "master": {
+        "path": "outputs/showcase-product-20261105/mobile/showcase-product.blend",
+        "sha256": "6cb3e5477d1598fc71117687b9f5148348c12cd1c3ae164896d55de80d7d9878"
+      },
+      "assets": [
+        {
+          "path": "public/films/showcase-product-mobile.mp4",
+          "bytes": 695885,
+          "sha256": "cf71a0948612b6c254d20552feab5d82c221789e464b5ca5232813b866b43486"
+        },
+        {
+          "path": "public/images/showcase-product-mobile.jpg",
+          "bytes": 55471,
+          "sha256": "b67eaf84a3ad230ac4cc79b3465346dc0d43759a169fcae98dea30152bd60d69"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "CGI product design study, not a manufactured camera.",
+    "H.264 native48fps, not4K60.",
+    "No physical-iPhone or Safari device test is implied by asset validation."
+  ]
+}

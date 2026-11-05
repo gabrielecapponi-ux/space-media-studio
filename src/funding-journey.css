@@ -1,0 +1,28 @@
+/* Original line film: precise black strokes, a continuous yellow field. */
+.atelier-funding>.funding-journey{grid-column:1/-1;position:relative;isolation:isolate;aspect-ratio:16/9;margin:0;overflow:hidden;border:1px solid #10111022;border-radius:8px;background:var(--yellow,#dfff00);color:var(--ink,#101110)}
+.funding-journey-poster,.funding-journey-canvas{position:absolute;inset:0;width:100%;height:100%}
+.funding-journey-poster img,.funding-journey-canvas svg{display:block;width:100%;height:100%;object-fit:contain}
+.funding-journey[data-journey-ready=true] .funding-journey-poster{visibility:hidden}
+.funding-journey-caption{position:absolute;inset:32px 36px auto;z-index:1;pointer-events:none}
+.funding-journey-caption>span{display:block;font:9px/1.7 "DM Mono",monospace;letter-spacing:.02em;opacity:.65}
+.funding-journey-caption>strong{display:block;max-width:590px;margin-top:10px;font-size:clamp(23px,3vw,49px);line-height:1.06;font-weight:500;letter-spacing:-.055em}
+.funding-journey-rail{position:absolute;left:36px;right:110px;bottom:29px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;list-style:none;padding:0;margin:0}
+.funding-journey-rail li{position:relative;padding-top:13px;font:9px/1.5 "DM Mono",monospace;color:#10111075;white-space:nowrap}
+.funding-journey-rail li::before,.funding-journey-rail li::after{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:#10111035}
+.funding-journey-rail li::after{background:var(--ink,#101110);transform:scaleX(var(--journey-progress,1));transform-origin:left center}
+.funding-journey-rail li[data-state=active],.funding-journey-rail li[data-state=done]{color:var(--ink,#101110)}
+.funding-journey-toggle{position:absolute;z-index:2;right:28px;bottom:23px;display:flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid #10111065;border-radius:50%;background:transparent;color:var(--ink,#101110);font-size:16px;line-height:1;cursor:pointer}
+.funding-journey-toggle:focus-visible{outline:3px solid var(--ink,#101110);outline-offset:4px}
+.funding-journey-toggle[hidden]{display:none}
+@media(hover:hover) and (pointer:fine){.funding-journey-toggle:hover{background:var(--ink,#101110);color:var(--yellow,#dfff00)}}
+@media(max-width:760px) and (orientation:portrait){
+ .atelier-funding>.funding-journey{aspect-ratio:4/5}
+ .funding-journey-caption{inset:24px 22px auto}
+ .funding-journey-caption>span{font-size:8px}
+ .funding-journey-caption>strong{font-size:clamp(24px,7vw,40px);max-width:320px;margin-top:9px}
+ .funding-journey-rail{left:22px;right:77px;bottom:23px;gap:10px}
+ .funding-journey-rail li{font-size:8px;letter-spacing:-.02em;padding-top:10px}
+ .funding-journey-toggle{right:17px;bottom:17px}
+}
+@media(max-width:360px) and (orientation:portrait){.funding-journey-rail{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:8px;bottom:18px}.funding-journey-rail li{padding-top:6px}}
+@media(max-width:700px){.atelier-funding>.funding-journey{width:calc(100% + 2 * var(--gutter));margin-inline:calc(-1 * var(--gutter));border-radius:0;border-inline:0}}

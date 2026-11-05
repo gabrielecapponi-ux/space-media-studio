@@ -3,6 +3,8 @@ import { createAtelierEntry } from './atelier-entry.js';
 import { installAtelierCinema } from './atelier-cinema.js';
 import './atelier-cinema.css';
 import { installWebReel } from './web-reel.js';
+import { installFundingJourney } from './funding-journey.js';
+import './funding-journey.css';
 
 const lifetime = new AbortController();
 const { signal } = lifetime;
@@ -24,6 +26,7 @@ let suspended = false;
 let entry;
 installAtelierCinema({ signal, menu });
 installWebReel({ signal });
+installFundingJourney({ signal, menu });
 
 installIdeaBriefs({ signal });
 document.querySelectorAll('[data-year]').forEach(node => { node.textContent = String(new Date().getFullYear()); });

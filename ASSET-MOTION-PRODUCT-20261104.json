@@ -437,5 +437,11 @@
       "bytes": 83614,
       "sha256": "ab0f431564f2e8e3c377fe742c68bf253a397a01216d941b6ad0bb1cbfaa4078"
     }
-  ]
+  ],
+  "current_integration": {
+    "as_of": "2026-11-05",
+    "status": "Archived production; ORA perfume films are no longer used by the homepage or atelier alias.",
+    "replacement": "LUMA original Blender camera study, public/films/showcase-product.mp4 and showcase-product-mobile.mp4; ASSET-SHOWCASE-PRODUCT-20261105.json.",
+    "history": "The Higgsfield source, job IDs, native cadence, delivery hashes and checks above describe the November4 production and are preserved unchanged."
+  }
 }
