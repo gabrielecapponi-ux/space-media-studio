@@ -19,7 +19,7 @@ npm run preview
 npm run deploy
 ```
 
-La suite comprende **41 gruppi: 13 ingresso e 28 media**. I controlli storici di Launch Room rimangono separati in `npm run test:legacy` e non attestano la homepage attuale.
+La suite comprende **43 gruppi, 13 per l’ingresso e 30 per i media**. I controlli storici di Launch Room rimangono separati in `npm run test:legacy` e non attestano la homepage attuale.
 
 La build statica è in `dist/`; `main` conserva i sorgenti e GitHub Pages pubblica `gh-pages`. `scripts/deploy-pages.mjs` sostituisce soltanto le radici Space dichiarate, inclusa `models/`, preservando le altre cartelle e configurazioni del ramo. Il contratto di copia è stato provato in directory temporanee con `mrsmeet/` e `CNAME` conservati, senza pubblicare. Porte configurate: dev 5174, preview 5175; le anteprime isolate della lavorazione usano 5208 e 5209, da verificare prima di aprirle.
 
@@ -43,13 +43,13 @@ I cinque box “Descrivi la tua idea” preparano bozze WhatsApp: il visitatore 
 
 ## Intro, film e controlli
 
-Lo studio iniziale è modellato in Blender e caricato come `public/models/studio-space-20261105.glb` da `src/studio-blender-room.js`. La geometria rimane di 635.496 byte, con 19 mesh, 19.020 triangoli e 17 gruppi di assemblaggio. Il monitor mostra la texture della hero adattata al viewport; `src/studio-room.js` resta il fallback. Il master conserva camera e curve dell’assemblaggio.
+Su desktop la stanza modellata in Blender viene assemblata in tempo reale. Il modello GLB di 635.496 byte viene richiesto una volta in parallelo al modulo grafico. I 17 gruppi si assemblano in 2,65 s. Un movimento di camera da 1,06 s avvicina il monitor con un ingrandimento progressivo fino alla composizione della pagina.
 
-Il tempo dell’assemblaggio è indipendente dall’avanzamento del download: a stanza pronta, completa il movimento nominale di 3,3 secondi e mantiene la posa finale se il film deve ancora prepararsi. Seguono arrivo e zoom nel monitor. L’ingresso dà precedenza a stanza, font e poster; il GLB è precaricato soltanto quando il movimento automatico è consentito, mentre l’acqua viene preparata dopo la scena. Skip, Escape, sospensione a pagina nascosta e rilascio delle risorse rimangono disponibili.
+In verticale fino a 1024 px la stessa stanza è un film nativo dentro la cornice della hero. Il render Blender conta 84 fotogrammi a 30 fps, con una luce calda, un secondo monitor acceso e il primo fotogramma reale dell’acqua sullo schermo principale. Menu, titolo e scroll sono già disponibili. “Entra subito”, apertura del menu, navigazione e uscita dalla cornice permettono di passare direttamente alla pagina. In orizzontale sui dispositivi touch, con movimento ridotto e con risparmio dati si arriva direttamente alla hero.
 
-La hero riparte dal fotogramma zero. La goccia entra dopo circa 0,21 s e impatta a 1,04 s. Il titolo si allarga del 3,5% e resta in posizione durante i loop. “Rivedi la caduta” riporta il film all’inizio. Il monitor usa una fotografia del fotogramma zero. Il poster statico mostra la goccia in aria a 0,5 s.
+L’acqua di Film Composite parte dal fotogramma zero. L’impatto al frame 25 (1,04 s a 24 fps) allarga il titolo del 3,5%. Il browser sincronizza il titolo con il fotogramma presentato. “Rivedi la caduta” riavvia acqua e titolo. La copertina statica mostra la corona. Il master fotografico UHD fornisce i tagli desktop 3840×2160 e 1920×1080, tablet verticale 1080×1350 e telefono 720×900.
 
-L’acqua è una ripresa di Film Composite a 24 fps. Per la stessa sequenza di nove secondi sono disponibili desktop UHD 3840×2160, desktop HD 1920×1080 e ritaglio verticale 1080×1350. La pagina sceglie il paesaggio in base alla dimensione della proiezione in pixel fisici. I profili scaricabili dei servizi hanno prefisso `flagship-`. Le dimensioni, il numero di fotogrammi e gli hash degli MP4 installati sono registrati in `outputs/flagship-20261106/qa/media.json`.
+I cinque film dei servizi usano il prefisso `director-`. Il desktop sceglie 1920×1080 a 60 fps oppure 1280×720 a 30 fps su una connessione lenta. Quando disponibile viene usata la velocità effettiva di trasferimento del modello dello studio. I film portrait sono 720×900 a 30 fps. I comandi per CACAO, LUMA e campagna sono nella fascia sotto l’immagine. I master di produzione e i rapporti di collaudo sono in `outputs/director-20261106/`. Le ricette sono in `scripts/director-craft/`, `scripts/director-shift/`, `scripts/director-mobile-studio.py` e `scripts/director-phone-water.py`.
 
 `src/atelier-cinema.js` prepara i film vicino al viewport, gestisce le richieste `play()` interrotte, preserva `muted`/`playsinline` e la pausa scelta dal visitatore. I cinque poster HTML responsivi restano visibili fino al primo frame decodificato. Senza JavaScript sono utilizzabili poster, ancore e brief; il player manuale non è attivo. Con JavaScript e movimento ridotto o risparmio dati, i poster rimangono visibili e il film parte soltanto su comando manuale. Menu, ingresso, pagina nascosta e vista cinema sospendono i player della pagina.
 
@@ -63,7 +63,7 @@ La pila di articoli da 600 vh e lo slideshow OSKEN non sono trasferiti. Nessuna 
 
 [ASSET-SOURCES.md](./ASSET-SOURCES.md) documenta le fonti. In `outputs/flagship-20261106/` si trovano i master del 6 novembre, le ricette di produzione, i provini e i risultati dei controlli. Per la sorgente fotografica dell’acqua consultare [ASSET-WATER.md](./ASSET-WATER.md).
 
-## Verifiche della build del 6 novembre
+## Verifiche della precedente edizione del 6 novembre (mattina)
 
 La build Vite e tutti i 41 gruppi sono passati. Entrambe le pagine risolvono i 37 percorsi locali e le dieci ancore. La suite Chrome ha verificato l’autoplay dei cinque servizi a 1440×900, 393×852, 320×640 e 844×390. WebKit ha superato 16 controlli a 1440×900 e 393×852. Verificati separatamente replay, pausa, vista cinema, preferenze statiche e cambio automatico HD/UHD/portrait. Sul Mac di prova la misura conclusiva a 1440×900 registra 150 fotogrammi in 2,5 secondi per ciascuno dei cinque film, zero scarti. Dati e schermate sono in `outputs/flagship-20261106/qa/`. L’anteprima locale è sulla porta 5209.
 

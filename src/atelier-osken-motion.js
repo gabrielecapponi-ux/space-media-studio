@@ -23,6 +23,7 @@ export function installOskenMotion({ signal, menu } = {}) {
     && !document.documentElement.classList.contains('cinema-open');
 
   function reset(shot) {
+    if (shot.progress === null) return;
     shot.surface.style.removeProperty('transform');
     shot.surface.style.removeProperty('border-radius');
     shot.surface.style.removeProperty('will-change');

@@ -8,7 +8,7 @@ const smooth = (value) => { const t = clamp(value); return t * t * (3 - 2 * t); 
 const phase = (value, from, to) => smooth((value - from) / (to - from));
 
 /** Blender-authored studio; the entry controller remains its only clock. */
-export function createStudioRoom(container, { reduced = false, drawScreen } = {}) {
+export function createStudioRoom(container, { reduced = false, drawScreen, modelBytes } = {}) {
   if (!container?.appendChild) return { setProgress() {}, setZoom() {}, resize() {}, dispose() {} };
   let disposed = false;
   let failed = false;
@@ -26,6 +26,8 @@ export function createStudioRoom(container, { reduced = false, drawScreen } = {}
   let heroScreen;
   let screenAspect = 0;
   let frames = 0;
+  let startDistance = 1, endDistance = 1;
+  const sightline = new THREE.Vector3();
   const tracks = [];
   const materials = new Set();
   const geometries = new Set();
@@ -37,6 +39,7 @@ export function createStudioRoom(container, { reduced = false, drawScreen } = {}
   const screenHeight = 1.5;
   const target = new THREE.Vector3(0, 1.55, -.1);
   const direction = new THREE.Vector3(.91, .73, 1.52).normalize();
+  const cameraForward = new THREE.Vector3(0, 0, 1);
   const start = new THREE.Vector3();
   const end = new THREE.Vector3();
   const look = new THREE.Vector3();
@@ -97,17 +100,21 @@ export function createStudioRoom(container, { reduced = false, drawScreen } = {}
         Math.abs(corner.dot(cameraUp)) / tan + depth);
     }
     start.copy(target).addScaledVector(direction, distance * (aspect < .8 ? 1.08 : 1.1));
-    const finalDistance = Math.min(screenHeight / (2 * tan), screenWidth / (2 * tan * aspect)) * .975;
+    const finalDistance = Math.min(screenHeight / (2 * tan), screenWidth / (2 * tan * aspect)) * .9995;
     end.copy(screenCenter);
     end.z += finalDistance;
+    startDistance = start.distanceTo(target);
+    endDistance = end.distanceTo(screenCenter);
     camera.updateProjectionMatrix();
   }
 
   function cameraPose() {
     const t = reduced ? (zoom === 1 ? 1 : 0) : smooth(zoom);
-    camera.position.lerpVectors(start, end, t);
-    camera.position.y += Math.sin(t * Math.PI) * .22;
-    look.lerpVectors(target, screenCenter, smooth(Math.min(1, t * 1.55)));
+    // Constant apparent magnification through the push. Linear translation
+    // otherwise bunches most of the visual acceleration against the display.
+    look.lerpVectors(target, screenCenter, smooth(Math.min(1, t * 1.32)));
+    sightline.copy(direction).lerp(cameraForward, t).normalize();
+    camera.position.copy(look).addScaledVector(sightline, startDistance * (endDistance / startDistance) ** t);
     camera.lookAt(look);
   }
 
@@ -244,7 +251,9 @@ export function createStudioRoom(container, { reduced = false, drawScreen } = {}
     document.addEventListener('visibilitychange', visibility);
     resize();
     const url = new URL(`${import.meta.env.BASE_URL}models/studio-space-20261105.glb`, document.baseURI).href;
-    new GLTFLoader().load(url, (gltf) => {
+    const loader = new GLTFLoader();
+    const modelReady = modelBytes ? loader.parseAsync(modelBytes, new URL('.', url).href) : loader.loadAsync(url);
+    modelReady.then(gltf => {
       if (disposed || failed) { releaseModel(gltf.scene); return; }
       try {
         model = gltf.scene;
@@ -278,7 +287,7 @@ export function createStudioRoom(container, { reduced = false, drawScreen } = {}
         renderer.shadowMap.needsUpdate = true;
         pose();
       } catch { useFallback(); }
-    }, undefined, useFallback);
+    }).catch(useFallback);
   } catch { useFallback(); }
 
   return {

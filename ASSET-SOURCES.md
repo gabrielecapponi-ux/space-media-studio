@@ -1,8 +1,15 @@
 # Provenienza dei materiali — Space Media Studio
 
-## Materiali attivi dal 6 novembre 2026
+## Edizione Director del 6 novembre 2026
 
-Le due homepage usano la serie `flagship-*`. L’apertura riutilizza lo studio Blender e adatta la texture del monitor alla nuova impaginazione e al fotogramma iniziale dell’acqua.
+- **Ingresso.** Su telefono il film di 2,8 secondi deriva dalla scena Blender originale dello studio. Camera verticale, illuminazione, materiali del fondale e monitor fotografici sono preparati da `scripts/director-mobile-studio.py`. Il desktop carica la geometria originale e avvicina il monitor tramite Three.js.
+- **Acqua.** Si usa la ripresa macro UHD di Film Composite su Pexels. Il profilo per telefono è codificato direttamente dal negativo UHD a 720×900, 24 fps. La copertina mostra la corona dopo l’impatto. Ricetta in `scripts/director-phone-water.py`. [Provenienza e licenza](./ASSET-WATER.md).
+- **SHIFT PHASE 01.** Il macro del jog wheel usa una nuova esposizione Cycles nella stessa prospettiva della fotografia presente nel negozio. Il montaggio prosegue nelle cinque demo reali. Il film campagna ricompone verticale, quadrato e banner dal medesimo campionatore modellato. Crediti e ricette in `scripts/director-shift/`.
+- **LUMA, CACAO e progettazione.** Nuove fotografie Cycles e animazione per riproiezione, materiali ottici, lamina illuminata di taglio e pass di linee dalla stessa camera del plastico. Crediti e ricette in `scripts/director-craft/`. Ogni servizio ha una distribuzione HD widescreen a 60 fps, una panoramica 720p a 30 fps per la rete lenta e una 720×900 a 30 fps per telefono.
+
+## Edizione precedente del 6 novembre 2026, mattina
+
+Questa edizione utilizzava la serie `flagship-*`. L’apertura riutilizzava lo studio Blender e adatta la texture del monitor alla nuova impaginazione e al fotogramma iniziale dell’acqua.
 
 - **Acqua.** Macro fotografica di Film Composite, video Pexels 16392049, girata a 3840×2160 e 24 fps. Taglio cronologico, color grading, raccordo del loop e variante verticale prodotti per la homepage. Provenienza e licenza in [ASSET-WATER.md](./ASSET-WATER.md).
 - **SHIFT PHASE 01.** Campionatore originale modellato per la demo. Le fotografie Cycles, le sue viste di dettaglio e le schermate del negozio alimentano i film web e campagna. Master e compositing in `outputs/flagship-20261106/shift/`. Le altre quattro demo web riutilizzano gli artwork Higgsfield documentati in `ASSET-WEB-REEL-VISUALS.json`.

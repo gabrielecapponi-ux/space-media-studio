@@ -1,3 +1,5 @@
+import { chooseFilmSource, limitedFilmBandwidth } from './film-delivery.js';
+
 /** Owns motion below the approved opening; every scene keeps a static HTML path. */
 export function installAtelierCinema({ signal, menu } = {}) {
   const life = new AbortController();
@@ -40,7 +42,7 @@ export function installAtelierCinema({ signal, menu } = {}) {
   }
   function source(player) {
     if (player.video.getAttribute('src')) return;
-    const path = portrait.matches ? player.video.dataset.srcMobile : player.video.dataset.srcDesktop;
+    const path = chooseFilmSource(player.video, portrait.matches);
     if (!path) return;
     player.video.src = new URL(path, document.baseURI).href;
     player.video.preload = 'auto';
@@ -69,12 +71,13 @@ export function installAtelierCinema({ signal, menu } = {}) {
     // Keep the native inline autoplay hint in step with our foreground policy.
     // This also lets WebKit resume an eligible muted film when decoding starts.
     player.video.autoplay = permitted && motionAllowed() && !player.blocked;
-    if (player.warm && motionAllowed() && pageAvailable()) source(player);
+    if (!portrait.matches && player.warm && motionAllowed() && pageAvailable() && !limitedFilmBandwidth()) source(player);
     if (!permitted) {
       if (player.pending) player.interrupted = true;
       player.video.pause(); control(player); return;
     }
     source(player);
+    if (portrait.matches && !player.manual && player.video.readyState < 2) { control(player); return; }
     if (player.blocked || player.video.error) { control(player); return; }
     if (player.pending || !player.video.paused) {
       if (player.pending && player.video.paused) player.interrupted = true;
@@ -116,7 +119,7 @@ export function installAtelierCinema({ signal, menu } = {}) {
     });
   }
   function request() {
-    if (!frame && !disposed && !document.hidden) frame = requestAnimationFrame(paint);
+    if (active.size && !frame && !disposed && !document.hidden) frame = requestAnimationFrame(paint);
   }
   const observer = new IntersectionObserver(items => {
     items.forEach(item => {
@@ -125,7 +128,7 @@ export function installAtelierCinema({ signal, menu } = {}) {
     });
     request();
   }, { rootMargin: '70px 0px' });
-  shots.forEach(shot => observer.observe(shot));
+  shots.forEach(shot => { if (!shot.matches('.atelier-service-film, .atelier-web-flow, .atelier-project-map')) observer.observe(shot); });
   const warmObserver = new IntersectionObserver(items => {
     items.forEach(item => {
       const player = players.find(value => value.stage === item.target);

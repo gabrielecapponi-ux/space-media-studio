@@ -173,7 +173,7 @@
     top: 0;
     bottom: 0;
     width: max(0px, calc((100cqw - 177.778cqh) / 2));
-    background-image: url('/images/flagship-water-desktop.jpg');
+    background-image: url('/images/director-water-desktop.webp');
     background-size: 177.778cqh 100%;
     background-repeat: no-repeat;
     transform: scaleX(-1);
@@ -250,4 +250,64 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .flagship-hero[data-impact] #atelier-title { transform: none; }
+}
+
+/* Same aperture and optical centre on either side of the monitor handoff. */
+.director-studio-film {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  z-index: 2;
+  background-color: #020303;
+  pointer-events: none;
+}
+.director-entry-skip { color: var(--paper); }
+.flagship-transport[hidden] { display: none; }
+
+/* Keep the subject clean: film, credit and transport occupy separate rows. */
+.flagship-site .atelier-case-chapter .atelier-service-film:has(.atelier-film-caption) {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  grid-template-rows: auto auto;
+  align-items: center;
+  aspect-ratio: auto;
+  background: #151716;
+}
+.flagship-site .atelier-service-film:has(.atelier-film-caption) > .atelier-film-surface {
+  position: relative;
+  grid-area: 1 / 1 / 2 / -1;
+  width: 100%;
+  aspect-ratio: 16/9;
+}
+.flagship-site .atelier-service-film .atelier-film-caption {
+  position: static;
+  grid-area: 2 / 1;
+  display: grid;
+  align-content: center;
+  gap: 2px;
+  min-height: 52px;
+  padding: 8px clamp(12px, 2vw, 28px);
+  color: #f1f1e9;
+  font-size: clamp(10px, .82vw, 13px);
+  line-height: 1.35;
+  text-wrap: balance;
+}
+.flagship-site .atelier-service-film:has(.atelier-film-caption) > :is(.atelier-case-film-toggle, .atelier-cinema-open) {
+  position: static;
+  min-width: 44px;
+  margin: 4px;
+  border: 0;
+  background: transparent;
+  color: #f1f1e9;
+}
+.flagship-site .atelier-service-film:has(.atelier-film-caption) > .atelier-cinema-open { grid-area: 2 / 2; padding-inline: 10px; }
+.flagship-site .atelier-service-film:has(.atelier-film-caption) > .atelier-case-film-toggle { grid-area: 2 / 3; margin-right: 8px; }
+.flagship-site .atelier-service-film:has(.atelier-film-caption) > button:focus-visible { outline-offset: -3px; outline-color: var(--yellow); }
+@media (max-width: 760px) and (orientation: portrait) {
+  .flagship-site .atelier-service-film:has(.atelier-film-caption) > .atelier-film-surface { aspect-ratio: 4/5; }
+}
+@media (max-width: 360px) {
+  .flagship-site .atelier-service-film:has(.atelier-film-caption) > .atelier-cinema-open span:last-child { display: none; }
 }

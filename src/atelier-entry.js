@@ -15,7 +15,7 @@ const phases = [
  * ready resolves only after the overlay and GPU resources have been removed.
  * onComplete is not called for disposal/abort; the caller owns video playback.
  */
-export function createAtelierEntry({ signal, video, poster, drawScreen, prepareVideo, onComplete, startAt = 0 } = {}) {
+export function createAtelierEntry({ signal, video, poster, drawScreen, prepareVideo, loadModel, onComplete, startAt = 0 } = {}) {
   if (signal?.aborted) {
     const result = { status: 'disposed', degraded: false, videoPrepared: false, posterLoaded: false, sceneReady: false };
     return { ready: Promise.resolve(result), dispose() {} };
@@ -181,8 +181,8 @@ export function createAtelierEntry({ signal, video, poster, drawScreen, prepareV
       // must not freeze the room halfway through its assembly.
       displayed = staticPresentation() ? target : Math.min(target, displayed + delta * .03);
       if (settled && displayed > 98.98) displayed = 99;
-      if (sceneReady && !staticPresentation()) assemblyTime = Math.min(3300, assemblyTime + delta);
-      const sceneProgress = staticPresentation() ? 1 : assemblyTime / 3300;
+      if (sceneReady && !staticPresentation()) assemblyTime = Math.min(2650, assemblyTime + delta);
+      const sceneProgress = staticPresentation() ? 1 : assemblyTime / 2650;
       const label = phases.reduce((result, [at, value]) => sceneProgress * 100 >= at ? value : result, phases[0][1]);
       shell.update(displayed, label);
       room?.setProgress(sceneProgress);
@@ -194,15 +194,15 @@ export function createAtelierEntry({ signal, video, poster, drawScreen, prepareV
         phase = 'arrival'; phaseTime = 0;
         shell.root.dataset.ready = 'true';
       }
-    } else if (phase === 'arrival' && phaseTime >= 180) {
+    } else if (phase === 'arrival' && phaseTime >= 90) {
       phase = 'zoom'; phaseTime = 0;
       shell.setState('zoom'); html.dataset.entryState = 'zoom';
     } else if (phase === 'zoom') {
-      const zoom = clamp(phaseTime / 1200);
+      const zoom = clamp(phaseTime / 1060);
       room?.setZoom(zoom);
       if (zoom === 1) return finish('ready');
     }
-    if (phase !== 'loading' || displayed < target || (sceneReady && assemblyTime < 3300)) request();
+    if (phase !== 'loading' || displayed < target || (sceneReady && assemblyTime < 2650)) request();
     else lastTime = 0;
   }
 
@@ -266,10 +266,13 @@ export function createAtelierEntry({ signal, video, poster, drawScreen, prepareV
 
   const architecture = task('room', async () => {
     if (staticPresentation()) return;
-    const [{ createStudioRoom }] = await Promise.all([import('./studio-blender-room.js'), fonts, picture]);
+    const [{ createStudioRoom }, , , modelBytes] = await Promise.all([
+      import('./studio-blender-room.js'), fonts, picture, loadModel?.(life.signal),
+    ]);
     if (finished || disposed || staticPresentation()) return;
     const screen = typeof drawScreen === 'function' ? drawScreen : drawAtelierScreen;
     room = createStudioRoom(shell.sceneHost, {
+      modelBytes,
       drawScreen: (ctx, width, height, aspect) => screen(ctx, width, height, aspect, posterLoaded ? posterImage : undefined),
     });
     room.setProgress(0);

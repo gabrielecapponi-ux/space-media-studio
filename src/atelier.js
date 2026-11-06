@@ -1,5 +1,6 @@
 import { installIdeaBriefs } from './idea-briefs.js';
 import { installCinemaViewer } from './cinema-viewer.js';
+import { createMobileStudio } from './atelier-mobile-entry.js';
 import { createAtelierEntry } from './atelier-entry.js';
 import { installAtelierCinema } from './atelier-cinema.js';
 import './atelier-cinema.css';
@@ -21,7 +22,7 @@ const menu = document.querySelector('.atelier-mobile-menu');
 const hero = document.querySelector('.atelier-hero');
 const base = import.meta.env.BASE_URL;
 let entryFinished = false;
-let inHero = true;
+let inHero = !location.hash;
 let userPaused = false;
 let manualPlayback = false;
 let playPending = false;
@@ -40,13 +41,13 @@ installCinemaViewer({ signal });
 installOskenMotion({ signal, menu });
 document.querySelectorAll('[data-year]').forEach(node => { node.textContent = String(new Date().getFullYear()); });
 const automaticMotion = () => !reduced.matches && !connection?.saveData;
-const selectedPoster = () => `${base}images/flagship-water-${portrait.matches ? 'mobile' : 'desktop'}.jpg`;
+const selectedPoster = () => `${base}images/director-water-${portrait.matches ? 'mobile' : 'desktop'}.webp`;
 film.poster = selectedPoster();
 film.muted = true; film.defaultMuted = true;
 film.playsInline = true; film.autoplay = false;
 
 function selectedProfile() {
-  if (portrait.matches) return 'mobile';
+  if (portrait.matches) return document.documentElement.clientWidth <= 520 ? 'phone' : 'mobile';
   const aperture = stage.getBoundingClientRect();
   const pixels = Math.min(aperture.width, aperture.height * 16 / 9) * (window.devicePixelRatio || 1);
   return pixels > 1920 ? 'desktop' : 'hd';
@@ -57,7 +58,7 @@ function ensureSource(profile = selectedProfile()) {
   if (film.readyState >= 1) resumeTime = film.currentTime;
   if (playPending) playInterrupted = true;
   film.dataset.profile = profile;
-  film.src = `${base}films/flagship-water-${profile}.mp4`;
+  film.src = profile === 'phone' ? `${base}films/director-water-mobile.mp4` : `${base}films/flagship-water-${profile}.mp4`;
   film.preload = 'auto';
   film.load();
 }
@@ -90,6 +91,9 @@ async function syncPlayback() {
     syncControl(); return;
   }
   ensureSource();
+  // Keep native muted autoplay armed through metadata discovery. A manual
+  // request still calls play() in the originating user gesture.
+  if (!manualPlayback && film.readyState < 2) { syncControl(); return; }
   playPending = true; playInterrupted = false;
   try { await film.play(); }
   catch (error) {
@@ -120,16 +124,36 @@ for (const type of ['emptied', 'error']) film.addEventListener(type, () => {
   syncControl();
 }, { signal });
 
-// The first impact in this cut lands at 1.04s. Hold the wider title across loops.
-film.addEventListener('timeupdate', () => {
-  if (entryFinished && film.currentTime >= 1.04 && automaticMotion() && hero.dataset.impact !== 'true') {
-    hero.dataset.impact = 'true';
-  }
-}, { signal });
+// Impact is frame 25 of the 24 fps edit. Follow the presented media clock on
+// playback and replay so timeupdate coalescing cannot delay the title.
+const impactTime = 25 / 24;
+let impactCallback = 0;
+function cancelImpact() {
+  if (impactCallback) film.cancelVideoFrameCallback(impactCallback);
+  impactCallback = 0;
+}
+function markImpact(time) {
+  if (time + .001 >= impactTime && entryFinished && automaticMotion()) hero.dataset.impact = 'true';
+}
+function watchImpact() {
+  if (impactCallback || !film.requestVideoFrameCallback || !automaticMotion() ||
+      film.paused || hero.dataset.impact === 'true') return;
+  impactCallback = film.requestVideoFrameCallback((_, frame) => {
+    impactCallback = 0;
+    markImpact(frame.mediaTime);
+    watchImpact();
+  });
+}
+film.addEventListener('playing', watchImpact, { signal });
+film.addEventListener('seeked', watchImpact, { signal });
+film.addEventListener('pause', cancelImpact, { signal });
+film.addEventListener('emptied', cancelImpact, { signal });
+if (!film.requestVideoFrameCallback) film.addEventListener('timeupdate', () => markImpact(film.currentTime), { signal });
 replay.addEventListener('click', () => {
   manualPlayback = true;
   userPaused = false;
   autoplayBlocked = false;
+  cancelImpact();
   hero.dataset.impact = 'false';
   if (film.error) film.load();
   ensureSource();
@@ -182,6 +206,7 @@ portrait.addEventListener('change', scheduleProfileCheck, { signal });
 window.addEventListener('resize', scheduleProfileCheck, { signal });
 function policyChanged() {
   manualPlayback = false;
+  if (!automaticMotion()) cancelImpact();
   syncPlayback();
 }
 reduced.addEventListener('change', policyChanged, { signal });
@@ -290,28 +315,35 @@ function drawScreen(ctx, width, height, aspect, poster) {
   ctx.restore();
 }
 
-// Start the original model alongside the renderer module, rather than waiting
-// for JavaScript to download before discovering the next network dependency.
-// Static preferences do not request the GLB at all.
-if (automaticMotion()) {
-  const roomHint = document.createElement('link');
-  roomHint.rel = 'preload'; roomHint.as = 'fetch'; roomHint.crossOrigin = 'anonymous';
-  roomHint.href = `${base}models/studio-space-20261105.glb`;
-  document.head.append(roomHint);
-  signal.addEventListener('abort', () => roomHint.remove(), { once: true });
+function revealPage() {
+  if (disposed) return;
+  entryFinished = true;
+  syncPlayback();
 }
 
 try {
-  entry = createAtelierEntry({
-    signal, video: film, startAt: 0, drawScreen, prepareVideo: ensureSource,
-    poster: automaticMotion()
-      ? `${base}images/flagship-water-entry-${portrait.matches ? 'mobile' : 'desktop'}.jpg`
-      : film.poster,
-    onComplete() { if (!disposed) { entryFinished = true; syncPlayback(); } },
-  });
+  const touch = matchMedia('(pointer: coarse)').matches;
+  if (!automaticMotion() || location.hash || document.hidden || window.scrollY > 10 || (touch && !portrait.matches)) {
+    document.documentElement.dataset.entryState = 'ready';
+    revealPage();
+  } else if (portrait.matches) {
+    entry = createMobileStudio({
+      stage, controls: document.querySelector('.flagship-film-controls'), base, preference: reduced, portrait,
+      prepareWater: ensureSource, onComplete: revealPage,
+    });
+  } else {
+    entry = createAtelierEntry({
+      signal, video: film, startAt: 0, drawScreen, prepareVideo: ensureSource,
+      poster: `${base}images/flagship-water-entry-desktop.jpg`, onComplete: revealPage,
+      async loadModel(signal) {
+        const response = await fetch(`${base}models/studio-space-20261105.glb`, { signal });
+        if (!response.ok) throw new Error('Studio model unavailable');
+        return response.arrayBuffer();
+      },
+    });
+  }
 } catch {
-  entryFinished = true;
-  syncPlayback();
+  revealPage();
 }
 window.addEventListener('pageshow', () => { suspended = false; syncPlayback(); }, { signal });
 window.addEventListener('pagehide', event => {
@@ -320,6 +352,7 @@ window.addEventListener('pagehide', event => {
   film.autoplay = false; film.pause();
   if (event.persisted) return;
   disposed = true;
+  cancelImpact();
   entry?.dispose();
   clearTimeout(profileTimer);
   apertureObserver.disconnect();

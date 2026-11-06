@@ -1,4 +1,5 @@
 import './cinema-viewer.css';
+import { chooseFilmSource } from './film-delivery.js';
 
 /** A deliberate close-up. The page and its decoder stop behind the dialog. */
 export function installCinemaViewer({ signal } = {}) {
@@ -130,9 +131,8 @@ export function installCinemaViewer({ signal } = {}) {
     buttons.push(button);
     button.addEventListener('click', () => {
       if (disposed || dialog.open) return;
-      const path = video.currentSrc || video.getAttribute('src') || (
-        matchMedia('(max-width: 760px) and (orientation: portrait)').matches
-          ? video.dataset.srcMobile : video.dataset.srcDesktop);
+      const path = video.currentSrc || video.getAttribute('src') ||
+        chooseFilmSource(video, matchMedia('(max-width: 760px) and (orientation: portrait)').matches);
       if (!path) return;
       const origin = video.getBoundingClientRect();
       sourceVideo = video;

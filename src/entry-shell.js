@@ -65,6 +65,7 @@ export function createEntryShell() {
   const preference = window.matchMedia('(prefers-reduced-motion: reduce)');
   let disposed = false;
   let announced = phase.textContent;
+  let previousPercent = -1;
 
   function syncPreference() {
     root.classList.toggle('is-reduced', preference.matches);
@@ -78,19 +79,19 @@ export function createEntryShell() {
     const numeric = Number(value);
     const percent = Math.max(0, Math.min(100, Number.isFinite(numeric) ? numeric : 0));
     const rounded = Math.floor(percent);
-    number.textContent = String(rounded);
-    progress.setAttribute('aria-valuenow', String(rounded));
-    progress.setAttribute('aria-valuetext', `${rounded} percento`);
-    fill.style.transform = `scaleX(${percent / 100})`;
-    // Five coherent construction milestones; no independent animation clock.
-    root.dataset.stage = String(percent >= 94 ? 5 : percent >= 75 ? 4 : percent >= 52 ? 3 : percent >= 28 ? 2 : percent >= 8 ? 1 : 0);
-    root.dataset.progress = String(rounded);
-    if (typeof label === 'string' && label.trim()) {
+    if (rounded !== previousPercent) {
+      previousPercent = rounded;
+      number.textContent = String(rounded);
+      progress.setAttribute('aria-valuenow', String(rounded));
+      progress.setAttribute('aria-valuetext', `${rounded} percento`);
+      fill.style.transform = `scaleX(${rounded / 100})`;
+      root.dataset.stage = String(rounded >= 94 ? 5 : rounded >= 75 ? 4 : rounded >= 52 ? 3 : rounded >= 28 ? 2 : rounded >= 8 ? 1 : 0);
+      root.dataset.progress = String(rounded);
+    }
+    if (label && label !== announced) {
       phase.textContent = label;
-      if (label !== announced) {
-        status.textContent = label;
-        announced = label;
-      }
+      status.textContent = label;
+      announced = label;
     }
   }
 

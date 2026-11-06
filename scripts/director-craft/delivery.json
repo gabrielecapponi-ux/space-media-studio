@@ -1,0 +1,204 @@
+{
+  "project": "Space Media \u2014 director cut 2026-11-06",
+  "credit": "Original Space Media studio models and still / moving Blender photography; Cycles Metal, Freestyle and calibrated Metal projection. No external stock or generative video.",
+  "assets": [
+    {
+      "asset": "product",
+      "profile": "desktop",
+      "mp4": "public/films/director-product.mp4",
+      "bytes": 3476716,
+      "sha256": "6ea691d57cf3dd22061ad7b390889f0e8ade79b4cc8d40eed18757811fa9f979",
+      "size": [
+        1920,
+        1080
+      ],
+      "fps": 60,
+      "frames": 480,
+      "consecutive_duplicates": 0,
+      "unique_downscaled_frames": 480,
+      "last_first_MAD_8bit": 0.2698,
+      "old_new_MAD_8bit": 38.418,
+      "comparison_time_s": 3.75,
+      "seconds_render_encode_validate": 47.64,
+      "faststart": true,
+      "decode": "all frames OK",
+      "source_master": "outputs/flagship-20261106/luma/luma-optical-bench.blend",
+      "photograph": "Cycles Metal",
+      "photograph_dimensions": [
+        2560,
+        1440
+      ],
+      "poster": "public/images/director-product.jpg",
+      "thumbnail": "public/images/director-product-thumb.webp",
+      "poster_sha256": "6b3faa30a5e871d49c0254bcc12c4e55e5ee6e7502f9d8e90b2e16d18903e73d",
+      "thumbnail_sha256": "24313968f4c057fe469f5fe4f9824fd7229913efe4374a55c1391dc4ab8d5b46"
+    },
+    {
+      "asset": "product",
+      "profile": "mobile",
+      "mp4": "public/films/director-product-mobile.mp4",
+      "bytes": 1217679,
+      "sha256": "ab52044a66c0bbc102c74d6e1f4eaa38f58c2597f87fdba1354f4a363b1d2a93",
+      "size": [
+        720,
+        900
+      ],
+      "fps": 30,
+      "frames": 240,
+      "consecutive_duplicates": 0,
+      "unique_downscaled_frames": 240,
+      "last_first_MAD_8bit": 0.4807,
+      "old_new_MAD_8bit": 27.324,
+      "comparison_time_s": 3.75,
+      "seconds_render_encode_validate": 15.82,
+      "faststart": true,
+      "decode": "all frames OK",
+      "source_fps": 60,
+      "seconds": 8.0,
+      "h264_level": "3.1",
+      "mobile_method": "Every other native frame retained; constant 30 fps, no optical flow, two references; native 60p audit separately archived.",
+      "source_master": "outputs/flagship-20261106/luma/luma-optical-bench.blend",
+      "photograph": "Cycles Metal",
+      "photograph_dimensions": [
+        1152,
+        1440
+      ],
+      "poster": "public/images/director-product-mobile.jpg",
+      "thumbnail": "public/images/director-product-thumb.webp",
+      "poster_sha256": "49fbc7329456d7e3a1b00c22fbe359f1b65dbe662bb46c8f0a10441f2c058fdf",
+      "thumbnail_sha256": "24313968f4c057fe469f5fe4f9824fd7229913efe4374a55c1391dc4ab8d5b46"
+    },
+    {
+      "asset": "brand",
+      "profile": "desktop",
+      "mp4": "public/films/director-brand.mp4",
+      "bytes": 4397074,
+      "sha256": "8bc87fbaec7ff0269f4a8839f0ad2b8c99e235754878d89554c479878adf7525",
+      "size": [
+        1920,
+        1080
+      ],
+      "fps": 60,
+      "frames": 480,
+      "consecutive_duplicates": 0,
+      "unique_downscaled_frames": 480,
+      "last_first_MAD_8bit": 0.1802,
+      "old_new_MAD_8bit": 33.025,
+      "comparison_time_s": 4.62,
+      "seconds_render_encode_validate": 45.53,
+      "faststart": true,
+      "decode": "all frames OK",
+      "source_master": "outputs/flagship-20261106/brand/desktop/brand-macro-desktop.blend",
+      "photograph": "Cycles Metal",
+      "photograph_dimensions": [
+        2560,
+        1440
+      ],
+      "poster": "public/images/director-brand.jpg",
+      "thumbnail": "public/images/director-brand-thumb.webp",
+      "poster_sha256": "5aa840646d4a1658a011edeb1d35c43c18c32de8df09deb149032d7781637933",
+      "thumbnail_sha256": "652daf1b7b9bfc864538ff9c2e62d4c400678b1add971884af0aa11ab7b72095"
+    },
+    {
+      "asset": "brand",
+      "profile": "mobile",
+      "mp4": "public/films/director-brand-mobile.mp4",
+      "bytes": 1567786,
+      "sha256": "83f741c4f1f06d8e1d3d278f59bfd61c6f44b14657ca80cafdb10037b07f5464",
+      "size": [
+        720,
+        900
+      ],
+      "fps": 30,
+      "frames": 240,
+      "consecutive_duplicates": 0,
+      "unique_downscaled_frames": 240,
+      "last_first_MAD_8bit": 0.3712,
+      "old_new_MAD_8bit": 29.48,
+      "comparison_time_s": 4.62,
+      "seconds_render_encode_validate": 18.81,
+      "faststart": true,
+      "decode": "all frames OK",
+      "source_fps": 60,
+      "seconds": 8.0,
+      "h264_level": "3.1",
+      "mobile_method": "Every other native frame retained; constant 30 fps, no optical flow, two references; native 60p audit separately archived.",
+      "source_master": "outputs/flagship-20261106/brand/mobile/brand-macro-mobile.blend",
+      "photograph": "Cycles Metal",
+      "photograph_dimensions": [
+        960,
+        1200
+      ],
+      "poster": "public/images/director-brand-mobile.jpg",
+      "thumbnail": "public/images/director-brand-thumb.webp",
+      "poster_sha256": "e7fe8449366375f13db051c12e0aa70e358ab862590a2b88c2c55a1cacf38311",
+      "thumbnail_sha256": "652daf1b7b9bfc864538ff9c2e62d4c400678b1add971884af0aa11ab7b72095"
+    },
+    {
+      "asset": "funding",
+      "profile": "desktop",
+      "mp4": "public/films/director-funding.mp4",
+      "bytes": 4074677,
+      "sha256": "80cce4ffa66e26a8825fedd4103990a818ebd4845b69568fc3aea0d983e21df9",
+      "size": [
+        1920,
+        1080
+      ],
+      "fps": 60,
+      "frames": 720,
+      "consecutive_duplicates": 0,
+      "unique_downscaled_frames": 720,
+      "last_first_MAD_8bit": 0.7951,
+      "old_new_MAD_8bit": 84.347,
+      "comparison_time_s": 9.98,
+      "seconds_render_encode_validate": 62.93,
+      "faststart": true,
+      "decode": "all frames OK",
+      "source_master": "outputs/flagship-20261106/funding/desktop/funding-macro-desktop.blend",
+      "photograph": "Cycles Metal + Freestyle",
+      "photograph_dimensions": [
+        2560,
+        1440
+      ],
+      "poster": "public/images/director-funding.jpg",
+      "thumbnail": "public/images/director-funding-thumb.webp",
+      "poster_sha256": "9beddb6501073bace416eecff74c3f5dd4966b732cc9c3ba3881b70bdd6c8204",
+      "thumbnail_sha256": "310971948ca00ab2f5f8e71a5eee3eebc37ca6eb0b0ec39404be127392118798"
+    },
+    {
+      "asset": "funding",
+      "profile": "mobile",
+      "mp4": "public/films/director-funding-mobile.mp4",
+      "bytes": 1121729,
+      "sha256": "5568ae0548979602d35e417d9da614762b036d2276b748b2c166f04d4dc493ed",
+      "size": [
+        720,
+        900
+      ],
+      "fps": 30,
+      "frames": 360,
+      "consecutive_duplicates": 0,
+      "unique_downscaled_frames": 360,
+      "last_first_MAD_8bit": 0.6432,
+      "old_new_MAD_8bit": 63.538,
+      "comparison_time_s": 9.98,
+      "seconds_render_encode_validate": 18.42,
+      "faststart": true,
+      "decode": "all frames OK",
+      "source_fps": 60,
+      "seconds": 12.0,
+      "h264_level": "3.1",
+      "mobile_method": "Every other native frame retained; constant 30 fps, no optical flow, two references; native 60p audit separately archived.",
+      "source_master": "outputs/flagship-20261106/funding/mobile/funding-macro-mobile.blend",
+      "photograph": "Cycles Metal + Freestyle",
+      "photograph_dimensions": [
+        960,
+        1200
+      ],
+      "poster": "public/images/director-funding-mobile.jpg",
+      "thumbnail": "public/images/director-funding-thumb.webp",
+      "poster_sha256": "39063e918a06442af7c65cba1bf7af960e0c8b35bfcd8796872d8e85855fac00",
+      "thumbnail_sha256": "310971948ca00ab2f5f8e71a5eee3eebc37ca6eb0b0ec39404be127392118798"
+    }
+  ]
+}

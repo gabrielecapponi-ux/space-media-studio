@@ -6,7 +6,9 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import vm from 'node:vm';
 const raw = await readFile(new URL('../src/atelier-cinema.js', import.meta.url), 'utf8');
-const source = raw.replace('export function installAtelierCinema', 'function installAtelierCinema');
+const delivery = await readFile(new URL('../src/film-delivery.js', import.meta.url), 'utf8');
+const source = delivery.replaceAll('export function', 'function') + '\n' +
+  raw.replace(/^import [^\n]+\n/, '').replace('export function installAtelierCinema', 'function installAtelierCinema');
 const flush = async () => { for (let i = 0; i < 12; i++) await Promise.resolve(); };
 
 class Events {
@@ -199,6 +201,32 @@ await test('Photographic motion is absolute, scroll events coalesce, and live st
   f.tick(); assert.equal(f.image.style.transform, '');
   f.api.dispose();
 });
+await test('Wide screens on a measured 4 Mbit connection fetch only the visible compact film', async () => {
+  const f = fixture();
+  f.win.performance = { getEntriesByType: () => [{ name: 'https://example.test/models/studio-space-20261105.glb',
+    transferSize: 635800, encodedBodySize: 635496, responseStart: 500, responseEnd: 1770 }] };
+  f.video.dataset.srcCompact = './films/type-compact.mp4';
+  f.warmObserver.fire(f.stage); await f.flush();
+  assert.equal(f.video.loads, 0);
+  await f.show();
+  assert.match(f.video.src, /type-compact\.mp4$/);
+  f.api.dispose();
+});
+await test('Phone autoplay waits for a decoded frame while a manual tap retains its gesture', async () => {
+  const auto = fixture({ portrait: true });
+  await auto.show();
+  assert.equal(auto.video.autoplay, true);
+  assert.equal(auto.video.plays, 0);
+  auto.video.readyState = 2;
+  auto.video.emit('loadeddata'); await auto.flush();
+  assert.equal(auto.video.paused, false);
+  auto.api.dispose();
+  const manual = fixture({ portrait: true, saveData: true });
+  await manual.show();
+  manual.button.emit('click'); await manual.flush();
+  assert.equal(manual.video.plays, 1);
+  manual.api.dispose();
+});
 await test('Portrait choice selects portrait media initially and retains an already loaded source during rotation', async () => {
   const f = fixture({ portrait: true });
   assert.equal(f.video.poster, ''); assert.equal(f.stage.dataset.mediaFormat, 'portrait');
@@ -339,7 +367,7 @@ await test('A native play event cannot start an offscreen film or bypass explici
   await f.video.play(); assert.equal(f.video.paused, true);
   f.api.dispose();
 });
-await test('Five offscreen films stay unprepared through refresh and rotation; warming one never requests both posters', async () => {
+await test('Phone warms just the selected poster; a rotation before playback picks the wide source', async () => {
   const f = fixture({ portrait: true, playerCount: 5 });
   f.api.refresh(); f.doc.emit('visibilitychange');
   f.media.forEach(item => { f.warmObserver.fire(item.stage, false, 0); f.visibleObserver.fire(item.stage, false, 0); });
@@ -349,8 +377,10 @@ await test('Five offscreen films stay unprepared through refresh and rotation; w
   f.warmObserver.fire(target.stage); f.warmObserver.fire(target.stage); f.api.refresh(); await f.flush();
   assert.deepEqual(target.video.posterAssignments, ['https://example.test/space/images/type-mobile.jpg']);
   assert.ok(f.media.filter(item => item !== target).every(item => item.video.posterAssignments.length === 0));
+  assert.equal(target.video.loads, 0);
   f.orientation.matches = false; f.orientation.emit('change'); await f.flush();
-  assert.deepEqual(target.video.posterAssignments, ['https://example.test/space/images/type-mobile.jpg']);
+  assert.deepEqual(target.video.posterAssignments, ['https://example.test/space/images/type-mobile.jpg', 'https://example.test/space/images/type-desktop.jpg']);
+  assert.match(target.video.src, /desktop\.mp4$/);
   assert.ok(f.media.filter(item => item !== target).every(item => item.video.posterAssignments.length === 0 && item.video.loads === 0));
   f.api.dispose();
 });
@@ -419,16 +449,16 @@ await test('Both HTML entries keep responsive lazy picture fallbacks, compact in
       assert.equal(image.loading, 'lazy'); assert.equal(image.decoding, 'async'); assert.equal(image.fetchpriority, 'low'); assert.equal(image.alt, '');
       assert.match(body.slice(body.indexOf('</div>') + 6), /<figcaption/);
       assert.match(body.slice(body.indexOf('</div>') + 6), /data-media-toggle/);
-      const thumb = html.match(new RegExp(`<img[^>]+src="/images/flagship-${asset}-thumb\\.webp"[^>]+>`));
+      const thumb = html.match(new RegExp(`<img[^>]+src="/images/director-${asset}-thumb\\.webp"[^>]+>`));
       assert.ok(thumb, `${filename}/${asset} thumbnail`);
       const small = attrs(thumb[0]); assert.equal(small.width, '320'); assert.equal(small.height, '180'); assert.equal(small.fetchpriority, 'low');
-      const bytes = await readFile(new URL(`../public/images/flagship-${asset}-thumb.webp`, import.meta.url));
+      const bytes = await readFile(new URL(`../public/images/director-${asset}-thumb.webp`, import.meta.url));
       assert.equal(bytes.toString('ascii', 0, 4), 'RIFF'); assert.equal(bytes.toString('ascii', 8, 12), 'WEBP');
     }
     const heroPoster = html.match(/<picture class="flagship-water-poster">([\s\S]*?)<\/picture>/)?.[1];
     assert.ok(heroPoster);
-    assert.match(heroPoster, /srcset="\/images\/flagship-water-mobile\.jpg"/);
-    assert.match(heroPoster, /src="\/images\/flagship-water-desktop\.jpg"/);
+    assert.match(heroPoster, /srcset="\/images\/director-water-mobile\.webp"/);
+    assert.match(heroPoster, /src="\/images\/director-water-desktop\.webp"/);
     const water = attrs(html.match(/<video id="atelier-film"[^>]+>/)[0]);
     assert.equal(water.preload, 'none'); assert.equal(water.src, undefined); assert.equal(water.poster, undefined);
     assert.match(html, /id="atelier-film-replay"[^>]+aria-controls="atelier-film"/);
