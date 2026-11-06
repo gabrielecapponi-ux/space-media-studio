@@ -83,15 +83,21 @@ function productCard(product) {
   if (foodScene && !['emerald','rose','mint','butter'].includes(foodScene)) throw new Error(`Invalid food scene: ${product.id}`);
   const photoWidth = presentation.campaign_photo_widths?.[product.id];
   if (campaignPhoto && (!Number.isInteger(photoWidth) || photoWidth <= 640)) throw new Error(`Invalid campaign photo width: ${product.id}`);
-  const photoSizes = slug(product.category) === 'burger'
-    ? '(max-width: 515px) 32vw, (max-width: 760px) 165px, (max-width: 1100px) 44vw, 44vw'
-    : '(max-width: 515px) 32vw, (max-width: 760px) 165px, (max-width: 1100px) 44vw, 28vw';
-  let photoSources = '';
-  if (appetite) photoSources = ` srcset="${escapeHTML(appetite.posterSmall)} 640w, ${escapeHTML(appetite.poster)} 960w" sizes="${photoSizes}"`;
-  else if (campaignPhoto) photoSources = ` srcset="${escapeHTML(campaignPhoto.replace(/\.webp$/, '-640.webp'))} 640w, ${escapeHTML(campaignPhoto)} ${photoWidth}w" sizes="${photoSizes}"`;
-  const imageAttributes = `alt="${escapeHTML(product.name)}" width="${appetite ? '960' : '800'}" height="${appetite ? '960' : '800'}" loading="lazy" decoding="async"`;
+  const photoSizes = '(max-width: 760px) clamp(88px, 28vw, 128px), (max-width: 1040px) 116px, 144px';
+  const imageAttributes = `alt="${escapeHTML(product.name)}" loading="lazy" decoding="async"`;
   const sceneAttributes = appetite ? ' data-appetite-motion' : '';
-  const picture = `<img src="${escapeHTML(photo)}"${photoSources}${appetite ? ' data-appetite-still' : ''} ${imageAttributes} />`;
+  const motionSizes = `sizes="${photoSizes}"`;
+  const staticMedia = '(prefers-reduced-motion: reduce), (prefers-reduced-data: reduce), (scripting: none)';
+  let picture;
+  if (appetite?.motionPosterSmall && appetite?.motionPoster) {
+    const still = `srcset="${escapeHTML(appetite.posterSmall)} 640w, ${escapeHTML(appetite.poster)} 960w"`;
+    const first = `srcset="${escapeHTML(appetite.motionPosterSmall)} 320w, ${escapeHTML(appetite.motionPoster)} 640w"`;
+    picture = `<picture class="food-film-poster"><source data-food-static media="${staticMedia}" ${still} ${motionSizes} /><img data-appetite-still src="${escapeHTML(appetite.motionPosterSmall)}" ${first} ${motionSizes} ${imageAttributes} width="640" height="640" /></picture>`;
+  } else {
+    const candidates = appetite ? `${appetite.posterSmall} 640w, ${appetite.poster} 960w` : campaignPhoto ? `${campaignPhoto.replace(/\.webp$/, '-640.webp')} 640w, ${campaignPhoto} ${photoWidth}w` : '';
+    const sourceSet = candidates ? ` srcset="${escapeHTML(candidates)}" ${motionSizes}` : '';
+    picture = `<img src="${escapeHTML(photo)}"${sourceSet}${appetite ? ' data-appetite-still' : ''} ${imageAttributes} width="${appetite ? 960 : 800}" height="${appetite ? 960 : 800}" />`;
+  }
   const badges = [
     promotional ? `<span class="promo-badge">−${discount}% su Glovo</span>` : '',
     product.diet_label ? `<span class="diet-badge">${escapeHTML(product.diet_label)}</span>` : ''

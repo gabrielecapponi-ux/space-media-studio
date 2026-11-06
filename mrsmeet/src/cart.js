@@ -102,25 +102,24 @@ export function mountCart({products = [], channels = {}, presentation = {}, redu
   dialog.setAttribute('aria-labelledby','smeet-cart-title');
   dialog.innerHTML = `
     <header class="smeet-cart-header">
-      <div><p class="smeet-cart-kicker">FATTO PER LA TUA FAME</p><h2 id="smeet-cart-title">IL TUO<br>SACCHETTO<span>.</span></h2></div>
-      <button class="smeet-cart-close" type="button" aria-label="Chiudi il sacchetto" data-cart-action="close" autofocus>×</button>
+      <h2 id="smeet-cart-title">Il tuo sacchetto</h2>
       <span class="smeet-cart-header-count" aria-hidden="true">0</span>
+      <button class="smeet-cart-close" type="button" aria-label="Chiudi il sacchetto" data-cart-action="close" autofocus>×</button>
     </header>
     <div class="smeet-cart-content">
       <section class="smeet-cart-empty">
-        <img src="./images/original-logo.png" width="500" height="491" alt="" decoding="async">
-        <h3>La fame è solo l’inizio.</h3>
-        <p>Un burger, due fries, qualcosa da bere.<br>Componi il tuo sacchetto dal menù.</p>
+        <img src="./images/original-logo.png" width="500" height="491" alt="" loading="lazy" decoding="async">
+        <h3>Il sacchetto è vuoto</h3>
+        <p>Scegli un prodotto dal menù e tocca «Aggiungi».</p>
         <button type="button" class="smeet-cart-button" data-cart-action="continue">SCEGLI DAL MENÙ <span aria-hidden="true">↗</span></button>
       </section>
       <section class="smeet-cart-bag" aria-label="Prodotti nel sacchetto" hidden>
-        <p class="smeet-cart-lead">Le tue scelte. Tutta la fame che vuoi.</p>
         <ul class="smeet-cart-items"></ul>
-        <button type="button" class="smeet-cart-text-button" data-cart-action="continue">+ Aggiungi qualcosa di buono</button>
+        <button type="button" class="smeet-cart-text-button" data-cart-action="continue">Continua a scegliere</button>
       </section>
       <section class="smeet-cart-checkout" hidden aria-labelledby="smeet-cart-checkout-title">
         <button type="button" class="smeet-cart-text-button" data-cart-action="back">← Modifica il sacchetto</button>
-        <h3 id="smeet-cart-checkout-title" tabindex="-1">La fame è pronta.<br>Scegli tu come ordinare.</h3>
+        <h3 id="smeet-cart-checkout-title" tabindex="-1">Consegna o ritiro?</h3>
         <ul class="smeet-cart-summary" aria-label="Riepilogo dei prodotti"></ul>
         <button type="button" class="smeet-cart-copy" data-cart-action="copy"><span aria-hidden="true">▣</span> Copia la mia lista</button>
         <div class="smeet-cart-copy-fallback" hidden>
@@ -195,6 +194,7 @@ export function mountCart({products = [], channels = {}, presentation = {}, redu
   function render() {
     revision++;
     const snapshot = model.snapshot();
+    updateBadges(snapshot);
     const active = doc.activeElement;
     const focusAction = list.contains(active) ? active?.dataset.cartAction : null;
     const focusId = focusAction ? active?.dataset.cartId : null;
@@ -205,7 +205,7 @@ export function mountCart({products = [], channels = {}, presentation = {}, redu
       const image = create('img','smeet-cart-item-image');
       const fallback = productPhotoSources(item.id,presentation).thumbnail;
       const poster = appetiteMedia[item.id]?.posterSmall;
-      image.src = poster || fallback; image.alt = ''; image.width = 88; image.height = 88; image.decoding = 'async';
+      image.loading = 'lazy'; image.src = poster || fallback; image.alt = ''; image.width = 88; image.height = 88; image.decoding = 'async';
       if (poster) image.addEventListener('error', () => {image.src = fallback;}, {once:true});
       const info = create('div','smeet-cart-item-info');
       info.append(create('h3','',item.name),create('p','smeet-cart-unit-price',`${formatCents(item.unitCents)} / cad.`));
@@ -247,7 +247,6 @@ export function mountCart({products = [], channels = {}, presentation = {}, redu
       whatsapp.href = whatsappUrl;
       whatsapp.setAttribute('aria-label','Apri WhatsApp con la lista da controllare e inviare, si apre in una nuova scheda');
     } else whatsapp.removeAttribute('href');
-    updateBadges(snapshot);
     if (focusAction && dialog.open) {
       const target = [...list.querySelectorAll('button')].find(button => button.dataset.cartId === focusId && button.dataset.cartAction === focusAction && !button.disabled)
         || [...list.querySelectorAll('button')].find(button => button.dataset.cartId === focusId && !button.disabled)
@@ -318,7 +317,7 @@ export function mountCart({products = [], channels = {}, presentation = {}, redu
     $('.smeet-cart-content').scrollTop = 0;
     if (!motionStopped() && typeof dialog.animate === 'function') {
       try {
-        animation = dialog.animate([{transform:'translateY(18px) scale(.985)',opacity:.6},{transform:'none',opacity:1}],{duration:200,easing:'cubic-bezier(.22,1,.36,1)'});
+        animation = dialog.animate([{transform:'translateY(10px)'},{transform:'none'}],{duration:150,easing:'cubic-bezier(.22,1,.36,1)'});
         const ownAnimation = animation;
         ownAnimation.finished.then(() => { if (animation === ownAnimation) animation = null; },() => {});
       } catch { stopAnimation(); }
@@ -359,8 +358,10 @@ export function mountCart({products = [], channels = {}, presentation = {}, redu
       close();
       if (action === 'continue') {
         const menu = doc.querySelector('#menu');
-        if (menu) menu.scrollIntoView({behavior:'auto',block:'start'});
-        else view.location.assign(menuHref);
+        if (menu) {
+          menu.scrollIntoView({behavior:'auto',block:'start'});
+          menu.querySelector('[data-menu-filter][aria-pressed="true"]')?.focus({preventScroll:true});
+        } else view.location.assign(menuHref);
       }
     } else if (action === 'checkout' || action === 'back') {
       panel = action === 'checkout' ? 'checkout' : 'bag'; render();

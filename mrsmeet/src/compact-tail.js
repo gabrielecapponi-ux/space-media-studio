@@ -3,6 +3,22 @@ const panels = [...document.querySelectorAll('details[data-tail-disclosure]')];
 const phone = window.matchMedia('(max-width: 760px)');
 const phoneState = new Map();
 
+// Native lazy-loading on a slow network can fetch the whole street photo
+// several screens early. Keep a small real preview until the section is near.
+const previews = document.querySelectorAll('picture[data-section-photo] > source');
+if ('IntersectionObserver' in window) {
+  const nearby = new IntersectionObserver(entries => {
+    for (const entry of entries) {
+      if (!entry.isIntersecting) continue;
+      entry.target.querySelector('picture[data-section-photo] > source')?.remove();
+      nearby.unobserve(entry.target);
+    }
+  }, {rootMargin: '240px 0px'});
+  previews.forEach(source => nearby.observe(source.closest('picture').parentElement));
+} else {
+  previews.forEach(source => source.remove());
+}
+
 function reveal(hash) {
   const panel = panels.find(
     (element) => `#${element.dataset.tailDisclosure}` === hash,

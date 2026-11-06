@@ -13,6 +13,14 @@ export function mountAppetiteMotion({root = globalThis.document, entries = {}, r
   const connection = win.navigator?.connection || win.navigator?.mozConnection || win.navigator?.webkitConnection;
   const cards = new Map(), ids = new Set(), cleanups = new Set();
   const signature = doc.querySelector('#hero-scene');
+  const staticSources = [...doc.querySelectorAll('source[data-food-static]')].map(source => [source,source.media]);
+  function syncStillPhotos() {
+    for (const [source,media] of staticSources) {
+      const selected = connection?.saveData ? 'all' : media;
+      if (source.media !== selected) source.media = selected;
+    }
+  }
+  syncStillPhotos();
   let active = null, owner = null, pending = null, readingCard = null, intent = 0, disposed = false;
   let visibilityObserver, distanceObserver, structureObserver, bodyObserver, scrollFrame = null;
   const now = () => win.performance?.now?.() ?? Date.now();
@@ -59,6 +67,8 @@ export function mountAppetiteMotion({root = globalThis.document, entries = {}, r
   }
   function stopClock(state) {
     state.token++;
+    if (state.frameRequest != null) state.video?.cancelVideoFrameCallback?.(state.frameRequest);
+    state.frameRequest = null;
     win.clearTimeout(state.endTimer); win.clearTimeout(state.loadTimer);
     state.endTimer = state.loadTimer = null;
     if (state.startedAt !== null) state.spent += Math.max(0, now()-state.startedAt);
@@ -102,6 +112,13 @@ export function mountAppetiteMotion({root = globalThis.document, entries = {}, r
     if (state.finished || (state.attempted && active !== state)) restartVisit(state);
     state.intent = ++intent;
   }
+  function signatureIsPrimary() {
+    if (!signature) return false;
+    const box = signature.getBoundingClientRect();
+    const exposure = Math.max(0,Math.min(box.bottom,win.innerHeight)-Math.max(box.top,0));
+    const heroLeads = win.scrollY < 24 || box.top + box.height*.5 >= win.innerHeight*.25;
+    return heroLeads && box.height > 0 && exposure/box.height >= .55;
+  }
   function candidate() {
     const available = [...cards.values()].filter(state => state.videoURL && !hidden(state) && (state.ratio > 0 || visible(state)));
     const direct = available.filter(state => (state.focused && (!touch?.matches || !visibilityObserver || state.ratio >= .30))
@@ -110,12 +127,7 @@ export function mountAppetiteMotion({root = globalThis.document, entries = {}, r
     if (!touch?.matches || !visibilityObserver) return null;
     // At the new compact opening both the hero and first menu row fit on a
     // phone. Give the large Triplo its first pass before auto-playing a card.
-    if (signature) {
-      const box = signature.getBoundingClientRect();
-      const exposure = Math.max(0,Math.min(box.bottom,win.innerHeight)-Math.max(box.top,0));
-      const heroLeads = win.scrollY < 24 || box.top + box.height*.5 >= win.innerHeight*.25;
-      if (heroLeads && box.height && exposure / box.height >= .55) return null;
-    }
+    if (signatureIsPrimary()) return null;
     const score = state => {
       const box = state.link.getBoundingClientRect();
       return 2*state.ratio-Math.abs(box.top+box.height*.5-win.innerHeight*.48)/Math.max(1,win.innerHeight);
@@ -155,7 +167,14 @@ export function mountAppetiteMotion({root = globalThis.document, entries = {}, r
     const image = state.posterFailed ? state.image : state.poster || state.image;
     video.poster = mediaURL(image?.currentSrc || image?.getAttribute('src')) || state.posterURL || state.originalURL;
     state.mediaCleanups = [
-      listen(video,'playing',() => onPlaying(state,video)),
+      listen(video,'playing',() => {
+        if (state.presented || !video.requestVideoFrameCallback) {onPlaying(state,video); return;}
+        if (state.frameRequest != null) return;
+        state.frameRequest = video.requestVideoFrameCallback(() => {
+          state.frameRequest = null;
+          onPlaying(state,video);
+        });
+      }),
       listen(video,'ended',() => {if (state.video === video) finish(state);}),
       listen(video,'error',() => {if (state.video === video && video.hasAttribute('src')) finish(state,true);}),
       listen(video,'waiting',() => {
@@ -164,6 +183,7 @@ export function mountAppetiteMotion({root = globalThis.document, entries = {}, r
       }),
     ];
     const token = ++state.token;
+    doc.dispatchEvent(new win.CustomEvent('smeet:food-claim',{detail:video}));
     active = owner = state; state.video = video; state.attempted = true;
     state.link.append(video); video.src = state.videoURL;
     state.loadTimer = win.setTimeout(() => finish(state,true),LOAD_TIMEOUT_MS);
@@ -266,11 +286,13 @@ export function mountAppetiteMotion({root = globalThis.document, entries = {}, r
     for (const link of cards.keys()) {visibilityObserver.observe(link); distanceObserver.observe(link);}
   }
   const onPreference = () => {
+    syncStillPhotos();
     if (prefersStatic()) {cancelDwell(); cards.forEach(release);}
     reconcile();
   };
   watchPreference(reduced,onPreference); watchPreference(touch,reconcile);
   listen(connection,'change',onPreference);
+  listen(doc,'smeet:food-claim',event => {if (event.detail?.id === 'hero-film') {cancelDwell(); hide(owner,true);}});
   listen(doc,'playing',event => {if (event.target?.id === 'hero-film') {cancelDwell(); hide(owner,true);}},true);
   listen(doc,'visibilitychange',reconcile);
   listen(win,'pagehide',() => {cancelDwell(); cards.forEach(release);});
@@ -295,6 +317,7 @@ export function mountAppetiteMotion({root = globalThis.document, entries = {}, r
     structureObserver.observe(doc.body,{attributes:true,subtree:true,attributeFilter:['hidden','inert','open']});
   }
   return {
+    signatureIsPrimary,
     setPaused(value) {if (!disposed) {paused = Boolean(value); reconcile();}},
     dispose() {
       if (disposed) return;

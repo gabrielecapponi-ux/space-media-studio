@@ -4,18 +4,39 @@ export function mountSimpleMenu({root, onOpenProduct} = {}) {
   const buttons = [...root.querySelectorAll('[data-menu-filter]')];
   const groups = [...root.querySelectorAll('[data-menu-group]')];
   const status = root.querySelector('.simple-filter-status');
+  const tools = root.querySelector('.catalog-tools');
+  const grid = root.querySelector('#simple-menu-groups');
+  const view = root.ownerDocument.defaultView;
+  const desktop = view.matchMedia?.('(min-width: 761px)');
+  const productCounts = new Map(groups.map(group => [group.dataset.menuGroup, group.querySelectorAll('[data-menu-product]').length]));
   const productLinks = [...root.querySelectorAll('[data-product-photo]')];
   const controller = new AbortController();
   let disposed = false;
   const render = (category, announce = true) => {
+    if (category === root.dataset.menuView || (category !== 'all' && !productCounts.has(category))) return;
+    // A pinned filter may be activated far down a long list. Start the new
+    // category at its first dish. When the first row is in view, keep it still.
+    const previousFirst = announce && desktop?.matches && tools
+      ? root.querySelector('.simple-menu-group:not([hidden]) .product-card') : null;
+    const barBottom = previousFirst && tools?.getBoundingClientRect().bottom;
+    const firstPassed = previousFirst && tools && previousFirst.getBoundingClientRect().bottom < barBottom;
     root.dataset.menuView = category;
     let count = 0;
     groups.forEach(group => {
       const show = category === 'all' || group.dataset.menuGroup === category;
-      group.hidden = !show;
-      if (show) count += group.querySelectorAll('[data-menu-product]').length;
+      if (group.hidden === show) group.hidden = !show;
+      if (show) count += productCounts.get(group.dataset.menuGroup);
     });
-    buttons.forEach(button => button.setAttribute('aria-pressed',String(button.dataset.menuFilter === category)));
+    buttons.forEach(button => {
+      const pressed = String(button.dataset.menuFilter === category);
+      if (button.getAttribute('aria-pressed') !== pressed) button.setAttribute('aria-pressed',pressed);
+    });
+    if (firstPassed && grid) {
+      // Shrinking the list can temporarily push the sticky bar above the
+      // viewport. Its position before the change is the visible anchor.
+      const delta = grid.getBoundingClientRect().top - barBottom;
+      if (delta < -1) view.scrollBy({top:delta,behavior:'instant'});
+    }
     if (status && announce) {
       const label = buttons.find(button => button.dataset.menuFilter === category)?.childNodes[0]?.textContent.trim() || 'Menu';
       status.textContent = `${label}: ${count} ${count === 1 ? 'prodotto visibile' : 'prodotti visibili'}.`;

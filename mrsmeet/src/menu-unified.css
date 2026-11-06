@@ -1,5 +1,5 @@
 /* Shared photographic surface and readable shopping-list details. */
-:is(.mascot-world,.order-world) .smeet-cart :is(.smeet-cart-kicker,.smeet-cart-channel small){
+:is(.mascot-world,.order-world) .smeet-cart .smeet-cart-channel small{
  font-size:12px;line-height:1.45;letter-spacing:.035em;
 }
 :is(.mascot-world,.order-world) .smeet-cart :is(.smeet-cart-price-note,.smeet-cart-unit-price,.smeet-cart-quantity){

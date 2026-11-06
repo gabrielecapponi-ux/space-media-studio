@@ -415,3 +415,4 @@ details[open] > .tail-summary::after {
     font-size: 10px;
   }
 }
+picture[data-section-photo] { display: contents; }

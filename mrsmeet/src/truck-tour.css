@@ -73,7 +73,7 @@
   margin: 0;
   background: #355047;
 }
-.truck-tour .tour-screen > img,
+.truck-tour .tour-screen [data-tour-poster],
 .truck-tour .tour-screen > video {
   position: absolute;
   inset: 0;

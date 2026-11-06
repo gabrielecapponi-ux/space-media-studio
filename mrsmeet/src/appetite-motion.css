@@ -18,3 +18,19 @@
 @media(prefers-reduced-motion:reduce){
   .product-photo[data-appetite-motion] > .appetite-motion-video {opacity:0!important;transition:none;}
 }
+
+/* Each poster and video occupies the exact same crop, including burger-specific zoom. */
+.mascot-world #menu .product-photo[data-appetite-motion] > :is(picture.food-film-poster,video.appetite-motion-video),
+.mascot-world #signature .signature-photo > picture.food-film-poster {
+  position:absolute;inset:0;display:block;width:100%;height:100%;padding:0;margin:0;
+  border:0;border-radius:inherit;object-fit:contain;object-position:50% 50%;pointer-events:none;
+  transform-origin:50% 50%;
+}
+.mascot-world #menu .product-photo[data-appetite-motion] > :is(picture.food-film-poster,video.appetite-motion-video) {
+  transform:translateY(var(--burger-frame-y,0%)) scale(var(--burger-frame-scale,1));
+}
+.mascot-world :is(#menu,#signature) :is(.product-photo,.signature-photo) > picture.food-film-poster > img {
+  display:block;position:absolute;inset:0;width:100%;height:100%;max-width:none;max-height:none;
+  margin:0;padding:0;object-fit:contain;object-position:center;opacity:1;filter:none;transform:none;scale:none!important;
+  border:0;border-radius:inherit;pointer-events:none;mix-blend-mode:normal;transition:none;
+}

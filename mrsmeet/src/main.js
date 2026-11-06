@@ -31,7 +31,7 @@ const menuRoot = $('#menu');
 const catalog = new Map(products.map(product => [product.id, product]));
 let filmWanted = false, filmInView = false, filmLoaded = false, filmRequest = 0;
 let filmRatio = 0, filmVisited = false, filmVisitConsumed = false, filmHovered = false;
-let filmDwell = null, filmEndTimer = null, filmLoadTimer = null;
+let filmDwell = null, filmEndTimer = null, filmLoadTimer = null, filmFrameRequest = null;
 const filmTouch = matchMedia('(hover: none), (pointer: coarse)');
 const filmConnection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
 
@@ -54,6 +54,8 @@ function renderFilmButton() {
 }
 function stopFilm(release = false) {
   filmRequest++; filmWanted = false;
+  if (filmFrameRequest != null) film?.cancelVideoFrameCallback?.(filmFrameRequest);
+  filmFrameRequest = null;
   window.clearTimeout(filmDwell); window.clearTimeout(filmEndTimer); window.clearTimeout(filmLoadTimer);
   filmDwell = filmEndTimer = filmLoadTimer = null;
   film?.pause(); stage?.classList.remove('has-video');
@@ -66,6 +68,9 @@ function finishFilm() {
 function beginFilm() {
   if (!film || disposed || filmBlocked() || !filmInView) return false;
   stopFilm();
+  document.dispatchEvent(new CustomEvent('smeet:food-claim',{detail:film}));
+  const still = stage?.querySelector('.signature-photo img');
+  if (still?.currentSrc) film.poster = still.currentSrc;
   if (!filmLoaded) {
     const source = matchMedia('(max-width: 760px)').matches
       ? film.dataset.mobileSrc || film.dataset.desktopSrc : film.dataset.desktopSrc || film.dataset.mobileSrc;
@@ -87,9 +92,19 @@ function beginFilm() {
 }
 function queueFilm() {
   if (!film || disposed || filmWanted || filmDwell != null || filmBlocked() || filmRatio < .55 || filmVisitConsumed
+    || (filmTouch.matches && appetiteMotion?.signatureIsPrimary?.() === false)
     || (!filmTouch.matches && filmVisited && !filmHovered)
     || document.querySelector('.product-photo[data-appetite-playing]:not([data-appetite-holding])')) return;
-  filmDwell = window.setTimeout(() => {filmDwell = null; if (filmRatio >= .55 && !filmVisitConsumed) beginFilm();}, filmTouch.matches ? 320 : 140);
+  filmDwell = window.setTimeout(() => {
+    filmDwell = null;
+    const eligible = () => filmRatio >= .55 && !filmVisitConsumed && !filmBlocked() && (!filmTouch.matches || appetiteMotion?.signatureIsPrimary?.() !== false);
+    if (!eligible()) return;
+    const still = stage?.querySelector('.signature-photo img');
+    if (still && !still.complete && typeof still.decode === 'function') {
+      const request = filmRequest;
+      still.decode().catch(() => {}).then(() => {if (request === filmRequest && eligible()) beginFilm();});
+    } else beginFilm();
+  }, filmTouch.matches ? 320 : 140);
 }
 function syncFilm() {
   if (!film || disposed) return;
@@ -116,11 +131,18 @@ filmButton?.addEventListener('click', () => {
   if (!filmObserver) filmInView = true; // Explicit control remains usable without IO.
   syncMotion(); beginFilm();
 }, {signal});
-film?.addEventListener('playing', () => {
+function showFilmFrame() {
+  filmFrameRequest = null;
   if (!filmWanted || filmBlocked() || !filmInView) {stopFilm(); renderFilmButton(); return;}
   window.clearTimeout(filmLoadTimer); filmLoadTimer = null;
   stage?.classList.add('has-video');
   if (filmEndTimer == null) filmEndTimer = window.setTimeout(finishFilm, 5000);
+}
+film?.addEventListener('playing', () => {
+  if (!film.requestVideoFrameCallback) {showFilmFrame(); return;}
+  if (filmFrameRequest != null) return;
+  const request = filmRequest;
+  filmFrameRequest = film.requestVideoFrameCallback(() => {if (request === filmRequest) showFilmFrame();});
 }, {signal});
 film?.addEventListener('ended', finishFilm, {signal});
 film?.addEventListener('error', () => {
@@ -147,6 +169,9 @@ stage?.addEventListener('focusin', event => {
 stage?.addEventListener('focusout', event => {
   if (stage.contains(event.relatedTarget)) return;
   filmHovered = false; stopFilm(); renderFilmButton();
+}, {signal});
+document.addEventListener('smeet:food-claim', event => {
+  if (event.detail !== film && event.detail?.matches?.('.appetite-motion-video')) {stopFilm(true); renderFilmButton();}
 }, {signal});
 document.addEventListener('playing', event => {
   if (event.target !== film && event.target.matches?.('.appetite-motion-video')) {stopFilm(); renderFilmButton();}
@@ -339,7 +364,6 @@ menuBoard = mountMenuBoard({root:$('#menu-board'), reducedMotion:reduced, paused
 // The opening is intentionally replayable; service objects never loop.
 $('#replay-intro')?.addEventListener('click', () => {
   introActive = true; syncMotion();
-  window.scrollTo({top:0,left:0,behavior:'instant'});
   intro?.replay();
 }, {signal});
 
@@ -356,8 +380,7 @@ mapButton?.addEventListener('click', async () => {
     if (status) status.textContent = 'La mappa animata non è disponibile. Puoi usare le indicazioni qui sotto.';
   }
 }, {signal});
-// Preserve the original mascot preparation sequence at every document entry.
-// The real resource progress excludes below-the-fold video and 3D.
+// The order flow starts immediately. The footer can replay the original opening.
 intro = mountOriginalOpening({reducedMotion:reduced, onComplete:() => {
   if (disposed) return;
   introActive = false;
