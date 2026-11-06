@@ -1,0 +1,63 @@
+.phase-store {
+  --background: #ecece5;
+  --text: #191b18;
+  --gutter: clamp(24px, 4vw, 80px);
+  --line: #262a2530;
+}
+.phase-nav { border-bottom: 1px solid var(--line); }
+.phase-logo { font-weight: 700; font-size: clamp(31px, 2.4vw, 48px); gap: 9px; }
+.phase-logo span { font: 10px Mono, monospace; align-self: end; padding-bottom: 4px; }
+.phase-hero {
+  display: grid;
+  grid-template-columns: 40% 60%;
+  min-height: 600px;
+  height: min(900px, calc(100svh - var(--nav) - var(--demo-bar)));
+}
+.capture .phase-hero { height: calc(100svh - var(--nav)); }
+.phase-intro { align-self: center; padding: 30px var(--gutter); }
+.phase-label { display: flex; align-items: center; gap: 10px; font: clamp(10px, .76vw, 14px) Mono, monospace; letter-spacing: .055em; }
+.phase-label i { display: inline-block; width: .72em; height: .72em; background: #cf4c27; }
+.phase-intro h1 { font-size: clamp(85px, 8.6vw, 175px); font-weight: 600; line-height: .9; letter-spacing: -.087em; margin: .22em 0 .26em; }
+.phase-intro h1 span { display: block; color: #c94d2b; }
+.phase-description { font-size: clamp(14px, 1.1vw, 22px); line-height: 1.52; max-width: 31ch; letter-spacing: -.025em; }
+.phase-editions { display: flex; align-items: center; gap: 4px; padding: 0; border: 0; margin: clamp(22px, 3vh, 38px) 0 0; }
+.phase-editions legend { padding: 0 0 8px; font: 10px Mono, monospace; color: #51564e; }
+.phase-editions button { min-height: 40px; padding: 7px 19px; border: 1px solid #242a2150; background: transparent; font-size: 12px; }
+.phase-editions button[aria-pressed=true] { background: #272b25; border-color: #272b25; color: #fff; }
+.phase-bundle { margin-top: 9px; font-size: 11px; line-height: 1.4; color: #51564e; }
+.phase-buy { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-top: 22px; min-height: 53px; width: min(100%, 350px); padding: 12px 19px; background: #ba4425; color: #fff; font-weight: 500; font-size: 14px; }
+.phase-buy span:last-child { font-family: Mono, monospace; font-size: 12px; }
+.phase-photo { min-width: 0; min-height: 0; overflow: hidden; background: #929c98; display: grid; align-content: center; }
+.phase-photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.phase-details { display: grid; grid-template-columns: 1fr 1.5fr; gap: 40px; align-items: center; }
+.phase-detail-copy p:last-child { max-width: 42ch; font-size: 16px; line-height: 1.55; }
+.phase-details figure img { width: 100%; height: auto; }
+.phase-details .phase-macro { grid-column: 1 / -1; }
+@media (max-width: 760px) {
+  .phase-hero, .capture .phase-hero { height: auto; min-height: 0; display: flex; flex-direction: column; }
+  .phase-intro { align-self: stretch; padding: 22px var(--gutter) 24px; }
+  .phase-intro h1 { font-size: clamp(62px, 12vw, 88px); margin: .15em 0 .17em; white-space: nowrap; }
+  .phase-intro h1 span { display: inline; }
+  .phase-description { max-width: 47ch; font-size: 13px; }
+  .phase-editions { margin: 14px 0 0; }
+  .phase-editions legend { float: left; min-height: 36px; padding: 10px 9px 0 0; }
+  .phase-editions button { min-height: 36px; padding: 5px 15px; }
+  .phase-bundle { margin-top: 6px; }
+  .phase-buy { min-height: 45px; margin-top: 12px; }
+  .phase-photo { display: block; }
+  .phase-photo img { height: auto; aspect-ratio: 4/3; }
+  .phase-details { display: block; }
+  .phase-details figure { margin-top: 25px; }
+}
+@media (max-width: 760px) and (min-width: 550px) {
+  .capture .phase-hero { height: calc(100svh - var(--nav)); }
+  .capture .phase-photo { flex: 1; }
+  .capture .phase-photo img { height: 100%; object-fit: cover; }
+}
+@media (min-width: 761px) {
+  .phase-photo { display: block; }
+  .phase-photo img { width: 100%; height: 100%; object-fit: cover; }
+}
+@media (max-width: 549px) {
+  .capture .phase-details { display: block; }
+}
