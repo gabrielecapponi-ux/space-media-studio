@@ -10,22 +10,25 @@
   <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
   <link rel="preload" href="./fonts/DynaPuff.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="./fonts/InstrumentSans-Regular.woff2" as="font" type="font/woff2" crossorigin />
-  <script type="module" crossorigin src="./assets/menu-presentation-RLL9yOH6.js"></script>
-  <script type="module" crossorigin src="./assets/main-BxF5Mg6x.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/menu-presentation-6xqpJD00.css">
-  <link rel="stylesheet" crossorigin href="./assets/main-Bm-Qy_3b.css">
-</head>
+    <script type="module" crossorigin src="./assets/menu-presentation-Dp3yHVLe.js"></script>
+    <script type="module" crossorigin src="./assets/main-Ce1F05Ge.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/menu-presentation-DIeCHjY1.css">
+    <link rel="stylesheet" crossorigin href="./assets/main-DEETd8pV.css">
+  </head>
 <body class="quick-experience mascot-world directed-experience paper-world variant-a">
   <a class="skip-link" href="#menu">Vai al menu</a>
   <div id="site">
-    <header class="header">
+    <header class="header route-header">
       <a class="brand" href="#top" aria-label="Mr Smeet, inizio"><img src="./images/wordmark.png" alt="Mr Smeet" width="900" height="600" /></a>
-      <nav class="nav" aria-label="Navigazione principale"><a href="#menu">Il menu</a><a href="#truck">Food truck</a><a href="#dove-siamo">Dove siamo</a><a href="#storia">La storia</a></nav>
+      <nav class="nav route-links" aria-label="Navigazione principale">
+        <a href="#menu">Il menù <span aria-hidden="true">↓</span></a>
+        <a href="#truck">Collabora con noi <span aria-hidden="true">↘</span></a>
+      </nav>
       <a class="header-hours" href="#orari" data-opening-status title="Stato calcolato sugli orari ordinari pubblicati"><strong data-opening-label>I nostri orari</strong><span data-opening-detail>Scopri le aperture</span></a>
       <a class="button small pink header-bag" href="./ordina-a.html" data-cart-open>IL SACCHETTO <span data-cart-count>0</span></a>
       <button class="mobile-menu" aria-label="Apri navigazione" aria-expanded="false" aria-controls="mobile-navigation"><span></span><span></span></button>
     </header>
-    <nav id="mobile-navigation" class="mobile-navigation" aria-label="Navigazione mobile" hidden><a href="#menu">Il menu ↗</a><a href="#truck">Food truck ↗</a><a href="#dove-siamo">Dove siamo ↗</a><a href="#storia">La storia ↗</a><a href="./ordina-a.html" data-cart-open>Il tuo sacchetto ↗</a></nav>
+    <nav id="mobile-navigation" class="mobile-navigation" aria-label="Navigazione mobile" hidden><a href="#dove-siamo">Dove siamo ↗</a><a href="#storia">La storia ↗</a><a href="./ordina-a.html" data-cart-open>Il tuo sacchetto ↗</a></nav>
     <main>
       <section class="mascot-hero" id="top" aria-labelledby="hero-title">
         <div class="mascot-hero-copy">
@@ -33,7 +36,6 @@
           <h1 id="hero-title">BAFFI SU.<br /><span>MORSI GIÙ.</span></h1>
           <p class="mascot-hero-description">Siamo Mr Smeet. Smash burger preparati a Parma, in Oltretorrente. Poche cose, fatte con cura.</p>
           <p class="hero-origin"><span aria-hidden="true">✦</span> SPIRITO SMASH. CUORE PARMIGIANO.</p>
-          <a class="button cream hero-menu-cta" href="#menu">SCOPRI IL MENU <span aria-hidden="true">↓</span></a>
           <a class="hero-address" href="#dove-siamo">Un piccolo mondo in via D’Azeglio 84/A ↗</a>
         </div>
         <div class="mascot-hero-visual">
@@ -41,21 +43,16 @@
             <div class="mascot-figure"><img class="mascot-hero-art" src="./images/original-logo.png" alt="La mascotte originale Mr Smeet: baffi, monocolo e cilindro" width="500" height="491" fetchpriority="high" /></div>
           </div>
         </div>
-        <nav class="hero-section-nav" aria-label="Esplora tutte le sezioni">
+        <nav class="hero-section-nav hero-shortcuts" aria-label="Scopri Mr Smeet">
           <a href="#signature">Il Classic <span aria-hidden="true">↘</span></a>
-          <a class="section-nav-main" href="#menu">Il menu <span aria-hidden="true">↘</span></a>
-          <a href="#menu-board">Tabellone <span aria-hidden="true">↘</span></a>
-          <a href="#ordina">Ordina <span aria-hidden="true">↘</span></a>
-          <a href="#dove-siamo">Dove siamo <span aria-hidden="true">↘</span></a>
-          <a href="#truck">Food truck <span aria-hidden="true">↘</span></a>
+          <a href="#menu-board">Il tabellone <span aria-hidden="true">↘</span></a>
           <a href="#storia">La storia <span aria-hidden="true">↘</span></a>
         </nav>
       </section>
       <section class="signature-section section-pad" id="signature" aria-labelledby="signature-title">
-        <div class="signature-visual" id="hero-scene" data-service-motion data-service-type="food">
-          <a class="signature-photo" data-service-object href="./ordina-a.html" data-product-photo="classic-smash-burger-triplo" aria-label="Scopri gli ingredienti del Classic Triplo"><img src="./images/menu-unified/classic-smash-burger-triplo-natural.webp" srcset="./images/menu-unified/classic-smash-burger-triplo-natural-640.webp 640w, ./images/menu-unified/classic-smash-burger-triplo-natural.webp 960w" sizes="(max-width: 760px) 88vw, 52vw" alt="Classic Smash Burger Triplo: pane dorato, carne croccante, cheddar e cetrioli" width="960" height="960" loading="lazy" /></a>
-          <video id="hero-film" muted playsinline preload="none" data-mobile-src="./films/brasca-motion/classic-smash-burger-triplo.mp4" data-desktop-src="./films/brasca-motion/classic-smash-burger-triplo.mp4" aria-hidden="true"></video>
-          <button class="film-toggle" id="hero-motion" aria-pressed="false">▷ Anima il burger</button>
+        <div class="signature-visual" id="hero-scene">
+          <a class="signature-photo" href="./ordina-a.html" data-product-photo="classic-smash-burger-triplo" aria-label="Scopri gli ingredienti del Classic Triplo" data-food-scroll="burger" data-food-open="./images/burger-scroll/classic-smash-burger-triplo/open.webp" data-food-full="./images/menu-unified/classic-smash-burger-triplo-natural-640.webp"><picture><source media="(scripting: none), (prefers-reduced-motion: reduce)" srcset="./images/menu-unified/classic-smash-burger-triplo-natural-640.webp 640w, ./images/menu-unified/classic-smash-burger-triplo-natural.webp 960w" sizes="(max-width: 760px) 90vw, 52vw" /><img data-appetite-still src="./images/burger-scroll/classic-smash-burger-triplo/open.webp" alt="Classic Smash Burger Triplo: pane dorato, carne croccante, cheddar e cetrioli" width="720" height="720" loading="lazy" decoding="async" /></picture></a>
+          <button class="film-toggle" id="hero-motion" type="button" disabled>▷ Rivedi il montaggio</button>
         </div>
         <div class="signature-copy"><p class="eyebrow">IL NOSTRO CLASSIC</p><h2 id="signature-title">IL TRIPLO.</h2><p>Carne croccante, cheddar, cetrioli e salsa.<br />Tre volte Mr Smeet.</p><div class="signature-purchase"><div><span class="signature-offer">−20% su Glovo</span><p><s>16,00 €</s> <strong>12,80 €</strong></p></div><a class="button green" href="./ordina-a.html" data-add-to-cart="classic-smash-burger-triplo">NEL SACCHETTO <span aria-hidden="true">＋</span></a></div></div>
       </section>
@@ -73,9 +70,8 @@
             <div class="simple-group-heading"><h3 id="group-menu-title">Menù completi</h3><span>3 proposte</span></div>
             <div class="simple-product-grid">
             <article class="product-card campaign-product" data-menu-product="classic-smash-menu" data-photo-original="./images/menu/classic-smash-menu.webp">
-              <a class="product-photo" href="./ordina-a.html" data-product-photo="classic-smash-menu" data-appetite-motion aria-label="Foto e dettagli di Classic Smash Menù">
-
-                <img src="./images/menu-unified/classic-smash-menu-natural.webp" srcset="./images/menu-unified/classic-smash-menu-natural-640.webp 640w, ./images/menu-unified/classic-smash-menu-natural.webp 960w" sizes="(max-width: 760px) 90vw, (max-width: 1100px) 44vw, 28vw" data-appetite-still alt="Classic Smash Menù" width="960" height="960" loading="lazy" decoding="async" />
+              <a class="product-photo" href="./ordina-a.html" data-product-photo="classic-smash-menu" aria-label="Foto e dettagli di Classic Smash Menù" data-food-scroll="burger" data-food-open="./images/burger-scroll/classic-smash-menu/open.webp" data-food-full="./images/menu-unified/classic-smash-menu-natural-640.webp">
+                <picture><source media="(scripting: none), (prefers-reduced-motion: reduce)" srcset="./images/menu-unified/classic-smash-menu-natural-640.webp 640w, ./images/menu-unified/classic-smash-menu-natural.webp 960w" sizes="(max-width: 760px) 90vw, 52vw" /><img data-appetite-still src="./images/burger-scroll/classic-smash-menu/open.webp" alt="Classic Smash Menù" width="720" height="720" loading="lazy" decoding="async" /></picture>
                 <span class="simple-photo-detail" aria-hidden="true">＋</span>
               </a>
               <div class="product-info product-content">
@@ -91,9 +87,8 @@
               </div>
             </article>
             <article class="product-card" data-menu-product="chicken-burger-menu">
-              <a class="product-photo" href="./ordina-a.html" data-product-photo="chicken-burger-menu" data-appetite-motion aria-label="Foto e dettagli di Chicken Burger Menù">
-
-                <img src="./images/menu-unified/chicken-burger-menu-natural.webp" srcset="./images/menu-unified/chicken-burger-menu-natural-640.webp 640w, ./images/menu-unified/chicken-burger-menu-natural.webp 960w" sizes="(max-width: 760px) 90vw, (max-width: 1100px) 44vw, 28vw" data-appetite-still alt="Chicken Burger Menù" width="960" height="960" loading="lazy" decoding="async" />
+              <a class="product-photo" href="./ordina-a.html" data-product-photo="chicken-burger-menu" aria-label="Foto e dettagli di Chicken Burger Menù" data-food-scroll="burger" data-food-open="./images/burger-scroll/chicken-burger-menu/open.webp" data-food-full="./images/menu-unified/chicken-burger-menu-natural-640.webp">
+                <picture><source media="(scripting: none), (prefers-reduced-motion: reduce)" srcset="./images/menu-unified/chicken-burger-menu-natural-640.webp 640w, ./images/menu-unified/chicken-burger-menu-natural.webp 960w" sizes="(max-width: 760px) 90vw, 52vw" /><img data-appetite-still src="./images/burger-scroll/chicken-burger-menu/open.webp" alt="Chicken Burger Menù" width="720" height="720" loading="lazy" decoding="async" /></picture>
                 <span class="simple-photo-detail" aria-hidden="true">＋</span>
               </a>
               <div class="product-info product-content">
@@ -109,9 +104,8 @@
               </div>
             </article>
             <article class="product-card" data-menu-product="menu-birra">
-              <a class="product-photo" href="./ordina-a.html" data-product-photo="menu-birra" data-appetite-motion aria-label="Foto e dettagli di Menù Birra">
-
-                <img src="./images/menu-unified/menu-birra-natural.webp" srcset="./images/menu-unified/menu-birra-natural-640.webp 640w, ./images/menu-unified/menu-birra-natural.webp 960w" sizes="(max-width: 760px) 90vw, (max-width: 1100px) 44vw, 28vw" data-appetite-still alt="Menù Birra" width="960" height="960" loading="lazy" decoding="async" />
+              <a class="product-photo" href="./ordina-a.html" data-product-photo="menu-birra" aria-label="Foto e dettagli di Menù Birra" data-food-scroll="burger" data-food-open="./images/burger-scroll/menu-birra/open.webp" data-food-full="./images/menu-unified/menu-birra-natural-640.webp">
+                <picture><source media="(scripting: none), (prefers-reduced-motion: reduce)" srcset="./images/menu-unified/menu-birra-natural-640.webp 640w, ./images/menu-unified/menu-birra-natural.webp 960w" sizes="(max-width: 760px) 90vw, 52vw" /><img data-appetite-still src="./images/burger-scroll/menu-birra/open.webp" alt="Menù Birra" width="720" height="720" loading="lazy" decoding="async" /></picture>
                 <span class="simple-photo-detail" aria-hidden="true">＋</span>
               </a>
               <div class="product-info product-content">
@@ -132,9 +126,8 @@
             <div class="simple-group-heading"><h3 id="group-burger-title">Burger</h3><span>4 proposte</span></div>
             <div class="simple-product-grid">
             <article class="product-card campaign-product" data-menu-product="classic-smash-burger-triplo" data-photo-original="./images/menu/classic-smash-burger-triplo.webp">
-              <a class="product-photo" href="./ordina-a.html" data-product-photo="classic-smash-burger-triplo" data-appetite-motion data-food-scene="emerald" aria-label="Foto e dettagli di Classic Smash Burger Triplo">
-                <span class="food-stage-floor" aria-hidden="true"></span><span class="food-stage-wrap" aria-hidden="true"></span>
-                <img src="./images/menu-unified/classic-smash-burger-triplo-natural.webp" srcset="./images/menu-unified/classic-smash-burger-triplo-natural-640.webp 640w, ./images/menu-unified/classic-smash-burger-triplo-natural.webp 960w" sizes="(max-width: 760px) 90vw, (max-width: 1100px) 44vw, 44vw" data-appetite-still alt="Classic Smash Burger Triplo" width="960" height="960" loading="lazy" decoding="async" />
+              <a class="product-photo" href="./ordina-a.html" data-product-photo="classic-smash-burger-triplo" aria-label="Foto e dettagli di Classic Smash Burger Triplo" data-food-scroll="burger" data-food-open="./images/burger-scroll/classic-smash-burger-triplo/open.webp" data-food-full="./images/menu-unified/classic-smash-burger-triplo-natural-640.webp">
+                <picture><source media="(scripting: none), (prefers-reduced-motion: reduce)" srcset="./images/menu-unified/classic-smash-burger-triplo-natural-640.webp 640w, ./images/menu-unified/classic-smash-burger-triplo-natural.webp 960w" sizes="(max-width: 760px) 90vw, 52vw" /><img data-appetite-still src="./images/burger-scroll/classic-smash-burger-triplo/open.webp" alt="Classic Smash Burger Triplo" width="720" height="720" loading="lazy" decoding="async" /></picture>
                 <span class="simple-photo-detail ingredient-invitation" aria-hidden="true">Guarda da vicino <b>↗</b></span>
               </a>
               <div class="product-info product-content">
@@ -150,9 +143,8 @@
               </div>
             </article>
             <article class="product-card campaign-product" data-menu-product="classic-smash-burger-doppio" data-photo-original="./images/menu/classic-smash-burger-doppio.webp">
-              <a class="product-photo" href="./ordina-a.html" data-product-photo="classic-smash-burger-doppio" data-appetite-motion data-food-scene="rose" aria-label="Foto e dettagli di Classic Smash Burger Doppio">
-                <span class="food-stage-floor" aria-hidden="true"></span><span class="food-stage-wrap" aria-hidden="true"></span>
-                <img src="./images/menu-unified/classic-smash-burger-doppio.webp" srcset="./images/menu-unified/classic-smash-burger-doppio-640.webp 640w, ./images/menu-unified/classic-smash-burger-doppio.webp 960w" sizes="(max-width: 760px) 90vw, (max-width: 1100px) 44vw, 44vw" data-appetite-still alt="Classic Smash Burger Doppio" width="960" height="960" loading="lazy" decoding="async" />
+              <a class="product-photo" href="./ordina-a.html" data-product-photo="classic-smash-burger-doppio" aria-label="Foto e dettagli di Classic Smash Burger Doppio" data-food-scroll="burger" data-food-open="./images/burger-scroll/classic-smash-burger-doppio/open.webp" data-food-full="./images/menu-unified/classic-smash-burger-doppio-640.webp">
+                <picture><source media="(scripting: none), (prefers-reduced-motion: reduce)" srcset="./images/menu-unified/classic-smash-burger-doppio-640.webp 640w, ./images/menu-unified/classic-smash-burger-doppio.webp 960w" sizes="(max-width: 760px) 90vw, 52vw" /><img data-appetite-still src="./images/burger-scroll/classic-smash-burger-doppio/open.webp" alt="Classic Smash Burger Doppio" width="720" height="720" loading="lazy" decoding="async" /></picture>
                 <span class="simple-photo-detail ingredient-invitation" aria-hidden="true">Guarda da vicino <b>↗</b></span>
               </a>
               <div class="product-info product-content">
@@ -168,9 +160,8 @@
               </div>
             </article>
             <article class="product-card campaign-product" data-menu-product="plant-based-burger-doppio" data-photo-original="./images/menu/plant-based-burger-doppio.webp">
-              <a class="product-photo" href="./ordina-a.html" data-product-photo="plant-based-burger-doppio" data-appetite-motion data-food-scene="mint" aria-label="Foto e dettagli di Plant Based Burger Doppio">
-                <span class="food-stage-floor" aria-hidden="true"></span><span class="food-stage-wrap" aria-hidden="true"></span>
-                <img src="./images/menu-unified/plant-based-burger-doppio-natural.webp" srcset="./images/menu-unified/plant-based-burger-doppio-natural-640.webp 640w, ./images/menu-unified/plant-based-burger-doppio-natural.webp 960w" sizes="(max-width: 760px) 90vw, (max-width: 1100px) 44vw, 44vw" data-appetite-still alt="Plant Based Burger Doppio" width="960" height="960" loading="lazy" decoding="async" />
+              <a class="product-photo" href="./ordina-a.html" data-product-photo="plant-based-burger-doppio" aria-label="Foto e dettagli di Plant Based Burger Doppio" data-food-scroll="burger" data-food-open="./images/burger-scroll/plant-based-burger-doppio/open.webp" data-food-full="./images/menu-unified/plant-based-burger-doppio-natural-640.webp">
+                <picture><source media="(scripting: none), (prefers-reduced-motion: reduce)" srcset="./images/menu-unified/plant-based-burger-doppio-natural-640.webp 640w, ./images/menu-unified/plant-based-burger-doppio-natural.webp 960w" sizes="(max-width: 760px) 90vw, 52vw" /><img data-appetite-still src="./images/burger-scroll/plant-based-burger-doppio/open.webp" alt="Plant Based Burger Doppio" width="720" height="720" loading="lazy" decoding="async" /></picture>
                 <span class="simple-photo-detail ingredient-invitation" aria-hidden="true">Guarda da vicino <b>↗</b></span>
               </a>
               <div class="product-info product-content">
@@ -186,9 +177,8 @@
               </div>
             </article>
             <article class="product-card campaign-product" data-menu-product="100-percento-vegano" data-photo-original="./images/menu/100-percento-vegano.webp">
-              <a class="product-photo" href="./ordina-a.html" data-product-photo="100-percento-vegano" data-appetite-motion data-food-scene="butter" aria-label="Foto e dettagli di 100% vegano">
-                <span class="food-stage-floor" aria-hidden="true"></span><span class="food-stage-wrap" aria-hidden="true"></span>
-                <img src="./images/menu-unified/100-percento-vegano-natural.webp" srcset="./images/menu-unified/100-percento-vegano-natural-640.webp 640w, ./images/menu-unified/100-percento-vegano-natural.webp 960w" sizes="(max-width: 760px) 90vw, (max-width: 1100px) 44vw, 44vw" data-appetite-still alt="100% vegano" width="960" height="960" loading="lazy" decoding="async" />
+              <a class="product-photo" href="./ordina-a.html" data-product-photo="100-percento-vegano" aria-label="Foto e dettagli di 100% vegano" data-food-scroll="burger" data-food-open="./images/burger-scroll/100-percento-vegano/open.webp" data-food-full="./images/menu-unified/100-percento-vegano-natural-640.webp">
+                <picture><source media="(scripting: none), (prefers-reduced-motion: reduce)" srcset="./images/menu-unified/100-percento-vegano-natural-640.webp 640w, ./images/menu-unified/100-percento-vegano-natural.webp 960w" sizes="(max-width: 760px) 90vw, 52vw" /><img data-appetite-still src="./images/burger-scroll/100-percento-vegano/open.webp" alt="100% vegano" width="720" height="720" loading="lazy" decoding="async" /></picture>
                 <span class="simple-photo-detail ingredient-invitation" aria-hidden="true">Guarda da vicino <b>↗</b></span>
               </a>
               <div class="product-info product-content">
@@ -209,9 +199,8 @@
             <div class="simple-group-heading"><h3 id="group-fries-title">Contorni</h3><span>3 proposte</span></div>
             <div class="simple-product-grid">
             <article class="product-card" data-menu-product="sweet-fries">
-              <a class="product-photo" href="./ordina-a.html" data-product-photo="sweet-fries" data-appetite-motion aria-label="Foto e dettagli di Sweet Fries">
-
-                <img src="./images/menu-unified/sweet-fries.webp" srcset="./images/menu-unified/sweet-fries-640.webp 640w, ./images/menu-unified/sweet-fries.webp 960w" sizes="(max-width: 760px) 90vw, (max-width: 1100px) 44vw, 28vw" data-appetite-still alt="Sweet Fries" width="960" height="960" loading="lazy" decoding="async" />
+              <a class="product-photo" href="./ordina-a.html" data-product-photo="sweet-fries" aria-label="Foto e dettagli di Sweet Fries" data-food-scroll="side" data-food-open="./images/side-scroll/sweet-fries/empty.webp" data-food-full="./images/side-scroll/sweet-fries/full.webp">
+                <picture><source media="(scripting: none), (prefers-reduced-motion: reduce)" srcset="./images/side-scroll/sweet-fries/full.webp" /><img data-appetite-still src="./images/side-scroll/sweet-fries/empty.webp" alt="Sweet Fries" width="720" height="720" loading="lazy" decoding="async" /></picture>
                 <span class="simple-photo-detail" aria-hidden="true">＋</span>
               </a>
               <div class="product-info product-content">
@@ -227,9 +216,8 @@
               </div>
             </article>
             <article class="product-card" data-menu-product="classic-fries">
-              <a class="product-photo" href="./ordina-a.html" data-product-photo="classic-fries" data-appetite-motion aria-label="Foto e dettagli di Classic Fries">
-
-                <img src="./images/menu-unified/classic-fries.webp" srcset="./images/menu-unified/classic-fries-640.webp 640w, ./images/menu-unified/classic-fries.webp 960w" sizes="(max-width: 760px) 90vw, (max-width: 1100px) 44vw, 28vw" data-appetite-still alt="Classic Fries" width="960" height="960" loading="lazy" decoding="async" />
+              <a class="product-photo" href="./ordina-a.html" data-product-photo="classic-fries" aria-label="Foto e dettagli di Classic Fries" data-food-scroll="side" data-food-open="./images/side-scroll/classic-fries/empty.webp" data-food-full="./images/side-scroll/classic-fries/full.webp">
+                <picture><source media="(scripting: none), (prefers-reduced-motion: reduce)" srcset="./images/side-scroll/classic-fries/full.webp" /><img data-appetite-still src="./images/side-scroll/classic-fries/empty.webp" alt="Classic Fries" width="720" height="720" loading="lazy" decoding="async" /></picture>
                 <span class="simple-photo-detail" aria-hidden="true">＋</span>
               </a>
               <div class="product-info product-content">
@@ -245,9 +233,8 @@
               </div>
             </article>
             <article class="product-card" data-menu-product="nuggets-di-pollo">
-              <a class="product-photo" href="./ordina-a.html" data-product-photo="nuggets-di-pollo" data-appetite-motion aria-label="Foto e dettagli di Nuggets di pollo">
-
-                <img src="./images/menu-unified/nuggets-di-pollo.webp" srcset="./images/menu-unified/nuggets-di-pollo-640.webp 640w, ./images/menu-unified/nuggets-di-pollo.webp 960w" sizes="(max-width: 760px) 90vw, (max-width: 1100px) 44vw, 28vw" data-appetite-still alt="Nuggets di pollo" width="960" height="960" loading="lazy" decoding="async" />
+              <a class="product-photo" href="./ordina-a.html" data-product-photo="nuggets-di-pollo" aria-label="Foto e dettagli di Nuggets di pollo" data-food-scroll="side" data-food-open="./images/side-scroll/nuggets-di-pollo/empty.webp" data-food-full="./images/side-scroll/nuggets-di-pollo/full.webp">
+                <picture><source media="(scripting: none), (prefers-reduced-motion: reduce)" srcset="./images/side-scroll/nuggets-di-pollo/full.webp" /><img data-appetite-still src="./images/side-scroll/nuggets-di-pollo/empty.webp" alt="Nuggets di pollo" width="720" height="720" loading="lazy" decoding="async" /></picture>
                 <span class="simple-photo-detail" aria-hidden="true">＋</span>
               </a>
               <div class="product-info product-content">
@@ -338,22 +325,17 @@
         <div class="bag-copy"><p class="eyebrow">01 / DA PORTARE CON TE</p><h2 id="bag-title">BUONE COSE.<br /><span>IN UN SACCHETTO.</span></h2><p>Consegna a casa o ritiro in negozio.<br />Comincia dai tuoi preferiti.</p><a class="button green" href="./ordina-a.html" data-cart-open>APRI IL SACCHETTO <span data-cart-count>0</span></a></div>
         <div class="service-art bag-art" data-service-motion data-service-type="bag"><a href="./ordina-a.html" data-cart-open class="service-object-link" data-service-object aria-label="Apri il sacchetto Mr Smeet"><img src="./images/services/bag.webp" alt="Sacchetto Mr Smeet in 3D, crema con manici e mascotte" width="1100" height="1100" loading="lazy" decoding="async" /></a></div>
       </section>
-      <section class="truck-section section-pad service-section" id="truck" aria-labelledby="truck-title">
-        <div class="truck-copy"><p class="eyebrow">03 / AL TUO EVENTO</p><h2 id="truck-title">ARRIVIAMO<br /><span>NOI.</span></h2><p>Il mondo Mr Smeet, su quattro ruote.<br />Festival, fiere. O dove vuoi tu.</p><a class="button cream" href="mailto:Mrsmeetburger@gmail.com?subject=Food%20truck%20Mr%20Smeet%20%E2%80%94%20richiesta%20evento&body=Ciao!%0AData%3A%0ALuogo%3A%0ANumero%20di%20persone%3A%0ATipo%20di%20evento%3A">PARLIAMONE <span aria-hidden="true">↗</span></a><p class="service-note">Dicci dove, quando e quanti sarete.</p></div>
-        <div id="truck-events" class="truck-events" data-truck-event="festival">
-          <div class="truck-event-stage">
-            <div class="truck-event-media" data-truck-event-media aria-hidden="true"><img src="./images/events/festival.webp" srcset="./images/events/festival-768.webp 768w, ./images/events/festival.webp 1280w" sizes="(max-width:760px) 100vw, 62vw" alt="" width="1280" height="720" loading="lazy" decoding="async" /></div>
-            <div id="truck-scene" class="service-art truck-art" data-truck-model="./models/services/truck-studio.glb"><img class="truck-poster" src="./images/services/truck-studio.webp" alt="Scena 3D illustrativa Mr Smeet: cuoco al banco, confezionamento e clienti ai tavoli" width="1200" height="1200" loading="lazy" decoding="async" /><button class="service-replay" type="button" data-truck-replay aria-label="Rivedi l’arrivo del food truck" hidden>↻</button></div>
-          </div>
-          <div class="truck-event-footer">
-            <p data-truck-event-caption>Festival. Musica, luci e smash burger.</p>
-            <div class="truck-event-choices" role="group" aria-label="Scegli il tuo evento">
-              <button type="button" data-truck-event-choice="festival" aria-pressed="true">Festival</button>
-              <button type="button" data-truck-event-choice="fiere" aria-pressed="false">Fiere</button>
-              <button type="button" data-truck-event-choice="dove-vuoi" aria-pressed="false">Dove vuoi</button>
-            </div>
-          </div>
+      <section id="truck" class="truck-tour" aria-labelledby="truck-title" data-tour-scene="festival">
+        <div class="tour-cover">
+          <header class="tour-intro"><h2 id="truck-title">Il food truck<br /><em>al tuo evento.</em></h2><p class="tour-deck">Smash sulla piastra, panini al banco. Per un festival, una fiera o una collaborazione con te.</p></header>
+          <figure class="tour-screen" data-tour-screen>
+            <img data-tour-poster src="./images/truck-tour/festival-768.webp" srcset="./images/truck-tour/festival-768.webp 768w, ./images/truck-tour/festival.webp 1168w" sizes="(min-width: 840px) 65vw, 100vw" width="1168" height="880" loading="lazy" decoding="async" alt="Concept del truck verde e rosa Mr Smeet: il cuoco alla piastra, un sacchetto al banco e clienti al tavolino in piazza." />
+            <figcaption><span data-tour-caption>Festival</span></figcaption>
+            <button class="tour-motion" type="button" data-tour-motion hidden aria-label="Metti in pausa le scene" aria-pressed="false"><span aria-hidden="true">Ⅱ</span></button>
+          </figure>
         </div>
+        <div class="tour-route" role="group" aria-label="Scegli lo scenario del food truck"><button type="button" data-tour-choice="festival" aria-pressed="true" disabled>Festival</button><button type="button" data-tour-choice="fiere" aria-pressed="false" disabled>Fiere</button><button type="button" data-tour-choice="dove-vuoi" aria-pressed="false" disabled>Dove vuoi</button></div>
+        <div class="tour-contact"><div><h3>Portaci da te.</h3><p>Raccontaci data, luogo e quante persone aspetti.</p></div><address><a class="tour-phone" href="tel:+3905211792168"><span>Chiama</span><strong>0521 1792168</strong><b aria-hidden="true">↗</b></a><a class="tour-email" href="mailto:Mrsmeetburger@gmail.com?subject=Food%20truck%20e%20collaborazioni%20Mr%20Smeet">Mrsmeetburger@gmail.com <span aria-hidden="true">↗</span></a></address></div>
       </section>
       <section class="world-section section-pad" id="il-locale" aria-labelledby="location-title">
         <div class="story-heading"><div><p class="eyebrow">02 / VIENI DA NOI</p><h2 id="location-title">CI SMEETIAMO<br /><span>IN OLTRETORRENTE.</span></h2></div></div>
