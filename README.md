@@ -19,7 +19,7 @@ npm run preview
 npm run deploy
 ```
 
-La suite comprende **43 gruppi, 13 per l’ingresso e 30 per i media**. I controlli storici di Launch Room rimangono separati in `npm run test:legacy` e non attestano la homepage attuale.
+La suite comprende **44 gruppi, 13 per l’ingresso e 31 per i media**. I controlli storici di Launch Room rimangono separati in `npm run test:legacy` e non attestano la homepage attuale.
 
 La build statica è in `dist/`; `main` conserva i sorgenti e GitHub Pages pubblica `gh-pages`. `scripts/deploy-pages.mjs` sostituisce soltanto le radici Space dichiarate, inclusa `models/`, preservando le altre cartelle e configurazioni del ramo. Il contratto di copia è stato provato in directory temporanee con `mrsmeet/` e `CNAME` conservati, senza pubblicare. Porte configurate: dev 5174, preview 5175; le anteprime isolate della lavorazione usano 5208 e 5209, da verificare prima di aprirle.
 

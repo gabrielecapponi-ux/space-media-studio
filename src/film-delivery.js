@@ -7,8 +7,8 @@ export function limitedFilmBandwidth() {
   if (studioMbps === undefined) {
     const sample = window.performance?.getEntriesByType('resource').find(entry =>
       entry.name.endsWith('/models/studio-space-20261105.glb') &&
-      entry.transferSize > 0 && entry.encodedBodySize >= 300000 && entry.responseEnd - entry.responseStart > 20);
-    if (sample) studioMbps = sample.encodedBodySize * .008 / (sample.responseEnd - sample.responseStart);
+      entry.transferSize > 1000 && entry.encodedBodySize >= 300000 && entry.responseEnd >= entry.responseStart);
+    if (sample) studioMbps = sample.encodedBodySize * .008 / Math.max(1, sample.responseEnd - sample.responseStart);
   }
   const mbps = studioMbps ?? connection?.downlink;
   return mbps > 0 && mbps < 6;

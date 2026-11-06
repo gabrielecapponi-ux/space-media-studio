@@ -8,6 +8,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 FILMS = ROOT / "public/films"
+WORK = ROOT / "outputs/director-20261106/compact"
 NAMES = ("product", "web", "brand", "campaign", "funding")
 TARGET_BPS = 1_150_000
 MAX_WINDOW_BPS = 1_650_000
@@ -51,7 +52,9 @@ def build(name):
     # original optical field and duration with one target frame per 1/30 second.
     filters = (f"select='not(mod(n,2))*lt(n,{count-2})+eq(n,{count-1})',"
                "setpts=N/(30*TB),scale=1280:720:flags=lanczos,setsar=1,format=yuv420p")
-    with tempfile.TemporaryDirectory(dir=FILMS, prefix=".compact-") as temporary:
+    # Keep pass logs and partial streams out of Vite's public asset tree.
+    WORK.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(dir=WORK, prefix=name + "-") as temporary:
         work = Path(temporary)
         pending = work / destination.name
         command = [

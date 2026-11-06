@@ -212,6 +212,16 @@ await test('Wide screens on a measured 4 Mbit connection fetch only the visible 
   assert.match(f.video.src, /type-compact\.mp4$/);
   f.api.dispose();
 });
+await test('A fast measured transfer wins over an outdated low downlink estimate', async () => {
+  const f = fixture();
+  f.connection.downlink = 1.7;
+  f.win.performance = { getEntriesByType: () => [{ name: 'https://example.test/models/studio-space-20261105.glb',
+    transferSize: 635796, encodedBodySize: 635496, responseStart: 300, responseEnd: 303.3 }] };
+  f.video.dataset.srcCompact = './films/type-compact.mp4';
+  await f.show();
+  assert.match(f.video.src, /type-desktop\.mp4$/);
+  f.api.dispose();
+});
 await test('Phone autoplay waits for a decoded frame while a manual tap retains its gesture', async () => {
   const auto = fixture({ portrait: true });
   await auto.show();
