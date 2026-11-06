@@ -1,0 +1,105 @@
+/* Four single burgers share a photographic frame, not a physical height.
+   The Doppio is the reference: ~78% visible width, base at ~79% of the square.
+   Uniform XY zoom preserves each recipe. Poster, video and static fallback
+   receive the same transform; the original photographs remain untouched. */
+:is(.mascot-world,.order-world) :is(
+ [data-menu-product="classic-smash-burger-doppio"],
+ [data-menu-product="classic-smash-burger-triplo"],
+ .dialog-product-visual:has(> .dialog-product-image:is([data-photo-original$="/classic-smash-burger-doppio.webp"],[data-photo-original$="/classic-smash-burger-triplo.webp"])),
+ .smeet-cart-item:has(:is([data-cart-id="classic-smash-burger-doppio"],[data-cart-id="classic-smash-burger-triplo"]))
+){
+ --burger-frame-scale:1;--burger-frame-y:0%;
+ --burger-clip-x:0%;--burger-clip-top:0%;--burger-clip-bottom:0%;
+}
+:is(.mascot-world,.order-world) :is(
+ [data-menu-product="plant-based-burger-doppio"],
+ .dialog-product-visual:has(> .dialog-product-image[data-photo-original$="/plant-based-burger-doppio.webp"]),
+ .smeet-cart-item:has([data-cart-id="plant-based-burger-doppio"])
+){
+ --burger-frame-scale:1.14;--burger-frame-y:-1.75%;
+ --burger-clip-x:6.14035%;--burger-clip-top:7.67544%;--burger-clip-bottom:4.60526%;
+}
+:is(.mascot-world,.order-world) :is(
+ [data-menu-product="100-percento-vegano"],
+ .dialog-product-visual:has(> .dialog-product-image[data-photo-original$="/100-percento-vegano.webp"]),
+ .smeet-cart-item:has([data-cart-id="100-percento-vegano"])
+){
+ --burger-frame-scale:1.20;--burger-frame-y:-2.25%;
+ --burger-clip-x:8.33333%;--burger-clip-top:10.20833%;--burger-clip-bottom:6.45833%;
+}
+
+/* The only cropped area is empty studio background. Suppress the old paper
+   fold/frame here; complete menus and their drinks retain their composition. */
+.mascot-world.directed-experience.paper-world .simple-menu .product-card .product-photo:is(
+ [data-product-photo="classic-smash-burger-doppio"],
+ [data-product-photo="classic-smash-burger-triplo"],
+ [data-product-photo="plant-based-burger-doppio"],
+ [data-product-photo="100-percento-vegano"]
+){
+ overflow:hidden;isolation:isolate;padding:0;background:#d7dfc7;
+}
+.mascot-world.directed-experience.paper-world .simple-menu .product-card .product-photo:is(
+ [data-product-photo="classic-smash-burger-doppio"],
+ [data-product-photo="classic-smash-burger-triplo"],
+ [data-product-photo="plant-based-burger-doppio"],
+ [data-product-photo="100-percento-vegano"]
+)::before,
+.mascot-world.directed-experience.paper-world .simple-menu .product-card .product-photo:is(
+ [data-product-photo="classic-smash-burger-doppio"],
+ [data-product-photo="classic-smash-burger-triplo"],
+ [data-product-photo="plant-based-burger-doppio"],
+ [data-product-photo="100-percento-vegano"]
+)::after,
+.mascot-world.directed-experience.paper-world .simple-menu .product-card .product-photo:is(
+ [data-product-photo="classic-smash-burger-doppio"],
+ [data-product-photo="classic-smash-burger-triplo"],
+ [data-product-photo="plant-based-burger-doppio"],
+ [data-product-photo="100-percento-vegano"]
+) > :is(.food-stage-floor,.food-stage-wrap){display:none}
+.mascot-world.directed-experience.paper-world .simple-menu .product-card .product-photo:is(
+ [data-product-photo="classic-smash-burger-doppio"],
+ [data-product-photo="classic-smash-burger-triplo"],
+ [data-product-photo="plant-based-burger-doppio"],
+ [data-product-photo="100-percento-vegano"]
+) > :is(img,.appetite-motion-video){
+ padding:0;margin:0;object-fit:contain;object-position:center;
+ scale:1;transform-origin:50% 50%;
+ transform:translateY(var(--burger-frame-y)) scale(var(--burger-frame-scale));
+ filter:none;mix-blend-mode:normal;
+}
+
+/* Detail keeps its responsive layout and native image fallback. Only the new
+   square studio posters are zoomed; an error fallback photo is kept complete. */
+.mascot-world.directed-experience.paper-world .photo-detail-dialog .dialog-product-visual[data-detail-photo="appetite"]:has(
+ > .dialog-product-image:is(
+  [data-photo-original$="/classic-smash-burger-doppio.webp"],
+  [data-photo-original$="/classic-smash-burger-triplo.webp"],
+  [data-photo-original$="/plant-based-burger-doppio.webp"],
+  [data-photo-original$="/100-percento-vegano.webp"]
+ )
+){background:#d7dfc7;overflow:hidden}
+.mascot-world.directed-experience.paper-world .photo-detail-dialog .dialog-product-visual[data-detail-photo="appetite"] > .dialog-product-image:is(
+ [data-photo-original$="/classic-smash-burger-doppio.webp"],
+ [data-photo-original$="/classic-smash-burger-triplo.webp"],
+ [data-photo-original$="/plant-based-burger-doppio.webp"],
+ [data-photo-original$="/100-percento-vegano.webp"]
+){
+ scale:1;transform-origin:50% 50%;
+ transform:translateY(var(--burger-frame-y)) scale(var(--burger-frame-scale));
+}
+
+/* Cart images have no wrapper. The inverse clip maintains the original 72/82px
+   thumbnail footprint after zoom, including its rounded corners. No layout or
+   hit target changes; original fallback photos and complete menus are excluded. */
+:is(.mascot-world,.order-world) .smeet-cart .smeet-cart-item:has(:is(
+ [data-cart-id="classic-smash-burger-doppio"],
+ [data-cart-id="classic-smash-burger-triplo"],
+ [data-cart-id="plant-based-burger-doppio"],
+ [data-cart-id="100-percento-vegano"]
+)) > .smeet-cart-item-image[src*="/images/menu-unified/"]{
+ padding:0;border:0;border-radius:0;object-fit:contain;object-position:center;
+ background:#d7dfc7;filter:none;mix-blend-mode:normal;scale:1;
+ transform-origin:50% 50%;
+ transform:translateY(var(--burger-frame-y)) scale(var(--burger-frame-scale));
+ clip-path:inset(var(--burger-clip-top) var(--burger-clip-x) var(--burger-clip-bottom) round calc(14px / var(--burger-frame-scale)));
+}

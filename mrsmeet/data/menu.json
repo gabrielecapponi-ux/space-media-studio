@@ -1,0 +1,121 @@
+[
+  {
+    "id": "classic-smash-menu",
+    "name": "Classic Smash Menù",
+    "description": "Classic Smash Burger singolo, patatine e bibita.",
+    "regular_price_eur": 18,
+    "observed_promo_price": 14.4,
+    "promo_note": "Screenshot shows −20%, €14,40 with €18,00 crossed out. Validity period is not shown.",
+    "category": "Menù completi",
+    "source_file": "Screenshot del menu Glovo fornito per la scheda prodotto.",
+    "observed_description": "Classic smash burger singolo + Fries + Bibita"
+  },
+  {
+    "id": "classic-smash-burger-triplo",
+    "name": "Classic Smash Burger Triplo",
+    "description": "Carne, cheddar, cetrioli e salsa.",
+    "observed_description": "Burger carne singolo, cheddar, cetrioli, salsa",
+    "description_note": "Source inconsistency: the product title says Triplo, but its description says singolo. Keep the product title; do not present the conflicting patty count as a verified ingredient description.",
+    "regular_price_eur": 16,
+    "observed_promo_price": 12.8,
+    "promo_note": "Screenshot shows −20%, €12,80 with €16,00 crossed out. Validity period is not shown.",
+    "category": "Burger",
+    "source_file": "Screenshot del menu Glovo fornito per la scheda prodotto."
+  },
+  {
+    "id": "nuggets-di-pollo",
+    "name": "Nuggets di pollo",
+    "description": "Bocconcini di pollo croccanti.",
+    "regular_price_eur": 6.5,
+    "observed_promo_price": null,
+    "promo_note": null,
+    "category": "Contorni",
+    "source_file": "Screenshot del menu Glovo fornito per la scheda prodotto.",
+    "observed_description": "bocconcini di pollo croccanti"
+  },
+  {
+    "id": "sweet-fries",
+    "name": "Sweet Fries",
+    "description": "Patate dolci fritte.",
+    "regular_price_eur": 6.5,
+    "observed_promo_price": null,
+    "promo_note": null,
+    "category": "Contorni",
+    "source_file": "Screenshot del menu Glovo fornito per la scheda prodotto.",
+    "observed_description": "Patate dolci fritte"
+  },
+  {
+    "id": "classic-fries",
+    "name": "Classic Fries",
+    "description": "Patatine fritte croccanti.",
+    "regular_price_eur": 5.5,
+    "observed_promo_price": null,
+    "promo_note": null,
+    "category": "Contorni",
+    "source_file": "Screenshot del menu Glovo fornito per la scheda prodotto.",
+    "observed_description": "patatine fritte croccanti"
+  },
+  {
+    "id": "chicken-burger-menu",
+    "name": "Chicken Burger Menù",
+    "description": "Chicken Burger, patatine e bibita.",
+    "regular_price_eur": 18,
+    "observed_promo_price": 14.4,
+    "promo_note": "Screenshot shows −20%, €14,40 with €18,00 crossed out. Validity period is not shown.",
+    "category": "Menù completi",
+    "source_file": "Screenshot del menu Glovo fornito per la scheda prodotto.",
+    "observed_description": "Chicken Burger + Fries + Bibita"
+  },
+  {
+    "id": "classic-smash-burger-doppio",
+    "name": "Classic Smash Burger Doppio",
+    "description": "Doppio burger di carne, cheddar, cetrioli e salsa.",
+    "regular_price_eur": 12,
+    "observed_promo_price": null,
+    "promo_note": null,
+    "category": "Burger",
+    "source_file": "Screenshot del menu Glovo fornito per la scheda prodotto.",
+    "observed_description": "Burger carne doppio, cheddar, cetrioli, salsa"
+  },
+  {
+    "id": "menu-birra",
+    "name": "Menù Birra",
+    "description": "Classic Smash Burger singolo, patatine e birra in lattina.",
+    "regular_price_eur": 20,
+    "observed_promo_price": null,
+    "promo_note": null,
+    "category": "Menù completi",
+    "source_file": "Screenshot del menu Glovo fornito per la scheda prodotto.",
+    "observed_description": "Classic smash burger singolo + Fries + Birra in lattina"
+  },
+  {
+    "id": "100-percento-vegano",
+    "name": "100% vegano",
+    "description": "Pane vegano, Beyond Meat, maionese vegana, cheddar vegano e cetrioli.",
+    "regular_price_eur": 12,
+    "observed_promo_price": null,
+    "promo_note": null,
+    "category": "Burger",
+    "diet_label": "Vegano",
+    "source_file": "Screenshot del menu Glovo fornito per la scheda prodotto.",
+    "observed_description": "Pane vegano, beyond meat, maionese vegana, cheddar vegano, cetrioli"
+  },
+  {
+    "id": "plant-based-burger-doppio",
+    "name": "Plant Based Burger Doppio",
+    "description": "Burger plant based, cheddar e salsa.",
+    "regular_price_eur": 15,
+    "observed_promo_price": null,
+    "promo_note": null,
+    "category": "Burger",
+    "observed_options": [
+      {
+        "name": "Cipolla",
+        "additional_price_eur": 1.5
+      }
+    ],
+    "description_note": "Original screenshot says “Planted based burger, cheddar, salsa,”. Display copy corrects that typo. The screenshot does not label this product vegan; do not infer that from Plant Based in its title.",
+    "source_file": "Screenshot del menu Glovo fornito per la scheda prodotto.",
+    "observed_description": "Planted based burger, cheddar, salsa,"
+  }
+]

@@ -1,0 +1,64 @@
+/* Shared photographic surface and readable shopping-list details. */
+:is(.mascot-world,.order-world) .smeet-cart :is(.smeet-cart-kicker,.smeet-cart-channel small){
+ font-size:12px;line-height:1.45;letter-spacing:.035em;
+}
+:is(.mascot-world,.order-world) .smeet-cart :is(.smeet-cart-price-note,.smeet-cart-unit-price,.smeet-cart-quantity){
+ font-size:12px;line-height:1.5;
+}
+:is(.mascot-world,.order-world) .smeet-cart .smeet-cart-item-info h3{
+ font-family:'Instrument Sans',sans-serif;font-size:16px;font-weight:650;line-height:1.35;letter-spacing:-.015em;
+}
+:is(.mascot-world,.order-world) .smeet-cart :is(.smeet-cart-line-price,.smeet-cart-total-value,.smeet-cart-channel strong){
+ font-family:'Instrument Sans',sans-serif;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.025em;
+}
+:is(.mascot-world,.order-world) .smeet-cart .smeet-cart-total-value{font-size:28px}
+:is(.mascot-world,.order-world) .smeet-cart :is(.smeet-cart-unit-price,.smeet-cart-line-price){font-variant-numeric:tabular-nums}
+:is(.mascot-world,.order-world) .smeet-cart .smeet-cart-remove{min-height:44px;font-size:12px!important}
+
+@media(max-width:600px){
+ :is(.mascot-world,.order-world) .smeet-cart .smeet-cart-item{
+  display:grid;grid-template-columns:max-content minmax(44px,1fr) auto;grid-template-rows:auto auto auto;
+  align-items:start;column-gap:12px;row-gap:4px;padding-block:18px;
+ }
+ :is(.mascot-world,.order-world) .smeet-cart .smeet-cart-item:first-child{padding-top:3px}
+ /* These wrappers carry no landmark/group semantics; the stepper keeps its
+    own role and accessible label. DOM order and all controls stay unchanged. */
+ :is(.mascot-world,.order-world) .smeet-cart :is(.smeet-cart-item-info,.smeet-cart-item-controls){display:contents}
+ :is(.mascot-world,.order-world) .smeet-cart .smeet-cart-item-image{
+  grid-column:1;grid-row:1 / span 2;width:72px;height:72px;aspect-ratio:1;justify-self:center;
+ }
+ :is(.mascot-world,.order-world) .smeet-cart .smeet-cart-item-info h3{grid-column:2 / -1;grid-row:1;margin:0;padding:0}
+ :is(.mascot-world,.order-world) .smeet-cart .smeet-cart-unit-price{grid-column:2 / -1;grid-row:2;margin:0 0 8px}
+ :is(.mascot-world,.order-world) .smeet-cart .smeet-cart-stepper{grid-column:1;grid-row:3;width:115px;min-width:115px;align-self:center}
+ :is(.mascot-world,.order-world) .smeet-cart .smeet-cart-remove{grid-column:2;grid-row:3;justify-self:start;align-self:center;margin:0;padding:6px 0}
+ :is(.mascot-world,.order-world) .smeet-cart .smeet-cart-line-price{
+  grid-column:3;grid-row:3;justify-self:end;align-self:center;margin:0;padding:0;text-align:right;font-size:16px;line-height:1.4;
+ }
+ :is(.mascot-world,.order-world) .smeet-cart .smeet-cart-price-note{margin-top:12px}
+}
+
+/* The square Triplo poster and film share exactly the same visible rectangle.
+   Scope stays below the untouched original mascot/header/opening. */
+.mascot-world.directed-experience.paper-world #signature .signature-visual{
+ width:100%;aspect-ratio:1;max-width:660px;overflow:hidden;isolation:isolate;
+ border:1px solid #173e3424;border-radius:24px;background:#cbd3c3;
+}
+.mascot-world.directed-experience.paper-world #signature .signature-photo{
+ display:block;position:absolute;inset:0;z-index:1;width:100%;height:100%;padding:0;margin:0;
+ border:0;border-radius:inherit;background:none;transform:none;mix-blend-mode:normal;
+}
+.mascot-world.directed-experience.paper-world #signature .signature-photo > img,
+.mascot-world.directed-experience.paper-world #signature .signature-visual > #hero-film{
+ display:block;position:absolute;inset:0;width:100%;height:100%;max-width:none;max-height:none;
+ margin:0;padding:0;border:0;border-radius:inherit;object-fit:cover;object-position:center;
+ filter:none;transform:none;scale:none;mix-blend-mode:normal;
+}
+.mascot-world.directed-experience.paper-world #signature .signature-visual .film-toggle{
+ right:16px;bottom:16px;z-index:4;min-height:44px;max-width:calc(100% - 32px);
+ background:#fff9e9f2;font-size:12px;line-height:1.4;
+}
+.mascot-world.directed-experience.paper-world #signature .signature-photo:focus-visible{outline-offset:-5px}
+@media(max-width:760px){
+ .mascot-world.directed-experience.paper-world #signature .signature-visual{max-width:480px;border-radius:22px}
+ .mascot-world.directed-experience.paper-world #signature .signature-visual .film-toggle{right:12px;bottom:12px;max-width:calc(100% - 24px)}
+}

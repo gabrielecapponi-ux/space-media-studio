@@ -1,0 +1,101 @@
+/* Motion is additive: native focus, overflow, controls and layout stay intact. */
+.product-dialog.detail-motion-enabled.detail-is-animating{will-change:transform,opacity}
+.product-dialog.detail-motion-enabled::backdrop{opacity:1;transition:opacity 200ms cubic-bezier(.22,1,.36,1)}
+.product-dialog.detail-motion-enabled.detail-is-closing::backdrop{opacity:0;transition-duration:140ms;transition-timing-function:cubic-bezier(.25,1,.5,1)}
+@starting-style{.product-dialog.detail-motion-enabled[open]::backdrop{opacity:0}}
+.product-dialog.detail-motion-enabled:focus-visible{outline:3px solid #964565;outline-offset:4px}
+.product-dialog.detail-motion-enabled .dialog-close:focus-visible,
+.product-dialog.detail-motion-enabled a:focus-visible,
+.product-dialog.detail-motion-enabled button:focus-visible{outline:3px solid #964565;outline-offset:4px}
+@media(prefers-reduced-motion:reduce){
+ .product-dialog.detail-motion-enabled.detail-is-animating{will-change:auto}
+ .product-dialog.detail-motion-enabled::backdrop{transition:none}
+}
+.motion-paused .product-dialog.detail-motion-enabled::backdrop{transition:none}
+
+/* Photographic product detail: the real poster and readable HTML own the stage. */
+.mascot-world.directed-experience.paper-world .product-dialog.photo-detail-dialog{
+ width:min(960px,calc(100vw - 40px));max-height:calc(100dvh - 40px);margin:auto;padding:0;
+ overflow:auto;overscroll-behavior:contain;scrollbar-gutter:stable;
+ border:1px solid #173e342b;border-radius:26px;background:#fff9e9;box-shadow:0 24px 90px #092b2252;
+}
+.mascot-world.directed-experience.paper-world .photo-detail-dialog .dialog-close{
+ position:sticky;float:none;top:12px;right:12px;z-index:10;width:44px;height:44px;min-width:44px;
+ margin:12px 12px -56px auto;padding:0;background:#fff9e9f5;color:#173e34;
+ border:1px solid #173e3433;box-shadow:0 3px 12px #173e3412;
+}
+.mascot-world.directed-experience.paper-world .photo-detail-dialog .product-dialog-layout{
+ display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,1fr);align-items:stretch;gap:0;
+}
+.mascot-world.directed-experience.paper-world .photo-detail-dialog .dialog-product-visual{
+ display:grid;place-items:center;align-self:stretch;min-width:0;min-height:0;
+ overflow:hidden;background:#f7f2e6;border-radius:0;
+}
+.mascot-world.directed-experience.paper-world .photo-detail-dialog .dialog-product-visual::before,
+.mascot-world.directed-experience.paper-world .photo-detail-dialog .dialog-product-visual::after,
+.mascot-world.directed-experience.paper-world .photo-detail-dialog .dialog-product-visual > :is(.food-stage-floor,.food-stage-wrap){display:none}
+.mascot-world.directed-experience.paper-world .photo-detail-dialog .dialog-product-visual > .dialog-product-image{
+ display:block;position:relative;inset:auto;z-index:1;width:100%;height:auto;min-height:0;max-height:none;
+ aspect-ratio:1;object-fit:contain;object-position:center;padding:0;margin:0;border:0;border-radius:0;
+ background:none;filter:none;transform:none;scale:none;mix-blend-mode:normal;
+}
+.mascot-world.directed-experience.paper-world .photo-detail-dialog .dialog-product-info{
+ min-width:0;display:flex;flex-direction:column;align-items:stretch;padding:56px 30px 30px;
+}
+.mascot-world.directed-experience.paper-world .photo-detail-dialog .dialog-product-info > .eyebrow{
+ margin:0 0 16px;color:#587266;font:700 10px/1.4 'Instrument Sans',sans-serif;letter-spacing:.12em;
+}
+.mascot-world.directed-experience.paper-world .photo-detail-dialog .dialog-product-info h2{
+ margin:0 0 26px;font:600 clamp(27px,3vw,36px)/1.12 DynaPuff,sans-serif;letter-spacing:-.04em;text-wrap:balance;
+}
+.mascot-world.directed-experience.paper-world .photo-detail-dialog .dialog-ingredients-heading{
+ margin:0 0 8px;font:700 11px/1.4 'Instrument Sans',sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#587266;
+}
+.mascot-world.directed-experience.paper-world .photo-detail-dialog .dialog-product-description{
+ margin:0;font:400 16px/1.65 'Instrument Sans',sans-serif;color:#173e34;
+}
+.mascot-world.directed-experience.paper-world .photo-detail-dialog .dialog-product-options{
+ margin:14px 0 0;font-size:13px;line-height:1.55;color:#365847;
+}
+.mascot-world.directed-experience.paper-world .photo-detail-dialog .dialog-product-options:empty{display:none}
+.mascot-world.directed-experience.paper-world .photo-detail-dialog .dialog-order-note{
+ margin:22px 0;font-size:12px;line-height:1.55;color:#587266;
+}
+.mascot-world.directed-experience.paper-world .photo-detail-dialog .dialog-purchase{
+ position:static;display:block;margin-top:auto;padding:20px 0 0;background:#fff9e9;border-top:1px solid #173e3426;
+}
+.mascot-world.directed-experience.paper-world .photo-detail-dialog .dialog-product-price{margin:0 0 14px}
+.mascot-world.directed-experience.paper-world .photo-detail-dialog .dialog-product-price .product-price{
+ display:flex;flex-direction:row;align-items:baseline;gap:10px;
+}
+.mascot-world.directed-experience.paper-world .photo-detail-dialog .dialog-add{
+ display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:52px;width:100%;
+ margin:0;padding:14px 18px;font-size:12px;line-height:1.4;box-shadow:0 3px 0 #173e34;
+}
+@media(max-width:760px){
+ .mascot-world.directed-experience.paper-world .product-dialog.photo-detail-dialog{
+  width:calc(100vw - 24px);max-height:calc(100dvh - 24px);border-radius:22px;scrollbar-gutter:auto;
+ }
+ .mascot-world.directed-experience.paper-world .photo-detail-dialog .product-dialog-layout{grid-template-columns:minmax(0,1fr)}
+ .mascot-world.directed-experience.paper-world .photo-detail-dialog .dialog-product-visual{height:clamp(210px,36dvh,340px)}
+ .mascot-world.directed-experience.paper-world .photo-detail-dialog .dialog-product-visual > .dialog-product-image{width:100%;height:100%;aspect-ratio:auto}
+ .mascot-world.directed-experience.paper-world .photo-detail-dialog .dialog-product-info{padding:24px 22px 0}
+ .mascot-world.directed-experience.paper-world .photo-detail-dialog .dialog-product-info > .eyebrow{margin-bottom:12px}
+ .mascot-world.directed-experience.paper-world .photo-detail-dialog .dialog-product-info h2{font-size:28px;margin-bottom:22px}
+ .mascot-world.directed-experience.paper-world .photo-detail-dialog .dialog-product-description{font-size:15px;line-height:1.6}
+ .mascot-world.directed-experience.paper-world .photo-detail-dialog .dialog-purchase{
+  position:sticky;bottom:0;z-index:2;display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:16px;
+  margin:0 -22px;padding:16px 22px max(16px,env(safe-area-inset-bottom));box-shadow:0 -8px 20px #173e3408;
+ }
+ .mascot-world.directed-experience.paper-world .photo-detail-dialog .dialog-product-price{margin:0}
+ .mascot-world.directed-experience.paper-world .photo-detail-dialog .dialog-product-price .product-price{flex-direction:column;gap:1px}
+ .mascot-world.directed-experience.paper-world .photo-detail-dialog .dialog-product-price strong{font-size:27px;white-space:nowrap}
+ .mascot-world.directed-experience.paper-world .photo-detail-dialog .dialog-product-price s{font-size:12px}
+ .mascot-world.directed-experience.paper-world .photo-detail-dialog .dialog-add{min-height:50px;padding:12px 14px;font-size:11px}
+}
+@media(max-width:360px){
+ .mascot-world.directed-experience.paper-world .photo-detail-dialog .dialog-product-info{padding-inline:18px}
+ .mascot-world.directed-experience.paper-world .photo-detail-dialog .dialog-purchase{margin-inline:-18px;padding-inline:18px;gap:12px}
+ .mascot-world.directed-experience.paper-world .photo-detail-dialog .dialog-product-info h2{font-size:25px}
+ .mascot-world.directed-experience.paper-world .photo-detail-dialog .dialog-product-price strong{font-size:24px}
+}

@@ -1,0 +1,114 @@
+/* Four photographic sets, one brand. The product stays the visual focus.
+   Background geometry is static CSS: no extra image downloads or scroll work. */
+.mascot-world.directed-experience.paper-world [data-food-scene] {
+  --set-bg:#184e3f; --set-light:#397c60; --set-floor:#8cc9a7;
+  --set-ink:#fff8e6; --set-paper:#f7f0db; --set-shadow:#091f1b45;
+  position:relative; isolation:isolate; overflow:hidden;
+  background:var(--set-bg);
+}
+.mascot-world.directed-experience.paper-world [data-food-scene="rose"] {
+  --set-bg:#edc3b9; --set-light:#f9dfcb; --set-floor:#db9f96;
+  --set-ink:#513a32; --set-paper:#fff8e7; --set-shadow:#723c372b;
+}
+.mascot-world.directed-experience.paper-world [data-food-scene="mint"] {
+  --set-bg:#a8d6bb; --set-light:#def0ca; --set-floor:#5b9b80;
+  --set-ink:#1b4938; --set-paper:#f1f2da; --set-shadow:#1d513632;
+}
+.mascot-world.directed-experience.paper-world [data-food-scene="butter"] {
+  --set-bg:#f4e5b9; --set-light:#fff7db; --set-floor:#dcc787;
+  --set-ink:#564424; --set-paper:#e0eacb; --set-shadow:#6c57292b;
+}
+.mascot-world.directed-experience.paper-world .simple-menu .product-photo[data-food-scene] {
+  background:var(--set-bg); border-bottom:0;
+}
+/* A broad sweep of studio light; different placement on each set. */
+.mascot-world.directed-experience.paper-world :is(.simple-menu .product-photo,.dialog-product-visual)[data-food-scene]::before {
+  content:""; position:absolute; z-index:0; pointer-events:none;
+  inset:-31% -8% 14% -29%; width:auto; height:auto;
+  background:radial-gradient(ellipse at 52% 42%,var(--set-light),transparent 71%);
+  border:1px solid #fff6d717; border-radius:50%; opacity:1;
+  transform:rotate(-24deg); mask:none;
+}
+.mascot-world.directed-experience.paper-world :is(.simple-menu .product-photo,.dialog-product-visual)[data-food-scene]::after {
+  content:""; position:absolute; z-index:0; pointer-events:none;
+  inset:auto -20% -30% -20%; width:auto; height:66%;
+  background:linear-gradient(180deg,var(--set-floor),var(--set-bg));
+  border-radius:50% 50% 0 0; opacity:.72;
+  transform:rotate(-8deg); clip-path:none;
+}
+.mascot-world.directed-experience.paper-world :is(.simple-menu .product-photo,.dialog-product-visual)[data-food-scene="rose"]::before {
+  inset:-40% -13% 5% 12%; background:var(--set-light);
+  border:20px solid #fff6e530; border-radius:46% 46% 48% 15%; transform:rotate(28deg);
+}
+.mascot-world.directed-experience.paper-world :is(.simple-menu .product-photo,.dialog-product-visual)[data-food-scene="rose"]::after {
+  height:45%; inset:auto -15% -12% -10%; border-radius:0; transform:rotate(13deg); opacity:.45;
+}
+.mascot-world.directed-experience.paper-world :is(.simple-menu .product-photo,.dialog-product-visual)[data-food-scene="mint"]::before {
+  inset:-37% -26% -9% 5%; background:var(--set-light); border:0;
+  border-radius:50% 0 0 50%; transform:rotate(-24deg); opacity:.65;
+}
+.mascot-world.directed-experience.paper-world :is(.simple-menu .product-photo,.dialog-product-visual)[data-food-scene="mint"]::after {
+  height:47%; inset:auto -15% -22% -15%; transform:rotate(5deg);
+}
+.mascot-world.directed-experience.paper-world :is(.simple-menu .product-photo,.dialog-product-visual)[data-food-scene="butter"]::before {
+  inset:-30% 15% -4% -34%; background:var(--set-light); border:1px solid #fffdf0;
+  border-radius:50%; transform:rotate(-12deg); opacity:.8;
+}
+.mascot-world.directed-experience.paper-world :is(.simple-menu .product-photo,.dialog-product-visual)[data-food-scene="butter"]::after {
+  height:65%; inset:auto -45% -33% -10%; transform:rotate(-20deg); opacity:.5;
+}
+.food-stage-floor {
+  position:absolute; z-index:1; left:12%; right:12%; bottom:11%; height:12%;
+  background:radial-gradient(ellipse,var(--set-shadow),transparent 68%);
+  transform:rotate(-3deg); pointer-events:none;
+}
+/* One folded sheet at the edge, rather than a repeating wallpaper over the food. */
+.food-stage-wrap {
+  position:absolute; z-index:1; width:61%; height:31%; left:-16%; bottom:-15%;
+  background:var(--set-paper) url('/images/paper/smeet-wrap.svg') repeat 12px 8px/170px 146px;
+  border-top:1px solid #fff8e9b8; box-shadow:0 -8px 24px -16px #102d2770;
+  transform:rotate(16deg); opacity:.88; pointer-events:none;
+}
+[data-food-scene="rose"] .food-stage-wrap {left:auto;right:-19%;bottom:-15%;transform:rotate(-22deg)}
+[data-food-scene="mint"] .food-stage-wrap {left:-23%;bottom:-12%;transform:rotate(30deg);width:63%}
+[data-food-scene="butter"] .food-stage-wrap {left:auto;right:-22%;bottom:-14%;transform:rotate(-27deg)}
+.mascot-world.directed-experience.paper-world .simple-menu .product-photo[data-food-scene] > img {
+  z-index:2; padding:22px 25px 32px; mix-blend-mode:normal;
+  filter:drop-shadow(0 16px 9px var(--set-shadow));
+}
+.mascot-world.directed-experience.paper-world .simple-menu .ingredient-invitation {
+  display:inline-flex; align-items:center; justify-content:center; gap:16px;
+  width:auto; height:36px; padding:0 13px; right:16px; bottom:15px;
+  border:1px solid #173e342b; border-radius:30px; background:#fffaefed;
+  color:#173e34; font:600 11px/1 'Instrument Sans',sans-serif;
+  backdrop-filter:none; box-shadow:0 3px 10px #173e3412;
+}
+.ingredient-invitation b {font-size:17px;font-weight:400}
+.mascot-world.directed-experience.paper-world .simple-menu .product-photo[data-food-scene]:focus-visible {outline-color:var(--set-ink);outline-offset:-5px}
+/* Quieter product sets for the combos and side dishes. */
+.mascot-world.directed-experience.paper-world .simple-menu .product-photo:not([data-food-scene]) {
+  background:linear-gradient(145deg,#fffdf4,#e9eddc);
+}
+.mascot-world.directed-experience.paper-world .simple-menu .product-photo:not([data-food-scene])::before {
+  inset:auto -12% -29% -12%; height:50%; border-radius:50%; background:#d8e5ce; opacity:.5;
+}
+.mascot-world.directed-experience.paper-world .simple-menu .product-photo:not([data-food-scene])::after {display:none}
+.mascot-world.directed-experience.paper-world .simple-menu [data-menu-product="chicken-burger-menu"] .product-photo {background:linear-gradient(145deg,#fff8e8,#f4dcc6)}
+.mascot-world.directed-experience.paper-world .simple-menu [data-menu-product="menu-birra"] .product-photo {background:linear-gradient(145deg,#f6fcf0,#c9e6d5)}
+.mascot-world.directed-experience.paper-world .simple-menu [data-menu-product="sweet-fries"] .product-photo {background:linear-gradient(145deg,#fff7e5,#f1d4bd)}
+.mascot-world.directed-experience.paper-world .dialog-product-visual {
+  min-width:0; position:relative; align-self:stretch; display:grid; place-items:center;
+  background:#eee9dc; overflow:hidden;
+}
+.mascot-world.directed-experience.paper-world .dialog-product-visual > .dialog-product-image {
+  position:relative; z-index:2; background:none; width:100%; object-fit:contain;
+  filter:drop-shadow(0 12px 9px var(--set-shadow,#173e3422));
+}
+.mascot-world.directed-experience.paper-world .dialog-product-visual[data-food-scene] {background:var(--set-bg)}
+.dialog-product-visual:not([data-food-scene]) > .food-stage-floor,
+.dialog-product-visual:not([data-food-scene]) > .food-stage-wrap {display:none}
+.mascot-world.directed-experience.paper-world .product-dialog .dialog-close {z-index:10;background:#fff9e9;color:#173e34;box-shadow:0 3px 12px #173e341a}
+@media(max-width:760px) {
+  .mascot-world.directed-experience.paper-world .simple-menu .product-photo[data-food-scene] > img {padding:15px 17px 29px}
+  .mascot-world.directed-experience.paper-world .simple-menu .ingredient-invitation {height:34px;font-size:10px;right:12px;bottom:12px}
+}

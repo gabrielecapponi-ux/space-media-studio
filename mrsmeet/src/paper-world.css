@@ -1,0 +1,67 @@
+/* A light, printed wrapping paper. The stamp embeds the original artwork. */
+.paper-world{--paper:#fbf6e9;--paper-edge:#d9dfcd;--paper-ease:cubic-bezier(.22,1,.36,1)}
+.mascot-world.directed-experience.paper-world .mascot-hero::before{background:radial-gradient(ellipse at 75% 36%,#73d2b0,transparent 65%),#39bd9d}
+.mascot-world.directed-experience.paper-world .mascot-hero::after{content:"";display:block;position:absolute;inset:0;z-index:-1;height:auto;transform:none;background:var(--cream);mask:url('/images/paper/smeet-wrap.svg') repeat 35px 8px/350px 300px;opacity:.11;pointer-events:none}
+.mascot-world.directed-experience.paper-world .signature-section,
+.mascot-world.directed-experience.paper-world .menu-section,
+.mascot-world.directed-experience.paper-world .bag-section,
+.mascot-world.directed-experience.paper-world .world-section,
+.mascot-world.directed-experience.paper-world .truck-section{position:relative;isolation:isolate}
+.mascot-world.directed-experience.paper-world .signature-section{background:var(--paper);border-bottom:0}
+.mascot-world.directed-experience.paper-world .signature-section::before,
+.mascot-world.directed-experience.paper-world .menu-section::before,
+.mascot-world.directed-experience.paper-world .bag-section::before,
+.mascot-world.directed-experience.paper-world .truck-section::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:url('/images/paper/smeet-wrap.svg') repeat 0 0/420px 360px;opacity:.12}
+.mascot-world.directed-experience.paper-world .signature-section::before{mask-image:linear-gradient(90deg,#000,transparent 72%)}
+.mascot-world.directed-experience.paper-world .menu-section{background:linear-gradient(180deg,#fbf6e9,#f7f2e5);border-top:1px solid #173e3420}
+.mascot-world.directed-experience.paper-world .menu-section::before{opacity:.075;background-position:90px 40px}
+.mascot-world.directed-experience.paper-world .simple-menu .section-heading{margin-bottom:26px}
+.mascot-world.directed-experience.paper-world .simple-menu .simple-menu-filters{gap:8px}
+.mascot-world.directed-experience.paper-world .simple-menu .simple-menu-filters button{transition:background-color 180ms ease,color 180ms ease,border-color 180ms ease}
+.mascot-world.directed-experience.paper-world .simple-menu .simple-group-heading{padding-bottom:16px;margin-bottom:24px;border-color:#173e342c}
+.mascot-world.directed-experience.paper-world .simple-menu .product-card{background:#fffdf7;border-color:#173e3422;box-shadow:0 2px 3px #173e3405,0 12px 26px -20px #173e3438;transition:box-shadow 240ms var(--paper-ease),transform 240ms var(--paper-ease)}
+.mascot-world.directed-experience.paper-world .simple-menu .product-card .product-photo{display:grid;place-items:center;isolation:isolate;background:#f5f1e5 url('/images/paper/paper-grain.svg') repeat 0 0/144px 144px;border-color:#173e3417;padding:0}
+.mascot-world.directed-experience.paper-world .simple-menu .product-photo::before{content:"";position:absolute;inset:0;z-index:0;background:url('/images/paper/smeet-wrap.svg') repeat 12px 5px/290px 248px;opacity:.15;pointer-events:none}
+.mascot-world.directed-experience.paper-world .simple-menu .product-photo::after{content:"";position:absolute;right:0;top:0;width:34px;height:34px;background:linear-gradient(225deg,#fffdf7 48%,#dce2d1 50%,#eeeadd 56%,#f9f5e8 75%);clip-path:polygon(0 0,100% 0,100% 100%);pointer-events:none;z-index:2}
+.mascot-world.directed-experience.paper-world .simple-menu .product-photo img{position:relative;z-index:1;width:100%;height:100%;object-fit:contain;object-position:center;padding:15px 21px;mix-blend-mode:multiply;filter:none;transition:none}
+.mascot-world.directed-experience.paper-world .simple-menu .campaign-product .product-photo img{mix-blend-mode:normal;filter:drop-shadow(0 12px 8px #3e382222)}
+.mascot-world.directed-experience.paper-world .simple-menu [data-menu-product="plant-based-burger-doppio"] .product-photo img{scale:1.08}
+.mascot-world.directed-experience.paper-world .simple-menu [data-menu-product="100-percento-vegano"] .product-photo img{scale:.94}
+.mascot-world.directed-experience.paper-world .simple-menu .simple-photo-detail{z-index:3;background:#fffdf3ec;bottom:15px;right:15px;backdrop-filter:blur(4px)}
+.mascot-world.directed-experience.paper-world .simple-menu .product-content{padding:23px 23px 0}
+.mascot-world.directed-experience.paper-world .simple-menu .product-family{order:-1;font:700 10px/1.4 'Instrument Sans',sans-serif;letter-spacing:.09em;text-transform:uppercase;color:#587767;margin:0 0 10px}
+.mascot-world.directed-experience.paper-world .simple-menu .product-card h3.product-name{line-height:1.22;font-size:clamp(22px,2.1vw,29px)}
+.mascot-world.directed-experience.paper-world .simple-menu .product-description{font-size:14px;line-height:1.6;margin-top:12px}
+.mascot-world.directed-experience.paper-world .simple-menu .product-footer{margin:22px 23px 0;padding:18px 0 22px;border-color:#173e3420}
+.mascot-world.directed-experience.paper-world .bag-section{background:#e3eee0 url('/images/paper/paper-grain.svg') repeat 0 0/144px 144px}
+.mascot-world.directed-experience.paper-world .bag-section::before{opacity:.12;mask-image:linear-gradient(90deg,transparent,#000)}
+.mascot-world.directed-experience.paper-world .world-section{background:var(--paper) url('/images/paper/paper-grain.svg') repeat 0 0/144px 144px}
+.mascot-world.directed-experience.paper-world .truck-section::before{background:var(--cream);mask:url('/images/paper/smeet-wrap.svg') repeat 80px 10px/420px 360px;opacity:.045}
+.mascot-world.directed-experience.paper-world .footer{background:#f8f3e7 url('/images/paper/paper-grain.svg') repeat 0 0/144px 144px}
+.mascot-world.directed-experience.paper-world .product-dialog{background:var(--paper)}
+.mascot-world.directed-experience.paper-world .dialog-product-image{object-fit:contain;padding:24px;background:#f2eddf url('/images/paper/smeet-wrap.svg') repeat 0 0/320px 274px;background-blend-mode:soft-light}
+.paper-world .smeet-cart-item-image{object-fit:contain;background:#f4f1e7}
+.order-world.paper-world .bag-world-main{position:relative;isolation:isolate;background:#f9f5e8 url('/images/paper/paper-grain.svg') repeat 0 0/144px 144px}
+.order-world.paper-world .bag-world-main::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:url('/images/paper/smeet-wrap.svg') repeat 30px 15px/420px 360px;opacity:.09}
+@media(hover:hover) and (pointer:fine){
+ .mascot-world.directed-experience.paper-world .simple-menu .product-card:hover{transform:translateY(-2px);box-shadow:0 2px 4px #173e3408,0 16px 28px -20px #173e3440}
+ .mascot-world.directed-experience.paper-world .simple-menu .product-photo:hover img{transform:none}
+}
+@media(max-width:760px){
+ .mascot-world.directed-experience.paper-world .mascot-hero::after{mask-size:270px 232px;opacity:.075}
+ .mascot-world.directed-experience.paper-world .signature-section::before{mask-image:linear-gradient(#000,transparent 65%)}
+ .mascot-world.directed-experience.paper-world .simple-menu .simple-menu-filters{gap:6px}
+ .mascot-world.directed-experience.paper-world .simple-menu .simple-group-heading{margin-bottom:19px;padding-bottom:14px}
+ .mascot-world.directed-experience.paper-world .simple-menu .product-content{padding:21px 20px 0}
+ .mascot-world.directed-experience.paper-world .simple-menu .product-card h3.product-name{font-size:24px}
+ .mascot-world.directed-experience.paper-world .simple-menu .product-family{font-size:9px;margin-bottom:9px}
+ .mascot-world.directed-experience.paper-world .simple-menu .product-description{font-size:13px}
+ .mascot-world.directed-experience.paper-world .simple-menu .product-footer{margin-inline:20px;padding-bottom:20px}
+ .mascot-world.directed-experience.paper-world .simple-menu .product-photo::before{background-size:250px 214px;opacity:.13}
+ .mascot-world.directed-experience.paper-world .simple-menu .product-photo img{padding:12px 15px}
+ .mascot-world.directed-experience.paper-world .dialog-product-image{padding:18px}
+}
+@media(prefers-reduced-motion:reduce){
+ .mascot-world.directed-experience.paper-world .simple-menu .product-card,.mascot-world.directed-experience.paper-world .simple-menu .simple-menu-filters button{transition:none}
+ .mascot-world.directed-experience.paper-world .simple-menu .product-card:hover{transform:none}
+}

@@ -1,0 +1,60 @@
+/* A short introduction and a paper index: ordinary links, immediate at any speed. */
+.mascot-world.directed-experience.paper-world .mascot-hero{row-gap:30px;padding-bottom:32px}
+.mascot-world.directed-experience.paper-world .mascot-hero-description{max-width:480px;margin-bottom:15px;text-wrap:pretty}
+.hero-origin{display:flex;align-items:center;gap:9px;font-size:10px;font-weight:700;letter-spacing:.1em;line-height:1.6;margin:0 0 24px}
+.hero-origin span{font-size:19px;font-weight:400}
+.hero-section-nav{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px;width:100%;padding-top:23px;border-top:1px solid #173e3436}
+.hero-section-nav a{flex:1 1 110px;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:46px;padding:12px 16px;border:1px solid #173e3440;border-radius:14px;background:#fff9e9b5;color:var(--ink);font-size:13px;font-weight:600;line-height:1.3;text-decoration:none;transition:background-color 160ms ease,transform 160ms ease;touch-action:manipulation}
+.hero-section-nav a span{font-size:16px;font-weight:400}
+.hero-section-nav a.section-nav-main{background:var(--ink);border-color:var(--ink);color:var(--cream)}
+.hero-section-nav a:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.hero-section-nav a:active{transform:translateY(1px)}
+.location-intro{font-size:16px;line-height:1.7;max-width:620px;margin:22px 0 34px;text-wrap:pretty}
+.brand-story{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:8vw;position:relative;background:var(--paper) url('/images/paper/paper-grain.svg') repeat 0 0/144px 144px;border-bottom:1px solid #173e3425}
+.brand-story-heading h2{font-size:clamp(36px,4.7vw,68px);line-height:1.1;letter-spacing:-.05em;margin-bottom:20px}
+.brand-story-heading h2 span{color:#39836c}
+.brand-story-signature{font-family:DynaPuff,sans-serif;font-size:17px;line-height:1.5;margin:0;color:#486854}
+.brand-story-copy{max-width:600px;padding-top:1px}
+.brand-story-copy p{font-size:16px;line-height:1.85;margin:0 0 23px;text-wrap:pretty}
+.brand-story-copy a{color:inherit;text-decoration-color:#8aaa94;text-underline-offset:4px;text-decoration-thickness:1px}
+.brand-story-copy a:focus-visible{outline:2px solid #173e34;outline-offset:4px;border-radius:2px}
+.brand-story-copy .brand-story-last{font-weight:700;font-size:17px;line-height:1.6;margin-bottom:0;padding-top:19px;border-top:1px solid #173e3425}
+#storia,#il-locale{scroll-margin-top:94px}
+@media(hover:hover) and (pointer:fine){
+ .hero-section-nav a:hover{background:#fff9e9;transform:translateY(-2px)}
+ .hero-section-nav a.section-nav-main:hover{background:#245b49}
+ .brand-story-copy a:hover{text-decoration-color:currentColor}
+}
+@media(max-width:1040px) and (min-width:761px){
+ .hero-section-nav a{flex-basis:95px;padding-inline:12px;font-size:12px}
+ .brand-story{gap:5vw}
+}
+@media(max-width:760px){
+ .mascot-world.directed-experience.paper-world .mascot-hero{row-gap:20px;padding-bottom:24px}
+ .mascot-world.directed-experience.paper-world .mascot-hero-description{max-width:340px;margin-bottom:12px;font-size:15px;line-height:1.6}
+ .hero-origin{justify-content:center;font-size:9px;letter-spacing:.07em;gap:6px;margin-bottom:19px}
+ .hero-origin span{font-size:15px}
+ .mascot-world.directed-experience.paper-world .hero-address{display:none}
+ .mascot-world.directed-experience.paper-world .mascot-hero-visual{max-width:160px}
+ .hero-section-nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;padding-top:20px}
+ .hero-section-nav a{min-width:0;min-height:46px;padding:10px 8px;justify-content:center;text-align:center;font-size:11px;border-radius:12px;gap:3px}
+ .hero-section-nav a span{display:none}
+ .hero-section-nav a:last-child{grid-column:span 2}
+ .location-intro{font-size:15px;margin-block:20px 28px}
+ .brand-story{grid-template-columns:minmax(0,1fr);gap:28px;padding-block:58px 62px}
+ .brand-story-heading h2{font-size:clamp(34px,9.3vw,56px);margin-bottom:16px}
+ .brand-story-heading .eyebrow{font-size:10px}
+ .brand-story-signature{font-size:15px}
+ .brand-story-copy p{font-size:15px;line-height:1.8;margin-bottom:20px}
+ .brand-story-copy .brand-story-last{font-size:16px;padding-top:17px}
+ #storia,#il-locale{scroll-margin-top:86px}
+}
+@media(max-width:360px){
+ .hero-section-nav{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .hero-section-nav a:last-child{grid-column:1/-1}
+ .hero-origin{font-size:8px;letter-spacing:.04em}
+}
+@media(prefers-reduced-motion:reduce){
+ .hero-section-nav a{transition:none}
+ .hero-section-nav a:hover,.hero-section-nav a:active{transform:none}
+}

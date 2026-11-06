@@ -1,0 +1,36 @@
+/* Blender-rendered raster objects: no canvas, layout gate, pinned scroll or
+   opacity reveal. Text and primary actions are never hidden by this module. */
+[data-service-motion].service-motion-mounted { perspective:1000px; }
+[data-service-motion].service-motion-mounted [data-service-object] {
+  transform-origin:50% 58%; backface-visibility:hidden;
+}
+[data-service-motion].service-motion-animating [data-service-object],
+[data-service-motion].service-motion-tilting [data-service-object],
+[data-service-motion].service-motion-resetting [data-service-object],
+.service-motion-menu.service-motion-animating img { will-change:transform; }
+[data-service-motion].service-motion-tilting [data-service-object],
+[data-service-motion].service-motion-resetting [data-service-object] {
+  transition:transform 180ms cubic-bezier(.22,1,.36,1);
+}
+[data-service-motion] [data-service-replay] { touch-action:manipulation; }
+[data-service-motion] [data-service-replay]:focus-visible {
+  outline:3px solid currentColor; outline-offset:4px;
+}
+[data-service-motion].service-motion-stopped [data-service-object],
+.motion-paused [data-service-motion] [data-service-object] {
+  transition:none!important; will-change:auto;
+}
+.service-motion-menu img { transform-origin:50% 60%; }
+@media(hover:hover) and (pointer:fine) {
+  .mascot-world .simple-menu .product-photo.service-motion-menu img { transition:transform 160ms cubic-bezier(.22,1,.36,1); }
+  .mascot-world .simple-menu .product-photo.service-motion-menu:hover img { transform:scale(1.015); }
+  .mascot-world .simple-menu .product-photo.service-motion-menu.service-motion-animating img { transition:none; }
+}
+.motion-paused .service-motion-menu img { transition:none!important; will-change:auto; }
+.motion-paused .simple-menu .product-photo.service-motion-menu:hover img { transform:none; }
+@media(prefers-reduced-motion:reduce) {
+  [data-service-motion].service-motion-mounted [data-service-object], .service-motion-menu img {
+    transition:none!important; will-change:auto;
+  }
+  .mascot-world .simple-menu .product-photo.service-motion-menu:hover img { transform:none; }
+}

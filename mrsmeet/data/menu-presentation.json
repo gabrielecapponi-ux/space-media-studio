@@ -1,0 +1,51 @@
+{
+  "group_order": [
+    "menu",
+    "burger",
+    "fries"
+  ],
+  "product_order": {
+    "burger": [
+      "classic-smash-burger-triplo",
+      "classic-smash-burger-doppio",
+      "plant-based-burger-doppio",
+      "100-percento-vegano"
+    ],
+    "menu": [
+      "classic-smash-menu",
+      "chicken-burger-menu",
+      "menu-birra"
+    ],
+    "fries": [
+      "sweet-fries",
+      "classic-fries",
+      "nuggets-di-pollo"
+    ]
+  },
+  "campaign_photos": {
+    "classic-smash-burger-triplo": "./images/campaign/classic-triplo.webp",
+    "classic-smash-menu": "./images/campaign/classic-menu.webp",
+    "100-percento-vegano": "./images/campaign/100-percento-vegano.webp",
+    "classic-smash-burger-doppio": "./images/campaign/classic-smash-burger-doppio.webp",
+    "plant-based-burger-doppio": "./images/campaign/plant-based-burger-doppio.webp"
+  },
+  "product_labels": {
+    "classic-smash-burger-triplo": "Carne · Triplo",
+    "classic-smash-burger-doppio": "Carne · Doppio",
+    "plant-based-burger-doppio": "Plant based · Doppio",
+    "100-percento-vegano": "Vegano · Singolo"
+  },
+  "campaign_photo_widths": {
+    "classic-smash-burger-triplo": 1100,
+    "classic-smash-menu": 1100,
+    "100-percento-vegano": 1254,
+    "classic-smash-burger-doppio": 1254,
+    "plant-based-burger-doppio": 1254
+  },
+  "product_scenes": {
+    "classic-smash-burger-triplo": "emerald",
+    "classic-smash-burger-doppio": "rose",
+    "plant-based-burger-doppio": "mint",
+    "100-percento-vegano": "butter"
+  }
+}

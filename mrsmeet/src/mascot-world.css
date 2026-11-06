@@ -1,0 +1,181 @@
+/* Mr Smeet's little world: a mascot-led campaign, with an immediately usable menu. */
+.mascot-world{--header-clearance:94px;background:var(--cream)}
+.mascot-world .header{border:1.5px solid var(--ink);box-shadow:0 4px 0 #173e3420;backdrop-filter:none}
+.mascot-world .header-bag{gap:13px;font-size:11px}
+.mascot-world [data-cart-count]{display:inline-grid;place-items:center;border-radius:50%;min-width:25px;height:25px;padding:0 5px;background:var(--ink);color:var(--cream);font:700 12px/1 'Instrument Sans',sans-serif;font-variant-numeric:tabular-nums}
+.mascot-world .mascot-hero{position:relative;isolation:isolate;display:grid;grid-template-columns:1fr 1.02fr;align-items:center;column-gap:3vw;padding:158px 6vw 95px;min-height:760px;background:#39bd9d;overflow:hidden}
+.mascot-hero::before{content:"";position:absolute;inset:0;z-index:-2;background:radial-gradient(ellipse at 78% 43%,#b2e3a0 0,transparent 45%),linear-gradient(120deg,#4fc7a6,#33b894 75%)}
+.mascot-hero::after{content:"";position:absolute;inset:auto -15% -115px;height:245px;z-index:-1;transform:perspective(400px) rotateX(50deg);background:repeating-conic-gradient(#fff9e926 0% 25%,transparent 0% 50%) 0 0/90px 90px;mask-image:linear-gradient(transparent,#000)}
+.hero-welcome{position:absolute;top:115px;left:6vw;right:6vw;display:flex;justify-content:space-between;border-bottom:1px solid #173e3444;padding-bottom:14px;font-size:9px;font-weight:700;letter-spacing:.13em}
+.mascot-hero-copy{position:relative;z-index:2;padding-top:20px}
+.mascot-hero-copy>.eyebrow{margin-bottom:20px;font-size:11px;letter-spacing:.15em}
+.mascot-hero h1{font-size:clamp(56px,7.45vw,114px);line-height:1.015;letter-spacing:-.065em;margin:0 0 25px;white-space:nowrap}
+.mascot-hero h1 span{color:var(--cream);text-shadow:0 4px 0 var(--ink);-webkit-text-stroke:1px var(--ink)}
+.mascot-hero-description{font-size:clamp(16px,1.4vw,20px);max-width:430px;line-height:1.55;margin-bottom:28px}
+.hero-menu-cta{font-size:12px;min-height:57px;padding-inline:25px;gap:40px}
+.hero-address{display:block;width:fit-content;font-size:11px;margin-top:25px;text-decoration:none;border-bottom:1px solid #173e3460;padding-bottom:4px}
+.mascot-hero-visual{position:relative;min-width:0;width:100%;max-width:680px;margin:auto}
+.mascot-hero-visual #mascot-stage{aspect-ratio:1.13;min-height:380px}
+.mascot-hero-visual #mascot-stage .mascot-entry{inset:0 -8% 2%}
+.mascot-hero-visual #mascot-stage .mascot-stamp{bottom:0;left:60%;font-size:clamp(15px,1.5vw,23px);padding:12px 20px}
+.mascot-hero-visual #mascot-stage .mascot-podium{bottom:7%;width:64%;left:19%;height:10%}
+.mascot-hero-visual #mascot-stage .mascot-halo{top:0;left:11%;width:79%;background:#fff9e927;border:1px solid #fff9e96b}
+.mascot-hero-visual #mascot-stage .mascot-ground-shadow{bottom:9%}
+.mascot-hero-visual #mascot-stage .mascot-rays{inset:-8% 1% 2%}
+.mascot-hero-visual #mascot-stage .mascot-hat-star{top:1%;right:15%}
+.hero-handwritten{display:block;position:absolute;right:10%;top:-15px;z-index:4;font-family:DynaPuff,sans-serif;font-size:14px;rotate:7deg;letter-spacing:-.04em}
+.hero-snack{position:absolute;left:-10%;bottom:-44px;z-index:5;display:flex;align-items:center;max-width:290px;gap:1px;text-decoration:none;transform:rotate(-8deg);transition:transform .25s var(--ease)}
+.hero-snack img{width:165px;aspect-ratio:1.33;object-fit:contain;filter:drop-shadow(0 13px 7px #173e3435)}
+.hero-snack span{font-size:11px;line-height:1.3;white-space:nowrap}
+.hero-snack b{font-family:DynaPuff,sans-serif;font-weight:500;font-size:14px}
+.hero-bottomline{position:absolute;bottom:24px;left:6vw;right:6vw;display:flex;justify-content:space-between;gap:20px;font-size:8px;letter-spacing:.1em;font-weight:700}
+.hero-bottomline a{text-decoration:none}
+.mascot-world .brand-ribbon{position:relative;z-index:2;transform:rotate(-1.4deg);width:103%;margin:-12px -1.5% -12px;padding:20px 0;font-size:25px;border-block:2px solid var(--ink);box-shadow:0 6px 0 #173e3420;gap:38px}
+.mascot-world .signature-section{position:relative;display:grid;grid-template-columns:1.18fr 1fr;gap:6vw;align-items:center;padding-top:100px;padding-bottom:90px;background:#ffe5ee;overflow:hidden}
+.signature-visual{position:relative;min-width:0;aspect-ratio:1.12;isolation:isolate}
+.signature-orbit{position:absolute;inset:4% 5% 7%;border:1px solid #a06c7f66;border-radius:50%;transform:rotate(-14deg);background:radial-gradient(ellipse at 45% 38%,#fff9e9c9,transparent 68%)}
+.signature-orbit::after{content:"";position:absolute;inset:15px -18px;border:1px dashed #a06c7f55;border-radius:50%}
+.signature-photo{display:grid;place-items:center;position:absolute;inset:0;transform:rotate(-7deg);transition:transform .35s var(--ease)}
+.signature-photo img{width:112%;max-width:112%;height:100%;object-fit:contain;filter:drop-shadow(0 32px 14px #6134212c)}
+.signature-spark{pointer-events:none;position:absolute;right:0;top:4%;font-size:80px;color:var(--ink);z-index:2;line-height:1;transform:rotate(14deg)}
+.signature-visual #hero-film{inset:3%;width:94%;height:85%;border:2px solid var(--ink);border-radius:30px;object-fit:cover;z-index:3;pointer-events:none}
+.signature-visual.has-video #hero-film{opacity:1}
+.signature-visual .film-toggle{right:20px;bottom:0;z-index:4;min-height:44px;padding:10px 17px;width:auto;font-size:11px;border:1px solid #173e3480;background:var(--cream)}
+.signature-number{pointer-events:none;position:absolute;left:20px;bottom:16px;font-size:9px;font-weight:700;letter-spacing:.13em}
+.signature-copy{position:relative;z-index:1}
+.signature-copy .eyebrow{font-size:10px;letter-spacing:.14em}
+.signature-copy h2{font-size:clamp(55px,6.4vw,94px);line-height:1;margin-bottom:22px}
+.signature-copy h2 span{color:var(--ink)}
+.signature-copy>p:not(.eyebrow){font-size:17px;line-height:1.6}
+.ingredient-pills{display:flex;flex-wrap:wrap;gap:7px;margin:20px 0 28px}
+.ingredient-pills span{display:inline-block;font-size:11px;border:1px solid #173e3450;border-radius:24px;padding:7px 12px;background:#fff9e94d}
+.signature-purchase{display:flex;align-items:end;gap:23px;flex-wrap:wrap}
+.signature-purchase p{margin:9px 0 0;white-space:nowrap}
+.signature-purchase strong{font-size:32px;letter-spacing:-.04em}
+.signature-purchase s{font-size:13px;margin-right:6px;color:#71605d}
+.signature-offer{font-size:10px;font-weight:700}
+.signature-purchase .button{font-size:11px;gap:25px;min-height:52px}
+.signature-details{display:inline-flex;align-items:center;min-height:44px;font-size:11px;margin-top:19px}
+.mascot-world .menu-section.simple-menu{padding-top:85px;padding-bottom:75px;background:var(--cream)}
+.mascot-world .simple-menu .section-heading{margin-bottom:28px}
+.mascot-world .simple-menu .section-heading h2{font-size:clamp(46px,6vw,86px);line-height:1.04;white-space:normal}
+.mascot-world .simple-menu .section-heading>p{font-size:16px;max-width:310px;margin-bottom:7px}
+.mascot-world .simple-menu-filters{top:82px;gap:10px;box-shadow:0 8px 0 var(--cream);padding-block:15px;z-index:6}
+.mascot-world .simple-menu .simple-menu-filters button{font-size:13px;padding:12px 22px;min-height:47px;border:1.5px solid var(--ink);box-shadow:0 3px 0 #173e3418;transition:background .18s,transform .18s}
+.mascot-world .simple-menu .simple-menu-filters button[aria-pressed="true"]{background:var(--mint);color:var(--ink);box-shadow:0 3px 0 var(--ink)}
+.mascot-world .simple-menu .simple-group-heading{margin-bottom:23px;padding-bottom:15px;border-bottom:1.5px solid var(--ink)}
+.mascot-world .simple-menu .simple-group-heading h3{font-size:32px}
+.mascot-world .simple-menu .simple-group-heading>span{font-size:11px;text-transform:uppercase;letter-spacing:.08em}
+.mascot-world .simple-menu .simple-product-grid{gap:25px;grid-template-columns:repeat(3,minmax(0,1fr))}
+.mascot-world .simple-menu .product-card{border:1.5px solid var(--ink);border-radius:25px;background:#fffdf5;box-shadow:0 6px 0 #173e3424;transition:box-shadow .25s,transform .25s}
+.mascot-world .simple-menu .product-card .product-photo{height:260px;border-bottom:1.5px solid #173e342b;background:#fff}
+.mascot-world .simple-menu .campaign-product .product-photo{background:radial-gradient(circle at 48% 35%,#fff7ed,#ffdce9);padding:8px}
+.mascot-world .simple-menu [data-menu-product="classic-smash-menu"] .product-photo{background:radial-gradient(circle at 50% 40%,#fffce8,#baead7)}
+.mascot-world .simple-menu .campaign-product .product-photo img{filter:drop-shadow(0 10px 5px #173e3417)}
+.mascot-world .simple-menu .simple-photo-detail{width:38px;height:38px;border:1px solid var(--ink);box-shadow:0 2px 0 var(--ink);font-size:23px;background:var(--cream);right:13px;bottom:14px}
+.mascot-world .simple-menu .product-content{padding:22px 21px 0}
+.mascot-world .simple-menu .product-card h3.product-name{font:600 25px/1.17 DynaPuff,sans-serif;letter-spacing:-.045em}
+.mascot-world .simple-menu .product-description{font-size:14px;margin-top:12px;line-height:1.5}
+.mascot-world .simple-menu .product-badges{margin-bottom:12px}
+.mascot-world .simple-menu .promo-badge,.mascot-world .simple-menu .diet-badge{font-size:10px;letter-spacing:.02em;padding:5px 8px;border:1px solid #173e342b}
+.mascot-world .simple-menu .product-footer{margin:22px 21px 0;padding:17px 0 22px;gap:10px;flex-wrap:wrap}
+.mascot-world .simple-menu .price-current{font-size:27px}
+.mascot-world .simple-menu .product-action{background:var(--ink);color:var(--cream);font-size:12px;padding:12px 17px;border:1px solid var(--ink);box-shadow:0 3px 0 #173e3422;min-height:45px;gap:12px}
+.mascot-world .simple-menu .menu-price-note{font-size:12px}
+.mascot-world .bag-section{padding-top:80px;padding-bottom:80px;background:#f2bbd1;grid-template-columns:1fr 1fr;border-block:1.5px solid var(--ink)}
+.mascot-world .bag-copy h2{font-size:clamp(48px,6.5vw,94px)}
+.mascot-world .bag-copy>p:not(.eyebrow){font-size:17px;max-width:420px;line-height:1.6}
+.mascot-world .bag-link{height:390px}
+.mascot-world .paper-bag{scale:.95}
+.mascot-world .bag-circle{max-width:370px}
+.mascot-world .bag-shadow{bottom:15px}
+.mascot-world .bag-invitation{bottom:-20px}
+.mascot-world .bag-price-note{font-size:12px}
+.mascot-world .world-section{padding-top:85px}
+.mascot-world .story-mascot{width:210px;height:200px;object-fit:contain;filter:drop-shadow(0 12px 6px #173e3419);transform:rotate(8deg)}
+.mascot-world .story-heading h2{font-size:clamp(43px,5.2vw,76px)}
+.mascot-world .story-body{margin-top:40px;margin-bottom:68px}
+.mascot-world .story-body p{font-size:16px}
+.mascot-world .storefront-frame{border:1.5px solid var(--ink);box-shadow:0 7px 0 #173e3424}
+.mascot-world .truck-heading h2{font-size:clamp(45px,5.7vw,82px)}
+.mascot-world .truck-stage{height:240px}
+.mascot-world .truck-stage.is-requested{height:500px}
+.mascot-world .truck-visual{border-block:1px solid #fff9e93d;margin-top:38px}
+.mascot-world .product-dialog{border:1.5px solid var(--ink);box-shadow:0 12px 60px #001c1966;border-radius:28px}
+.mascot-world .dialog-product-info h2{font-family:DynaPuff,sans-serif}
+.mascot-world .dialog-order-note{color:#51665b}
+.mascot-world .dialog-add{box-shadow:0 4px 0 var(--ink);min-height:54px}
+.mascot-world .footer{padding-bottom:35px;background:var(--mint)}
+.mascot-world .footer-top>p{font-size:clamp(52px,8.5vw,125px)}
+.mobile-quick-nav{display:none}
+@media(hover:hover) and (pointer:fine){
+ .hero-snack:hover{transform:rotate(-4deg) translateY(-4px)}
+ .signature-photo:hover{transform:rotate(-3deg) scale(1.025)}
+ .mascot-world .simple-menu .product-card:hover{transform:translateY(-4px);box-shadow:0 10px 0 #173e3424}
+ .mascot-world .simple-menu .product-action:hover{background:var(--mint);color:var(--ink)}
+ .mascot-world .simple-menu .campaign-product .product-photo:hover img{transform:scale(1.04) rotate(-2deg)}
+}
+@media(min-width:1600px){.mascot-world .mascot-hero{padding-inline:max(6vw,calc((100vw - 1450px)/2));min-height:850px}.hero-welcome,.hero-bottomline{left:max(6vw,calc((100vw - 1450px)/2));right:max(6vw,calc((100vw - 1450px)/2))}}
+@media(min-width:761px) and (max-width:1100px){
+ .mascot-world .mascot-hero{min-height:690px;padding:175px 5vw 100px;gap:2vw}
+ .mascot-hero h1{font-size:7.4vw}.mascot-hero-description{font-size:15px}.mascot-hero-visual #mascot-stage{min-height:330px}
+ .hero-snack{left:-5%;bottom:-48px}.hero-snack img{width:130px}.hero-snack span{font-size:10px}.hero-snack b{font-size:12px}
+ .hero-handwritten{font-size:12px}.mascot-world .signature-section{gap:4vw}.signature-purchase{gap:18px}.signature-purchase strong{font-size:29px}.signature-purchase .button{font-size:10px;padding-inline:18px;gap:14px}
+ .mascot-world .simple-menu .simple-product-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .mascot-world .simple-menu .product-card .product-photo{height:260px}
+ .mascot-world .nav a{font-size:11px}.mascot-world .header{padding-inline:17px;gap:14px}.mascot-world .header-bag{font-size:10px;padding-inline:15px}
+}
+@media(max-width:760px){
+ :root{scroll-padding-top:90px}
+ .mascot-world .header{height:62px;left:4%;width:92%;top:10px;padding:0 10px 0 13px;gap:9px}
+ .mascot-world .header .brand{width:85px;height:58px}.mascot-world .header .header-bag{font-size:10px;min-height:42px;padding:8px 11px;gap:8px}.mascot-world .header-bag [data-cart-count]{min-width:23px;height:23px;font-size:11px}.mascot-world .mobile-menu{width:43px;min-width:43px}
+ .mascot-world .mascot-hero{display:flex;flex-direction:column;padding:113px 5.5vw 60px;min-height:0;gap:12px}
+ .hero-welcome{top:88px;left:5.5vw;right:5.5vw;font-size:7px;letter-spacing:.07em;padding-bottom:10px}.hero-welcome>span:last-child{display:none}
+ .mascot-hero-copy{padding-top:19px;text-align:center;align-self:stretch}
+ .mascot-hero-copy>.eyebrow{font-size:9px;margin-bottom:16px;letter-spacing:.13em}
+ .mascot-hero h1{font-size:clamp(47px,13vw,92px);letter-spacing:-.06em;line-height:1.03;margin-bottom:18px}
+ .mascot-hero h1 span{text-shadow:0 3px 0 var(--ink);-webkit-text-stroke:.7px var(--ink)}
+ .mascot-hero-description{font-size:14px;line-height:1.5;max-width:300px;margin:0 auto 21px}.desktop-break{display:none}
+ .hero-menu-cta{min-height:48px;font-size:11px;padding:11px 20px;gap:30px}
+ .hero-address{font-size:10px;margin:20px auto 0;padding-bottom:2px}
+ .mascot-hero-visual{max-width:440px;margin-top:5px;margin-bottom:10px}
+ .mascot-hero-visual #mascot-stage{aspect-ratio:1.22;min-height:250px}
+ .mascot-hero-visual #mascot-stage .mascot-entry{inset:-3% -3% 0}
+ .mascot-hero-visual #mascot-stage .mascot-stamp{font-size:14px;bottom:-6px;left:60%;padding:9px 12px}
+ .mascot-hero-visual #mascot-stage .mascot-hat-star{top:1%;right:16%;font-size:31px}
+ .mascot-hero-visual #mascot-stage .mascot-halo{top:0;left:14%;width:72%}
+ .hero-handwritten{font-size:10px;top:6px;right:8%;rotate:9deg}
+ .hero-snack{bottom:-16px;left:-1%;max-width:136px;transform:rotate(-12deg)}
+ .hero-snack img{width:112px}.hero-snack span{display:none}
+ .hero-bottomline{left:5.5vw;right:5.5vw;bottom:19px;font-size:6px;letter-spacing:.05em;gap:15px}.hero-bottomline>span{max-width:170px}
+ .mascot-world .brand-ribbon{font-size:19px;padding-block:15px;gap:25px;margin-block:-8px;border-width:1.5px}
+ .mascot-world .signature-section{display:grid;grid-template-columns:1fr;padding:58px 6vw 48px;gap:22px}
+ .signature-visual{width:100%;max-width:500px;margin:auto;aspect-ratio:1.18}
+ .signature-spark{font-size:55px;right:2%;top:6%}.signature-photo img{width:110%;max-width:110%}
+ .signature-visual .film-toggle{right:0;bottom:-2px;font-size:10px;padding:8px 13px;min-height:42px}
+ .signature-number{left:0;bottom:13px;font-size:7px;letter-spacing:.08em}
+ .signature-copy{padding-top:10px}.signature-copy .eyebrow{font-size:9px;margin-bottom:15px}
+ .signature-copy h2{font-size:clamp(45px,12.7vw,76px);line-height:1.04;margin-bottom:17px}.signature-copy h2 br{display:none}.signature-copy h2 span{display:block}
+ .signature-copy>p:not(.eyebrow){font-size:15px;margin-bottom:0}.ingredient-pills{margin:18px 0 23px;gap:6px}.ingredient-pills span{font-size:11px;padding:6px 10px}
+ .signature-purchase{justify-content:space-between;gap:15px;flex-wrap:nowrap}.signature-purchase strong{font-size:29px}.signature-purchase s{font-size:12px;display:block;margin-bottom:0}.signature-purchase p{margin-top:4px;line-height:1.3}.signature-offer{font-size:9px}
+ .signature-purchase .button{font-size:10px;gap:17px;min-height:49px;padding-inline:17px}.signature-details{font-size:11px;margin-top:13px}
+ .mascot-world .menu-section.simple-menu{padding:48px 5vw 48px}.mascot-world .simple-menu .section-heading{display:block;margin-bottom:20px}.mascot-world .simple-menu .section-heading h2{font-size:clamp(39px,11.4vw,69px);line-height:1.08}.mascot-world .simple-menu .section-heading>p{font-size:14px;max-width:310px;line-height:1.5;margin-top:17px}
+ .mascot-world .simple-menu-filters{top:79px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;padding:11px 0;margin-bottom:28px}.mascot-world .simple-menu .simple-menu-filters button{font-size:11px;padding:9px 3px;min-height:44px;gap:3px}
+ .mascot-world .simple-menu .simple-group-heading{margin-bottom:18px;padding-bottom:13px}.mascot-world .simple-menu .simple-group-heading h3{font-size:28px}.mascot-world .simple-menu .simple-group-heading>span{font-size:9px}
+ .mascot-world .simple-menu .simple-product-grid{grid-template-columns:1fr;gap:20px}.mascot-world .simple-menu .product-card{display:flex;flex-direction:column;align-items:stretch;padding:0;border-radius:23px;gap:0;overflow:hidden}
+ .mascot-world .simple-menu .product-card .product-photo{width:100%;height:235px;border:0;border-bottom:1px solid #173e342b;border-radius:0;grid-column:auto;grid-row:auto}
+ .mascot-world .simple-menu .product-content{padding:20px 20px 0;display:flex;grid-column:auto;grid-row:auto}.mascot-world .simple-menu .product-card h3.product-name{font-size:24px;line-height:1.17;max-width:290px}.mascot-world .simple-menu .product-description{font-size:14px;line-height:1.5;margin-top:10px}
+ .mascot-world .simple-menu .product-badges{margin-bottom:10px}.mascot-world .simple-menu .product-footer{width:auto;margin:19px 20px 0;padding:16px 0 20px;grid-column:auto;gap:12px}.mascot-world .simple-menu .price-current{font-size:27px}.mascot-world .simple-menu .product-action{font-size:12px;padding:12px 18px;gap:17px}
+ .mascot-world .simple-menu .simple-photo-detail{width:37px;height:37px;right:13px;bottom:13px;font-size:23px}.mascot-world .simple-menu .menu-price-note{font-size:11px;line-height:1.6}
+ .mascot-world .bag-section{grid-template-columns:1fr;padding:53px 6vw 55px;gap:22px}.mascot-world .bag-copy h2{font-size:clamp(45px,12.6vw,75px)}.mascot-world .bag-copy>p:not(.eyebrow){font-size:15px;margin-block:20px}.mascot-world .bag-copy>.button{font-size:11px;padding:12px 18px;gap:20px}.mascot-world .bag-price-note{font-size:11px}
+ .mascot-world .bag-link{height:320px;top:auto;margin-top:20px;align-self:auto}.mascot-world .paper-bag{position:relative;left:auto;top:auto;scale:.8}.mascot-world .bag-circle{width:100%;max-width:320px}.mascot-world .bag-shadow{bottom:1px;width:180px;height:25px;filter:blur(10px)}.mascot-world .bag-invitation{display:block;font-size:10px;bottom:-15px}.mascot-world .bag-spark{font-size:50px;right:2%;top:12px}
+ .mascot-world .world-section{padding:58px 6vw}.mascot-world .story-heading{display:block}.mascot-world .story-heading h2{font-size:clamp(32px,9vw,53px);max-width:100%}.mascot-world .story-mascot{display:block;position:static;margin:25px 0 -5px auto;width:135px;height:100px;transform:rotate(7deg)}.mascot-world .story-body{margin-top:24px;margin-bottom:45px;gap:18px}.mascot-world .story-body p{font-size:15px;line-height:1.7}
+ .mascot-world .storefront-photo{height:410px}.mascot-world .visit-top h3{font-size:19px}.mascot-world .storefront-address{font-size:clamp(28px,7.8vw,42px)}.mascot-world .visit-bottom{font-size:12px}.mascot-world .visit-bottom>span{font-size:17px}
+ .mascot-world .truck-section{padding-top:53px;padding-bottom:50px}.mascot-world .truck-heading h2{font-size:clamp(42px,11.6vw,65px)}.mascot-world .truck-stage{height:150px}.mascot-world .truck-stage.is-requested{height:390px}.mascot-world .truck-visual{margin-top:28px}.mascot-world .truck-scene-footer{padding-top:20px}.mascot-world .truck-details p{font-size:14px}
+ .mascot-world .product-dialog{max-height:calc(100dvh - 28px);border-radius:24px}.mascot-world .dialog-product-info{padding:22px}.mascot-world .dialog-product-info h2{font:600 28px/1.15 DynaPuff,sans-serif}.mascot-world .dialog-product-description{font-size:14px}.mascot-world .dialog-order-note{font-size:11px}
+ .mascot-world .footer{padding-bottom:112px}.mascot-world .footer-top>p{font-size:clamp(40px,11.5vw,70px)}.mascot-world .footer-bottom,.mascot-world .footer-bottom button,.mascot-world .footer-bottom a{font-size:9px}
+ .mobile-quick-nav{display:grid;grid-template-columns:1fr 1.25fr 1fr;gap:6px;position:fixed;z-index:20;bottom:0;left:0;right:0;padding:8px 5vw max(8px,env(safe-area-inset-bottom));background:#fff9e9fa;border-top:1.5px solid var(--ink);box-shadow:0 -6px 20px #173e340e}
+ .mobile-quick-nav a{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:51px;gap:3px;font-size:10px;line-height:1.3;text-decoration:none;border-radius:14px}.mobile-quick-nav svg{width:21px;height:21px}.mobile-quick-nav .quick-order{background:var(--mint);border:1px solid var(--ink)}.mobile-quick-nav .quick-order>span{display:flex;align-items:center;gap:4px}.mascot-world .mobile-quick-nav [data-cart-count]{min-width:16px;height:16px;font-size:9px;padding:0 3px}
+}
+@media(max-width:360px){.mascot-world .header .brand{width:72px}.mascot-world .header .header-bag{font-size:9px;gap:6px;padding-inline:9px}.mascot-hero h1{font-size:13vw}.hero-menu-cta{font-size:10px}.mascot-world .simple-menu .product-card .product-photo{height:215px}.signature-purchase .button{font-size:9px;gap:10px;padding-inline:12px}.signature-purchase strong{font-size:27px}.mascot-hero-visual #mascot-stage{min-height:225px}.mascot-hero-visual #mascot-stage .mascot-stamp{font-size:12px}.hero-snack img{width:95px}.hero-handwritten{font-size:9px}.hero-bottomline{font-size:5px}}
+@media(prefers-reduced-motion:reduce){.mascot-world *,.mascot-world *::before,.mascot-world *::after{scroll-behavior:auto!important;animation:none!important;transition:none!important}.hero-snack:hover{transform:rotate(-8deg)}.signature-photo:hover{transform:rotate(-7deg)}.mascot-world .simple-menu .product-card:hover{transform:none}.mascot-world .simple-menu .product-photo:hover img{transform:none}}

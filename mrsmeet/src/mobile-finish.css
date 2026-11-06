@@ -1,0 +1,170 @@
+/* Mobile campaign finish. Brand, photography and the HTML shopping flow stay shared. */
+@media (max-width:760px) {
+ .mascot-world.directed-experience.paper-world {
+  --mobile-gutter:6vw;
+  --dock-clearance:calc(92px + env(safe-area-inset-bottom,0px));
+ }
+ .mascot-world.directed-experience.paper-world .header {
+  top:max(10px,env(safe-area-inset-top,0px));left:4%;width:92%;height:60px;
+  padding-inline:15px 8px;background:var(--cream);border-color:#173e3430;box-shadow:0 5px 16px #0b302014;
+ }
+ .mascot-world.directed-experience.paper-world .header .brand {width:88px;height:52px}
+ .mascot-world.directed-experience.paper-world .header .header-bag {display:none}
+ .mascot-world.directed-experience.paper-world .mobile-menu {background:var(--pink);border-color:#173e3440}
+ .mascot-world.directed-experience.paper-world .mobile-menu span {transition:transform 180ms ease}
+ .mascot-world.directed-experience.paper-world .mobile-menu[aria-expanded="true"] span:first-child {transform:translateY(3px) rotate(45deg)}
+ .mascot-world.directed-experience.paper-world .mobile-menu[aria-expanded="true"] span:last-child {transform:translateY(-3px) rotate(-45deg)}
+
+ /* The existing copy and mascot share one compact poster composition. */
+ .mascot-world.directed-experience.paper-world .mascot-hero {
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(92px,30%);
+  gap:0 16px;align-items:center;min-height:0;
+  padding:calc(104px + env(safe-area-inset-top,0px)) var(--mobile-gutter) 24px;
+  color:var(--cream);background:#194d3f;
+  border-radius:0 0 30px 30px;
+ }
+ .mascot-world.directed-experience.paper-world .mascot-hero::before {background:linear-gradient(145deg,#194d3f,#23644f)}
+ .mascot-world.directed-experience.paper-world .mascot-hero::after {opacity:.055;mask-size:240px 206px}
+ .mascot-world.directed-experience.paper-world .mascot-hero-copy {display:contents}
+ .mascot-world.directed-experience.paper-world .mascot-hero-copy>.eyebrow {
+  grid-column:1/-1;grid-row:1;justify-self:start;margin:0 0 19px;
+  padding:7px 11px;border:1px solid #fff9e940;border-radius:99px;
+  font-size:9px;letter-spacing:.13em;color:var(--cream);
+ }
+ .mascot-world.directed-experience.paper-world .mascot-hero h1 {
+  grid-column:1/-1;grid-row:2;text-align:left;font-size:clamp(46px,15.25vw,105px);
+  line-height:1.035;letter-spacing:-.065em;margin:0 0 24px;color:var(--cream);
+ }
+ .mascot-world.directed-experience.paper-world .mascot-hero h1 span {color:var(--pink);text-shadow:none;-webkit-text-stroke:0}
+ .mascot-world.directed-experience.paper-world .mascot-hero-description {
+  grid-column:1;grid-row:3;align-self:center;max-width:340px;margin:0;
+  text-align:left;font-size:14px;line-height:1.65;color:#fff9e9eb;text-wrap:pretty;
+ }
+ .mascot-world.directed-experience.paper-world .mascot-hero-visual {
+  grid-column:2;grid-row:3;align-self:center;width:100%;max-width:160px;
+  margin:0;transform:rotate(8deg);
+ }
+ .mascot-world.directed-experience.paper-world .mascot-hero-visual #mascot-stage {min-height:0;aspect-ratio:500/491}
+ .mascot-world.directed-experience.paper-world .hero-origin {
+  grid-column:1/-1;grid-row:4;justify-content:flex-start;margin:22px 0 17px;
+  font-size:8px;letter-spacing:.09em;color:#d0e7d7;
+ }
+ .mascot-world.directed-experience.paper-world .hero-origin span {color:var(--pink);font-size:19px}
+ .mascot-world.directed-experience.paper-world .hero-menu-cta {
+  grid-column:1/-1;grid-row:5;width:100%;min-height:56px;
+  padding-inline:23px;color:var(--ink);background:var(--cream);border-color:var(--cream);
+  font-size:12px;box-shadow:0 4px 0 #092f27;
+ }
+ .mascot-world.directed-experience.paper-world .hero-address {display:none}
+ .mascot-world.directed-experience.paper-world .hero-section-nav {
+  grid-column:1/-1;grid-row:6;display:flex;flex-wrap:nowrap;gap:8px;
+  margin-top:22px;padding:0 0 6px;border:0;overflow-x:auto;
+  scroll-padding-inline:2px;scrollbar-width:thin;scrollbar-color:#fff9e950 transparent;
+ }
+ .mascot-world.directed-experience.paper-world .hero-section-nav a {
+  flex:0 0 auto;min-height:44px;padding:10px 14px;border:1px solid #fff9e940;
+  border-radius:99px;background:transparent;color:var(--cream);font-size:11px;white-space:nowrap;
+ }
+ .mascot-world.directed-experience.paper-world .hero-section-nav .section-nav-main {background:var(--mint);border-color:var(--mint);color:var(--ink)}
+ .mascot-world.directed-experience.paper-world .hero-section-nav a span {display:inline;font-size:14px;margin-left:7px}
+ .mascot-world.directed-experience.paper-world .hero-section-nav a:focus-visible {outline-color:var(--pink);outline-offset:-4px}
+
+ /* A photographic cover followed by the complete, immediately readable menu. */
+ .mascot-world.directed-experience.paper-world #signature {
+  display:grid;grid-template-columns:minmax(0,1fr);gap:0;
+  padding:38px var(--mobile-gutter) 40px;background:#f7d5df;
+  border-bottom:1px solid #173e3420;
+ }
+ .mascot-world.directed-experience.paper-world #signature::before {opacity:.035}
+ .mascot-world.directed-experience.paper-world .signature-copy {display:contents}
+ .mascot-world.directed-experience.paper-world .signature-copy>.eyebrow {
+  grid-row:1;margin:0 0 8px;font-size:9px;letter-spacing:.15em;color:var(--ink);
+ }
+ .mascot-world.directed-experience.paper-world .signature-copy h2 {
+  grid-row:2;margin:0 0 23px;font-size:clamp(45px,14.5vw,85px);line-height:1;letter-spacing:-.065em;
+ }
+ .mascot-world.directed-experience.paper-world #signature .signature-visual {
+  grid-row:3;max-width:540px;justify-self:center;border-radius:22px 22px 56px 22px;
+  border-color:#173e3438;box-shadow:0 7px 0 #173e3410;
+ }
+ .mascot-world.directed-experience.paper-world #signature .signature-visual .film-toggle {
+  right:14px;bottom:14px;background:var(--cream);font-size:11px;max-width:calc(100% - 28px);
+ }
+ .mascot-world.directed-experience.paper-world .signature-copy>p:not(.eyebrow) {
+  grid-row:4;margin:22px 0 0;font-size:14px;line-height:1.65;
+ }
+ .mascot-world.directed-experience.paper-world .signature-purchase {
+  grid-row:5;display:flex;flex-wrap:wrap;gap:18px;margin:22px 0 0;align-items:center;justify-content:space-between;
+ }
+ .mascot-world.directed-experience.paper-world .signature-purchase .button {min-height:52px;font-size:10px;padding-inline:16px;gap:18px}
+ .mascot-world.directed-experience.paper-world .signature-purchase strong {font-size:31px;font-variant-numeric:tabular-nums}
+
+ .mascot-world.directed-experience.paper-world .menu-section.simple-menu {padding:42px 5vw 46px}
+ .mascot-world.directed-experience.paper-world .simple-menu .section-heading {margin-bottom:25px}
+ .mascot-world.directed-experience.paper-world .simple-menu .section-heading h2 {font-size:clamp(46px,14vw,78px);letter-spacing:-.065em}
+ .mascot-world.directed-experience.paper-world .simple-menu .section-heading>p {font-size:14px;line-height:1.5}
+ .mascot-world.directed-experience.paper-world .simple-menu-filters {
+  top:calc(78px + env(safe-area-inset-top,0px));gap:5px;padding:8px 0 12px;margin-bottom:25px;
+ }
+ .mascot-world.directed-experience.paper-world .simple-menu .simple-menu-filters button {
+  min-height:46px;font-size:12px;padding-inline:8px;border-radius:99px;background:#fffdf5;
+ }
+ .mascot-world.directed-experience.paper-world .simple-menu .simple-menu-filters button[aria-pressed="true"] {background:var(--ink);color:var(--cream);box-shadow:0 3px 0 #39bd9d}
+ .mascot-world.directed-experience.paper-world .simple-menu .product-card {
+  border-radius:24px;border:1px solid #173e3429;box-shadow:0 5px 0 #173e340b;background:#fffdf6;
+ }
+ .mascot-world.directed-experience.paper-world .simple-menu .product-card .product-content {padding:21px 20px 0}
+ .mascot-world.directed-experience.paper-world .simple-menu .product-card h3.product-name {font-size:24px;line-height:1.16;letter-spacing:-.045em}
+ .mascot-world.directed-experience.paper-world .simple-menu .product-description {font-size:14px;line-height:1.6}
+ .mascot-world.directed-experience.paper-world .simple-menu .product-footer {margin-inline:20px;padding-block:17px 20px;gap:12px}
+ .mascot-world.directed-experience.paper-world .simple-menu .product-action {min-height:48px;padding-inline:18px;font-size:12px;background:var(--ink);color:var(--cream)}
+ .mascot-world.directed-experience.paper-world .simple-menu .price-current {font-size:29px;font-variant-numeric:tabular-nums;letter-spacing:-.045em}
+ .mascot-world.directed-experience.paper-world .simple-menu .simple-group-heading {border-bottom:1px solid #173e3426;padding-bottom:12px;margin-bottom:18px}
+ .mascot-world.directed-experience.paper-world .simple-menu .simple-group-heading h3 {font-size:28px}
+ .mascot-world.directed-experience.paper-world .simple-menu .simple-group-heading>span {font-size:11px}
+ .mascot-world.directed-experience.paper-world .simple-menu [data-menu-group="fries"] .product-card {
+  display:grid;grid-template-columns:112px minmax(0,1fr);gap:0;align-items:center;
+ }
+ .mascot-world.directed-experience.paper-world .simple-menu [data-menu-group="fries"] .product-card .product-photo {width:112px;height:112px;aspect-ratio:1;border-radius:18px;margin:12px 0 0 12px;border:0}
+ .mascot-world.directed-experience.paper-world .simple-menu [data-menu-group="fries"] .product-content {padding:18px 14px 6px 24px}
+ .mascot-world.directed-experience.paper-world .simple-menu [data-menu-group="fries"] h3.product-name {font-size:20px;margin-bottom:7px}
+ .mascot-world.directed-experience.paper-world .simple-menu [data-menu-group="fries"] .product-description {font-size:12px;margin:0}
+ .mascot-world.directed-experience.paper-world .simple-menu [data-menu-group="fries"] .product-footer {grid-column:1/-1;margin-top:13px;padding-block:14px}
+ .mascot-world.directed-experience.paper-world .simple-menu [data-menu-group="fries"] .simple-photo-detail {width:27px;height:27px;bottom:6px;right:6px;font-size:16px}
+
+ .mascot-world.directed-experience.paper-world .mobile-quick-nav {
+  left:12px;right:12px;bottom:max(10px,env(safe-area-inset-bottom,0px));padding:6px;
+  grid-template-columns:1fr 1.45fr 1fr;gap:5px;border:1px solid #173e3438;border-radius:26px;
+  background:#fff9e9;box-shadow:0 8px 30px #103c3429,0 2px 5px #103c3410;
+ }
+ .mascot-world.directed-experience.paper-world .mobile-quick-nav a {min-height:52px;border-radius:20px;font-size:10px;transition:background-color 160ms,transform 160ms}
+ .mascot-world.directed-experience.paper-world .mobile-quick-nav a[aria-current="location"] {background:#e3eedc}
+ .mascot-world.directed-experience.paper-world .mobile-quick-nav .quick-order {background:var(--ink);color:var(--cream);border:0}
+ .mascot-world.directed-experience.paper-world .mobile-quick-nav [data-cart-count] {background:var(--pink);color:var(--ink);font-weight:700}
+ .mascot-world.directed-experience.paper-world .mobile-quick-nav a:active {transform:scale(.96)}
+ .mascot-world.directed-experience.paper-world .footer {padding-bottom:calc(var(--dock-clearance) + 26px)}
+ .mascot-world.directed-experience.paper-world .truck-event-choices button {min-height:46px}
+ .mascot-world.directed-experience.paper-world .brand-story {padding-block:48px}
+ .mascot-world.directed-experience.paper-world .brand-story-heading h2 {font-size:clamp(36px,10.4vw,64px)}
+}
+@media (max-width:360px) {
+ .mascot-world.directed-experience.paper-world .mascot-hero {column-gap:10px;grid-template-columns:minmax(0,1fr) 94px}
+ .mascot-world.directed-experience.paper-world .mascot-hero-description {font-size:13px;line-height:1.6}
+ .mascot-world.directed-experience.paper-world .hero-origin {font-size:7px;letter-spacing:.04em}
+ .mascot-world.directed-experience.paper-world .signature-purchase {gap:14px}
+ .mascot-world.directed-experience.paper-world .signature-purchase .button {flex:1;justify-content:center}
+ .mascot-world.directed-experience.paper-world .simple-menu .product-card h3.product-name {font-size:22px}
+ .mascot-world.directed-experience.paper-world .simple-menu .product-footer {margin-inline:16px}
+ .mascot-world.directed-experience.paper-world .simple-menu .product-action {padding-inline:13px}
+}
+@media (prefers-reduced-motion:reduce) {
+ .mascot-world .mobile-menu span,.mascot-world .mobile-quick-nav a {transition:none!important}
+ .mascot-world .mobile-quick-nav a:active {transform:none!important}
+}
+/* Keep the main invitation clear of the dock on compact portrait phones. */
+@media (max-width:430px) and (max-height:650px) {
+ .mascot-world.directed-experience.paper-world .mascot-hero {padding-top:calc(92px + env(safe-area-inset-top,0px))}
+ .mascot-world.directed-experience.paper-world .mascot-hero-copy>.eyebrow {margin-bottom:14px}
+ .mascot-world.directed-experience.paper-world .mascot-hero h1 {margin-bottom:18px}
+ .mascot-world.directed-experience.paper-world .hero-origin {margin-block:16px 14px}
+}

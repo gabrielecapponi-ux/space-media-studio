@@ -1,0 +1,337 @@
+/* Full-bleed event poster. The photo and contact strip remain useful without JS. */
+#truck.truck-tour {
+  --tour-ink: #143e34;
+  --tour-paper: #fff6df;
+  --tour-pink: #f7aeb5;
+  background: var(--tour-ink);
+  color: var(--tour-paper);
+  padding: 0;
+  isolation: isolate;
+  scroll-margin-top: 0;
+  border: 0;
+  overflow: clip;
+}
+.truck-tour * {
+  box-sizing: border-box;
+}
+.truck-tour button,
+.truck-tour a {
+  -webkit-tap-highlight-color: transparent;
+}
+.truck-tour :focus-visible {
+  outline: 3px solid #f68b9b;
+  outline-offset: -5px;
+}
+.truck-tour .tour-cover {
+  display: grid;
+  grid-template-columns: minmax(0, 0.66fr) minmax(0, 1fr);
+  align-items: stretch;
+  margin: 0;
+}
+.truck-tour .tour-intro {
+  position: relative;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: clamp(28px, 4.1vw, 78px);
+  background: var(--tour-ink);
+  border-top: 9px solid var(--tour-pink);
+}
+.truck-tour .tour-intro h2 {
+  color: var(--tour-paper);
+  font:
+    700 clamp(44px, 4.85vw, 88px)/0.96 DynaPuff,
+    sans-serif;
+  letter-spacing: -0.074em;
+  margin: 0;
+  max-width: 100%;
+  text-wrap: balance;
+}
+.truck-tour h2 em {
+  display: inline-block;
+  color: var(--tour-pink);
+  font-style: normal;
+  white-space: nowrap;
+}
+.truck-tour .tour-deck {
+  max-width: 30ch;
+  margin: clamp(20px, 2.8vw, 46px) 0 0;
+  font:
+    500 clamp(15px, 1.4vw, 20px)/1.46 'Instrument Sans',
+    sans-serif;
+  letter-spacing: -0.02em;
+  color: var(--tour-paper);
+}
+.truck-tour .tour-screen {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  aspect-ratio: 4/3;
+  min-width: 0;
+  margin: 0;
+  background: #355047;
+}
+.truck-tour .tour-screen > img,
+.truck-tour .tour-screen > video {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
+  border: 0;
+  border-radius: 0;
+}
+.truck-tour .tour-screen > video {
+  z-index: 1;
+  opacity: 0;
+  pointer-events: none;
+}
+.truck-tour .tour-screen > video[data-playing] {
+  opacity: 1;
+}
+.truck-tour .tour-screen::after {
+  content: '';
+  position: absolute;
+  z-index: 2;
+  inset: 60% 0 0;
+  pointer-events: none;
+  background: linear-gradient(0deg, #0b190ed9, transparent);
+}
+.truck-tour .tour-screen figcaption {
+  position: absolute;
+  z-index: 3;
+  bottom: clamp(16px, 2vw, 32px);
+  left: clamp(20px, 2.5vw, 40px);
+  display: grid;
+  gap: 5px;
+  color: #fff6df;
+  text-shadow: 0 1px 8px #091d16b3;
+  font:
+    650 clamp(30px, 3.1vw, 54px)/1 DynaPuff,
+    sans-serif;
+  letter-spacing: -0.055em;
+}
+.truck-tour .tour-motion {
+  position: absolute;
+  z-index: 4;
+  right: clamp(16px, 2.2vw, 36px);
+  bottom: clamp(16px, 2vw, 32px);
+  display: grid;
+  place-items: center;
+  background: #143e34ed;
+  color: var(--tour-paper);
+  border: 1px solid #fff6dfa6;
+  border-radius: 50%;
+  width: 46px;
+  height: 46px;
+  min-height: 44px;
+  font:
+    700 19px/1 Arial,
+    sans-serif;
+  cursor: pointer;
+}
+.truck-tour [hidden] {
+  display: none !important;
+}
+.truck-tour .tour-route {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-bottom: 1px solid #143e3452;
+  background: var(--tour-paper);
+}
+.truck-tour .tour-route button {
+  display: flex;
+  gap: clamp(6px, 1vw, 16px);
+  justify-content: center;
+  align-items: center;
+  min-height: clamp(55px, 5vw, 80px);
+  padding: 10px 5px;
+  color: var(--tour-ink);
+  background: transparent;
+  border: 0;
+  border-right: 1px solid #143e3445;
+  border-radius: 0;
+  font:
+    650 clamp(17px, 1.9vw, 30px)/1.12 'Instrument Sans',
+    sans-serif;
+  letter-spacing: -0.04em;
+  cursor: pointer;
+}
+.truck-tour .tour-route button:last-child {
+  border-right: 0;
+}
+.truck-tour .tour-route button[aria-pressed='true'] {
+  background: var(--tour-pink);
+}
+.truck-tour .tour-route button:disabled {
+  cursor: default;
+  opacity: 1;
+}
+.truck-tour .tour-contact {
+  display: flex;
+  justify-content: space-between;
+  gap: 25px;
+  align-items: center;
+  padding: clamp(28px, 3.6vw, 66px) clamp(24px, 4.1vw, 78px);
+  color: var(--tour-ink);
+  background: var(--tour-paper);
+}
+.truck-tour .tour-contact h3 {
+  margin: 0 0 7px;
+  color: var(--tour-ink);
+  font:
+    650 clamp(32px, 3.4vw, 58px)/1.01 DynaPuff,
+    sans-serif;
+  letter-spacing: -0.064em;
+}
+.truck-tour .tour-contact p {
+  margin: 0;
+  color: var(--tour-ink);
+  font:
+    500 clamp(15px, 1.15vw, 19px)/1.4 'Instrument Sans',
+    sans-serif;
+}
+.truck-tour .tour-contact address {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: clamp(14px, 2.2vw, 40px);
+  font-style: normal;
+}
+.truck-tour .tour-contact a {
+  text-decoration: none;
+}
+.truck-tour .tour-phone {
+  display: grid;
+  grid-template-columns: 1fr 26px;
+  grid-template-rows: auto auto;
+  align-items: center;
+  column-gap: 12px;
+  background: var(--tour-ink);
+  color: var(--tour-paper);
+  border-radius: 12px;
+  padding: 11px 17px;
+}
+.truck-tour .tour-phone > span {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.truck-tour .tour-phone strong {
+  font:
+    650 clamp(16px, 1.45vw, 24px)/1.12 'Instrument Sans',
+    sans-serif;
+  white-space: nowrap;
+}
+.truck-tour .tour-phone > b {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  color: var(--tour-pink);
+  font-size: 25px;
+  line-height: 1;
+}
+.truck-tour .tour-email {
+  display: inline-flex;
+  gap: 9px;
+  align-items: center;
+  min-height: 44px;
+  color: var(--tour-ink);
+  font:
+    650 15px/1.2 'Instrument Sans',
+    sans-serif;
+  text-decoration: underline !important;
+  text-underline-offset: 4px;
+}
+.truck-tour .tour-email span {
+  font-size: 17px;
+}
+@media (max-width: 839px) {
+  .truck-tour .tour-cover {
+    display: block;
+  }
+  .truck-tour .tour-intro {
+    padding: 32px 6vw 25px;
+    border-top-width: 7px;
+  }
+  .truck-tour .tour-intro h2 {
+    font-size: clamp(44px, 12vw, 76px);
+    line-height: 0.96;
+    letter-spacing: -0.07em;
+  }
+  .truck-tour .tour-deck {
+    font-size: 16px;
+    line-height: 1.36;
+    max-width: 43ch;
+    margin-top: 15px;
+  }
+  .truck-tour .tour-screen {
+    aspect-ratio: 1.14;
+    max-height: 560px;
+  }
+  .truck-tour .tour-route button {
+    min-height: 56px;
+  }
+  .truck-tour .tour-contact {
+    padding: 26px 6vw 30px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 17px;
+  }
+  .truck-tour .tour-contact address {
+    justify-content: flex-start;
+    gap: 22px;
+  }
+  .truck-tour .tour-contact h3 {
+    font-size: 34px;
+  }
+  .truck-tour .tour-phone {
+    padding: 10px 13px;
+    column-gap: 3px;
+  }
+  .truck-tour .tour-email {
+    font-size: 14px;
+  }
+  .truck-tour .tour-motion {
+    width: 44px;
+    height: 44px;
+  }
+}
+@media (min-width: 560px) and (max-width: 839px) {
+  .truck-tour .tour-screen {
+    aspect-ratio: 1.55;
+  }
+  .truck-tour .tour-intro h2 br {
+    display: none;
+  }
+  .truck-tour .tour-intro h2 em {
+    margin-left: 0.1em;
+  }
+}
+@media (max-width: 355px) {
+  .truck-tour .tour-intro {
+    padding-top: 24px;
+  }
+  .truck-tour .tour-deck {
+    font-size: 15px;
+  }
+  .truck-tour .tour-contact address {
+    gap: 13px;
+  }
+  .truck-tour .tour-route button {
+    font-size: 16px;
+  }
+  .truck-tour .tour-email {
+    font-size: 13px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .truck-tour * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

@@ -1,0 +1,88 @@
+/* Centered shop sign, with opening hours in the quieter left/right margins. */
+.mascot-world.directed-experience.paper-world.quick-experience .header {gap:18px;border-radius:22px;padding-inline:24px;}
+.mascot-world.directed-experience.paper-world.quick-experience .header .brand {position:absolute;left:50%;transform:translateX(-50%);width:100px;height:64px;margin:0;}
+.mascot-world.directed-experience.paper-world.quick-experience .header .nav {gap:18px;max-width:41%;}
+.mascot-world.directed-experience.paper-world.quick-experience .header .nav a {font-size:12px;white-space:nowrap;}
+.header-hours {display:flex;flex-direction:column;justify-content:center;gap:3px;min-height:44px;margin-left:auto;color:var(--ink);text-decoration:none;font-size:11px;line-height:1.2;}
+.header-hours strong {display:flex;align-items:center;gap:6px;font-size:11px;}
+.header-hours strong::before {content:'';width:6px;height:6px;border-radius:50%;background:#987560;flex-shrink:0;}
+.header-hours[data-open="true"] strong::before {background:#16815c;box-shadow:0 0 0 3px #16815c14;}
+.header-hours>span {padding-left:12px;font-size:10px;opacity:.78;}
+.header-hours:focus-visible {outline:2px solid var(--ink);outline-offset:5px;border-radius:5px;}
+.opening-hours {display:grid;grid-template-columns:1fr 1fr;gap:25px 8vw;max-width:1100px;margin:38px auto 0;padding-top:28px;border-top:1px solid #173e3430;scroll-margin-top:105px;}
+.opening-hours h3 {font-size:28px;margin:0 0 9px;}
+.opening-hours p {font-size:13px;line-height:1.7;margin:0;}
+.opening-hours dl {margin:0;display:grid;grid-template-columns:1fr auto;gap:11px 16px;font-size:13px;line-height:1.6;}
+.opening-hours dt {font-weight:700;}
+.opening-hours dd {margin:0;text-align:right;}
+.opening-hours-source {grid-column:1/-1;font-size:11px!important;opacity:.8;}
+.opening-hours a {color:inherit;text-underline-offset:3px;}
+.bag-world-header {position:relative;min-height:80px;}
+.bag-world-header .brand {position:absolute;left:50%;transform:translateX(-50%);margin:0;}
+.bag-world-header .header-hours {margin:0 auto 0 0;}
+.bag-world-header .bag-world-back {margin-left:auto;}
+.brand-story.story-editorial {gap:40px 7vw;grid-template-columns:1fr 1fr;}
+.story-introduction {align-self:center;}
+.story-brand-visual {margin:0;}
+.story-brand-visual>img {display:block;width:100%;aspect-ratio:1;object-fit:cover;border-radius:30px 30px 80px 30px;border:1px solid #173e3425;}
+.story-brand-visual figcaption {font-size:11px;line-height:1.6;margin-top:12px;color:#466353;max-width:420px;}
+.story-maker {align-self:center;}
+.story-maker h3 {font-size:clamp(30px,3.8vw,50px);line-height:1.12;letter-spacing:-.045em;margin:0 0 22px;}
+.story-maker>p:not(.eyebrow) {font-size:16px;line-height:1.8;max-width:450px;}
+.story-author {display:flex;gap:17px;align-items:center;color:inherit;text-decoration:none;margin:26px 0;}
+.story-author>img {width:84px;height:84px;border-radius:50%;object-fit:cover;border:1px solid #173e3430;}
+.story-author>span {display:flex;flex-direction:column;gap:5px;font-size:13px;line-height:1.4;}
+.story-author strong {font-size:16px;}
+.story-author small {font-size:11px;text-decoration:underline;text-underline-offset:3px;}
+.story-portfolio {display:inline-flex;gap:22px;align-items:center;min-height:44px;border-bottom:1px solid #173e3460;color:inherit;text-decoration:none;font-size:13px;font-weight:700;}
+.story-city {grid-column:1/-1;padding-top:12px;}
+.story-city>h3 {font-size:clamp(28px,3vw,40px);margin:0 0 27px;letter-spacing:-.04em;}
+.story-source-links {display:grid;grid-template-columns:repeat(3,1fr);gap:30px;}
+.story-source-links>a {display:flex;flex-direction:column;align-items:flex-start;padding:22px 0 10px;border-top:1px solid #173e3440;color:inherit;text-decoration:none;}
+.story-source-links>a>span {font-size:11px;opacity:.72;margin-bottom:13px;}
+.story-source-links strong {font-size:21px;line-height:1.25;letter-spacing:-.03em;}
+.story-source-links p {font-size:13px;line-height:1.65;max-width:290px;margin:14px 0 18px;}
+.story-source-links small {font-size:11px;font-weight:700;margin-top:auto;}
+.story-source-links>a:focus-visible,.story-author:focus-visible,.story-portfolio:focus-visible {outline:3px solid #173e34;outline-offset:6px;}
+@media (min-width:761px) and (max-width:1100px) {
+ .mascot-world.directed-experience.paper-world.quick-experience .header {padding-inline:17px;gap:12px;}
+ .mascot-world.directed-experience.paper-world.quick-experience .header .nav {gap:12px;}
+ .mascot-world.directed-experience.paper-world.quick-experience .header .nav a {font-size:10px;}
+ .mascot-world.directed-experience.paper-world.quick-experience .header .brand {width:85px;}
+ .mascot-world.directed-experience.paper-world.quick-experience .header .header-bag {font-size:9px;padding-inline:12px;gap:8px;}
+ .header-hours strong {font-size:10px;}
+ .header-hours>span {font-size:9px;}
+}
+@media (max-width:760px) {
+ .mascot-world.directed-experience.paper-world.quick-experience .header {height:64px;border-radius:20px;padding-inline:14px 9px;gap:0;}
+ .mascot-world.directed-experience.paper-world.quick-experience .header .brand {width:90px;height:58px;}
+ .header-hours {margin:0 auto 0 0;max-width:calc(50% - 54px);font-size:9px;}
+ .header-hours strong {font-size:9px;line-height:1.35;gap:5px;}
+ .header-hours>span {font-size:9px;line-height:1.25;padding-left:11px;}
+ .header-hours strong::before {width:5px;height:5px;}
+ .mascot-world.directed-experience.paper-world.quick-experience .header .mobile-menu {margin-left:auto;}
+ .opening-hours {grid-template-columns:1fr;gap:22px;margin-top:27px;}
+ .opening-hours h3 {font-size:26px;}
+ .opening-hours dl {font-size:12px;}
+ .bag-world-header .brand {width:82px;height:58px;}
+ .bag-world-header .header-hours {max-width:110px;}
+ .bag-world-header .bag-world-back {font-size:8px;gap:5px;}
+ .brand-story.story-editorial {grid-template-columns:1fr;gap:25px;}
+ .story-brand-visual>img {border-radius:22px 22px 54px 22px;}
+ .story-maker {padding-top:12px;}
+ .story-maker h3 {font-size:36px;}
+ .story-maker>p:not(.eyebrow) {font-size:15px;}
+ .story-author {margin-block:22px;}
+ .story-source-links {grid-template-columns:1fr;gap:6px;}
+ .story-source-links>a {padding:21px 0;}
+ .story-source-links strong {font-size:23px;}
+ .story-source-links p {max-width:none;margin-block:11px 14px;}
+ .story-city {padding-top:15px;}
+ .story-city>h3 {margin-bottom:20px;}
+ .mascot-world.directed-experience.paper-world.quick-experience .simple-menu-filters {top:calc(82px + env(safe-area-inset-top,0px));}
+ .mascot-world.directed-experience.paper-world.quick-experience .simple-menu [data-menu-group="fries"] .product-card {display:flex;flex-direction:column;align-items:stretch;}
+ .mascot-world.directed-experience.paper-world.quick-experience .simple-menu [data-menu-group="fries"] .product-card .product-photo {width:100%;height:auto;aspect-ratio:1;margin:0;border-radius:23px 23px 0 0;}
+ .mascot-world.directed-experience.paper-world.quick-experience .simple-menu [data-menu-group="fries"] .product-card .product-content {padding:21px 20px 0;}
+ .mascot-world.directed-experience.paper-world.quick-experience .simple-menu [data-menu-group="fries"] h3.product-name {font-size:24px;}
+ .mascot-world.directed-experience.paper-world.quick-experience .simple-menu [data-menu-group="fries"] .product-footer {margin-inline:20px;padding-block:17px 20px;}
+}

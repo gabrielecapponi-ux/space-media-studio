@@ -1,0 +1,172 @@
+/* The food is the interface. Depth is a surface detail, never a reading gate. */
+.quick-experience{--header-clearance:94px}
+.quick-experience .header{position:fixed;height:66px;top:12px;background:#fff9e9f7;box-shadow:0 4px 0 #173e3410;backdrop-filter:blur(8px)}
+.quick-experience .header .brand{height:60px}
+.quick-experience .nav a{font-size:14px}
+.quick-experience .mobile-navigation{position:fixed}
+.quick-experience .hero{min-height:0;padding-top:124px;padding-bottom:60px;gap:6vw}
+.quick-experience .hero-intro>.eyebrow{font-size:11px}
+.quick-experience .hero h1{font-size:clamp(56px,6.9vw,100px);margin:20px 0 24px}
+.quick-experience .hero-description{font-size:17px;max-width:380px}
+.quick-experience .hero-footnote{font-size:12px}
+.quick-experience .hero-visual{max-width:440px}
+.quick-experience .photo-stage{aspect-ratio:1.18;isolation:isolate}
+.quick-experience .photo-surface{transform:none;transition:none}
+.quick-experience .hero-product-caption{margin-top:20px}
+.quick-experience .hero-product-caption .eyebrow{font-size:11px;margin-bottom:5px}
+.quick-experience .hero-price>span{font-size:10px}
+.quick-experience .hero-price s{font-size:13px}
+.quick-experience .hero-price strong{font-size:27px}
+.quick-experience .hero-seal{width:86px;height:86px;font-size:8px}
+.quick-experience .hero-seal span{font-size:26px}
+.quick-experience .hero-bottom{display:none}
+.quick-experience .film-credit{font-size:9px;color:#275544;opacity:1}
+.quick-experience .photo-zoom{display:grid;place-items:center;text-decoration:none;width:44px;height:44px;left:18px;bottom:17px;z-index:2}
+.film-toggle{position:absolute;z-index:2;right:18px;bottom:17px;border:1px solid #173e3440;background:#fff9e9f2;border-radius:30px;min-height:44px;padding:10px 16px;font-size:12px;font-weight:700}
+.film-toggle:disabled{display:none}
+.quick-experience .brand-ribbon{padding:14px 0;font-size:21px;gap:32px}
+.quick-experience .section-pad{padding-block:68px}
+.quick-experience .simple-menu{scroll-margin-top:0}
+.quick-experience .simple-menu .section-heading h2{font-size:clamp(46px,5.5vw,74px)}
+.quick-experience .simple-menu-filters{position:sticky;top:86px;z-index:5;padding:12px 0;margin-top:-12px;background:#fff9e9;box-shadow:0 5px 0 #fff9e9}
+.quick-experience .simple-menu .product-card{box-shadow:0 5px 0 #173e3410,0 12px 22px -18px #173e3450}
+.quick-experience .simple-menu .product-card h3.product-name{font-family:'Instrument Sans',sans-serif;font-weight:700;font-size:23px;letter-spacing:-.035em;line-height:1.2}
+.quick-experience .simple-menu .product-description{font-size:14px}
+.quick-experience .simple-menu .product-photo img{transition:transform .2s ease-out}
+.quick-experience .simple-menu .product-action{font-size:12px}
+.quick-experience .bag-section{padding-block:52px}
+.quick-experience .bag-link{height:330px}
+.quick-experience .paper-bag{scale:.78}
+.quick-experience .bag-circle{max-width:320px}
+.quick-experience .bag-shadow{bottom:0}
+.quick-experience .bag-invitation{bottom:-16px;font-size:11px}
+.quick-experience .bag-copy h2{font-size:clamp(44px,5.2vw,72px)}
+.quick-experience .bag-price-note{font-size:12px}
+.quick-experience .story-body p{font-size:16px}
+.quick-experience .visit-top>span{font-size:11px}
+.quick-experience .visit-bottom{font-size:13px}
+.quick-experience .truck-stage{height:220px;margin-top:20px}
+.quick-experience .truck-stage.is-requested{height:500px}
+.quick-experience .truck-scene-footer{font-size:10px;margin-top:0}
+.quick-experience .truck-rotate{font-size:12px;min-height:46px}
+.quick-experience .truck-details p{font-size:15px}
+.quick-experience .event-tags span{font-size:10px}
+.quick-experience .truck-details .truck-note{font-size:12px}
+.quick-experience .product-dialog::backdrop{backdrop-filter:none;background:#092b22cc}
+.quick-experience .product-dialog-info{min-width:0}
+.quick-experience .dialog-product-description{font-size:16px}
+.dialog-product-options{font-size:13px;line-height:1.5}
+.dialog-product-options:empty{display:none}
+.quick-experience .dialog-product-info .button{font-size:13px;width:100%;min-height:50px}
+.dialog-pickup{display:flex;align-items:center;min-height:48px;margin-top:14px;font-size:13px;line-height:1.5}
+.quick-experience .dialog-order-note{font-size:12px}
+.quick-experience .dialog-close{position:sticky;float:right;margin:12px 12px -58px 0;top:12px;right:12px;box-shadow:0 2px 8px #173e3420}
+.quick-experience .footer-bottom,.quick-experience .footer-bottom button,.quick-experience .footer-bottom a{font-size:11px}
+.optional-map{margin:38px 0;padding:24px;border:1px solid #173e3430;border-radius:22px;background:#e2efdd}
+.optional-map>div:first-child{display:flex;align-items:center;justify-content:space-between;gap:24px}
+.optional-map h3{font-size:26px;margin-bottom:9px}
+.optional-map p{font-size:14px;margin-bottom:0}
+.optional-map .button{flex-shrink:0;font-size:12px}
+.optional-map [data-map-status]{font-size:12px;margin-top:10px}
+.optional-map [data-map-status]:empty{display:none}
+.optional-map .parma-journey{margin-inline:-24px}
+@media(hover:hover) and (pointer:fine){.quick-experience .simple-menu .product-photo:hover img{transform:scale(1.035)}.film-toggle:hover{background:var(--pink)}}
+@media(max-width:1040px) and (min-width:761px){.quick-experience .nav a{font-size:12px}.quick-experience .hero-description{font-size:15px}.quick-experience .hero-intro>.eyebrow{font-size:9px}.quick-experience .hero-product-caption p{font-size:17px}}
+@media(max-width:760px){
+ :root{scroll-padding-top:90px}
+ .quick-experience .header{height:62px;padding-inline:12px;top:10px}
+ .quick-experience .header .button{min-height:42px;font-size:10px;gap:12px}
+ .quick-experience .hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;gap:16px;padding:104px 5vw 32px}
+ .quick-experience .hero-intro>.eyebrow{font-size:8px;line-height:1.5;letter-spacing:.04em;margin:0 0 15px;display:block}
+ .quick-experience .status-dot{display:none}
+ .quick-experience .hero h1{font-size:clamp(36px,10.2vw,70px);margin:0 0 15px;line-height:1.05;letter-spacing:-.06em}
+ .quick-experience .hero h1>span{font-size:.68em;white-space:nowrap}
+ .quick-experience .hero-description{display:none}
+ .quick-experience .hero-intro>.button{font-size:11px;line-height:1.2;min-height:48px;padding:10px 13px;gap:8px;width:100%;max-width:230px}
+ .quick-experience .hero-intro>.button span{font-size:19px}
+ .quick-experience .hero-footnote{font-size:11px;line-height:1.45;margin-top:16px;max-width:200px}
+ .quick-experience .hero-visual{padding-top:0;max-width:300px}
+ .quick-experience .photo-stage{aspect-ratio:.94;padding:4px;border-radius:48% 48% 14px 14px}
+ .quick-experience .photo-surface{border-radius:48% 48% 10px 10px}
+ .quick-experience .hero-seal,.quick-experience .hero-star,.quick-experience .film-credit{display:none}
+ .quick-experience .photo-zoom{left:7px;bottom:9px;width:44px;min-width:44px;height:44px;font-size:21px}
+ .film-toggle{right:7px;bottom:9px;width:calc(100% - 62px);min-height:44px;padding:5px;font-size:10px;line-height:1.15}
+ .quick-experience .hero-product-caption{display:block;margin:13px 0 0;text-align:center}
+ .quick-experience .hero-product-caption .eyebrow{font-size:10px;margin:0}
+ .quick-experience .hero-product-caption p{display:none}
+ .quick-experience .hero-price{text-align:center;margin-top:8px}
+ .quick-experience .hero-price>span{font-size:8px;padding:4px 6px}
+ .quick-experience .hero-price>div{margin-top:8px}
+ .quick-experience .hero-price strong{font-size:22px}
+ .quick-experience .hero-price s{font-size:11px;margin-right:3px}
+ .quick-experience .brand-ribbon{font-size:17px;padding:11px 0;gap:20px}
+ .quick-experience .brand-ribbon i{font-size:19px}
+ .quick-experience .section-pad{padding:38px 5vw}
+ .quick-experience .simple-menu .section-heading{display:flex;align-items:end;gap:18px;margin-bottom:20px}
+ .quick-experience .simple-menu .section-heading h2{font-size:40px;white-space:nowrap}
+ .quick-experience .simple-menu .section-heading .eyebrow{font-size:9px;margin-bottom:6px}
+ .quick-experience .simple-menu .section-heading>p{font-size:12px;max-width:145px;line-height:1.45;margin:0 0 2px}
+ .quick-experience .simple-menu-filters{top:80px;padding:10px 0;margin-bottom:22px}
+ .quick-experience .simple-menu .simple-menu-filters button{font-size:12px;gap:4px;padding-inline:5px}
+ .quick-experience .simple-menu .simple-menu-filters button span{display:none}
+ .quick-experience .simple-menu .product-card h3.product-name{font-size:19px;line-height:1.22}
+ .quick-experience .simple-menu .product-description{font-size:13px;line-height:1.5}
+ .quick-experience .simple-menu .product-action{font-size:12px;padding-inline:13px}
+ .quick-experience .simple-menu .promo-badge,.quick-experience .simple-menu .diet-badge{font-size:10px}
+ .quick-experience .simple-menu .menu-price-note{font-size:12px}
+ .quick-experience .bag-section{display:grid;grid-template-columns:1fr 90px;gap:5px;padding-bottom:46px}
+ .quick-experience .bag-copy h2{font-size:36px;line-height:1.04}
+ .quick-experience .bag-copy>p:not(.eyebrow){font-size:14px;margin:15px 0}
+ .quick-experience .bag-copy>p br{display:none}
+ .quick-experience .bag-copy>.button{font-size:11px;gap:10px;padding-inline:14px;min-height:48px;max-width:100%}
+ .quick-experience .bag-price-note{font-size:11px;margin-top:15px}
+ .quick-experience .bag-link{height:150px;margin:0;align-self:start;top:35px}
+ .quick-experience .paper-bag{scale:.32;position:absolute;left:calc(50% - 115px);top:calc(50% - 150px)}
+ .quick-experience .bag-circle{width:120px;max-width:none}
+ .quick-experience .bag-shadow{width:75px;bottom:4px;height:10px;filter:blur(5px)}
+ .quick-experience .bag-spark{font-size:25px;right:-5px;top:3px}
+ .quick-experience .bag-invitation{display:none}
+ .quick-experience .story-heading h2{font-size:31px}
+ .quick-experience .story-body p{font-size:15px}
+ .quick-experience .story-mascot{display:none}
+ .quick-experience .visit-top{align-items:start}
+ .quick-experience .visit-top h3{font-size:20px}
+ .quick-experience .visit-top>span{font-size:9px}
+ .quick-experience .storefront-photo{height:370px}
+ .quick-experience .map-button{font-size:11px;min-height:46px}
+ .quick-experience .visit-bottom{font-size:13px;gap:15px 20px}
+ .quick-experience .truck-section{padding-inline:0}
+ .quick-experience .truck-heading{padding-inline:5vw}
+ .quick-experience .truck-heading h2{font-size:40px}
+ .quick-experience .truck-heading>p{font-size:15px}
+ .quick-experience .truck-stage{height:140px;margin-top:12px}
+ .quick-experience .truck-stage.is-requested{height:390px}
+ .quick-experience .truck-scene-footer{margin-inline:5vw;font-size:10px;display:flex;flex-wrap:wrap;gap:12px}
+ .quick-experience .truck-scene-footer>span{max-width:none;font-size:9px}
+ .quick-experience .truck-rotate{font-size:11px;min-height:46px}
+ .quick-experience .truck-details{padding-inline:5vw}
+ .quick-experience .truck-details p{font-size:14px}
+ .quick-experience .truck-details .button{font-size:11px}
+ .quick-experience .product-dialog{width:calc(100vw - 24px);max-height:calc(100dvh - 24px);margin:auto;border-radius:22px}
+ .quick-experience .dialog-product-image{height:clamp(150px,31dvh,280px);max-height:280px;min-height:0}
+ .quick-experience .dialog-product-info{padding:22px}
+ .quick-experience .dialog-product-info h2{font:700 27px/1.12 'Instrument Sans',sans-serif;letter-spacing:-.03em;margin-bottom:15px}
+ .quick-experience .dialog-product-info .eyebrow{font-size:10px;margin-bottom:12px}
+ .quick-experience .dialog-product-description{font-size:15px}
+ .quick-experience .dialog-product-price{margin:17px 0}
+ .quick-experience .dialog-product-price strong{font-size:28px}
+ .quick-experience .dialog-order-note{font-size:11px}
+ .quick-experience .footer-bottom>div{gap:4px 18px}
+ .quick-experience .footer-bottom,.quick-experience .footer-bottom button,.quick-experience .footer-bottom a{font-size:10px}
+ .optional-map{padding:20px;margin-block:24px}
+ .optional-map>div:first-child{display:block}
+ .optional-map h3{font-size:25px}
+ .optional-map .button{margin-top:20px;font-size:11px}
+ .optional-map .parma-journey{margin-inline:-20px}
+}
+@media(max-width:360px){.quick-experience .simple-menu .section-heading>p{display:none}.quick-experience .hero{column-gap:12px}.quick-experience .hero-intro>.button{font-size:10px}.quick-experience .hero-footnote{font-size:10px}.quick-experience .simple-menu .product-card h3.product-name{font-size:18px}.quick-experience .bag-section{grid-template-columns:1fr 70px}.quick-experience .bag-copy h2{font-size:32px}}
+@media(prefers-reduced-motion:reduce){.quick-experience *{animation:none!important;transition:none!important;scroll-behavior:auto!important}.quick-experience .simple-menu .product-photo:hover img{transform:none}}
+/* Keep optional map titles clear of the fixed navigation. */
+.optional-map .parma-sticky{top:86px;height:calc(100svh - 100px);min-height:480px}
+@media(max-width:760px){.optional-map .parma-sticky{top:80px;height:calc(100svh - 80px);min-height:480px}.optional-map .parma-heading{top:20px}}
+@media(prefers-reduced-motion:reduce){.optional-map .parma-sticky{top:0}}

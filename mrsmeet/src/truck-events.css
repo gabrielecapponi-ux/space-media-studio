@@ -1,0 +1,62 @@
+/* Event scenery stays behind the separate, original-brand 3D truck. */
+.mascot-world.directed-experience.paper-world .truck-section:has(#truck-events){
+ grid-template-columns:minmax(0,.8fr) minmax(0,1.4fr);gap:clamp(24px,4vw,64px);align-items:center;
+}
+#truck-events{min-width:0;width:100%;max-width:860px;justify-self:end}
+#truck-events .truck-event-stage{
+ position:relative;width:100%;aspect-ratio:16/11;overflow:hidden;isolation:isolate;
+ border:1px solid #fff9e92b;border-radius:28px;background:#334c3f;
+ box-shadow:0 18px 45px -28px #031c16b0;
+}
+#truck-events .truck-event-media{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+#truck-events .truck-event-media > :is(img,video){
+ position:absolute;inset:0;display:block;width:100%;height:100%;margin:0;padding:0;
+ object-fit:cover;object-position:50% 50%;border:0;border-radius:0;
+ filter:none;transform:none;scale:1;mix-blend-mode:normal;mask-image:none;
+ transition:opacity 600ms cubic-bezier(.22,1,.36,1);pointer-events:none;
+}
+#truck-events .truck-event-media > img{z-index:0}
+#truck-events .truck-event-media > .truck-event-video{z-index:1;opacity:0;transition-duration:160ms}
+#truck-events .truck-event-media > .truck-event-video[data-ready='true']{opacity:1}
+#truck-events .truck-event-stage::after{
+ content:'';position:absolute;inset:0;z-index:1;pointer-events:none;
+ background:linear-gradient(180deg,#08241d06 45%,#08241d20);
+}
+#truck-events #truck-scene{
+ position:absolute;inset:0;z-index:2;width:100%;height:100%;max-width:none;min-width:0;
+ margin:0;padding:0;aspect-ratio:auto;background:none;border:0;border-radius:0;transform:none;
+}
+#truck-events #truck-scene::before,#truck-events #truck-scene::after,
+#truck-events #truck-scene > .service-ground{display:none}
+#truck-events #truck-scene .truck-poster{mask-image:none;filter:none;object-fit:contain;transform:none;scale:1}
+#truck-events #truck-scene [data-truck-replay]{
+ right:12px;bottom:12px;min-width:44px;min-height:44px;background:#173e34e8;border-color:#fff9e980;
+}
+#truck-events .truck-event-footer{display:grid;gap:16px;margin-top:19px}
+#truck-events [data-truck-event-caption]{margin:0;font:500 15px/1.55 'Instrument Sans',sans-serif;color:#edf5e7;text-wrap:balance}
+#truck-events .truck-event-choices{display:flex;flex-wrap:wrap;gap:8px}
+#truck-events [data-truck-event-choice]{
+ display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 18px;
+ border:1px solid #d0e9d77a;border-radius:999px;background:transparent;color:#fff9e9;
+ font:600 13px/1.4 'Instrument Sans',sans-serif;letter-spacing:.015em;cursor:pointer;touch-action:manipulation;
+ transition:background-color 160ms ease,color 160ms ease,border-color 160ms ease;
+}
+#truck-events [data-truck-event-choice][aria-pressed='true']{background:#fff9e9;color:#173e34;border-color:#fff9e9}
+#truck-events [data-truck-event-choice]:focus-visible{outline:3px solid #f2bbd1;outline-offset:3px}
+@media(hover:hover){#truck-events [data-truck-event-choice]:hover{border-color:#fff9e9}}
+@media(max-width:760px){
+ .mascot-world.directed-experience.paper-world .truck-section:has(#truck-events){grid-template-columns:minmax(0,1fr);gap:28px}
+ #truck-events{max-width:560px;justify-self:center}
+ #truck-events .truck-event-stage{aspect-ratio:1;border-radius:23px}
+ #truck-events .truck-event-media > :is(img[src*='/festival'],video[src*='/festival']){object-position:100% 50%}
+ #truck-events .truck-event-media > :is(img[src*='/dove-vuoi'],video[src*='/dove-vuoi']){object-position:50% 50%}
+ #truck-events .truck-event-footer{gap:13px;margin-top:16px}
+ #truck-events [data-truck-event-caption]{font-size:14px;line-height:1.55}
+ #truck-events .truck-event-choices{gap:7px}
+ #truck-events [data-truck-event-choice]{flex:1 1 auto;padding-inline:14px;font-size:12px}
+}
+#truck-events[data-truck-event-motion='off'] .truck-event-media > :is(img,video),
+.motion-paused #truck-events .truck-event-media > :is(img,video){transition:none}
+@media(prefers-reduced-motion:reduce){
+ #truck-events .truck-event-media > :is(img,video),#truck-events [data-truck-event-choice]{transition:none}
+}

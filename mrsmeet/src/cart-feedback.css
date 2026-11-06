@@ -1,0 +1,50 @@
+/* Jelly Button — HorizonX approved export, adapted for Mr Smeet.
+ * Source: outputs/horizon-jelly-button/source/jelly-button.html
+ * Ported from uiverse.io/vinodjangid07/horrible-husky-70 under the MIT License.
+ * Preserve the original export and its attribution with this derived stylesheet.
+ */
+.smeet-jelly-button {
+  --smeet-jelly-face:#f2bbd1; --smeet-jelly-gloss:#ffe1ec; --smeet-jelly-shade:#bf819a;
+  position:relative; transform-origin:center;
+  background-color:var(--smeet-jelly-face)!important; color:#173e34!important;
+  box-shadow:inset 0 7px 9px var(--smeet-jelly-gloss),inset 0 -7px 9px #bf819a70,0 3px 0 #173e3433!important;
+}
+.smeet-jelly-button::before,.smeet-jelly-button::after {
+  content:''; position:absolute; left:50%; transform:translateX(-50%);
+  width:65%; height:2px; border-radius:50%; pointer-events:none;
+}
+.smeet-jelly-button::before {top:5px;background:#fff9e9a8}
+.smeet-jelly-button::after {bottom:5px;background:#fff9e940}
+.smeet-jelly-active {animation:smeet-jelly-jello 480ms ease both}
+/* Individual scale preserves existing hover/press transforms and hitbox layout. */
+@keyframes smeet-jelly-jello {
+  0%,100%{scale:1} 30%{scale:1.12 .88} 40%{scale:.88 1.12}
+  50%{scale:1.07 .93} 65%{scale:.975 1.025} 75%{scale:1.025 .975}
+}
+.smeet-cart-feedback-layer {
+  position:fixed; inset:0; z-index:100001; pointer-events:none!important;
+  overflow:visible; contain:layout style; user-select:none;
+}
+.smeet-cart-feedback-layer--modal {position:absolute}
+.smeet-cart-feedback-layer * {pointer-events:none!important;box-sizing:border-box}
+.smeet-cart-flight {
+  position:absolute; display:block; width:60px!important; height:60px!important;
+  margin:0!important; padding:2px!important; object-fit:contain;
+  border:1.5px solid #173e34; border-radius:18px; background:#fff9e9;
+  box-shadow:0 6px 18px #173e3438; will-change:transform,opacity;
+}
+.smeet-cart-plus-one {
+  position:absolute; display:grid; place-items:center; min-width:36px; height:29px;
+  padding:3px 8px; border:1px solid #173e34; border-radius:20px;
+  background:#f2bbd1; color:#173e34; box-shadow:0 2px 0 #173e34;
+  font:800 13px/1 'Instrument Sans',sans-serif; white-space:nowrap;
+  transform:translate(-50%,-50%);
+}
+.smeet-cart-target-pulse {animation:smeet-cart-receive 340ms ease both}
+@keyframes smeet-cart-receive {0%,100%{scale:1} 38%{scale:1.09 .93} 70%{scale:.98 1.03}}
+@media(prefers-reduced-motion:reduce) {
+  .smeet-jelly-active,.smeet-cart-target-pulse {animation:none!important}
+  .smeet-cart-flight {display:none!important}
+}
+.motion-paused .smeet-jelly-active,.motion-paused .smeet-cart-target-pulse {animation:none!important}
+.motion-paused .smeet-cart-flight {display:none!important}

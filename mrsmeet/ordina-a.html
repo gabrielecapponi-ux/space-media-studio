@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#39bd9d" />
+  <meta name="description" content="Il tuo sacchetto Mr Smeet: ritrova i burger che hai scelto, modifica le quantità e scegli come ordinare. Il meetico smash burger di Parma." />
+  <title>Ordina qui — Mr Smeet, Parma</title>
+  <meta name="robots" content="noindex" />
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+  <link rel="preload" href="./fonts/DynaPuff.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="./fonts/InstrumentSans-Regular.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="./src/site.css" />
+  <link rel="stylesheet" href="./src/loader.css" />
+  <link rel="stylesheet" href="./src/cart.css" />
+  <link rel="stylesheet" href="./src/order-world.css" />
+  <link rel="stylesheet" href="./src/service-motion.css" />
+  <link rel="stylesheet" href="./src/motion-direction.css" />
+  <link rel="stylesheet" href="./src/paper-world.css" />
+  <link rel="stylesheet" href="./src/menu-unified.css" />
+  <link rel="stylesheet" href="./src/menu-framing.css" />
+  <link rel="stylesheet" href="./src/refinement.css" />
+  <link rel="stylesheet" href="./src/route-header.css" />
+</head>
+<body class="order-world paper-world">
+  <a class="skip-link" href="#scegli">Vai al tuo sacchetto</a>
+  <a class="route-hours" href="./versione-a.html#orari" data-opening-status title="Vedi gli orari ordinari di Mr Smeet">
+    <strong data-opening-label>Orari di apertura</strong><span data-opening-detail>Consulta gli orari della settimana</span>
+    <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 12 12 4M4 4h8v8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </a>
+  <header class="route-header">
+    <div class="route-glass">
+      <a class="route-brand" href="./versione-a.html" aria-label="Mr Smeet, torna all’inizio"><img src="./images/wordmark.png" alt="Mr Smeet" width="900" height="600" /></a>
+    </div>
+  </header>
+  <main id="scegli" class="bag-world-main">
+    <section class="bag-world-hero" aria-labelledby="bag-world-title">
+      <div class="bag-world-copy">
+        <p class="eyebrow"><span aria-hidden="true">✦</span> C’È POSTO PER UN ALTRO MORSO.</p>
+        <h1 id="bag-world-title">IL TUO<br /><span>SACCHETTO.</span></h1>
+        <p class="bag-world-lead">Tu metti la fame.<br />Mr Smeet ci mette lo stile.</p>
+        <p class="bag-world-description">Scegli i tuoi preferiti dal menu, ritrovali nel sacchetto e decidi come ordinarli.</p>
+        <div class="bag-world-actions">
+          <button class="bag-world-launch" type="button" data-cart-open disabled>
+            <svg viewBox="0 0 32 36" width="24" height="27" fill="none" aria-hidden="true"><path d="M5 11h22l2 22H3L5 11Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M11 14V8a5 5 0 0 1 10 0v6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <span>APRI IL SACCHETTO</span><span class="bag-world-count" data-cart-count aria-label="0 prodotti nel sacchetto">0</span>
+          </button>
+          <p class="bag-world-helper">Un’occhiata alle quantità. Poi scegli come ordinare.</p>
+          <p class="bag-world-feedback" data-order-feedback role="status" hidden>Il sacchetto non è disponibile in questo momento. <a href="./versione-a.html#menu">Torna al menu</a> oppure chiamaci al <a href="tel:+3905211792168">0521 1792168</a>.</p>
+        </div>
+        <noscript>
+          <style>.bag-world-launch,.bag-world-helper{display:none}</style>
+          <div class="bag-world-fallback"><p>La fame non aspetta: puoi <a href="https://glovoapp.com/it/it/parma/stores/mr-smeet-pmf" target="_blank" rel="noopener noreferrer">aprire il menu su Glovo ↗</a> oppure <a href="tel:+3905211792168">chiamare per il ritiro</a>.</p></div>
+        </noscript>
+      </div>
+      <div class="bag-world-portrait" data-service-motion data-service-type="bag">
+        <div class="bag-world-orbit" aria-hidden="true"></div>
+        <span class="bag-world-spark bag-world-spark-one" aria-hidden="true">✦</span>
+        <span class="bag-world-spark bag-world-spark-two" aria-hidden="true">✧</span>
+        <img data-service-object class="bag-world-mascot" src="./images/services/bag.webp" alt="Il sacchetto Mr Smeet in 3D" width="1100" height="1100" fetchpriority="high" decoding="async" />
+        <div class="bag-world-stamp" aria-hidden="true"><span>NICE TO</span><strong>SMEET<br />YOU!</strong><span>✦</span></div>
+        <p class="bag-world-caption">Fame fatta bene, dal primo all’ultimo morso.</p>
+      </div>
+    </section>
+    <div class="bag-world-ribbon" aria-hidden="true"><span>FAME?</span><i>✳</i><span>CI PENSA MR SMEET.</span><i>✳</i><span>FAME?</span><i>✳</i><span>CI PENSA MR SMEET.</span></div>
+    <section class="bag-world-visit" aria-label="Ritiro e contatti">
+      <p><strong>Preferisci chiamare?</strong><br /><a href="tel:+3905211792168">0521 1792168 <span aria-hidden="true">↗</span></a></p>
+      <p>Ci trovi in <strong>via D’Azeglio 84/A, Parma.</strong><br />Un salto in Oltretorrente. Un morso da ricordare.</p>
+      <a class="bag-world-visit-link" href="./versione-a.html#dove-siamo">VIENI DA NOI <span aria-hidden="true">↗</span></a>
+    </section>
+  </main>
+  <footer class="bag-world-footer"><span>MR SMEET · MEETICO SMASH BURGER.</span><a href="https://www.instagram.com/mr_smeet/" target="_blank" rel="noopener noreferrer">Seguici su Instagram <span aria-hidden="true">↗</span></a></footer>
+  <script type="module" src="./src/order.js"></script>
+</body>
+</html>

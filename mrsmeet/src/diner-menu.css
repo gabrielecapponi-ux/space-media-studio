@@ -1,0 +1,268 @@
+/* One opening spread: where to find us and the photographed Classic Triplo. */
+#top { scroll-margin-top: 5rem; }
+.mascot-world.directed-experience.paper-world #signature.diner-lead {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(240px, 380px);
+  grid-template-areas: "title burger";
+  align-items: center;
+  gap: clamp(20px, 6vw, 100px);
+  padding: 28px max(6vw, calc((100vw - 1120px) / 2));
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  background: #164438;
+  color: var(--cream);
+}
+.paper-world #signature.diner-lead::before,
+.paper-world #signature.diner-lead::after { content: none; }
+#signature.diner-lead .signature-copy {
+  grid-area: title;
+  display: block;
+  position: relative;
+  padding: 0;
+  text-align: left;
+}
+#signature.diner-lead .signature-copy h1 {
+  margin: 0;
+  max-width: 8.5em;
+  font: 700 clamp(60px, 7vw, 102px)/.99 'DynaPuff', sans-serif;
+  letter-spacing: -.065em;
+  text-wrap: balance;
+  text-transform: none;
+  color: var(--cream);
+}
+#signature.diner-lead h1 span { display: block; color: #ffc4d2; }
+#signature.diner-lead .lead-address {
+  display: inline-flex;
+  align-items: center;
+  gap: .55em;
+  min-height: 44px;
+  margin-top: 15px;
+  color: var(--cream);
+  font-size: clamp(14px, 1.4vw, 19px);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+}
+.mascot-world.directed-experience.paper-world #signature.diner-lead .signature-visual {
+  grid-area: burger;
+  position: relative;
+  width: 100%;
+  min-height: 0;
+  margin: 0;
+  aspect-ratio: 1;
+  border: 0;
+  border-radius: 26px;
+  box-shadow: none;
+}
+
+/* The desktop bag stays within reach while comparing the dishes. */
+#menu .catalog-tools {
+  position: sticky;
+  top: var(--route-bar-height, 72px);
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 8px 0;
+  background: var(--cream);
+}
+#menu .catalog-tools .simple-menu-filters {
+  position: static;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+}
+#menu .catalog-bag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 17px;
+  border-radius: 32px;
+  background: var(--ink);
+  color: var(--cream);
+  font-weight: 700;
+  text-decoration: none;
+}
+#menu .catalog-bag b {
+  display: grid;
+  place-items: center;
+  min-width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--pink);
+  color: var(--ink);
+  font-size: 13px;
+}
+#menu[data-menu-view]:not([data-menu-view="all"]) .simple-group-heading {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+@media (max-width: 760px) {
+  .mascot-world.directed-experience.paper-world #signature.diner-lead {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr);
+    gap: clamp(8px, 3vw, 24px);
+    padding: 14px clamp(12px, 4vw, 26px) 16px;
+  }
+  #signature.diner-lead .signature-copy h1 {
+    font-size: clamp(36px, 10.7vw, 67px);
+    letter-spacing: -.065em;
+    line-height: .99;
+    text-wrap: initial;
+  }
+  #signature.diner-lead .lead-address {
+    margin-top: 6px;
+    font-size: clamp(12px, 3.25vw, 16px);
+    gap: .25em;
+  }
+  .mascot-world.directed-experience.paper-world #signature.diner-lead .signature-visual { border-radius: 16px; }
+  .mascot-world.directed-experience.paper-world #signature.diner-lead .signature-visual .film-toggle {
+    right: 4px;
+    bottom: 4px;
+    width: 44px;
+    height: 44px;
+    min-height: 44px;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+    background: transparent;
+    color: var(--ink);
+    font-size: 0;
+  }
+  #signature.diner-lead .film-toggle[aria-pressed="true"]::before { content: "Ⅱ"; }
+  #signature.diner-lead .film-toggle::before {
+    content: "↻";
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    margin: auto;
+    border-radius: 50%;
+    background: var(--cream);
+    font: 24px/1 'Instrument Sans', sans-serif;
+  }
+
+  .paper-world #menu.simple-menu { padding: 22px clamp(12px, 4vw, 26px) 18px; }
+  #menu.simple-menu::before { content: none; }
+  #menu .section-heading { display: block; margin: 0 0 10px; padding: 0; }
+  #menu .section-heading h2#menu-title {
+    margin: 0;
+    color: var(--ink);
+    font-size: clamp(33px, 9vw, 50px);
+    line-height: 1.1;
+    letter-spacing: -.055em;
+    text-transform: none;
+  }
+  #menu .catalog-tools { position: static; display: block; margin-bottom: 4px; padding: 0; background: transparent; }
+  #menu .catalog-bag { display: none; }
+  #menu .catalog-tools .simple-menu-filters {
+    display: grid;
+    width: 100%;
+    grid-template-columns: 1.4fr 1fr 1.1fr .85fr;
+    gap: 4px;
+    overflow: visible;
+  }
+  #menu .simple-menu-filters button {
+    display: block;
+    min-width: 0;
+    min-height: 44px;
+    padding: 4px 5px;
+    border: 1px solid #214b3e45;
+    border-radius: 22px;
+    background: transparent;
+    color: var(--ink);
+    box-shadow: none;
+    font: 700 clamp(12px, 3.1vw, 15px)/1.15 'Instrument Sans', sans-serif;
+    text-transform: none;
+  }
+  #menu .simple-menu-filters button[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--cream); }
+  #menu #simple-menu-groups { padding-top: 4px; }
+  #menu .simple-menu-group { margin: 0; }
+  #menu .simple-group-heading { margin: 18px 0 0; padding-bottom: 4px; }
+  #menu .simple-product-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0; }
+  #menu .simple-product-grid .product-card {
+    display: grid;
+    grid-template-columns: clamp(98px, 32vw, 165px) minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    align-items: center;
+    gap: 3px clamp(10px, 3vw, 20px);
+    height: auto;
+    min-height: 0;
+    padding: 12px 0;
+    border: 0;
+    border-bottom: 1px solid #173e3430;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    overflow: visible;
+  }
+  #menu .simple-product-grid .product-card .product-photo {
+    grid-column: 1;
+    grid-row: 1 / 3;
+    align-self: center;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+    border-radius: 14px;
+  }
+  #menu .product-card .product-photo .simple-photo-detail { display: none; }
+  #menu .simple-product-grid .product-content {
+    grid-area: 1 / 2;
+    width: 100%;
+    min-width: 0;
+    align-self: end;
+    padding: 0;
+    gap: 0;
+  }
+  #menu .simple-product-grid .product-content h3.product-name {
+    margin: 0;
+    font: 740 clamp(18px, 4.7vw, 24px)/1.11 'Instrument Sans', sans-serif;
+    letter-spacing: -.035em;
+  }
+  #menu .product-content .product-description { margin: 4px 0 0; font-size: 13px; line-height: 1.35; }
+  #menu .simple-product-grid .product-badges { margin: 0 0 4px; }
+  #menu .product-badges :is(.promo-badge,.diet-badge) {
+    min-height: 0;
+    padding: 2px 6px;
+    font-size: 10px;
+    line-height: 1.25;
+  }
+  #menu .product-content .product-options { display: none; }
+  #menu .simple-product-grid .product-footer {
+    grid-area: 2 / 2;
+    align-self: start;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 3px 6px;
+    margin: 0;
+    padding: 3px 0 0;
+    border: 0;
+  }
+  #menu .product-footer .product-price { display: flex; flex-flow: column; gap: 0; align-items: flex-start; margin: 0; }
+  #menu .product-price .price-original { font-size: 11px; line-height: 1.15; }
+  #menu .product-price .price-current { font-size: clamp(16px, 4.5vw, 22px); line-height: 1.15; letter-spacing: -.035em; }
+  #menu .product-footer .product-action { min-height: 44px; padding: 6px 10px; gap: 5px; font-size: 12px; }
+  #menu .menu-price-note { margin: 10px 0 0; padding: 0; }
+  #menu .menu-price-note p { margin: 3px 0; font-size: 12px; line-height: 1.4; }
+}
+
+@media (scripting: none) {
+  #menu .catalog-tools .simple-menu-filters,
+  #signature.diner-lead #hero-motion { display: none; }
+}
