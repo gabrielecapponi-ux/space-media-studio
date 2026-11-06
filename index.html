@@ -13,18 +13,19 @@
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="it_IT" />
     <meta property="og:url" content="https://gabrielecapponi-ux.github.io/space-media-studio/" />
-    <meta property="og:image" content="https://gabrielecapponi-ux.github.io/space-media-studio/images/atelier-water-desktop.jpg" />
-    <meta property="og:image:width" content="1600" />
-    <meta property="og:image:height" content="900" />
+    <meta property="og:image" content="https://gabrielecapponi-ux.github.io/space-media-studio/images/flagship-water-desktop.jpg" />
+    <meta property="og:image:width" content="3840" />
+    <meta property="og:image:height" content="2160" />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preload" href="/fonts/SpaceGrotesk-Variable.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="stylesheet" href="/src/atelier.css" />
+    <link rel="stylesheet" href="/src/flagship.css" />
     <script type="application/ld+json">
       {"@context":"https://schema.org","@type":"ProfessionalService","name":"Space Media Studio","url":"https://gabrielecapponi-ux.github.io/space-media-studio/","description":"Studio creativo a Parma. Loghi, branding, siti web, motion design, animazioni 3D, campagne e sviluppo di progetti e candidature a bandi per aziende, APS e ASD.","telephone":"+393479623498","address":{"@type":"PostalAddress","streetAddress":"Stradello Conrad Marca Relli 1","addressLocality":"Parma","addressCountry":"IT"},"founder":[{"@type":"Person","name":"Gabriele Capponi"},{"@type":"Person","name":"Mattia Tanzi"}]}
     </script>
   </head>
-  <body>
+  <body class="flagship-site">
     <a class="atelier-skip" href="#main">Vai al contenuto</a>
 
     <header class="atelier-header" id="top">
@@ -55,25 +56,29 @@
     </header>
 
     <main id="main" tabindex="-1">
-      <section class="atelier-hero" aria-labelledby="atelier-title">
-        <div class="atelier-hero-media" aria-hidden="true">
-          <video id="atelier-film" class="atelier-film" muted playsinline loop preload="none" poster="/images/atelier-water-desktop.jpg"></video>
-          <div class="atelier-hero-shade"></div>
+      <section class="atelier-hero flagship-hero" aria-labelledby="atelier-title">
+        <div class="flagship-masthead">
+          <p class="atelier-eyebrow flagship-location">Studio creativo indipendente · Parma</p>
+          <h1 id="atelier-title"><span>Brand.</span> <span>Web.</span> <em>Motion.</em></h1>
         </div>
-        <div class="atelier-hero-content">
-          <p class="atelier-eyebrow">Studio creativo indipendente · Parma</p>
-          <h1 id="atelier-title">Brand. Web.<br /><em>Motion.</em></h1>
-          <div class="atelier-hero-bottom">
-            <p class="atelier-hero-promise">Siti web, e-commerce, loghi e video per la tua attività.</p>
-            <a class="atelier-scroll-link" href="#concepts">Guarda cosa possiamo creare <span aria-hidden="true">↓</span></a>
+        <div class="flagship-water-stage" role="img" aria-label="Una goccia cade sull’acqua. All’impatto si forma una corona, poi dalla superficie risale una colonna sottile.">
+          <picture class="flagship-water-poster">
+            <source media="(max-width: 1024px) and (orientation: portrait)" srcset="/images/flagship-water-mobile.jpg" />
+            <img src="/images/flagship-water-desktop.jpg" alt="" fetchpriority="high" width="3840" height="2160" />
+          </picture>
+          <video id="atelier-film" class="atelier-film" muted playsinline loop preload="none"></video>
+        </div>
+        <div class="flagship-baseline">
+          <p class="atelier-hero-promise">Siti web, e-commerce, loghi e video per la tua attività.</p>
+          <div class="flagship-film-controls">
+            <button type="button" id="atelier-film-toggle" class="flagship-transport" aria-controls="atelier-film" aria-label="Riproduci il film" aria-pressed="false" hidden>
+              <span data-film-symbol aria-hidden="true">▷</span><span data-film-label>Riproduci</span>
+            </button>
+            <button type="button" id="atelier-film-replay" class="flagship-transport" aria-controls="atelier-film" hidden>
+              <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M4 8a6.5 6.5 0 1 1 .7 6M4 3.5V8h4.5"/></svg>Rivedi la caduta
+            </button>
           </div>
-        </div>
-        <div class="atelier-hero-controls">
-          <span class="atelier-preview-label">Space / Web · Brand · Video</span>
-          <button type="button" id="atelier-film-toggle" class="atelier-film-toggle" aria-label="Riproduci il film" aria-pressed="false" hidden>
-            <span data-film-symbol aria-hidden="true">▷</span>
-            <span data-film-label>Riproduci</span>
-          </button>
+          <a class="atelier-scroll-link" href="#concepts">Guarda cosa possiamo creare <span aria-hidden="true">↓</span></a>
         </div>
       </section>
 
@@ -85,23 +90,23 @@
 
         <nav class="atelier-service-index" id="services" aria-label="I cinque servizi dello studio">
           <a href="#web">
-            <span class="atelier-service-thumb atelier-service-thumb--web" aria-hidden="true"><img src="/images/motion-web.jpg" width="1920" height="1080" alt="" loading="lazy" decoding="async" /></span>
+            <span class="atelier-service-thumb atelier-service-thumb--web" aria-hidden="true"><img src="/images/flagship-web-thumb.webp" width="320" height="180" alt="" loading="lazy" decoding="async" fetchpriority="low" /></span>
             <span class="atelier-service-caption"><span class="atelier-service-key">01</span><strong>Siti web</strong><span class="atelier-service-arrow" aria-hidden="true">↓</span></span>
           </a>
           <a href="#brand">
-            <span class="atelier-service-thumb atelier-service-thumb--brand" aria-hidden="true"><img src="/images/showcase-brand.jpg" width="1920" height="1080" alt="" loading="lazy" decoding="async" /></span>
+            <span class="atelier-service-thumb atelier-service-thumb--brand" aria-hidden="true"><img src="/images/flagship-brand-thumb.webp" width="320" height="180" alt="" loading="lazy" decoding="async" fetchpriority="low" /></span>
             <span class="atelier-service-caption"><span class="atelier-service-key">02</span><strong>Loghi e identità</strong><span class="atelier-service-arrow" aria-hidden="true">↓</span></span>
           </a>
           <a href="#motion">
-            <span class="atelier-service-thumb atelier-service-thumb--motion" aria-hidden="true"><img src="/images/showcase-product.jpg" width="1920" height="1080" alt="" loading="lazy" decoding="async" /></span>
+            <span class="atelier-service-thumb atelier-service-thumb--motion" aria-hidden="true"><img src="/images/flagship-product-thumb.webp" width="320" height="180" alt="" loading="lazy" decoding="async" fetchpriority="low" /></span>
             <span class="atelier-service-caption"><span class="atelier-service-key">03</span><strong>Video e 3D</strong><span class="atelier-service-arrow" aria-hidden="true">↓</span></span>
           </a>
           <a href="#campaign">
-            <span class="atelier-service-thumb atelier-service-thumb--campaign" aria-hidden="true"><img src="/images/motion-campaign.jpg" width="1920" height="1080" alt="" loading="lazy" decoding="async" /></span>
+            <span class="atelier-service-thumb atelier-service-thumb--campaign" aria-hidden="true"><img src="/images/flagship-campaign-thumb.webp" width="320" height="180" alt="" loading="lazy" decoding="async" fetchpriority="low" /></span>
             <span class="atelier-service-caption"><span class="atelier-service-key">04</span><strong>Social e campagne</strong><span class="atelier-service-arrow" aria-hidden="true">↓</span></span>
           </a>
           <a href="#funding">
-            <span class="atelier-service-thumb atelier-service-thumb--funding" aria-hidden="true"><img src="/images/funding-journey.svg" width="1600" height="900" alt="" loading="lazy" decoding="async" /></span>
+            <span class="atelier-service-thumb atelier-service-thumb--funding" aria-hidden="true"><img src="/images/flagship-funding-thumb.webp" width="320" height="180" alt="" loading="lazy" decoding="async" fetchpriority="low" /></span>
             <span class="atelier-service-caption"><span class="atelier-service-key">05</span><strong>Progetti e bandi</strong><span class="atelier-service-arrow" aria-hidden="true">↓</span></span>
           </a>
         </nav>
@@ -120,14 +125,20 @@
               </div>
             </div>
             <figure class="atelier-concept-visual atelier-service-film atelier-web-reel atelier-media-stage" data-service-film="web">
-              <video id="atelier-web-video" data-atelier-media data-media-label="lo showreel dei siti web" muted playsinline loop preload="none" poster="/images/motion-web.jpg" data-src-desktop="./films/motion-web.mp4" data-src-mobile="./films/motion-web-mobile.mp4" data-poster-desktop="./images/motion-web.jpg" data-poster-mobile="./images/motion-web-mobile.jpg" width="1920" height="1080" aria-label="Showreel veloce di cinque siti possibili: e-commerce sportivo, prodotto di design, servizi beauty, ristorante ed eventi per associazioni"></video>
+              <div class="atelier-film-surface">
+                <picture class="atelier-film-poster" aria-hidden="true">
+                  <source media="(max-width: 760px) and (orientation: portrait)" srcset="/images/flagship-web-mobile.jpg" />
+                  <img src="/images/flagship-web.jpg" width="1920" height="1080" alt="" loading="lazy" decoding="async" fetchpriority="low" />
+                </picture>
+                <video id="atelier-web-video" data-atelier-media data-media-label="lo showreel dei siti web" muted playsinline loop preload="none" data-src-desktop="./films/flagship-web.mp4" data-src-mobile="./films/flagship-web-mobile.mp4" data-poster-desktop="./images/flagship-web.jpg" data-poster-mobile="./images/flagship-web-mobile.jpg" width="1920" height="1080" aria-label="Showreel veloce di cinque siti possibili: e-commerce di strumenti musicali, prodotto di design, servizi beauty, ristorante ed eventi per associazioni"></video>
+              </div>
               <figcaption class="atelier-reel-caption">Cinque direzioni web originali: vendita online, prodotto, servizi, ristorazione ed eventi.</figcaption>
               <button type="button" class="atelier-case-film-toggle" data-media-toggle aria-controls="atelier-web-video" aria-label="Riproduci lo showreel dei siti web" aria-pressed="false" hidden><span data-media-symbol aria-hidden="true">▷</span><span data-media-label>Riproduci</span></button>
             </figure>
             <div class="atelier-reel-explore">
-              <div class="atelier-reel-status"><p><span class="atelier-reel-dot" aria-hidden="true"></span><span data-reel-label>E-commerce / Sport</span></p><span>Apri una demo <span aria-hidden="true">↗</span></span></div>
+              <div class="atelier-reel-status"><p><span class="atelier-reel-dot" aria-hidden="true"></span><span data-reel-label>E-commerce / Strumenti musicali</span></p><span>Apri una demo <span aria-hidden="true">↗</span></span></div>
               <nav class="atelier-reel-types" aria-label="Apri gli esempi di siti web">
-                <a href="./showcase/index.html?scene=shift" data-reel-scene="shift" data-reel-title="E-commerce / Sport" aria-current="true" target="_blank" rel="noopener noreferrer"><span aria-hidden="true">01</span><strong>E-commerce</strong><span aria-hidden="true">↗</span></a>
+                <a href="./showcase/index.html?scene=shift" data-reel-scene="shift" data-reel-title="E-commerce / Strumenti musicali" aria-current="true" target="_blank" rel="noopener noreferrer"><span aria-hidden="true">01</span><strong>E-commerce</strong><span aria-hidden="true">↗</span></a>
                 <a href="./showcase/index.html?scene=vela" data-reel-scene="vela" data-reel-title="Prodotto / Design" target="_blank" rel="noopener noreferrer"><span aria-hidden="true">02</span><strong>Prodotto</strong><span aria-hidden="true">↗</span></a>
                 <a href="./showcase/index.html?scene=nude" data-reel-scene="nude" data-reel-title="Servizi / Beauty" target="_blank" rel="noopener noreferrer"><span aria-hidden="true">03</span><strong>Servizi</strong><span aria-hidden="true">↗</span></a>
                 <a href="./showcase/index.html?scene=basilico" data-reel-scene="basilico" data-reel-title="Ristorazione / Prenotazioni" target="_blank" rel="noopener noreferrer"><span aria-hidden="true">04</span><strong>Ristorazione</strong><span aria-hidden="true">↗</span></a>
@@ -162,7 +173,13 @@
               </div>
             </div>
             <figure class="atelier-concept-visual atelier-service-film atelier-media-stage" data-service-film="brand">
-              <video id="atelier-brand-video" data-atelier-media data-media-label="il film 3D CACAO ATELIER" muted playsinline loop preload="none" poster="/images/showcase-brand.jpg" data-src-desktop="./films/showcase-brand.mp4" data-src-mobile="./films/showcase-brand-mobile.mp4" data-poster-desktop="./images/showcase-brand.jpg" data-poster-mobile="./images/showcase-brand-mobile.jpg" width="1920" height="1080" aria-label="Identità CACAO ATELIER: un cofanetto di cioccolato artigianale si apre e rivela il marchio, i materiali e le tavolette scolpite in 3D"></video>
+              <div class="atelier-film-surface">
+                <picture class="atelier-film-poster" aria-hidden="true">
+                  <source media="(max-width: 760px) and (orientation: portrait)" srcset="/images/flagship-brand-mobile.jpg" />
+                  <img src="/images/flagship-brand.jpg" width="1920" height="1080" alt="" loading="lazy" decoding="async" fetchpriority="low" />
+                </picture>
+                <video id="atelier-brand-video" data-atelier-media data-media-label="il film 3D CACAO ATELIER" muted playsinline loop preload="none" data-src-desktop="./films/flagship-brand.mp4" data-src-mobile="./films/flagship-brand-mobile.mp4" data-poster-desktop="./images/flagship-brand.jpg" data-poster-mobile="./images/flagship-brand-mobile.jpg" width="1920" height="1080" aria-label="Il cofanetto CACAO ATELIER si apre. Una ripresa ravvicinata mostra la carta fibrosa, la lamina e il cioccolato in rilievo."></video>
+              </div>
               <figcaption class="atelier-film-caption"><span>CACAO ATELIER / Brand e packaging</span><span>Logo, confezione, identità.</span></figcaption>
               <button type="button" class="atelier-case-film-toggle" data-media-toggle aria-controls="atelier-brand-video" aria-label="Riproduci il film 3D CACAO ATELIER" aria-pressed="false" hidden><span data-media-symbol aria-hidden="true">▷</span><span data-media-label>Riproduci</span></button>
             </figure>
@@ -194,7 +211,13 @@
               </div>
             </div>
             <figure class="atelier-concept-visual atelier-service-film atelier-media-stage" data-service-film="product">
-              <video id="atelier-product-video" data-atelier-media data-media-label="il film di prodotto LUMA" muted playsinline loop preload="none" poster="/images/showcase-product.jpg" data-src-desktop="./films/showcase-product.mp4" data-src-mobile="./films/showcase-product-mobile.mp4" data-poster-desktop="./images/showcase-product.jpg" data-poster-mobile="./images/showcase-product-mobile.jpg" width="1920" height="1080" aria-label="Film LUMA: una fotocamera di design con metallo satinato, comandi lavorati e ottiche che si separano e si ricompongono in una ripresa 3D continua"></video>
+              <div class="atelier-film-surface">
+                <picture class="atelier-film-poster" aria-hidden="true">
+                  <source media="(max-width: 760px) and (orientation: portrait)" srcset="/images/flagship-product-mobile.jpg" />
+                  <img src="/images/flagship-product.jpg" width="1920" height="1080" alt="" loading="lazy" decoding="async" fetchpriority="low" />
+                </picture>
+                <video id="atelier-product-video" data-atelier-media data-media-label="il film di prodotto LUMA" muted playsinline loop preload="none" data-src-desktop="./films/flagship-product.mp4" data-src-mobile="./films/flagship-product-mobile.mp4" data-poster-desktop="./images/flagship-product.jpg" data-poster-mobile="./images/flagship-product-mobile.jpg" width="1920" height="1080" aria-label="Film LUMA: una fotocamera di design con metallo satinato, comandi lavorati e diaframma e ghiere in dettaglio"></video>
+              </div>
               <figcaption class="atelier-film-caption"><span>LUMA / Film di prodotto</span><span>Spot di lancio / CGI prodotto.</span></figcaption>
               <button type="button" class="atelier-case-film-toggle" data-media-toggle aria-controls="atelier-product-video" aria-label="Riproduci il film di prodotto LUMA" aria-pressed="false" hidden><span data-media-symbol aria-hidden="true">▷</span><span data-media-label>Riproduci</span></button>
             </figure>
@@ -226,8 +249,14 @@
               </div>
             </div>
             <figure class="atelier-concept-visual atelier-service-film atelier-campaign-film atelier-media-stage" data-service-film="campaign">
-              <video id="atelier-campaign-video" data-atelier-media data-media-label="la campagna SHIFT" muted playsinline loop preload="none" poster="/images/motion-campaign.jpg" data-src-desktop="./films/motion-campaign.mp4" data-src-mobile="./films/motion-campaign-mobile.mp4" data-poster-desktop="./images/motion-campaign.jpg" data-poster-mobile="./images/motion-campaign-mobile.jpg" width="1920" height="1080" aria-label="Campagna SHIFT: lo stesso prodotto diventa un video social verticale, un annuncio quadrato e un banner in prospettiva 3D"></video>
-              <figcaption class="atelier-film-caption"><span>SHIFT / Campagna prodotto</span><span>Un messaggio, più formati.</span></figcaption>
+              <div class="atelier-film-surface">
+                <picture class="atelier-film-poster" aria-hidden="true">
+                  <source media="(max-width: 760px) and (orientation: portrait)" srcset="/images/flagship-campaign-mobile.jpg" />
+                  <img src="/images/flagship-campaign.jpg" width="1920" height="1080" alt="" loading="lazy" decoding="async" fetchpriority="low" />
+                </picture>
+                <video id="atelier-campaign-video" data-atelier-media data-media-label="la campagna SHIFT" muted playsinline loop preload="none" data-src-desktop="./films/flagship-campaign.mp4" data-src-mobile="./films/flagship-campaign-mobile.mp4" data-poster-desktop="./images/flagship-campaign.jpg" data-poster-mobile="./images/flagship-campaign-mobile.jpg" width="1920" height="1080" aria-label="La campagna del campionatore SHIFT PHASE 01 con un video verticale, un annuncio quadrato e un banner in prospettiva 3D"></video>
+              </div>
+              <figcaption class="atelier-film-caption"><span>SHIFT PHASE 01 / Campagna prodotto</span><span>Un messaggio, più formati.</span></figcaption>
               <button type="button" class="atelier-case-film-toggle" data-media-toggle aria-controls="atelier-campaign-video" aria-label="Riproduci la campagna SHIFT" aria-pressed="false" hidden><span data-media-symbol aria-hidden="true">▷</span><span data-media-label>Riproduci</span></button>
             </figure>
 
@@ -244,7 +273,7 @@
                 <p class="idea-status" data-idea-status role="status" aria-live="polite"></p>
               </form>
             </details>
-            <p class="atelier-concept-note">SHIFT / Concept originale.</p>
+            <p class="atelier-concept-note">SHIFT PHASE 01 / Concept originale.</p>
           </article>
         </div>
       </section>
@@ -256,12 +285,17 @@
           <h2 id="funding-title">Progetti &amp;<br />bandi.</h2>
           <p>Dalla tua idea al progetto: scrittura, budget e candidatura. Insieme.</p>
         </div>
-        <figure class="funding-journey" data-funding-journey aria-label="Dall’idea al progetto: ideazione, progettazione insieme, candidatura e realizzazione"><picture class="funding-journey-poster"><source media="(max-width:760px) and (orientation:portrait)" srcset="/images/funding-journey-mobile.svg"><img src="/images/funding-journey.svg" width="1600" height="900" alt="Una linea collega un’idea, la scrittura condivisa, una candidatura e un progetto realizzato.">
-          </picture>
-          <div class="funding-journey-canvas" data-journey-canvas></div>
+        <figure class="funding-journey atelier-service-film atelier-media-stage" data-funding-journey data-service-film="funding" aria-label="Dall’idea al progetto: ideazione, progettazione insieme, candidatura e realizzazione">
+          <div class="atelier-film-surface">
+            <picture class="atelier-film-poster" aria-hidden="true">
+              <source media="(max-width: 760px) and (orientation: portrait)" srcset="/images/flagship-funding-mobile.jpg" />
+              <img src="/images/flagship-funding.jpg" width="1920" height="1080" alt="" loading="lazy" decoding="async" fetchpriority="low" />
+            </picture>
+            <video id="atelier-funding-video" data-atelier-media data-media-label="il percorso dall’idea al progetto" muted playsinline loop preload="none" data-src-desktop="./films/flagship-funding.mp4" data-src-mobile="./films/flagship-funding-mobile.mp4" data-poster-desktop="./images/flagship-funding.jpg" data-poster-mobile="./images/flagship-funding-mobile.jpg" width="1920" height="1080" aria-label="Dall’idea alla candidatura. Il progetto prende forma in un plastico con un padiglione in vetro e rovere."></video>
+          </div>
           <figcaption class="funding-journey-caption"><span data-journey-step>SPACE / Progettazione condivisa</span><strong data-journey-heading>Dall’idea alla realtà.</strong></figcaption>
           <ol class="funding-journey-rail" aria-label="Le fasi del progetto"><li data-journey-phase>Idea</li><li data-journey-phase>Insieme</li><li data-journey-phase>Candidatura</li><li data-journey-phase>Prende vita</li></ol>
-          <button class="funding-journey-toggle" type="button" data-journey-toggle aria-label="Riproduci il percorso dall’idea al progetto" aria-pressed="false" hidden><span data-journey-symbol aria-hidden="true">▷</span></button>
+          <button class="funding-journey-toggle" type="button" data-media-toggle aria-controls="atelier-funding-video" aria-label="Riproduci il percorso dall’idea al progetto" aria-pressed="false" hidden><span data-media-symbol aria-hidden="true">▷</span><span data-media-label hidden>Riproduci</span></button>
         </figure>
         <div class="atelier-funding-content">
           <ol class="atelier-funding-steps">
@@ -311,8 +345,8 @@
       </div>
       <details class="atelier-credits">
         <summary>Concept e crediti <span aria-hidden="true">+</span></summary>
-        <p>Film macro dell’acqua: <a href="https://www.pexels.com/video/a-drop-of-water-in-a-bowl-with-a-black-background-16392049/" target="_blank" rel="noopener noreferrer">Film Composite / Pexels 16392049</a> · <a href="https://www.pexels.com/license/" target="_blank" rel="noopener noreferrer">Licenza Pexels</a>. Filmato stock, non una produzione dello studio.</p>
-        <p>Lo studio di apertura è immaginario. CACAO ATELIER e LUMA sono render originali Blender. Il percorso dei progetti è un’animazione vettoriale originale. I siti e la campagna SHIFT sono composizioni originali in prospettiva 3D; il film di prodotto SHIFT è generato con Higgsfield. Tutti gli esempi sono concept non commissionati, non clienti acquisiti.</p>
+        <p>Ripresa dell’acqua di <a href="https://www.pexels.com/video/a-drop-of-water-in-a-bowl-with-a-black-background-16392049/" target="_blank" rel="noopener noreferrer">Film Composite su Pexels</a>. Montaggio e color grading di Space Media Studio. Lo studio di apertura, il campionatore e la fotocamera sono modellati in Blender. Le demo includono immagini generate con Higgsfield.</p>
+        <p>Lo studio di apertura è immaginario. Tutti gli esempi sono concept non commissionati, non clienti acquisiti. I materiali generativi illustrano una direzione creativa; non documentano prodotti reali o simulazioni fisiche.</p>
       </details>
     </footer>
 

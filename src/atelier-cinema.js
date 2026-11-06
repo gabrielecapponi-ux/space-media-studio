@@ -10,6 +10,7 @@ export function installAtelierCinema({ signal, menu } = {}) {
     video, stage: video.closest('.atelier-media-stage'),
     button: document.querySelector(`[data-media-toggle][aria-controls="${video.id}"]`),
     visible: false, ratio: 0, warm: false, userPaused: false, manual: false, pending: false,
+    interrupted: false, blocked: false,
   }));
   let frame = 0;
   let disposed = false;
@@ -17,12 +18,25 @@ export function installAtelierCinema({ signal, menu } = {}) {
   let requestedPlayer;
   const motionAllowed = () => !reduced.matches && !connection?.saveData;
   const pageAvailable = () => !document.hidden && !suspended && !menu?.open
+    && !document.documentElement.classList.contains('cinema-open')
     && !document.documentElement.classList.contains('entry-pending');
 
-  function poster(player) {
-    const path = portrait.matches ? player.video.dataset.posterMobile : player.video.dataset.posterDesktop;
-    if (path) player.video.poster = new URL(path, document.baseURI).href;
+  function format(player) {
     player.stage.dataset.mediaFormat = portrait.matches ? 'portrait' : 'wide';
+  }
+  function poster(player) {
+    // The responsive HTML picture owns the static arrival. Native posters are
+    // prepared only near the viewport and stay paired with a loaded film.
+    if (player.video.getAttribute('src') && player.video.poster) return;
+    const path = portrait.matches ? player.video.dataset.posterMobile : player.video.dataset.posterDesktop;
+    if (!path) return;
+    const url = new URL(path, document.baseURI).href;
+    if (player.video.poster !== url) player.video.poster = url;
+  }
+  function presentation(player) {
+    // Keep the picture until decoding is ready; an opaque video surface then
+    // covers its whole box, including letterboxing after a device rotation.
+    player.stage.dataset.mediaReady = String(player.video.readyState >= 2 && !player.video.error);
   }
   function source(player) {
     if (player.video.getAttribute('src')) return;
@@ -50,17 +64,40 @@ export function installAtelierCinema({ signal, menu } = {}) {
   const mayPlay = player => !disposed && pageAvailable() && player === foregroundPlayer();
   async function sync(player) {
     if (disposed) return;
+    if (player.warm || player.visible || player.manual) poster(player);
+    const permitted = mayPlay(player);
+    // Keep the native inline autoplay hint in step with our foreground policy.
+    // This also lets WebKit resume an eligible muted film when decoding starts.
+    player.video.autoplay = permitted && motionAllowed() && !player.blocked;
     if (player.warm && motionAllowed() && pageAvailable()) source(player);
-    if (!mayPlay(player)) { player.video.pause(); control(player); return; }
+    if (!permitted) {
+      if (player.pending) player.interrupted = true;
+      player.video.pause(); control(player); return;
+    }
     source(player);
-    if (player.pending || !player.video.paused) { control(player); return; }
-    player.pending = true;
+    if (player.blocked || player.video.error) { control(player); return; }
+    if (player.pending || !player.video.paused) {
+      if (player.pending && player.video.paused) player.interrupted = true;
+      control(player); return;
+    }
+    player.pending = true; player.interrupted = false;
     try { await player.video.play(); }
-    catch { /* Poster and manual play remain useful if the browser refuses. */ }
+    catch (error) {
+      // Do not loop on a real autoplay policy refusal. A later explicit play
+      // clears it; AbortError from our own pause/load is recoverable instead.
+      player.blocked = error?.name === 'NotAllowedError';
+      if (player.blocked) player.video.autoplay = false;
+    }
     finally {
       player.pending = false;
+      const resume = player.interrupted && mayPlay(player) && player.video.paused
+        && !player.blocked && !player.video.error;
+      player.interrupted = false;
       if (!mayPlay(player)) player.video.pause();
       if (!disposed) control(player);
+      // A menu/visibility cycle may restore permission before the interrupted
+      // play promise settles. Reconcile once, after the old request releases.
+      if (resume) sync(player);
     }
   }
   function paint() {
@@ -71,7 +108,7 @@ export function installAtelierCinema({ signal, menu } = {}) {
     active.forEach(shot => {
       const rect = shot.getBoundingClientRect();
       const progress = Math.max(0, Math.min(1, (innerHeight - rect.top) / (innerHeight + rect.height)));
-      const image = shot.matches('.atelier-web-flow, .atelier-project-map') ? null : shot.querySelector('img');
+      const image = shot.matches('.atelier-service-film, .atelier-web-flow, .atelier-project-map') ? null : shot.querySelector('img');
       if (image) {
         image.style.transform = moving ? `translate3d(0,${((.5 - progress) * (narrow ? 16 : 40)).toFixed(2)}px,0) scale(1.055)` : '';
       }
@@ -106,19 +143,39 @@ export function installAtelierCinema({ signal, menu } = {}) {
     players.forEach(sync);
   }, { threshold: [0, .14, .5, .75, 1] });
   players.forEach(player => {
-    poster(player); player.video.muted = true; control(player);
+    format(player);
+    player.video.muted = true; player.video.defaultMuted = true;
+    player.video.playsInline = true; player.video.autoplay = false;
+    control(player);
     warmObserver.observe(player.stage); videoObserver.observe(player.stage);
+    player.stage.addEventListener('click', event => {
+      // Capture also covers the separate cinema control before it reads the
+      // inline poster, even if observers have not delivered their first entry.
+      if (event.target.closest?.('[data-media-toggle], .atelier-cinema-open')) poster(player);
+    }, { capture: true, signal: life.signal });
     player.button?.addEventListener('click', () => {
       if (!player.video.paused || player.pending) { player.userPaused = true; player.manual = false; }
       else {
         player.userPaused = false; player.manual = true;
+        player.blocked = false;
         requestedPlayer = player;
         // A transient network failure needs a new load, only on explicit retry.
         if (player.video.error) player.video.load();
       }
       players.forEach(sync);
     }, { signal: life.signal });
-    ['play', 'pause', 'ended', 'error'].forEach(type => player.video.addEventListener(type, () => control(player), { signal: life.signal }));
+    player.video.addEventListener('play', () => {
+      if (!mayPlay(player)) player.video.pause();
+      presentation(player);
+      control(player);
+    }, { signal: life.signal });
+    ['pause', 'ended'].forEach(type => player.video.addEventListener(type, () => control(player), { signal: life.signal }));
+    ['emptied', 'error'].forEach(type => player.video.addEventListener(type, () => {
+      player.stage.dataset.mediaReady = 'false'; control(player);
+    }, { signal: life.signal }));
+    ['loadeddata', 'canplay', 'playing'].forEach(type => player.video.addEventListener(type, () => {
+      presentation(player); sync(player);
+    }, { signal: life.signal }));
   });
   function refresh() { players.forEach(sync); request(); }
   function policyChanged() {
@@ -135,7 +192,10 @@ export function installAtelierCinema({ signal, menu } = {}) {
   menu?.addEventListener('toggle', refresh, { signal: life.signal });
   reduced.addEventListener('change', policyChanged, { signal: life.signal });
   connection?.addEventListener?.('change', policyChanged, { signal: life.signal });
-  portrait.addEventListener('change', () => players.forEach(player => { if (!player.video.getAttribute('src')) poster(player); }), { signal: life.signal });
+  portrait.addEventListener('change', () => {
+    players.forEach(format);
+    refresh();
+  }, { signal: life.signal });
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) { cancelAnimationFrame(frame); frame = 0; }
     refresh();
@@ -143,7 +203,11 @@ export function installAtelierCinema({ signal, menu } = {}) {
   const entryObserver = new MutationObserver(refresh);
   entryObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
   window.addEventListener('pagehide', event => {
-    suspended = true; players.forEach(player => player.video.pause());
+    suspended = true;
+    players.forEach(player => {
+      if (player.pending) player.interrupted = true;
+      player.video.autoplay = false; player.video.pause();
+    });
     cancelAnimationFrame(frame); frame = 0;
     if (!event.persisted) dispose();
   }, { signal: life.signal });
@@ -151,7 +215,7 @@ export function installAtelierCinema({ signal, menu } = {}) {
   function dispose() {
     if (disposed) return;
     disposed = true; cancelAnimationFrame(frame); frame = 0;
-    players.forEach(player => player.video.pause());
+    players.forEach(player => { player.video.autoplay = false; player.video.pause(); });
     observer.disconnect(); warmObserver.disconnect(); videoObserver.disconnect(); entryObserver.disconnect();
     life.abort(); signal?.removeEventListener('abort', dispose);
   }

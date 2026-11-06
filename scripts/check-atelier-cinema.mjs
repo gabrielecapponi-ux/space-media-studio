@@ -52,24 +52,34 @@ function fixture({ reduced = false, saveData = false, portrait = false, entry = 
   const shots = [photo, web];
   const media = Array.from({ length: playerCount }, (_, index) => {
     const stage = new Node();
+    const posterImage = new Node();
+    stage.matches = selector => selector.includes('.atelier-service-film');
+    stage.querySelector = selector => selector === 'img' ? posterImage : null;
+    stage.getBoundingClientRect = () => ({ top: 200, height: 400 });
     const button = new Node(), symbol = new Node(), label = new Node();
     button.querySelector = selector => selector === '[data-media-symbol]' ? symbol : label;
     const video = new Node(); video.id = `atelier-service-video-${index}`; video.closest = () => stage;
     video.dataset = { srcDesktop: './films/type-desktop.mp4', srcMobile: './films/type-mobile.mp4', posterDesktop: './images/type-desktop.jpg', posterMobile: './images/type-mobile.jpg', mediaLabel: `il film del servizio ${index + 1}` };
     let src = ''; Object.defineProperty(video, 'src', { get: () => src, set: value => { src = value; video.setAttribute('src', value); } });
+    let poster = ''; video.posterAssignments = [];
+    Object.defineProperty(video, 'poster', { get: () => poster, set: value => { poster = value; video.posterAssignments.push(value); video.setAttribute('poster', value); } });
+    video.readyState = 0;
     video.paused = true; video.ended = false; video.muted = false; video.loads = 0; video.plays = 0; video.pauses = 0;
-    video.mode = 'resolve'; let pendingResolve;
+    video.mode = 'resolve'; let pendingResolve, pendingReject;
     video.load = () => { video.loads++; };
     video.pause = () => { video.pauses++; const changed = !video.paused; video.paused = true; if (changed) video.emit('pause'); };
     video.play = () => {
       video.plays++;
-      if (video.mode === 'reject') { video.paused = true; return Promise.reject(new Error('Autoplay refused')); }
+      if (video.mode === 'reject') { video.paused = true; const error = new Error('Autoplay refused'); error.name = 'NotAllowedError'; return Promise.reject(error); }
+      if (video.mode === 'abort-once') { video.mode = 'resolve'; video.paused = true; const error = new Error('Play interrupted'); error.name = 'AbortError'; return Promise.reject(error); }
       video.paused = false; video.emit('play');
-      if (video.mode === 'pending') return new Promise(resolve => { pendingResolve = resolve; });
+      if (video.mode === 'pending') return new Promise((resolve, reject) => { pendingResolve = resolve; pendingReject = reject; });
       return Promise.resolve();
     };
-    return { stage, button, symbol, label, video, resolvePlay: () => pendingResolve?.() };
+    return { stage, button, symbol, label, video, posterImage, resolvePlay: () => pendingResolve?.(),
+      rejectPlay: () => { const error = new Error('Play interrupted by pause'); error.name = 'AbortError'; pendingReject?.(error); } };
   });
+  shots.push(...media.map(item => item.stage));
   const { stage, button, symbol, label, video, resolvePlay } = media[0];
   const menu = new Events(); menu.open = false;
   const doc = new Events(); doc.hidden = false; doc.documentElement = root;
@@ -110,10 +120,11 @@ function fixture({ reduced = false, saveData = false, portrait = false, entry = 
 const groups = [];
 async function test(name, work) { await work(); groups.push(name); console.log('PASS', name); }
 
-await test('Initialization chooses an accessible poster/control without loading an offscreen video', async () => {
+await test('Initialization sets format and accessible controls without preparing offscreen native posters or videos', async () => {
   const f = fixture(); await f.flush();
   assert.equal(f.video.loads, 0); assert.equal(f.video.plays, 0);
-  assert.equal(f.video.poster, 'https://example.test/space/images/type-desktop.jpg');
+  assert.equal(f.video.poster, ''); assert.deepEqual(f.video.posterAssignments, []);
+  assert.equal(f.stage.dataset.mediaFormat, 'wide');
   assert.equal(f.video.muted, true); assert.equal(f.button.hidden, false);
   assert.equal(f.button.getAttribute('aria-pressed'), 'false');
   assert.equal(f.label.textContent, 'Riproduci');
@@ -123,12 +134,14 @@ await test('Reduced motion and SaveData avoid automatic download even inside war
   for (const options of [{ reduced: true }, { saveData: true }]) {
     const f = fixture(options); await f.show();
     assert.equal(f.video.loads, 0); assert.equal(f.video.plays, 0); assert.equal(f.video.paused, true);
+    assert.equal(f.video.poster, 'https://example.test/space/images/type-desktop.jpg');
     f.api.dispose();
   }
 });
 await test('Warm range prepares once, while only the visible stage starts playback', async () => {
   const f = fixture(); f.warmObserver.fire(f.stage); await f.flush();
   assert.equal(f.video.loads, 1); assert.equal(f.video.plays, 0);
+  assert.deepEqual(f.video.posterAssignments, ['https://example.test/space/images/type-desktop.jpg']);
   assert.equal(f.video.src, 'https://example.test/space/films/type-desktop.mp4');
   f.warmObserver.fire(f.stage); f.visibleObserver.fire(f.stage, true, .8); await f.flush();
   assert.equal(f.video.loads, 1); assert.equal(f.video.plays, 1); assert.equal(f.video.paused, false);
@@ -188,9 +201,11 @@ await test('Photographic motion is absolute, scroll events coalesce, and live st
 });
 await test('Portrait choice selects portrait media initially and retains an already loaded source during rotation', async () => {
   const f = fixture({ portrait: true });
-  assert.match(f.video.poster, /type-mobile\.jpg$/); await f.show(); assert.match(f.video.src, /type-mobile\.mp4$/);
+  assert.equal(f.video.poster, ''); assert.equal(f.stage.dataset.mediaFormat, 'portrait');
+  await f.show(); assert.match(f.video.poster, /type-mobile\.jpg$/); assert.match(f.video.src, /type-mobile\.mp4$/);
   f.orientation.matches = false; f.orientation.emit('change'); await f.flush();
   assert.match(f.video.src, /type-mobile\.mp4$/); assert.equal(f.video.loads, 1);
+  assert.match(f.video.poster, /type-mobile\.jpg$/); assert.equal(f.stage.dataset.mediaFormat, 'wide');
   f.api.dispose();
 });
 await test('BFCache suspension keeps observers available, resumes naturally, and preserves explicit pause', async () => {
@@ -278,5 +293,145 @@ await test('A delayed playback promise cannot reclaim the foreground from a newe
   assert.equal(first.video.paused, true); assert.equal(second.video.paused, false);
   assert.equal(f.media.filter(item => !item.video.paused).length, 1);
   f.api.dispose();
+});
+await test('A pending play interrupted by a brief menu cycle resumes after its late AbortError', async () => {
+  const f = fixture(); f.video.mode = 'pending';
+  f.visibleObserver.fire(f.stage, true, .9);
+  assert.equal(f.video.plays, 1);
+  f.menu.open = true; f.menu.emit('toggle');
+  f.menu.open = false; f.menu.emit('toggle');
+  assert.equal(f.video.paused, true);
+  f.video.mode = 'resolve'; f.media[0].rejectPlay(); await f.flush();
+  assert.equal(f.video.paused, false); assert.equal(f.video.plays, 2);
+  f.api.dispose();
+});
+await test('A readiness event resumes an eligible film after an interrupted load, without reloading', async () => {
+  const f = fixture(); f.video.mode = 'abort-once'; await f.show();
+  assert.equal(f.video.paused, true);
+  f.video.emit('canplay'); await f.flush();
+  assert.equal(f.video.paused, false); assert.equal(f.video.loads, 1);
+  f.api.dispose();
+});
+await test('A policy refusal is not retried by readiness events; an explicit request remains usable', async () => {
+  const f = fixture(); f.video.mode = 'reject'; await f.show();
+  const calls = f.video.plays;
+  f.video.emit('loadeddata'); f.video.emit('canplay'); await f.flush();
+  assert.equal(f.video.plays, calls); assert.equal(f.video.autoplay, false);
+  f.video.mode = 'resolve'; f.button.emit('click'); await f.flush();
+  assert.equal(f.video.paused, false);
+  f.api.dispose();
+});
+await test('Inline muted autoplay hints follow permission and never override static preferences', async () => {
+  const f = fixture();
+  assert.equal(f.video.defaultMuted, true); assert.equal(f.video.playsInline, true);
+  await f.show(); assert.equal(f.video.autoplay, true);
+  f.menu.open = true; f.menu.emit('toggle'); await f.flush(); assert.equal(f.video.autoplay, false);
+  f.menu.open = false; f.menu.emit('toggle'); await f.flush(); assert.equal(f.video.autoplay, true);
+  f.pref.matches = true; f.pref.emit('change'); await f.flush(); assert.equal(f.video.autoplay, false);
+  f.button.emit('click'); await f.flush(); assert.equal(f.video.paused, false); assert.equal(f.video.autoplay, false);
+  f.api.dispose();
+});
+await test('A native play event cannot start an offscreen film or bypass explicit pause', async () => {
+  const f = fixture();
+  await f.video.play(); assert.equal(f.video.paused, true);
+  await f.show(); assert.equal(f.video.paused, false);
+  f.button.emit('click'); await f.flush();
+  await f.video.play(); assert.equal(f.video.paused, true);
+  f.api.dispose();
+});
+await test('Five offscreen films stay unprepared through refresh and rotation; warming one never requests both posters', async () => {
+  const f = fixture({ portrait: true, playerCount: 5 });
+  f.api.refresh(); f.doc.emit('visibilitychange');
+  f.media.forEach(item => { f.warmObserver.fire(item.stage, false, 0); f.visibleObserver.fire(item.stage, false, 0); });
+  await f.flush();
+  assert.ok(f.media.every(item => item.video.posterAssignments.length === 0 && item.video.loads === 0));
+  const target = f.media[3];
+  f.warmObserver.fire(target.stage); f.warmObserver.fire(target.stage); f.api.refresh(); await f.flush();
+  assert.deepEqual(target.video.posterAssignments, ['https://example.test/space/images/type-mobile.jpg']);
+  assert.ok(f.media.filter(item => item !== target).every(item => item.video.posterAssignments.length === 0));
+  f.orientation.matches = false; f.orientation.emit('change'); await f.flush();
+  assert.deepEqual(target.video.posterAssignments, ['https://example.test/space/images/type-mobile.jpg']);
+  assert.ok(f.media.filter(item => item !== target).every(item => item.video.posterAssignments.length === 0 && item.video.loads === 0));
+  f.api.dispose();
+});
+await test('Static policies prepare only nearby posters; offscreen rotation waits until warming again', async () => {
+  for (const options of [{ reduced: true }, { saveData: true }]) {
+    const f = fixture({ ...options, portrait: true, playerCount: 5 });
+    const target = f.media[2]; f.warmObserver.fire(target.stage); await f.flush();
+    assert.match(target.video.poster, /type-mobile\.jpg$/);
+    assert.ok(f.media.every(item => item.video.loads === 0 && item.video.plays === 0));
+    f.warmObserver.fire(target.stage, false, 0);
+    f.orientation.matches = false; f.orientation.emit('change'); await f.flush();
+    assert.equal(target.video.posterAssignments.length, 1);
+    assert.ok(f.media.filter(item => item !== target).every(item => item.video.posterAssignments.length === 0));
+    f.warmObserver.fire(target.stage); await f.flush();
+    assert.match(target.video.poster, /type-desktop\.jpg$/);
+    assert.equal(target.video.posterAssignments.length, 2); assert.equal(target.video.loads, 0);
+    f.api.dispose();
+  }
+});
+await test('A manual cinema request prepares its poster before the control reads it, without downloading inline video', async () => {
+  const f = fixture({ saveData: true });
+  f.stage.emit('click', { target: { closest: selector => selector.includes('.atelier-cinema-open') ? {} : null } });
+  assert.match(f.video.poster, /type-desktop\.jpg$/);
+  assert.equal(f.video.loads, 0); assert.equal(f.video.plays, 0);
+  f.api.dispose();
+});
+await test('Picture fallback yields only to a decoded frame, remains aligned on pause and returns on media error', async () => {
+  const f = fixture(); await f.show();
+  assert.equal(f.stage.dataset.mediaReady, 'false');
+  f.video.readyState = 2; f.video.emit('loadeddata'); await f.flush();
+  assert.equal(f.stage.dataset.mediaReady, 'true');
+  f.button.emit('click'); await f.flush(); assert.equal(f.stage.dataset.mediaReady, 'true');
+  f.video.error = { code: 2 }; f.video.emit('error');
+  assert.equal(f.stage.dataset.mediaReady, 'false');
+  f.video.emit('canplay'); await f.flush(); assert.equal(f.stage.dataset.mediaReady, 'false');
+  f.video.error = null; f.video.readyState = 0; f.video.emit('emptied');
+  assert.equal(f.stage.dataset.mediaReady, 'false');
+  f.api.dispose();
+});
+await test('The historical photo parallax never transforms a film poster independently from its video', async () => {
+  const f = fixture(); f.shotObserver.fire(f.stage); f.tick();
+  assert.equal(f.media[0].posterImage.style.transform, '');
+  f.shotObserver.fire(f.photo); f.tick(); assert.match(f.image.style.transform, /scale/);
+  f.api.dispose();
+});
+await test('Both HTML entries keep responsive lazy picture fallbacks, compact index thumbnails and controls outside the surface', async () => {
+  const attrs = tag => Object.fromEntries([...tag.matchAll(/([\w:-]+)="([^"]*)"/g)].map(match => [match[1], match[2]]));
+  for (const filename of ['index.html', 'atelier.html']) {
+    const html = await readFile(new URL(`../${filename}`, import.meta.url), 'utf8');
+    const films = [...html.matchAll(/<figure\b[^>]*data-service-film="([^"]+)"[^>]*>([\s\S]*?)<\/figure>/g)];
+    assert.equal(films.length, 5, filename);
+    assert.equal([...html.matchAll(/class="atelier-film-surface"/g)].length, 5, filename);
+    for (const [, asset, body] of films) {
+      const surface = body.match(/<div class="atelier-film-surface">([\s\S]*?)<\/div>/)?.[1];
+      assert.ok(surface, `${filename}/${asset} surface`);
+      assert.doesNotMatch(surface, /<figcaption|<button/);
+      const video = attrs(surface.match(/<video\b[^>]+>/)[0]);
+      const picture = surface.match(/<picture\b[^>]+>([\s\S]*?)<\/picture>/);
+      assert.equal(attrs(picture[0])['aria-hidden'], 'true');
+      const image = attrs(picture[1].match(/<img\b[^>]+>/)[0]);
+      const source = attrs(picture[1].match(/<source\b[^>]+>/)[0]);
+      assert.equal(video.poster, undefined); assert.equal(video.src, undefined); assert.equal(video.preload, 'none');
+      assert.equal(image.src, video['data-poster-desktop'].replace(/^\./, ''));
+      assert.equal(source.srcset, video['data-poster-mobile'].replace(/^\./, ''));
+      assert.equal(source.media, '(max-width: 760px) and (orientation: portrait)');
+      assert.equal(image.loading, 'lazy'); assert.equal(image.decoding, 'async'); assert.equal(image.fetchpriority, 'low'); assert.equal(image.alt, '');
+      assert.match(body.slice(body.indexOf('</div>') + 6), /<figcaption/);
+      assert.match(body.slice(body.indexOf('</div>') + 6), /data-media-toggle/);
+      const thumb = html.match(new RegExp(`<img[^>]+src="/images/flagship-${asset}-thumb\\.webp"[^>]+>`));
+      assert.ok(thumb, `${filename}/${asset} thumbnail`);
+      const small = attrs(thumb[0]); assert.equal(small.width, '320'); assert.equal(small.height, '180'); assert.equal(small.fetchpriority, 'low');
+      const bytes = await readFile(new URL(`../public/images/flagship-${asset}-thumb.webp`, import.meta.url));
+      assert.equal(bytes.toString('ascii', 0, 4), 'RIFF'); assert.equal(bytes.toString('ascii', 8, 12), 'WEBP');
+    }
+    const heroPoster = html.match(/<picture class="flagship-water-poster">([\s\S]*?)<\/picture>/)?.[1];
+    assert.ok(heroPoster);
+    assert.match(heroPoster, /srcset="\/images\/flagship-water-mobile\.jpg"/);
+    assert.match(heroPoster, /src="\/images\/flagship-water-desktop\.jpg"/);
+    const water = attrs(html.match(/<video id="atelier-film"[^>]+>/)[0]);
+    assert.equal(water.preload, 'none'); assert.equal(water.src, undefined); assert.equal(water.poster, undefined);
+    assert.match(html, /id="atelier-film-replay"[^>]+aria-controls="atelier-film"/);
+  }
 });
 console.log(JSON.stringify({ groups: groups.length, source: 'actual src/atelier-cinema.js', browser: false, externalRequests: false }, null, 2));

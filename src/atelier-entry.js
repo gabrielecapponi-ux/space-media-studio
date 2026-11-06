@@ -15,7 +15,7 @@ const phases = [
  * ready resolves only after the overlay and GPU resources have been removed.
  * onComplete is not called for disposal/abort; the caller owns video playback.
  */
-export function createAtelierEntry({ signal, video, poster, drawScreen, onComplete, startAt = 4.6 } = {}) {
+export function createAtelierEntry({ signal, video, poster, drawScreen, prepareVideo, onComplete, startAt = 0 } = {}) {
   if (signal?.aborted) {
     const result = { status: 'disposed', degraded: false, videoPrepared: false, posterLoaded: false, sceneReady: false };
     return { ready: Promise.resolve(result), dispose() {} };
@@ -55,6 +55,7 @@ export function createAtelierEntry({ signal, video, poster, drawScreen, onComple
   let lastTime = 0;
   let phase = 'loading';
   let phaseTime = 0;
+  let assemblyTime = 0;
   let exitTimer = 0;
   let exitStatus;
   let deadlineTimer = 0;
@@ -175,13 +176,19 @@ export function createAtelierEntry({ signal, video, poster, drawScreen, onComple
     lastTime = time;
     phaseTime += delta;
     if (phase === 'loading') {
-      // With prepared assets, assembly takes under four visible seconds.
+      // The download indicator follows preparation; the architectural move
+      // has its own uninterrupted clock once the model is ready. A slow film
+      // must not freeze the room halfway through its assembly.
       displayed = staticPresentation() ? target : Math.min(target, displayed + delta * .03);
       if (settled && displayed > 98.98) displayed = 99;
-      const label = phases.reduce((result, [at, value]) => displayed >= at ? value : result, phases[0][1]);
+      if (sceneReady && !staticPresentation()) assemblyTime = Math.min(3300, assemblyTime + delta);
+      const sceneProgress = staticPresentation() ? 1 : assemblyTime / 3300;
+      const label = phases.reduce((result, [at, value]) => sceneProgress * 100 >= at ? value : result, phases[0][1]);
       shell.update(displayed, label);
-      room?.setProgress(displayed / 99);
-      if (settled && displayed >= 99) {
+      room?.setProgress(sceneProgress);
+      // When preparation is actually complete, the cosmetic counter must not
+      // add another wait after the room has finished assembling.
+      if (settled && (!sceneReady || staticPresentation() || sceneProgress === 1)) {
         shell.update(100, 'Il tuo spazio è pronto');
         if (staticPresentation() || !sceneReady) return finish('ready', staticPresentation());
         phase = 'arrival'; phaseTime = 0;
@@ -195,7 +202,7 @@ export function createAtelierEntry({ signal, video, poster, drawScreen, onComple
       room?.setZoom(zoom);
       if (zoom === 1) return finish('ready');
     }
-    if (phase !== 'loading' || displayed < target) request();
+    if (phase !== 'loading' || displayed < target || (sceneReady && assemblyTime < 3300)) request();
     else lastTime = 0;
   }
 
@@ -259,13 +266,13 @@ export function createAtelierEntry({ signal, video, poster, drawScreen, onComple
 
   const architecture = task('room', async () => {
     if (staticPresentation()) return;
-    const [{ createStudioRoom }] = await Promise.all([import('./studio-room.js'), fonts, picture]);
+    const [{ createStudioRoom }] = await Promise.all([import('./studio-blender-room.js'), fonts, picture]);
     if (finished || disposed || staticPresentation()) return;
     const screen = typeof drawScreen === 'function' ? drawScreen : drawAtelierScreen;
     room = createStudioRoom(shell.sceneHost, {
       drawScreen: (ctx, width, height, aspect) => screen(ctx, width, height, aspect, posterLoaded ? posterImage : undefined),
     });
-    room.setProgress(displayed / 99);
+    room.setProgress(0);
     await new Promise((resolve) => {
       const check = () => {
         if (shell.sceneHost.dataset.scene === 'ready' || shell.sceneHost.dataset.scene === 'fallback') {
@@ -283,6 +290,11 @@ export function createAtelierEntry({ signal, video, poster, drawScreen, onComple
 
   const media = task('video', async (report) => {
     if (!video || staticPresentation()) return;
+    // Prioritize the room, its poster and fonts on a cold/slow connection.
+    // The film can buffer while the assembled scene starts moving.
+    await architecture;
+    if (finished || disposed || staticPresentation()) return;
+    prepareVideo?.();
     await new Promise((resolve, reject) => {
       let seekStarted = false;
       let requestedTime = 0;
@@ -311,7 +323,7 @@ export function createAtelierEntry({ signal, video, poster, drawScreen, onComple
           try { report(.15 + .65 * clamp(video.buffered.end(video.buffered.length - 1) / duration)); } catch {}
         }
         if (!seekStarted) {
-          requestedTime = clamp(Number.isFinite(startAt) ? startAt : 4.6, 0, duration ? Math.max(0, duration - .05) : 4.6);
+          requestedTime = clamp(Number.isFinite(startAt) ? startAt : 0, 0, Math.max(0, duration - .05));
           if (Math.abs(video.currentTime - requestedTime) > .04) {
             try { video.currentTime = requestedTime; seekStarted = true; } catch { return; }
             return;

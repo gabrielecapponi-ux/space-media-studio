@@ -1,0 +1,7 @@
+/* OSKEN's separate perspective per card avoids shared 3D intersections.
+   The stage stays measurable; captions, focus rings and controls stay still. */
+@media(min-width:992px) and (min-height:560px) and (prefers-reduced-motion:no-preference){
+ .osken-motion-frame{perspective:850px}
+ .osken-motion-frame>.atelier-film-surface,.osken-motion-frame>video{transform-origin:50% 50%;backface-visibility:hidden}
+}
+@media(prefers-reduced-motion:reduce){.osken-motion-frame>.atelier-film-surface,.osken-motion-frame>video{transform:none!important;border-radius:0!important}}

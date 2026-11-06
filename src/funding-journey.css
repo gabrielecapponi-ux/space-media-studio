@@ -1,4 +1,4 @@
-/* Original line film: precise black strokes, a continuous yellow field. */
+/* Captions and navigation overlay the original Blender project dioramas. */
 .atelier-funding>.funding-journey{grid-column:1/-1;position:relative;isolation:isolate;aspect-ratio:16/9;margin:0;overflow:hidden;border:1px solid #10111022;border-radius:8px;background:var(--yellow,#dfff00);color:var(--ink,#101110)}
 .funding-journey-poster,.funding-journey-canvas{position:absolute;inset:0;width:100%;height:100%}
 .funding-journey-poster img,.funding-journey-canvas svg{display:block;width:100%;height:100%;object-fit:contain}
@@ -14,10 +14,16 @@
 .funding-journey-toggle{position:absolute;z-index:2;right:28px;bottom:23px;display:flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid #10111065;border-radius:50%;background:transparent;color:var(--ink,#101110);font-size:16px;line-height:1;cursor:pointer}
 .funding-journey-toggle:focus-visible{outline:3px solid var(--ink,#101110);outline-offset:4px}
 .funding-journey-toggle[hidden]{display:none}
+.funding-journey .atelier-cinema-open{inset:24px 24px auto auto;width:44px;padding:8px;justify-content:center}
+.funding-journey .atelier-cinema-open>span:last-child{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+.funding-journey-caption{right:86px}
+.atelier-service-film[data-service-film="product"] .atelier-film-caption{color:#efeee8bd}
 @media(hover:hover) and (pointer:fine){.funding-journey-toggle:hover{background:var(--ink,#101110);color:var(--yellow,#dfff00)}}
 @media(max-width:760px) and (orientation:portrait){
  .atelier-funding>.funding-journey{aspect-ratio:4/5}
  .funding-journey-caption{inset:24px 22px auto}
+ .funding-journey-caption{right:76px}
+ .funding-journey .atelier-cinema-open{top:20px;right:17px}
  .funding-journey-caption>span{font-size:8px}
  .funding-journey-caption>strong{font-size:clamp(24px,7vw,40px);max-width:320px;margin-top:9px}
  .funding-journey-rail{left:22px;right:77px;bottom:23px;gap:10px}

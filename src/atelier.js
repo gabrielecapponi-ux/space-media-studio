@@ -1,18 +1,22 @@
 import { installIdeaBriefs } from './idea-briefs.js';
+import { installCinemaViewer } from './cinema-viewer.js';
 import { createAtelierEntry } from './atelier-entry.js';
 import { installAtelierCinema } from './atelier-cinema.js';
 import './atelier-cinema.css';
 import { installWebReel } from './web-reel.js';
-import { installFundingJourney } from './funding-journey.js';
+import { installFundingFilm } from './funding-film.js';
+import { installOskenMotion } from './atelier-osken-motion.js';
 import './funding-journey.css';
 
 const lifetime = new AbortController();
 const { signal } = lifetime;
 const reduced = matchMedia('(prefers-reduced-motion: reduce)');
 const connection = navigator.connection;
-const portrait = matchMedia('(max-width: 760px) and (orientation: portrait)');
+const portrait = matchMedia('(max-width: 1024px) and (orientation: portrait)');
 const film = document.querySelector('#atelier-film');
 const toggle = document.querySelector('#atelier-film-toggle');
+const replay = document.querySelector('#atelier-film-replay');
+const stage = document.querySelector('.flagship-water-stage');
 const menu = document.querySelector('.atelier-mobile-menu');
 const hero = document.querySelector('.atelier-hero');
 const base = import.meta.env.BASE_URL;
@@ -21,72 +25,161 @@ let inHero = true;
 let userPaused = false;
 let manualPlayback = false;
 let playPending = false;
+let playInterrupted = false;
+let autoplayBlocked = false;
+let resumeTime = 0;
 let disposed = false;
 let suspended = false;
 let entry;
 installAtelierCinema({ signal, menu });
 installWebReel({ signal });
-installFundingJourney({ signal, menu });
+installFundingFilm({ signal });
 
 installIdeaBriefs({ signal });
+installCinemaViewer({ signal });
+installOskenMotion({ signal, menu });
 document.querySelectorAll('[data-year]').forEach(node => { node.textContent = String(new Date().getFullYear()); });
 const automaticMotion = () => !reduced.matches && !connection?.saveData;
-const selectedPoster = () => `${base}images/atelier-water-${portrait.matches ? 'mobile' : 'desktop'}.jpg`;
+const selectedPoster = () => `${base}images/flagship-water-${portrait.matches ? 'mobile' : 'desktop'}.jpg`;
 film.poster = selectedPoster();
-film.muted = true;
+film.muted = true; film.defaultMuted = true;
+film.playsInline = true; film.autoplay = false;
 
-function ensureSource() {
-  if (film.getAttribute('src')) return;
-  film.src = `${base}films/atelier-water-${portrait.matches ? 'mobile' : 'desktop'}.mp4`;
+function selectedProfile() {
+  if (portrait.matches) return 'mobile';
+  const aperture = stage.getBoundingClientRect();
+  const pixels = Math.min(aperture.width, aperture.height * 16 / 9) * (window.devicePixelRatio || 1);
+  return pixels > 1920 ? 'desktop' : 'hd';
+}
+
+function ensureSource(profile = selectedProfile()) {
+  if (film.getAttribute('src') && film.dataset.profile === profile) return;
+  if (film.readyState >= 1) resumeTime = film.currentTime;
+  if (playPending) playInterrupted = true;
+  film.dataset.profile = profile;
+  film.src = `${base}films/flagship-water-${profile}.mp4`;
   film.preload = 'auto';
   film.load();
 }
-if (automaticMotion()) ensureSource();
 
 function syncControl() {
   const playing = !film.paused && !film.ended;
   toggle.hidden = !entryFinished;
+  replay.hidden = !entryFinished;
   toggle.setAttribute('aria-label', playing ? 'Metti in pausa il film' : 'Riproduci il film');
   toggle.setAttribute('aria-pressed', String(playing));
   toggle.querySelector('[data-film-symbol]').textContent = playing ? 'Ⅱ' : '▷';
   toggle.querySelector('[data-film-label]').textContent = playing ? 'Pausa' : 'Riproduci';
 }
 
+const mayPlayHero = () => !disposed && entryFinished && !suspended && !document.hidden && inHero
+  && !menu.open && !document.documentElement.classList.contains('cinema-open')
+  && !userPaused && (automaticMotion() || manualPlayback);
+
 async function syncPlayback() {
   if (disposed) return;
-  const permitted = entryFinished && !suspended && !document.hidden && inHero
-    && !menu.open && !userPaused && (automaticMotion() || manualPlayback);
-  if (!permitted) { film.pause(); syncControl(); return; }
-  if (playPending || !film.paused) { syncControl(); return; }
+  const permitted = mayPlayHero();
+  film.autoplay = permitted && automaticMotion() && !autoplayBlocked;
+  if (!permitted) {
+    if (playPending) playInterrupted = true;
+    film.pause(); syncControl(); return;
+  }
+  if (autoplayBlocked || film.error) { syncControl(); return; }
+  if (playPending || !film.paused) {
+    if (playPending && film.paused) playInterrupted = true;
+    syncControl(); return;
+  }
   ensureSource();
-  playPending = true;
+  playPending = true; playInterrupted = false;
   try { await film.play(); }
-  catch { /* Autoplay refusal keeps the real poster and the manual control. */ }
+  catch (error) {
+    autoplayBlocked = error?.name === 'NotAllowedError';
+    if (autoplayBlocked) film.autoplay = false;
+  }
   finally {
     playPending = false;
-    if (disposed || !entryFinished || suspended || document.hidden || !inHero || menu.open || userPaused
-      || !(automaticMotion() || manualPlayback)) film.pause();
+    const resume = playInterrupted && mayPlayHero() && film.paused && !autoplayBlocked && !film.error;
+    playInterrupted = false;
+    if (!mayPlayHero()) film.pause();
     if (!disposed) syncControl();
+    if (resume) syncPlayback();
   }
 }
 
-for (const type of ['play', 'pause', 'ended', 'error']) film.addEventListener(type, syncControl, { signal });
-film.addEventListener('loadedmetadata', () => {
-  // Entry prepares this frame for automatic motion. A later explicit play
-  // from a static arrival gets the same starting composition.
-  if (entryFinished && !film.dataset.entryPreparedAt && Number.isFinite(film.duration)) {
-    try { film.currentTime = Math.min(4.6, Math.max(0, film.duration - .05)); }
-    catch { /* Keep the native media controls usable if seeking is refused. */ }
+film.addEventListener('play', () => {
+  if (!mayPlayHero()) film.pause();
+  syncControl();
+}, { signal });
+for (const type of ['pause', 'ended']) film.addEventListener(type, syncControl, { signal });
+for (const type of ['loadeddata', 'canplay']) film.addEventListener(type, () => {
+  hero.dataset.frame = String(film.readyState >= 2 && !film.error);
+  syncPlayback();
+}, { signal });
+for (const type of ['emptied', 'error']) film.addEventListener(type, () => {
+  hero.dataset.frame = 'false';
+  syncControl();
+}, { signal });
+
+// The first impact in this cut lands at 1.04s. Hold the wider title across loops.
+film.addEventListener('timeupdate', () => {
+  if (entryFinished && film.currentTime >= 1.04 && automaticMotion() && hero.dataset.impact !== 'true') {
+    hero.dataset.impact = 'true';
   }
+}, { signal });
+replay.addEventListener('click', () => {
+  manualPlayback = true;
+  userPaused = false;
+  autoplayBlocked = false;
+  hero.dataset.impact = 'false';
+  if (film.error) film.load();
+  ensureSource();
+  resumeTime = 0;
+  film.currentTime = 0;
+  syncPlayback();
 }, { signal });
 toggle.addEventListener('click', () => {
   if (!film.paused || playPending) { userPaused = true; manualPlayback = false; }
-  else { userPaused = false; manualPlayback = true; }
+  else {
+    userPaused = false; manualPlayback = true; autoplayBlocked = false;
+    if (film.error) film.load();
+  }
   syncPlayback();
 }, { signal });
 menu.addEventListener('toggle', syncPlayback, { signal });
 menu.querySelectorAll('a').forEach(link => link.addEventListener('click', () => { menu.open = false; }, { signal }));
-portrait.addEventListener('change', () => { if (!film.getAttribute('src')) film.poster = selectedPoster(); }, { signal });
+document.addEventListener('keydown', event => {
+  if (event.key !== 'Escape' || !menu.open) return;
+  menu.open = false;
+  menu.querySelector('summary').focus({ preventScroll: true });
+}, { signal });
+document.addEventListener('pointerdown', event => {
+  if (menu.open && !menu.contains(event.target)) menu.open = false;
+}, { signal });
+menu.addEventListener('focusout', event => {
+  if (event.relatedTarget && !menu.contains(event.relatedTarget)) menu.open = false;
+}, { signal });
+film.addEventListener('loadedmetadata', () => {
+  if (resumeTime > 0 && Number.isFinite(film.duration)) {
+    film.currentTime = Math.min(resumeTime, Math.max(0, film.duration - .05));
+    resumeTime = 0;
+  }
+}, { signal });
+let profileTimer = 0;
+function scheduleProfileCheck() {
+  clearTimeout(profileTimer);
+  profileTimer = setTimeout(() => {
+    film.poster = selectedPoster();
+    if (!film.getAttribute('src') || (!mayPlayHero() && (entryFinished || !automaticMotion()))) return;
+    const next = selectedProfile();
+    if (film.dataset.profile === next) return;
+    ensureSource(next);
+    syncPlayback();
+  }, 180);
+}
+const apertureObserver = new ResizeObserver(scheduleProfileCheck);
+apertureObserver.observe(stage);
+portrait.addEventListener('change', scheduleProfileCheck, { signal });
+window.addEventListener('resize', scheduleProfileCheck, { signal });
 function policyChanged() {
   manualPlayback = false;
   syncPlayback();
@@ -94,6 +187,8 @@ function policyChanged() {
 reduced.addEventListener('change', policyChanged, { signal });
 connection?.addEventListener?.('change', policyChanged, { signal });
 document.addEventListener('visibilitychange', syncPlayback, { signal });
+const playbackObserver = new MutationObserver(syncPlayback);
+playbackObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 
 const visibility = new IntersectionObserver(([item]) => {
   inHero = item.isIntersecting && item.intersectionRatio > .18;
@@ -110,54 +205,108 @@ function openIdeaFromHash() {
 window.addEventListener('hashchange', openIdeaFromHash, { signal });
 openIdeaFromHash();
 
-// The monitor shows the same photographic direction as the incoming page.
-// It remains an illustration of this fictional studio, not a real office.
+// Sample the real masthead and aperture once, when painting the studio monitor.
+// Its final framing follows the same responsive layout as the incoming page.
 function drawScreen(ctx, width, height, aspect, poster) {
-  ctx.fillStyle = '#080909'; ctx.fillRect(0, 0, width, height);
-  const viewWidth = Math.min(width, height * aspect);
-  const left = (width - viewWidth) / 2;
-  const narrow = innerWidth <= 640;
-  ctx.save(); ctx.beginPath(); ctx.rect(left, 0, viewWidth, height); ctx.clip();
+  ctx.fillStyle = '#090b0b';
+  ctx.fillRect(0, 0, width, height);
+  const visibleWidth = Math.min(width, height * aspect);
+  const visibleHeight = visibleWidth / aspect;
+  const left = (width - visibleWidth) / 2;
+  const textureTop = (height - visibleHeight) / 2;
+  const scale = visibleWidth / hero.clientWidth;
+  const top = hero.getBoundingClientRect().top;
+  ctx.save();
+  ctx.beginPath();
+  ctx.rect(left, textureTop, visibleWidth, visibleHeight);
+  ctx.clip();
+  ctx.translate(left, textureTop);
+  ctx.scale(scale, scale);
+  ctx.translate(0, -top);
+  const aperture = stage.getBoundingClientRect();
+  ctx.fillStyle = '#020303';
+  ctx.fillRect(aperture.x, aperture.y, aperture.width, aperture.height);
   if (poster?.naturalWidth) {
-    const scale = Math.max(viewWidth / poster.naturalWidth, height / poster.naturalHeight);
-    const enlargement = narrow ? 1 : 1.12;
-    const w = poster.naturalWidth * scale * enlargement, h = poster.naturalHeight * scale * enlargement;
-    ctx.globalAlpha = .8;
-    ctx.drawImage(poster, left + (viewWidth - w) / 2 + (narrow ? 0 : viewWidth * .09), (height - h) / 2, w, h);
-    ctx.globalAlpha = 1;
+    const factor = Math.min(aperture.width / poster.naturalWidth, aperture.height / poster.naturalHeight);
+    const w = poster.naturalWidth * factor;
+    const h = poster.naturalHeight * factor;
+    const x = aperture.x + (aperture.width - w) / 2;
+    const y = aperture.y + (aperture.height - h) / 2;
+    if (!portrait.matches && w < aperture.width) {
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(aperture.x, aperture.y, aperture.width, aperture.height);
+      ctx.clip();
+      ctx.translate(x, y);
+      ctx.scale(-1, 1);
+      ctx.drawImage(poster, 0, 0, w, h);
+      ctx.drawImage(poster, -2 * w, 0, w, h);
+      ctx.restore();
+    }
+    ctx.drawImage(poster, x, y, w, h);
   }
-  const shade = ctx.createLinearGradient(0, 0, 0, height);
-  shade.addColorStop(0, '#08090955'); shade.addColorStop(.3, '#08090900'); shade.addColorStop(1, '#080909ee');
-  ctx.fillStyle = shade; ctx.fillRect(left, 0, viewWidth, height);
-  const gutter = viewWidth * (narrow ? .0615 : .047);
-  ctx.fillStyle = '#efeee8'; ctx.font = `600 ${viewWidth * .038}px "Space Grotesk", Arial, sans-serif`;
-  ctx.fillText('space', left + gutter, height * .085);
-  ctx.font = `${Math.max(10, viewWidth * .011)}px "DM Mono", monospace`;
-  ctx.fillText('STUDIO CREATIVO / PARMA', left + gutter, height * (narrow ? .58 : .39));
-  let size = viewWidth * (narrow ? .154 : .105);
-  ctx.font = `500 ${size}px "Space Grotesk", Arial, sans-serif`;
-  while (ctx.measureText('Brand. Web.').width > viewWidth - gutter * 2) {
-    size -= 1; ctx.font = `500 ${size}px "Space Grotesk", Arial, sans-serif`;
-  }
-  const titleY = height * (narrow ? .665 : .57);
-  ctx.fillText('Brand. Web.', left + gutter, titleY);
-  ctx.fillStyle = '#dfff00'; ctx.fillText('Motion.', left + gutter, titleY + size * (narrow ? .91 : .88));
-  ctx.fillStyle = '#efeee8'; ctx.font = `${Math.max(16, viewWidth * .016)}px "Space Grotesk", Arial, sans-serif`;
-  const subtitle = [];
-  let line = '';
-  for (const word of 'Siti web, e-commerce, loghi e video per la tua attività.'.split(' ')) {
-    const next = line ? `${line} ${word}` : word;
-    if (line && ctx.measureText(next).width > viewWidth - gutter * 2) { subtitle.push(line); line = word; }
-    else line = next;
-  }
-  if (line) subtitle.push(line);
-  subtitle.forEach((text, index) => ctx.fillText(text, left + gutter, height * (narrow ? .795 : .82) + index * Math.max(20, viewWidth * .022)));
+  const brandIcon = document.querySelector('.atelier-symbol').getBoundingClientRect();
+  ctx.save();
+  ctx.translate(brandIcon.x, brandIcon.y);
+  ctx.scale(brandIcon.width / 48, brandIcon.height / 48);
+  ctx.fillStyle = '#efeee8';
+  ctx.fill(new Path2D('M24 2 30 18 46 24 30 30 24 46 18 30 2 24 18 18Z'));
+  ctx.fillStyle = '#090b0b';
+  ctx.beginPath(); ctx.arc(24, 24, 5.5, 0, Math.PI * 2); ctx.fill();
   ctx.restore();
+  const contact = document.querySelector('.atelier-contact-link').getBoundingClientRect();
+  if (contact.width) {
+    ctx.fillStyle = '#efeee8';
+    ctx.beginPath();
+    ctx.roundRect(contact.x, contact.y, contact.width, contact.height, contact.height / 2);
+    ctx.fill();
+  }
+  // Draw individual text runs so the logo and headline use their live spacing.
+  for (const selector of ['.atelier-brand > span', '.atelier-brand small', '.flagship-location',
+    '#atelier-title > *', '.atelier-nav a', '.atelier-contact-link', '.atelier-mobile-menu summary span', '.atelier-hero-promise']) {
+    for (const el of document.querySelectorAll(selector)) {
+      const run = [...el.childNodes].find(node => node.nodeType === Node.TEXT_NODE && node.textContent.trim());
+      if (!run || !el.getClientRects().length) continue;
+      const range = document.createRange();
+      range.selectNodeContents(run);
+      const rects = range.getClientRects();
+      if (rects.length !== 1) continue;
+      const rect = rects[0];
+      const style = getComputedStyle(el);
+      ctx.font = `${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+      ctx.fillStyle = style.color;
+      ctx.textBaseline = 'alphabetic';
+      const metrics = ctx.measureText(run.textContent.trim());
+      const ascent = metrics.fontBoundingBoxAscent ?? parseFloat(style.fontSize) * .82;
+      const descent = metrics.fontBoundingBoxDescent ?? parseFloat(style.fontSize) * .18;
+      const baseline = rect.y + (rect.height + ascent - descent) / 2;
+      ctx.save();
+      ctx.translate(rect.x, baseline);
+      ctx.scale(rect.width / Math.max(1, metrics.width), 1);
+      ctx.fillText(run.textContent.trim(), 0, 0);
+      ctx.restore();
+    }
+  }
+  ctx.restore();
+}
+
+// Start the original model alongside the renderer module, rather than waiting
+// for JavaScript to download before discovering the next network dependency.
+// Static preferences do not request the GLB at all.
+if (automaticMotion()) {
+  const roomHint = document.createElement('link');
+  roomHint.rel = 'preload'; roomHint.as = 'fetch'; roomHint.crossOrigin = 'anonymous';
+  roomHint.href = `${base}models/studio-space-20261105.glb`;
+  document.head.append(roomHint);
+  signal.addEventListener('abort', () => roomHint.remove(), { once: true });
 }
 
 try {
   entry = createAtelierEntry({
-    signal, video: film, poster: film.poster, drawScreen,
+    signal, video: film, startAt: 0, drawScreen, prepareVideo: ensureSource,
+    poster: automaticMotion()
+      ? `${base}images/flagship-water-entry-${portrait.matches ? 'mobile' : 'desktop'}.jpg`
+      : film.poster,
     onComplete() { if (!disposed) { entryFinished = true; syncPlayback(); } },
   });
 } catch {
@@ -167,11 +316,15 @@ try {
 window.addEventListener('pageshow', () => { suspended = false; syncPlayback(); }, { signal });
 window.addEventListener('pagehide', event => {
   suspended = true;
-  film.pause();
+  if (playPending) playInterrupted = true;
+  film.autoplay = false; film.pause();
   if (event.persisted) return;
   disposed = true;
   entry?.dispose();
+  clearTimeout(profileTimer);
+  apertureObserver.disconnect();
   visibility.disconnect();
+  playbackObserver.disconnect();
   lifetime.abort();
 }, { signal });
 syncControl();

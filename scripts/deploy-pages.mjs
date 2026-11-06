@@ -17,6 +17,7 @@ const read = (command, args, cwd = root) =>
 const ownedProductionPaths = new Set([
   "index.html", "favicon.svg", ".nojekyll", "assets", "films", "fonts",
   "images", "licenses", "previews", "atelier.html", "showcase",
+  "models", // Space Media's Blender intro; the client sites remain separate roots.
 ]);
 
 function validateBundleTree(directory) {
