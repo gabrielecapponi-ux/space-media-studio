@@ -71,6 +71,24 @@
 }
 .flagship-water-stage .atelier-film { opacity: 0; }
 .flagship-hero[data-frame="true"] .atelier-film { opacity: 1; }
+.flagship-water-start {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 48px;
+  padding: 12px 20px;
+  border-radius: 99px;
+  background: var(--yellow);
+  color: var(--ink);
+  font-size: 14px;
+  white-space: nowrap;
+}
+.flagship-water-start svg { width: 15px; height: 15px; }
 .flagship-baseline {
   display: grid;
   grid-template-columns: 1fr auto auto;

@@ -2,7 +2,7 @@
 
 ## Riordino del 9 novembre 2026
 
-- Ripristinato lo studio come caricamento a schermo intero fino al 100%, usando la geometria Blender e il film mobile originali già documentati. Nessuna nuova attribuzione di produzione.
+- Ripristinato lo studio come caricamento a schermo intero fino al 100%, usando la geometria Blender e il film mobile originali già documentati. Quando la policy mobile blocca il film, il caricamento usa la stessa mesh Blender in WebGL. Nessuna nuova attribuzione di produzione.
 - La hero desktop seleziona sempre `flagship-water-desktop.mp4`, master fotografico nativo 3840×2160 a 24 fps, 9 s, 7.519.280 byte. Il portrait usa `flagship-water-mobile.mp4`, taglio 1080×1350 ricavato dal negativo UHD, 2.529.669 byte. Provenienza Film Composite/Pexels in `ASSET-WATER.md`. Le fasce specchiate sono state rimosse, l’inquadratura conserva le proporzioni.
 - “Progetti e bandi” torna all’animazione SVG originale di Space Media in `src/funding-journey.js`, linea nera sul giallo. Poster `public/images/funding-journey{,-mobile}.svg`. I film Blender dei bandi restano archivio e non sono più referenziati dalla homepage.
 - I quattro servizi video mantengono i film `director-*` ed `elegant-*` della precedente consegna, con le risoluzioni documentate sotto. Il 4K della hero non descrive i film QHD LUMA e SHIFT.

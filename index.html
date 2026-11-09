@@ -8,7 +8,18 @@
     <script>
       if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !navigator.connection?.saveData) {
         document.documentElement.classList.add('entry-boot');
-        window.__spaceEntryWatchdog = setTimeout(() => document.documentElement.classList.remove('entry-boot'), 12000);
+        window.__spaceEntryHash = location.hash;
+        if (location.hash) history.replaceState(history.state, '', location.pathname + location.search);
+        window.__spaceRestoreEntryHash = () => {
+          if (!window.__spaceEntryHash) return;
+          history.replaceState(history.state, '', location.pathname + location.search + window.__spaceEntryHash);
+          window.__spaceEntryHash = '';
+        };
+        window.__spaceEntryWatchdog = setTimeout(() => {
+          document.documentElement.classList.remove('entry-boot');
+          window.__spaceRestoreEntryHash();
+          try { document.getElementById(decodeURIComponent(location.hash.slice(1)))?.scrollIntoView({ behavior: 'instant' }); } catch {}
+        }, 12000);
       }
     </script>
     <meta name="theme-color" content="#101110" />
@@ -68,12 +79,13 @@
           <p class="atelier-eyebrow flagship-location">Studio creativo indipendente · Parma</p>
           <h1 id="atelier-title"><span>Brand.</span> <span class="flagship-title-web">Web.</span> <em>Motion.</em></h1>
         </div>
-        <div class="flagship-water-stage" role="img" aria-label="Una goccia cade sull’acqua. All’impatto si forma una corona, poi dalla superficie risale una colonna sottile.">
+        <div class="flagship-water-stage" role="group" aria-label="Una goccia cade sull’acqua. All’impatto si forma una corona, poi dalla superficie risale una colonna sottile.">
           <picture class="flagship-water-poster">
             <source media="(max-width: 1024px) and (orientation: portrait)" srcset="/images/director-water-mobile.webp" />
             <img src="/images/director-water-desktop.webp" alt="" fetchpriority="high" width="3840" height="2160" />
           </picture>
           <video id="atelier-film" class="atelier-film" muted playsinline loop preload="none"></video>
+          <button type="button" class="flagship-water-start" data-water-start aria-controls="atelier-film" hidden><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5 13 8 4 13.5Z" fill="currentColor"/></svg>Avvia la caduta</button>
         </div>
         <div class="flagship-baseline">
           <p class="atelier-hero-promise">Siti web, e-commerce, loghi e video per la tua attività.</p>

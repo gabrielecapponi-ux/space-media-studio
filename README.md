@@ -19,7 +19,7 @@ npm run preview
 npm run deploy -- --ref <commit-sorgenti-gia-inviato>
 ```
 
-La suite comprende **69 gruppi, 21 per l’ingresso, 40 per i media e 8 per il percorso dei progetti**. I controlli storici di Launch Room rimangono separati in `npm run test:legacy` e non attestano la homepage attuale.
+La suite comprende **72 gruppi, 24 per l’ingresso, 40 per i media e 8 per il percorso dei progetti**. I controlli storici di Launch Room rimangono separati in `npm run test:legacy` e non attestano la homepage attuale.
 
 La build statica è in `dist/`; `main` conserva i sorgenti e GitHub Pages pubblica `gh-pages`. `scripts/deploy-pages.mjs` sostituisce soltanto le radici Space dichiarate, inclusa `models/`, preservando le altre cartelle e configurazioni del ramo. Il contratto di copia è stato provato in directory temporanee con `mrsmeet/` e `CNAME` conservati, senza pubblicare. Porte configurate: dev 5174, preview 5175; le anteprime isolate della lavorazione usano 5208 e 5209, da verificare prima di aprirle.
 
@@ -47,7 +47,7 @@ I cinque box “Descrivi la tua idea” preparano bozze WhatsApp: il visitatore 
 
 Il caricamento occupa lo schermo su desktop e mobile e precede la pagina a ogni nuova navigazione, anche arrivando da un’ancora o ricaricando dopo lo scroll. L’eventuale ancora si apre dopo l’ingresso. Il contatore descrive la preparazione e la costruzione dello studio, termina a 100% e lascia un breve momento di lettura prima della transizione. “Entra subito” ed Escape consentono di saltarlo. Errori e timeout rilasciano sempre la pagina. Movimento ridotto e risparmio dati usano il percorso statico.
 
-Su desktop la stanza modellata in Blender viene assemblata in tempo reale. Il GLB di 635.496 byte viene richiesto una volta insieme al modulo grafico. I 17 gruppi si assemblano in 2,65 s, poi la camera avvicina il monitor. Su telefono e dispositivi touch il film Blender dedicato riproduce l’intera costruzione dentro lo stesso caricamento a schermo intero, con percentuale e comandi. L’acqua resta ferma fino alla conclusione.
+Su desktop la stanza modellata in Blender viene assemblata in tempo reale. Il GLB di 635.496 byte viene richiesto una volta insieme al modulo grafico. I 17 gruppi si assemblano in 2,65 s, poi la camera avvicina il monitor. Su telefono e dispositivi touch il film Blender dedicato riproduce l’intera costruzione dentro lo stesso caricamento a schermo intero, con percentuale e comandi. Se il browser blocca il film mobile, viene caricata la stessa geometria Blender e costruita in tempo reale. L’illustrazione CSS resta il ripiego per un errore del renderer. L’acqua resta ferma fino alla conclusione. Se Safari vieta il suo autoplay, il comando “Avvia la caduta” compare direttamente sul film e un tocco lo avvia.
 
 La goccia di Film Composite parte dal fotogramma zero. La hero conserva il rapporto fotografico completo 16:9 su desktop e 4:5 in verticale, con titolo sopra e comandi sotto. Il desktop usa il master nativo 3840×2160 a 24 fps anche in finestre più piccole, il portrait un taglio 1080×1350 dallo stesso negativo UHD, il touch in orizzontale il Full HD. La cadenza è quella della ripresa originale, senza interpolazione. L’impatto al frame 25 (1,04 s) allarga il titolo del 3,5%. “Rivedi la caduta” riavvia acqua e titolo.
 

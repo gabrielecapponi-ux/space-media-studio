@@ -17,6 +17,7 @@ const portrait = matchMedia('(max-width: 1024px) and (orientation: portrait)');
 const film = document.querySelector('#atelier-film');
 const toggle = document.querySelector('#atelier-film-toggle');
 const replay = document.querySelector('#atelier-film-replay');
+const startFilm = document.querySelector('[data-water-start]');
 const stage = document.querySelector('.flagship-water-stage');
 const menu = document.querySelector('.atelier-mobile-menu');
 const hero = document.querySelector('.atelier-hero');
@@ -75,6 +76,7 @@ function syncControl() {
   const playing = !film.paused && !film.ended;
   toggle.hidden = !entryFinished;
   replay.hidden = !entryFinished;
+  if (startFilm) startFilm.hidden = !entryFinished || !autoplayBlocked || playing;
   toggle.setAttribute('aria-label', playing ? 'Metti in pausa il film' : 'Riproduci il film');
   toggle.setAttribute('aria-pressed', String(playing));
   toggle.querySelector('[data-film-symbol]').textContent = playing ? 'Ⅱ' : '▷';
@@ -180,12 +182,15 @@ function restartHero(manual = false) {
   syncPlayback();
 }
 replay.addEventListener('click', () => restartHero(true), { signal });
-stage.addEventListener('pointerenter', event => {
+startFilm?.addEventListener('click', () => restartHero(true), { signal });
+stage.addEventListener('pointerover', event => {
+  // Keep the blocked-play affordance stable until its actual click/tap.
+  if (autoplayBlocked || stage.contains(event.relatedTarget) || event.target.closest?.('button')) return;
   if (['mouse', 'pen'].includes(event.pointerType)) restartHero();
 }, { signal });
 function recoverHeroFromGesture(event) {
   if (!event.isTrusted || !autoplayBlocked || !mayPlayHero()) return;
-  if (event.target?.closest?.('[data-media-toggle], .atelier-cinema-open, #atelier-film-toggle, #atelier-film-replay')) return;
+  if (event.target?.closest?.('[data-media-toggle], .atelier-cinema-open, #atelier-film-toggle, #atelier-film-replay, [data-water-start]')) return;
   autoplayBlocked = false;
   manualPlayback = true;
   syncPlayback();
@@ -346,6 +351,8 @@ function revealPage() {
   clearTimeout(window.__spaceEntryWatchdog);
   entryFinished = true;
   // A deep link still receives the complete entrance, then opens its target.
+  window.__spaceRestoreEntryHash?.();
+  openIdeaFromHash();
   if (location.hash) {
     try { document.getElementById(decodeURIComponent(location.hash.slice(1)))?.scrollIntoView({ behavior: 'instant' }); } catch {}
   }

@@ -36,6 +36,10 @@ export function createMobileStudio({ signal: parentSignal, video: water, base, p
   let constructing = false;
   let constructed = false;
   let fallback = false;
+  let fallbackReady = false;
+  let fallbackArt = false;
+  let fallbackRoom;
+  let fallbackObserver;
   let waterPrepared = false;
   let waterUnavailable = false;
   let waterRequested = false;
@@ -63,6 +67,10 @@ export function createMobileStudio({ signal: parentSignal, video: water, base, p
     cancelAnimationFrame(frame); frame = 0;
     lifetime.abort();
     parentSignal?.removeEventListener('abort', dispose);
+    fallbackObserver?.disconnect();
+    fallbackObserver = undefined;
+    fallbackRoom?.dispose();
+    fallbackRoom = undefined;
     video.pause();
     video.removeAttribute('src');
     video.load();
@@ -74,7 +82,7 @@ export function createMobileStudio({ signal: parentSignal, video: water, base, p
     const destination = focusBefore?.isConnected && focusBefore !== document.body
       ? focusBefore : document.querySelector('#main') || document.querySelector('main');
     destination?.focus({ preventScroll: true });
-    const result = { status, degraded: fallback || waterUnavailable || status === 'timeout', videoPrepared: waterPrepared };
+    const result = { status, degraded: fallbackArt || waterUnavailable || status === 'timeout', videoPrepared: waterPrepared };
     resolveReady(result);
     if (status !== 'disposed') onComplete?.(result);
   }
@@ -98,10 +106,53 @@ export function createMobileStudio({ signal: parentSignal, video: water, base, p
   function useFallback() {
     if (disposed || constructed || fallback) return;
     fallback = true;
+    video.autoplay = false;
     video.pause();
-    shell.sceneHost.dataset.scene = 'fallback';
+    video.hidden = true;
+    video.removeAttribute('src');
+    video.load();
+    shell.root.classList.add('studio-entry--webgl');
+    shell.root.dataset.studioPlayback = 'webgl-loading';
+    shell.sceneHost.dataset.scene = 'loading';
     prepare();
     request();
+    // Native video policy must not replace the actual studio with a flat
+    // illustration. The same Blender mesh can assemble without media autoplay.
+    Promise.all([
+      import('./studio-blender-room.js'),
+      fetch(base + 'models/studio-space-20261105.glb', { signal }).then(response => {
+        if (!response.ok) throw new Error('Studio model unavailable');
+        return response.arrayBuffer();
+      }),
+    ]).then(([{ createStudioRoom }, modelBytes]) => {
+      if (disposed || staticPresentation()) return;
+      fallbackRoom = createStudioRoom(shell.sceneHost, { modelBytes });
+      fallbackRoom.setProgress(0);
+      const check = () => {
+        if (disposed) return;
+        const state = shell.sceneHost.dataset.scene;
+        if (state !== 'ready' && state !== 'fallback') return;
+        fallbackReady = true;
+        fallbackArt = state === 'fallback' || shell.sceneHost.dataset.source !== 'blender-glb';
+        shell.root.dataset.studioPlayback = state === 'fallback' ? 'illustration'
+          : fallbackArt ? 'procedural-webgl' : 'blender-webgl';
+        fallbackObserver?.disconnect();
+        fallbackObserver = undefined;
+        request();
+      };
+      fallbackObserver = new MutationObserver(check);
+      fallbackObserver.observe(shell.sceneHost, { attributes: true, attributeFilter: ['data-scene'] });
+      check();
+    }).catch(() => {
+      if (disposed || staticPresentation()) return;
+      fallbackRoom?.dispose(); fallbackRoom = undefined;
+      fallbackObserver?.disconnect(); fallbackObserver = undefined;
+      fallbackArt = true;
+      fallbackReady = true;
+      shell.sceneHost.dataset.scene = 'fallback';
+      shell.root.dataset.studioPlayback = 'illustration';
+      request();
+    });
   }
   function playStudio() {
     if (disposed || document.hidden || fallback || constructed || playbackRequested || video.readyState < 2) return;
@@ -129,11 +180,12 @@ export function createMobileStudio({ signal: parentSignal, video: water, base, p
       if (exitTime >= 220) return finish('ready');
     } else {
       // Data waiting is not construction progress. Native autoplay rejection
-      // uses the architectural fallback rather than a blank or locked screen.
+      // uses the actual Blender scene rather than a blank or locked screen.
       if (!fallback && !constructing && ((video.readyState >= 2 && elapsed - loadedTime > 1800) || elapsed > 6000)) useFallback();
-      if (fallback) {
+      if (fallback && fallbackReady) {
         fallbackTime += delta;
         constructed = fallbackTime >= 2650;
+        fallbackRoom?.setProgress(Math.min(1, fallbackTime / 2650));
       }
       const duration = Number.isFinite(video.duration) && video.duration > 0 ? video.duration : 2.8;
       const construction = fallback ? Math.min(1, fallbackTime / 2650) : Math.min(1, video.currentTime / duration);
