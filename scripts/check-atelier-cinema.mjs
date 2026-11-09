@@ -40,7 +40,7 @@ class Node extends Events {
   getAttribute(name) { return this.attrs.get(name) ?? null; }
   setAttribute(name, value) { this.attrs.set(name, String(value)); }
 }
-function fixture({ reduced = false, saveData = false, portrait = false, entry = false, signal, playerCount = 1 } = {}) {
+function fixture({ reduced = false, saveData = false, portrait = false, entry = false, signal, playerCount = 1, decode = true } = {}) {
   const pref = new Events(); pref.matches = reduced;
   const connection = new Events(); connection.saveData = saveData;
   const orientation = new Events(); orientation.matches = portrait;
@@ -65,10 +65,10 @@ function fixture({ reduced = false, saveData = false, portrait = false, entry = 
     let src = ''; Object.defineProperty(video, 'src', { get: () => src, set: value => { src = value; video.setAttribute('src', value); } });
     let poster = ''; video.posterAssignments = [];
     Object.defineProperty(video, 'poster', { get: () => poster, set: value => { poster = value; video.posterAssignments.push(value); video.setAttribute('poster', value); } });
-    video.readyState = 0;
+    video.readyState = 0; video.currentTime = 0;
     video.paused = true; video.ended = false; video.muted = false; video.loads = 0; video.plays = 0; video.pauses = 0;
     video.mode = 'resolve'; let pendingResolve, pendingReject;
-    video.load = () => { video.loads++; };
+    video.load = () => { video.loads++; if (decode) video.readyState = 2; };
     video.pause = () => { video.pauses++; const changed = !video.paused; video.paused = true; if (changed) video.emit('pause'); };
     video.play = () => {
       video.plays++;
@@ -163,12 +163,12 @@ await test('Entry, open menu and hidden document block playback and pause a runn
   f.doc.hidden = false; f.doc.emit('visibilitychange'); await f.flush(); assert.equal(f.video.paused, false);
   f.api.dispose();
 });
-await test('Explicit pause survives visibility cycles and explicit play resumes it', async () => {
+await test('Explicit pause holds within a visit; a new viewport visit restarts playback', async () => {
   const f = fixture(); await f.show(); f.button.emit('click'); await f.flush();
   assert.equal(f.video.paused, true);
   f.visibleObserver.fire(f.stage, false, 0); f.visibleObserver.fire(f.stage, true, .9); await f.flush();
-  assert.equal(f.video.paused, true);
-  f.button.emit('click'); await f.flush(); assert.equal(f.video.paused, false);
+  assert.equal(f.video.paused, false);
+  assert.equal(f.video.currentTime, 0);
   f.api.dispose();
 });
 await test('A pending play resolved after an explicit pause is stopped by the final permission check', async () => {
@@ -212,6 +212,16 @@ await test('Wide screens on a measured 4 Mbit connection fetch only the visible 
   assert.match(f.video.src, /type-compact\.mp4$/);
   f.api.dispose();
 });
+await test('The same film chooses compact, HD and QHD for measured 4, 8 and 20 Mbit connections', async () => {
+  for (const [mbps, expected] of [[4, 'compact'], [8, 'hd'], [20, 'desktop']]) {
+    const f = fixture();
+    f.win.performance = { getEntriesByType: () => [{ name: 'https://example.test/models/studio-space-20261105.glb',
+      transferSize: 635796, encodedBodySize: 635496, responseStart: 200, responseEnd: 200 + 635496 * .008 / mbps }] };
+    f.video.dataset.srcCompact = './films/type-compact.mp4';
+    f.video.dataset.srcHd = './films/type-hd.mp4';
+    await f.show(); assert.ok(f.video.src.endsWith('type-' + expected + '.mp4')); f.api.dispose();
+  }
+});
 await test('A fast measured transfer wins over an outdated low downlink estimate', async () => {
   const f = fixture();
   f.connection.downlink = 1.7;
@@ -223,7 +233,7 @@ await test('A fast measured transfer wins over an outdated low downlink estimate
   f.api.dispose();
 });
 await test('Phone autoplay waits for a decoded frame while a manual tap retains its gesture', async () => {
-  const auto = fixture({ portrait: true });
+  const auto = fixture({ portrait: true, decode: false });
   await auto.show();
   assert.equal(auto.video.autoplay, true);
   assert.equal(auto.video.plays, 0);
@@ -262,20 +272,20 @@ await test('Final disposal is idempotent, cancels queued work and disconnects li
   assert.equal(f.video.plays, count); assert.equal(f.win.listenerCount(), 0); assert.equal(f.doc.listenerCount(), 0); assert.equal(f.menu.listenerCount(), 0);
   f.api.dispose();
 });
-await test('A failed film reloads only when its own control is explicitly retried', async () => {
+await test('A failed film retries once on a new visit and remains manually recoverable', async () => {
   const f = fixture({ playerCount: 5 });
   const target = f.media[2]; target.video.mode = 'reject';
   f.warmObserver.fire(target.stage); f.visibleObserver.fire(target.stage, true, .9); await f.flush();
   target.video.error = { code: 2 }; target.video.emit('error');
   f.visibleObserver.fire(target.stage, false, 0); f.visibleObserver.fire(target.stage, true, .9); await f.flush();
-  assert.equal(target.video.loads, 1); assert.equal(target.video.paused, true);
+  assert.equal(target.video.loads, 2); assert.equal(target.video.paused, true);
   target.video.load = () => { target.video.loads++; target.video.error = null; target.video.mode = 'resolve'; };
   target.button.emit('click'); await f.flush();
-  assert.equal(target.video.loads, 2); assert.equal(target.video.paused, false);
+  assert.equal(target.video.loads, 3); assert.equal(target.video.paused, false);
   assert.ok(f.media.filter(item => item !== target).every(item => item.video.loads === 0));
   f.api.dispose();
 });
-await test('Five service films keep their own labels, source preparation and explicit pause state', async () => {
+await test('Five service films keep independent controls and reset a pause on each new visit', async () => {
   const f = fixture({ playerCount: 5 });
   for (const [index, item] of f.media.entries()) {
     assert.equal(item.video.loads, 0);
@@ -289,7 +299,8 @@ await test('Five service films keep their own labels, source preparation and exp
     assert.equal(item.video.paused, true);
     f.visibleObserver.fire(item.stage, false, 0);
     f.visibleObserver.fire(item.stage, true, .9); await f.flush();
-    assert.equal(item.video.paused, true);
+    assert.equal(item.video.paused, false);
+    assert.equal(item.video.currentTime, 0);
     f.visibleObserver.fire(item.stage, false, 0);
   }
   f.media[2].button.emit('click'); f.visibleObserver.fire(f.media[2].stage, true, .9); await f.flush();
@@ -418,8 +429,8 @@ await test('A manual cinema request prepares its poster before the control reads
   f.api.dispose();
 });
 await test('Picture fallback yields only to a decoded frame, remains aligned on pause and returns on media error', async () => {
-  const f = fixture(); await f.show();
-  assert.equal(f.stage.dataset.mediaReady, 'false');
+  const f = fixture({ decode: false }); await f.show();
+  assert.notEqual(f.stage.dataset.mediaReady, 'true');
   f.video.readyState = 2; f.video.emit('loadeddata'); await f.flush();
   assert.equal(f.stage.dataset.mediaReady, 'true');
   f.button.emit('click'); await f.flush(); assert.equal(f.stage.dataset.mediaReady, 'true');
@@ -435,6 +446,90 @@ await test('The historical photo parallax never transforms a film poster indepen
   assert.equal(f.media[0].posterImage.style.transform, '');
   f.shotObserver.fire(f.photo); f.tick(); assert.match(f.image.style.transform, /scale/);
   f.api.dispose();
+});
+await test('Cold desktop autoplay waits for decoded data and stays armed while loading', async () => {
+  const f = fixture({ decode: false });
+  await f.show();
+  assert.equal(f.video.autoplay, true); assert.equal(f.video.plays, 0);
+  f.video.readyState = 1; f.video.emit('loadedmetadata'); await f.flush();
+  assert.equal(f.video.plays, 0);
+  f.video.readyState = 2; f.video.emit('loadeddata'); await f.flush();
+  assert.equal(f.video.paused, false); assert.equal(f.video.plays, 1);
+  f.video.emit('canplay'); await f.flush(); assert.equal(f.video.plays, 1);
+  f.api.dispose();
+});
+await test('Every genuine viewport return restarts at zero without reloading the film', async () => {
+  const f = fixture(); await f.show();
+  for (let i = 0; i < 3; i++) {
+    f.video.currentTime = 4.5;
+    f.visibleObserver.fire(f.stage, false, 0); await f.flush();
+    assert.equal(f.video.paused, true);
+    f.visibleObserver.fire(f.stage, true, .6); await f.flush();
+    assert.equal(f.video.paused, false); assert.equal(f.video.currentTime, 0);
+  }
+  assert.equal(f.video.loads, 1); f.api.dispose();
+});
+await test('Small scroll adjustments preserve the shot and a fresh visit clears a prior pause', async () => {
+  const f = fixture(); await f.show(); f.video.currentTime = 3.2;
+  f.visibleObserver.fire(f.stage, true, .12); await f.flush();
+  assert.equal(f.video.currentTime, 3.2); assert.equal(f.video.paused, false);
+  f.button.emit('click'); await f.flush();
+  f.menu.open = true; f.menu.emit('toggle'); f.menu.open = false; f.menu.emit('toggle'); await f.flush();
+  assert.equal(f.video.paused, true);
+  f.visibleObserver.fire(f.stage, true, .02);
+  f.visibleObserver.fire(f.stage, true, .16); await f.flush();
+  assert.equal(f.video.paused, false); assert.equal(f.video.currentTime, 0);
+  f.api.dispose();
+});
+await test('The hovered film wins over the larger visible film and restarts on each pointer return', async () => {
+  const f = fixture({ playerCount: 2 }), [a, b] = f.media;
+  f.visibleObserver.fire(a.stage, true, .8); f.visibleObserver.fire(b.stage, true, .3); await f.flush();
+  b.video.currentTime = 4;
+  b.stage.emit('pointerenter', { pointerType: 'mouse' }); await f.flush();
+  assert.equal(a.video.paused, true); assert.equal(b.video.paused, false); assert.equal(b.video.currentTime, 0);
+  b.video.currentTime = 2.4;
+  b.stage.emit('pointermove', { pointerType: 'mouse' }); await f.flush(); assert.equal(b.video.currentTime, 2.4);
+  b.button.emit('click'); await f.flush(); assert.equal(b.video.paused, true);
+  b.stage.emit('pointerleave'); b.stage.emit('pointerenter', { pointerType: 'mouse' }); await f.flush();
+  assert.equal(b.video.paused, false); assert.equal(b.video.currentTime, 0);
+  assert.equal(f.media.filter(item => !item.video.paused).length, 1);
+  f.api.dispose();
+});
+await test('Touch entry and static preferences never manufacture a hover replay', async () => {
+  const f = fixture(); await f.show(); f.video.currentTime = 3;
+  f.stage.emit('pointerenter', { pointerType: 'touch' }); await f.flush();
+  assert.equal(f.video.currentTime, 3); f.api.dispose();
+  for (const opts of [{ reduced: true }, { saveData: true }]) {
+    const s = fixture(opts); await s.show();
+    s.stage.emit('pointerenter', { pointerType: 'mouse' });
+    s.doc.emit('pointerdown', { isTrusted: true }); await s.flush();
+    assert.equal(s.video.loads, 0); assert.equal(s.video.plays, 0); s.api.dispose();
+  }
+});
+await test('A new visit and a trusted interaction each recover a previous autoplay refusal once', async () => {
+  const f = fixture(); f.video.mode = 'reject'; await f.show(); const calls = f.video.plays;
+  f.video.emit('canplay'); f.video.emit('loadeddata'); await f.flush(); assert.equal(f.video.plays, calls);
+  f.video.mode = 'resolve'; f.visibleObserver.fire(f.stage, false, 0);
+  f.visibleObserver.fire(f.stage, true, .6); await f.flush(); assert.equal(f.video.paused, false);
+  f.api.dispose();
+  const b = fixture(); b.video.mode = 'reject'; await b.show(); b.video.mode = 'resolve';
+  b.doc.emit('pointerdown', { isTrusted: false }); await b.flush(); assert.equal(b.video.paused, true);
+  b.doc.emit('pointerdown', { isTrusted: true }); await b.flush(); assert.equal(b.video.paused, false); b.api.dispose();
+});
+await test('Pointerdown on a blocked transport leaves one play action for its click handler', async () => {
+  const f = fixture(); f.video.mode = 'reject'; await f.show(); f.video.mode = 'resolve';
+  const attempts = f.video.plays;
+  f.doc.emit('pointerdown', { isTrusted: true, target: { closest: () => f.button } });
+  await f.flush(); assert.equal(f.video.plays, attempts);
+  f.button.emit('click'); await f.flush();
+  assert.equal(f.video.paused, false); assert.equal(f.video.plays, attempts + 1);
+  f.api.dispose();
+});
+await test('A superseded play rejection cannot leave the next visit blocked', async () => {
+  const f = fixture(); f.video.mode = 'pending'; await f.show();
+  f.visibleObserver.fire(f.stage, false, 0); f.visibleObserver.fire(f.stage, true, .8);
+  f.video.mode = 'resolve'; f.media[0].rejectPlay(); await f.flush();
+  assert.equal(f.video.paused, false); assert.equal(f.video.currentTime, 0); f.api.dispose();
 });
 await test('Both HTML entries keep responsive lazy picture fallbacks, compact index thumbnails and controls outside the surface', async () => {
   const attrs = tag => Object.fromEntries([...tag.matchAll(/([\w:-]+)="([^"]*)"/g)].map(match => [match[1], match[2]]));
@@ -459,10 +554,10 @@ await test('Both HTML entries keep responsive lazy picture fallbacks, compact in
       assert.equal(image.loading, 'lazy'); assert.equal(image.decoding, 'async'); assert.equal(image.fetchpriority, 'low'); assert.equal(image.alt, '');
       assert.match(body.slice(body.indexOf('</div>') + 6), /<figcaption/);
       assert.match(body.slice(body.indexOf('</div>') + 6), /data-media-toggle/);
-      const thumb = html.match(new RegExp(`<img[^>]+src="/images/director-${asset}-thumb\\.webp"[^>]+>`));
+      const thumb = html.match(new RegExp(`<img[^>]+src="/images/(?:director|elegant)-${asset}-thumb\\.webp"[^>]+>`));
       assert.ok(thumb, `${filename}/${asset} thumbnail`);
       const small = attrs(thumb[0]); assert.equal(small.width, '320'); assert.equal(small.height, '180'); assert.equal(small.fetchpriority, 'low');
-      const bytes = await readFile(new URL(`../public/images/director-${asset}-thumb.webp`, import.meta.url));
+      const bytes = await readFile(new URL(`../public${small.src}`, import.meta.url));
       assert.equal(bytes.toString('ascii', 0, 4), 'RIFF'); assert.equal(bytes.toString('ascii', 8, 12), 'WEBP');
     }
     const heroPoster = html.match(/<picture class="flagship-water-poster">([\s\S]*?)<\/picture>/)?.[1];

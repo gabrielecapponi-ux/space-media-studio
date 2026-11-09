@@ -28,6 +28,7 @@ let manualPlayback = false;
 let playPending = false;
 let playInterrupted = false;
 let autoplayBlocked = false;
+let heroVisit = 0;
 let resumeTime = 0;
 let disposed = false;
 let suspended = false;
@@ -95,9 +96,10 @@ async function syncPlayback() {
   // request still calls play() in the originating user gesture.
   if (!manualPlayback && film.readyState < 2) { syncControl(); return; }
   playPending = true; playInterrupted = false;
+  const attempt = heroVisit;
   try { await film.play(); }
   catch (error) {
-    autoplayBlocked = error?.name === 'NotAllowedError';
+    if (attempt === heroVisit) autoplayBlocked = error?.name === 'NotAllowedError';
     if (autoplayBlocked) film.autoplay = false;
   }
   finally {
@@ -149,18 +151,35 @@ film.addEventListener('seeked', watchImpact, { signal });
 film.addEventListener('pause', cancelImpact, { signal });
 film.addEventListener('emptied', cancelImpact, { signal });
 if (!film.requestVideoFrameCallback) film.addEventListener('timeupdate', () => markImpact(film.currentTime), { signal });
-replay.addEventListener('click', () => {
-  manualPlayback = true;
+function restartHero(manual = false) {
+  if (!entryFinished || (!manual && !automaticMotion())) return;
+  heroVisit++;
+  manualPlayback = manual;
   userPaused = false;
   autoplayBlocked = false;
+  if (playPending) playInterrupted = true;
+  film.pause();
   cancelImpact();
   hero.dataset.impact = 'false';
   if (film.error) film.load();
   ensureSource();
   resumeTime = 0;
-  film.currentTime = 0;
+  if (film.readyState >= 1) film.currentTime = 0;
   syncPlayback();
+}
+replay.addEventListener('click', () => restartHero(true), { signal });
+stage.addEventListener('pointerenter', event => {
+  if (['mouse', 'pen'].includes(event.pointerType)) restartHero();
 }, { signal });
+function recoverHeroFromGesture(event) {
+  if (!event.isTrusted || !autoplayBlocked || !mayPlayHero()) return;
+  if (event.target?.closest?.('[data-media-toggle], .atelier-cinema-open, #atelier-film-toggle, #atelier-film-replay')) return;
+  autoplayBlocked = false;
+  manualPlayback = true;
+  syncPlayback();
+}
+document.addEventListener('pointerdown', recoverHeroFromGesture, { signal });
+document.addEventListener('keydown', recoverHeroFromGesture, { signal });
 toggle.addEventListener('click', () => {
   if (!film.paused || playPending) { userPaused = true; manualPlayback = false; }
   else {
@@ -216,10 +235,12 @@ const playbackObserver = new MutationObserver(syncPlayback);
 playbackObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 
 const visibility = new IntersectionObserver(([item]) => {
-  inHero = item.isIntersecting && item.intersectionRatio > .18;
-  syncPlayback();
-}, { threshold: [0, .18, .5] });
-visibility.observe(hero);
+  const wasVisible = inHero;
+  inHero = item.isIntersecting && item.intersectionRatio > (inHero ? .025 : .14);
+  if (inHero && !wasVisible && entryFinished) restartHero();
+  else syncPlayback();
+}, { threshold: [0, .025, .14, .5] });
+visibility.observe(stage);
 
 function openIdeaFromHash() {
   let key;

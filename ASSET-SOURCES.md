@@ -1,5 +1,11 @@
 # Provenienza dei materiali — Space Media Studio
 
+## Rifinitura desktop del 9 novembre 2026
+
+LUMA e la campagna SHIFT usano i film `elegant-product` ed `elegant-campaign`, da dieci secondi a 2560×1440 e 60 fps. LUMA usa la geometria Blender originale e fotografie Cycles da 2880×1620 per una nuova traiettoria e un riflesso che attraversa l’ottica. La campagna ricompone a risoluzione doppia i tre supporti e le loro rotazioni. Le versioni leggere sono 1280×720 a 30 fps, con il medesimo montaggio. Copertine e miniature derivano dai nuovi film. I tagli portrait usano i master dedicati dell’edizione Director.
+
+Le ricette, la descrizione dei materiali e le istruzioni di produzione sono in `scripts/elegant-films/`. Verifiche dei frame, dei loop, del bitrate e hash sono in `outputs/reentry-20261109/films/`.
+
 ## Edizione Director del 6 novembre 2026
 
 - **Ingresso.** Su telefono il film di 2,8 secondi deriva dalla scena Blender originale dello studio. Camera verticale, illuminazione, materiali del fondale e monitor fotografici sono preparati da `scripts/director-mobile-studio.py`. Il desktop carica la geometria originale e avvicina il monitor tramite Three.js.

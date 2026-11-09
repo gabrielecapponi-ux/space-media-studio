@@ -12,12 +12,13 @@ export function installAtelierCinema({ signal, menu } = {}) {
     video, stage: video.closest('.atelier-media-stage'),
     button: document.querySelector(`[data-media-toggle][aria-controls="${video.id}"]`),
     visible: false, ratio: 0, warm: false, userPaused: false, manual: false, pending: false,
-    interrupted: false, blocked: false,
+    interrupted: false, blocked: false, restart: false, visit: 0,
   }));
   let frame = 0;
   let disposed = false;
   let suspended = false;
   let requestedPlayer;
+  let hoveredPlayer;
   const motionAllowed = () => !reduced.matches && !connection?.saveData;
   const pageAvailable = () => !document.hidden && !suspended && !menu?.open
     && !document.documentElement.classList.contains('cinema-open')
@@ -61,9 +62,32 @@ export function installAtelierCinema({ signal, menu } = {}) {
   function foregroundPlayer() {
     const eligible = player => player.visible && !player.userPaused && (motionAllowed() || player.manual);
     if (requestedPlayer && eligible(requestedPlayer)) return requestedPlayer;
+    if (hoveredPlayer && eligible(hoveredPlayer)) return hoveredPlayer;
     return players.reduce((winner, player) => eligible(player) && (!winner || player.ratio > winner.ratio) ? player : winner, undefined);
   }
   const mayPlay = player => !disposed && pageAvailable() && player === foregroundPlayer();
+
+  function rewind(player) {
+    if (!player.restart || player.video.readyState < 1) return;
+    try {
+      player.video.currentTime = 0;
+      player.restart = false;
+    } catch { /* loadedmetadata will finish a deferred seek. */ }
+  }
+
+  function newVisit(player) {
+    if (!motionAllowed()) return;
+    player.visit++;
+    player.restart = true;
+    player.userPaused = false;
+    player.manual = false;
+    player.blocked = false;
+    if (player.pending) player.interrupted = true;
+    player.video.pause();
+    if (player.video.error) player.video.load();
+    rewind(player);
+  }
+
   async function sync(player) {
     if (disposed) return;
     if (player.warm || player.visible || player.manual) poster(player);
@@ -77,18 +101,22 @@ export function installAtelierCinema({ signal, menu } = {}) {
       player.video.pause(); control(player); return;
     }
     source(player);
-    if (portrait.matches && !player.manual && player.video.readyState < 2) { control(player); return; }
+    rewind(player);
+    // Wait for the decoded, visible picture on desktop too. Calling play()
+    // during metadata discovery can turn a cold arrival into a policy refusal.
+    if (!player.manual && player.video.readyState < 2) { control(player); return; }
     if (player.blocked || player.video.error) { control(player); return; }
     if (player.pending || !player.video.paused) {
       if (player.pending && player.video.paused) player.interrupted = true;
       control(player); return;
     }
     player.pending = true; player.interrupted = false;
+    const attempt = player.visit;
     try { await player.video.play(); }
     catch (error) {
       // Do not loop on a real autoplay policy refusal. A later explicit play
       // clears it; AbortError from our own pause/load is recoverable instead.
-      player.blocked = error?.name === 'NotAllowedError';
+      if (attempt === player.visit) player.blocked = error?.name === 'NotAllowedError';
       if (player.blocked) player.video.autoplay = false;
     }
     finally {
@@ -139,18 +167,41 @@ export function installAtelierCinema({ signal, menu } = {}) {
     items.forEach(item => {
       const player = players.find(value => value.stage === item.target);
       if (player) {
-        player.visible = item.isIntersecting && item.intersectionRatio > .14;
+        // Different entry/exit thresholds avoid restarting around a single
+        // boundary while a visitor makes small scroll adjustments.
+        const visible = item.isIntersecting && item.intersectionRatio > (player.visible ? .025 : .14);
+        if (visible && !player.visible) newVisit(player);
+        player.visible = visible;
         player.ratio = item.intersectionRatio;
+        if (!visible) {
+          if (requestedPlayer === player) requestedPlayer = undefined;
+          if (hoveredPlayer === player) hoveredPlayer = undefined;
+        }
       }
     });
     players.forEach(sync);
-  }, { threshold: [0, .14, .5, .75, 1] });
+  }, { threshold: [0, .025, .14, .35, .5, .75, 1] });
   players.forEach(player => {
     format(player);
     player.video.muted = true; player.video.defaultMuted = true;
     player.video.playsInline = true; player.video.autoplay = false;
     control(player);
     warmObserver.observe(player.stage); videoObserver.observe(player.stage);
+    player.stage.addEventListener('pointerenter', event => {
+      if (!['mouse', 'pen'].includes(event.pointerType) || !motionAllowed() || !pageAvailable()) return;
+      // A pointer over the picture identifies the intended film even when
+      // another chapter occupies more of the viewport.
+      player.visible = true;
+      hoveredPlayer = player;
+      requestedPlayer = undefined;
+      newVisit(player);
+      players.forEach(sync);
+    }, { signal: life.signal });
+    player.stage.addEventListener('pointerleave', () => {
+      if (hoveredPlayer !== player) return;
+      hoveredPlayer = undefined;
+      players.forEach(sync);
+    }, { signal: life.signal });
     player.stage.addEventListener('click', event => {
       // Capture also covers the separate cinema control before it reads the
       // inline poster, even if observers have not delivered their first entry.
@@ -169,6 +220,7 @@ export function installAtelierCinema({ signal, menu } = {}) {
     }, { signal: life.signal });
     player.video.addEventListener('play', () => {
       if (!mayPlay(player)) player.video.pause();
+      else rewind(player);
       presentation(player);
       control(player);
     }, { signal: life.signal });
@@ -176,11 +228,23 @@ export function installAtelierCinema({ signal, menu } = {}) {
     ['emptied', 'error'].forEach(type => player.video.addEventListener(type, () => {
       player.stage.dataset.mediaReady = 'false'; control(player);
     }, { signal: life.signal }));
+    player.video.addEventListener('loadedmetadata', () => rewind(player), { signal: life.signal });
     ['loadeddata', 'canplay', 'playing'].forEach(type => player.video.addEventListener(type, () => {
       presentation(player); sync(player);
     }, { signal: life.signal }));
   });
   function refresh() { players.forEach(sync); request(); }
+  function recoverFromGesture(event) {
+    if (!event.isTrusted || !motionAllowed() || !pageAvailable()) return;
+    if (event.target?.closest?.('[data-media-toggle], .atelier-cinema-open, #atelier-film-toggle, #atelier-film-replay')) return;
+    const player = foregroundPlayer();
+    if (!player?.blocked) return;
+    player.blocked = false;
+    player.manual = true;
+    sync(player);
+  }
+  document.addEventListener('pointerdown', recoverFromGesture, { signal: life.signal });
+  document.addEventListener('keydown', recoverFromGesture, { signal: life.signal });
   function policyChanged() {
     requestedPlayer = undefined;
     players.forEach(player => { player.manual = false; });

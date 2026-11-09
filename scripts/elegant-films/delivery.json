@@ -1,0 +1,165 @@
+{
+  "edition": "2026-11-09",
+  "films": [
+    {
+      "asset": "product",
+      "renderer": "Blender camera and 314906-triangle mesh, Cycles plate projection in Metal",
+      "renditions": [
+        {
+          "file": "public/films/elegant-product.mp4",
+          "dimensions": [
+            2560,
+            1440
+          ],
+          "fps": 60,
+          "frames": 600,
+          "bytes": 6569599,
+          "sha256": "8185b46a1b5d0d1a8f73df9ccef83ca04b127eae5644dbb3fe86b6aaf58dc964",
+          "full_decode": true,
+          "adjacent_duplicate_frames": 0,
+          "loop_boundary_mean_difference": 0.2445,
+          "faststart": true,
+          "peak_bitrate_one_second": 9620312,
+          "bitrate": "5249270",
+          "profile": "High",
+          "level": 51
+        },
+        {
+          "file": "public/films/elegant-product-hd.mp4",
+          "dimensions": [
+            1920,
+            1080
+          ],
+          "fps": 60,
+          "frames": 600,
+          "bytes": 3303165,
+          "sha256": "61370428d823d4c0737cfa979014ed0a5af651d7c6370c488d2a42165ec7baaa",
+          "full_decode": true,
+          "adjacent_duplicate_frames": 0,
+          "loop_boundary_mean_difference": 0.4309,
+          "faststart": true,
+          "peak_bitrate_one_second": 3944640,
+          "bitrate": "2636072",
+          "profile": "High",
+          "level": 42
+        },
+        {
+          "file": "public/films/elegant-product-compact.mp4",
+          "dimensions": [
+            1280,
+            720
+          ],
+          "fps": 30,
+          "frames": 300,
+          "bytes": 839221,
+          "sha256": "5ea67b7b92c17547742deb66654387ebc603e19b33e806372fc72ed3924dc425",
+          "full_decode": true,
+          "adjacent_duplicate_frames": 0,
+          "loop_boundary_mean_difference": 0.5468,
+          "faststart": true,
+          "peak_bitrate_one_second": 846576,
+          "bitrate": "667850",
+          "profile": "High",
+          "level": 31
+        }
+      ],
+      "stills": [
+        {
+          "file": "public/images/elegant-product.jpg",
+          "bytes": 155436,
+          "sha256": "262aeb632530f5f542ec0c438e10a32367739e0341bc9b725b40b0eeca204228"
+        },
+        {
+          "file": "public/images/elegant-product.webp",
+          "bytes": 71716,
+          "sha256": "a31d7c9218e4b03b10b0971d1bfd6c89d4e27f6f0f6c0e0910624251ded3a3a4"
+        },
+        {
+          "file": "public/images/elegant-product-thumb.webp",
+          "bytes": 9868,
+          "sha256": "c74e6cf78fa6d3d32bfff9fdba93c7ad0112a4948b63f7726e2f88e4ad7d0010"
+        }
+      ]
+    },
+    {
+      "asset": "campaign",
+      "renderer": "Perspective projection of three native 2048px graphic compositions with Cycles product photography",
+      "renditions": [
+        {
+          "file": "public/films/elegant-campaign.mp4",
+          "dimensions": [
+            2560,
+            1440
+          ],
+          "fps": 60,
+          "frames": 600,
+          "bytes": 7632205,
+          "sha256": "c2c5c1cc434f8b81484096a5fb267e5a306fb3d8d6d65b68136d9719ac94366d",
+          "full_decode": true,
+          "adjacent_duplicate_frames": 0,
+          "loop_boundary_mean_difference": 0.2107,
+          "faststart": true,
+          "peak_bitrate_one_second": 8633000,
+          "bitrate": "6099297",
+          "profile": "High",
+          "level": 51
+        },
+        {
+          "file": "public/films/elegant-campaign-hd.mp4",
+          "dimensions": [
+            1920,
+            1080
+          ],
+          "fps": 60,
+          "frames": 600,
+          "bytes": 3535677,
+          "sha256": "db277fbaa46eab3510935ccfca241a72cb5c7d5c9f73dd0a9cfe46eca0433cb8",
+          "full_decode": true,
+          "adjacent_duplicate_frames": 0,
+          "loop_boundary_mean_difference": 0.4411,
+          "faststart": true,
+          "peak_bitrate_one_second": 4254064,
+          "bitrate": "2822120",
+          "profile": "High",
+          "level": 42
+        },
+        {
+          "file": "public/films/elegant-campaign-compact.mp4",
+          "dimensions": [
+            1280,
+            720
+          ],
+          "fps": 30,
+          "frames": 300,
+          "bytes": 941546,
+          "sha256": "3377422451e3cbe320960c539dec0170499979b482fbc5534793bd5c102787d7",
+          "full_decode": true,
+          "adjacent_duplicate_frames": 0,
+          "loop_boundary_mean_difference": 0.8015,
+          "faststart": true,
+          "peak_bitrate_one_second": 1070368,
+          "bitrate": "749812",
+          "profile": "High",
+          "level": 31
+        }
+      ],
+      "stills": [
+        {
+          "file": "public/images/elegant-campaign.jpg",
+          "bytes": 267785,
+          "sha256": "fe2b281e6156ef52464154c34e439d56deabce2b2e7503deb73f9ec3df005b2b"
+        },
+        {
+          "file": "public/images/elegant-campaign.webp",
+          "bytes": 118852,
+          "sha256": "cd4da956740cbd79323b0098a9ecfdab9541075b106fdbd626a25b00a34e7340"
+        },
+        {
+          "file": "public/images/elegant-campaign-thumb.webp",
+          "bytes": 8954,
+          "sha256": "a196bf6a9976191245dcfae63c5585c681ad078439d939c85df6d0d5af31d070"
+        }
+      ]
+    }
+  ]
+}
