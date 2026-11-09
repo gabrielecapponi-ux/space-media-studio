@@ -285,6 +285,28 @@ await test('A failed film retries once on a new visit and remains manually recov
   assert.ok(f.media.filter(item => item !== target).every(item => item.video.loads === 0));
   f.api.dispose();
 });
+await test('WebKit media errors with paused=false expose retry and recover on the first click', async () => {
+  const f = fixture({ reduced: true });
+  await f.show(); f.button.emit('click'); await f.flush();
+  assert.equal(f.video.paused, false);
+  // Observed in WebKit after an aborted MP4: the play promise has settled,
+  // but the failed media resource still reports paused=false and error=4.
+  f.video.readyState = 0; f.video.error = { code: 4 }; f.video.emit('error');
+  assert.equal(f.video.paused, true);
+  assert.equal(f.video.autoplay, false);
+  assert.equal(f.stage.dataset.mediaReady, 'false');
+  assert.equal(f.button.getAttribute('aria-pressed'), 'false');
+  assert.equal(f.label.textContent, 'Riprova');
+  assert.match(f.button.getAttribute('aria-label'), /Riprova a riprodurre/);
+  const loads = f.video.loads, plays = f.video.plays;
+  f.video.load = () => { f.video.loads++; f.video.error = null; f.video.readyState = 2; };
+  f.button.emit('click'); await f.flush();
+  assert.equal(f.video.loads, loads + 1);
+  assert.equal(f.video.plays, plays + 1);
+  assert.equal(f.video.paused, false);
+  assert.equal(f.label.textContent, 'Pausa');
+  f.api.dispose();
+});
 await test('Five service films keep independent controls and reset a pause on each new visit', async () => {
   const f = fixture({ playerCount: 5 });
   for (const [index, item] of f.media.entries()) {

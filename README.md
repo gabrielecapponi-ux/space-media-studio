@@ -59,6 +59,10 @@ I film dei servizi usano i prefissi `director-` ed `elegant-`. LUMA e la campagn
 
 Il comando “In primo piano” apre il film dal punto corrente con controlli nativi, Escape e restituzione del focus. Il dialog conserva il rapporto 16:9 o 4:5 anche con poca altezza disponibile. Chiusura, resize, nuove preferenze e pagina nascosta annullano l’animazione; alla chiusura si libera il decoder. La ripresa rispetta la pausa manuale. Il menu mobile si chiude anche con Escape, clic esterno o uscita del focus. Testi, demo e navigazione rimangono HTML su scroll nativo.
 
+Nelle finestre desktop orizzontali alte almeno 650 px, apertura, fotogramma intero e comandi rientrano in `100svh`. Il film resta in proporzione, centrato; su portrait, finestre basse e zoom si conserva lo scorrimento naturale. Note e indici dei servizi hanno caratteri di almeno 11 px e contrasto rinforzato; la didascalia dei bandi ha un fondo giallo che protegge le lettere durante il passaggio della linea.
+
+Gli errori media prevalgono sullo stato nativo di pausa: WebKit può lasciare `paused=false` anche dopo un download fallito. Il player viene fermato, il comando diventa “Riprova” e un solo clic/tocco ricarica il film. La promessa di riproduzione e le regole di pausa restano gestite dal controller. Il confronto prima/dopo e le prove del 9 novembre sono conservati localmente in `outputs/premium-20261109/`.
+
 ## OSKEN e provenienza
 
 [OSKEN 1.0.0](https://horizonx.so/explore/osken) è stato acquisito il 5 novembre con approvazione dell’utente tramite la Premium Library HorizonX. Ricevuta e licenza sono in `outputs/horizon-osken-20261105/ACQUISITION.json`; `ADAPTATION.md` descrive il port. `src/atelier-osken-motion.js/.css` applicano un ingresso di 620 ms alla superficie poster/video e una risposta di 280 ms al passaggio del mouse. Alla fine si rilasciano trasformazione, prospettiva e layer temporaneo. `src/cinema-viewer.js/.css` adattano l’espansione all’apertura esplicita di 460 ms. Comandi e rettangoli misurati restano stabili; mobile, finestre basse, movimento ridotto e SaveData non ricevono moto decorativo.

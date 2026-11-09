@@ -51,13 +51,15 @@ export function installAtelierCinema({ signal, menu } = {}) {
   }
   function control(player) {
     if (!player.button) return;
-    const playing = !player.video.paused && !player.video.ended;
+    const failed = Boolean(player.video.error);
+    const playing = !failed && !player.video.paused && !player.video.ended;
+    const loading = !failed && player.pending && player.video.readyState < 2;
     player.button.hidden = false;
     player.button.setAttribute('aria-pressed', String(playing));
     const subject = player.video.dataset.mediaLabel || 'il film 3D';
-    player.button.setAttribute('aria-label', `${playing ? 'Metti in pausa' : 'Riproduci'} ${subject}`);
-    player.button.querySelector('[data-media-symbol]').textContent = playing ? 'Ⅱ' : '▷';
-    player.button.querySelector('[data-media-label]').textContent = playing ? 'Pausa' : 'Riproduci';
+    player.button.setAttribute('aria-label', `${failed ? 'Riprova a riprodurre' : loading ? 'Interrompi il caricamento:' : playing ? 'Metti in pausa' : 'Riproduci'} ${subject}`);
+    player.button.querySelector('[data-media-symbol]').textContent = failed ? '↻' : playing || loading ? 'Ⅱ' : '▷';
+    player.button.querySelector('[data-media-label]').textContent = failed ? 'Riprova' : loading ? 'Caricamento…' : playing ? 'Pausa' : 'Riproduci';
   }
   function foregroundPlayer() {
     const eligible = player => player.visible && !player.userPaused && (motionAllowed() || player.manual);
@@ -94,7 +96,7 @@ export function installAtelierCinema({ signal, menu } = {}) {
     const permitted = mayPlay(player);
     // Keep the native inline autoplay hint in step with our foreground policy.
     // This also lets WebKit resume an eligible muted film when decoding starts.
-    player.video.autoplay = permitted && motionAllowed() && !player.blocked;
+    player.video.autoplay = permitted && motionAllowed() && !player.blocked && !player.video.error;
     if (!portrait.matches && player.warm && motionAllowed() && pageAvailable() && !limitedFilmBandwidth()) source(player);
     if (!permitted) {
       if (player.pending) player.interrupted = true;
@@ -208,7 +210,9 @@ export function installAtelierCinema({ signal, menu } = {}) {
       if (event.target.closest?.('[data-media-toggle], .atelier-cinema-open')) poster(player);
     }, { capture: true, signal: life.signal });
     player.button?.addEventListener('click', () => {
-      if (!player.video.paused || player.pending) { player.userPaused = true; player.manual = false; }
+      // WebKit can leave paused=false after a failed resource and a rejected
+      // play promise. The first explicit retry must reload, not toggle pause.
+      if (!player.video.error && (!player.video.paused || player.pending)) { player.userPaused = true; player.manual = false; }
       else {
         player.userPaused = false; player.manual = true;
         player.blocked = false;
@@ -226,6 +230,7 @@ export function installAtelierCinema({ signal, menu } = {}) {
     }, { signal: life.signal });
     ['pause', 'ended'].forEach(type => player.video.addEventListener(type, () => control(player), { signal: life.signal }));
     ['emptied', 'error'].forEach(type => player.video.addEventListener(type, () => {
+      if (type === 'error') { player.video.autoplay = false; player.video.pause(); }
       player.stage.dataset.mediaReady = 'false'; control(player);
     }, { signal: life.signal }));
     player.video.addEventListener('loadedmetadata', () => rewind(player), { signal: life.signal });

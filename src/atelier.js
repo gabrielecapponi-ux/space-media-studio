@@ -73,14 +73,16 @@ function ensureSource(profile = heroHandoffComplete ? selectedProfile() : entryP
 }
 
 function syncControl() {
-  const playing = !film.paused && !film.ended;
+  const failed = Boolean(film.error);
+  const playing = !failed && !film.paused && !film.ended;
+  const loading = !failed && playPending && film.readyState < 2;
   toggle.hidden = !entryFinished;
   replay.hidden = !entryFinished;
   if (startFilm) startFilm.hidden = !entryFinished || !autoplayBlocked || playing;
-  toggle.setAttribute('aria-label', playing ? 'Metti in pausa il film' : 'Riproduci il film');
+  toggle.setAttribute('aria-label', failed ? 'Riprova a riprodurre il film' : loading ? 'Interrompi il caricamento del film' : playing ? 'Metti in pausa il film' : 'Riproduci il film');
   toggle.setAttribute('aria-pressed', String(playing));
-  toggle.querySelector('[data-film-symbol]').textContent = playing ? 'Ⅱ' : '▷';
-  toggle.querySelector('[data-film-label]').textContent = playing ? 'Pausa' : 'Riproduci';
+  toggle.querySelector('[data-film-symbol]').textContent = failed ? '↻' : playing || loading ? 'Ⅱ' : '▷';
+  toggle.querySelector('[data-film-label]').textContent = failed ? 'Riprova' : loading ? 'Attendi' : playing ? 'Pausa' : 'Riproduci';
 }
 
 const mayPlayHero = () => !disposed && entryFinished && !suspended && !document.hidden && inHero
@@ -90,7 +92,7 @@ const mayPlayHero = () => !disposed && entryFinished && !suspended && !document.
 async function syncPlayback() {
   if (disposed) return;
   const permitted = mayPlayHero();
-  film.autoplay = permitted && automaticMotion() && !autoplayBlocked;
+  film.autoplay = permitted && automaticMotion() && !autoplayBlocked && !film.error;
   if (!permitted) {
     if (playPending) playInterrupted = true;
     film.pause(); syncControl(); return;
@@ -131,6 +133,7 @@ for (const type of ['loadeddata', 'canplay']) film.addEventListener(type, () => 
   syncPlayback();
 }, { signal });
 for (const type of ['emptied', 'error']) film.addEventListener(type, () => {
+  if (type === 'error') { film.autoplay = false; film.pause(); }
   hero.dataset.frame = 'false';
   syncControl();
 }, { signal });
@@ -198,7 +201,9 @@ function recoverHeroFromGesture(event) {
 document.addEventListener('pointerdown', recoverHeroFromGesture, { signal });
 document.addEventListener('keydown', recoverHeroFromGesture, { signal });
 toggle.addEventListener('click', () => {
-  if (!film.paused || playPending) { userPaused = true; manualPlayback = false; }
+  // A failed WebKit resource may still report paused=false. Error recovery
+  // takes precedence so one click retries the film in this trusted gesture.
+  if (!film.error && (!film.paused || playPending)) { userPaused = true; manualPlayback = false; }
   else {
     userPaused = false; manualPlayback = true; autoplayBlocked = false;
     if (film.error) film.load();
@@ -290,7 +295,7 @@ function drawScreen(ctx, width, height, aspect, poster) {
   ctx.scale(scale, scale);
   ctx.translate(0, -top);
   const aperture = stage.getBoundingClientRect();
-  ctx.fillStyle = '#020303';
+  ctx.fillStyle = getComputedStyle(stage).backgroundColor;
   ctx.fillRect(aperture.x, aperture.y, aperture.width, aperture.height);
   if (poster?.naturalWidth) {
     const factor = Math.min(aperture.width / poster.naturalWidth, aperture.height / poster.naturalHeight);

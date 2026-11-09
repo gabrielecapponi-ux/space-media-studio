@@ -158,6 +158,21 @@
 .flagship-site .atelier-concept-motion { padding-block: clamp(46px, 6vw, 105px); }
 .flagship-site .atelier-funding { background: var(--yellow); }
 .flagship-site .atelier-contact-top h2 { letter-spacing: -.083em; }
+/* Fit the complete opening between the header and its transport strip. The
+   photographic frame keeps its native ratio inside a quiet, centred aperture.
+   Short windows and zoom retain the natural, scrollable layout below. */
+@media (min-width: 761px) and (min-height: 650px) and (orientation: landscape) {
+  .flagship-hero.atelier-hero {
+    height: 100svh;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    gap: 12px;
+    padding-bottom: max(20px, var(--safe-bottom));
+  }
+  .flagship-masthead { padding-top: 12px; }
+  .flagship-location { margin-bottom: 8px; }
+  .flagship-hero #atelier-title { font-size: min(10.2vw, 11svh, 196px); }
+  .flagship-water-stage { aspect-ratio: auto; background: var(--stage-ink); }
+}
 @media (min-width: 992px) {
   .flagship-site .atelier-concept-brand,
   .flagship-site .atelier-concept-campaign {
