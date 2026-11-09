@@ -26,15 +26,32 @@ try {
   assert.equal(inspectActiveAssets(root).files, 1);
   assert(inspectActiveAssets(root).sources.includes('src/lazy.js'));
   const plugin = activeAssetsPlugin();
-  plugin.configResolved({ root, build: { outDir: 'build' } });
+  plugin.configResolved({ root, build: { outDir: 'outputs/test/build' } });
   plugin.buildStart();
   plugin.buildEnd();
   plugin.closeBundle();
-  assert.equal(readFileSync(join(root, 'build/images/active.webp'), 'utf8'), 'active');
-  assert(!existsSync(join(root, 'build/images/old.webp')));
+  assert.equal(readFileSync(join(root, 'outputs/test/build/images/active.webp'), 'utf8'), 'active');
+  assert(!existsSync(join(root, 'outputs/test/build/images/old.webp')));
   assert.equal(readFileSync(join(root, 'public/images/old.webp'), 'utf8'), 'history preserved');
   assert.throws(() => activeAssetsPlugin().configResolved({ root, build: { outDir: 'public' } }), /must not overwrite/);
   assert.throws(() => activeAssetsPlugin().configResolved({ root, build: { outDir: root } }), /must not overwrite/);
+  for (const outDir of ['src', 'scripts', 'outputs', 'outputs/test', '.git', 'public/missing/build']) {
+    assert.throws(() => activeAssetsPlugin().configResolved({ root, build: { outDir } }), /must not overwrite/);
+  }
+  symlinkSync(join(root, 'public'), join(root, 'alias-public'));
+  assert.throws(() => activeAssetsPlugin().configResolved({ root, build: { outDir: 'alias-public' } }), /must not overwrite/);
+  assert.throws(() => activeAssetsPlugin().configResolved({ root, build: { outDir: 'alias-public/new/build' } }), /must not overwrite/);
+  symlinkSync(join(root, 'public/not-created'), join(root, 'outputs/test/dangling'));
+  assert.throws(() => activeAssetsPlugin().configResolved({ root, build: { outDir: 'outputs/test/dangling/build' } }), /unresolved symlink/);
+  activeAssetsPlugin().configResolved({ root, build: { outDir: 'dist' } });
+  activeAssetsPlugin().configResolved({ root, build: { outDir: join(root, '..', 'separate-build') } });
+  assert.throws(() => activeAssetsPlugin().configResolved({ root, build: { outDir: '..' } }), /must not overwrite/);
+  writeFileSync(join(root, 'src/lazy.js'), 'import {\n poster\n} from "./poster.js";');
+  writeFileSync(join(root, 'src/poster.js'), 'export {\n poster\n} from "./nested.js";');
+  writeFileSync(join(root, 'src/nested.js'), 'export const poster = "/images/missing.webp";');
+  assert.throws(() => inspectActiveAssets(root), /missing from manifest.*images\/missing.webp/);
+  writeFileSync(join(root, 'src/nested.js'), 'export const poster = "/images/active.webp";');
+  assert(inspectActiveAssets(root).sources.includes('src/nested.js'));
   manifest.files = [];
   save();
   assert.throws(() => inspectActiveAssets(root), /missing from manifest/);

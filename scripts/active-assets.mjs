@@ -1,9 +1,45 @@
-import { copyFileSync, lstatSync, mkdirSync, readFileSync } from 'node:fs';
+import { copyFileSync, lstatSync, mkdirSync, readFileSync, realpathSync } from 'node:fs';
 import { dirname, isAbsolute, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const defaultRoot = fileURLToPath(new URL('../', import.meta.url));
 const assetPattern = /(?:films|images|models|fonts|showcase)\/[A-Za-z0-9_./-]+\.(?:mp4|webm|jpg|jpeg|webp|png|svg|glb|woff2|ttf|html|css|js|txt)\b/g;
+
+// Resolve existing ancestors too: an as-yet absent destination can sit below
+// a symlink, and Vite empties outDir before the asset-copy hook runs.
+function canonicalDestination(path) {
+  path = resolve(path);
+  try {
+    return realpathSync(path);
+  } catch (error) {
+    if (error.code !== 'ENOENT') throw error;
+    try {
+      if (lstatSync(path).isSymbolicLink()) throw new Error(`Build output has an unresolved symlink: ${path}`);
+    } catch (entryError) {
+      if (entryError.code !== 'ENOENT') throw entryError;
+    }
+    const parent = dirname(path);
+    if (parent === path) throw error;
+    return resolve(canonicalDestination(parent), relative(parent, path));
+  }
+}
+
+function contains(parent, child) {
+  const path = relative(parent, child);
+  return !path || (path !== '..' && !path.startsWith(`..${sep}`) && !isAbsolute(path));
+}
+
+function validateBuildDestination(root, outDir) {
+  const source = canonicalDestination(root);
+  const output = canonicalDestination(resolve(root, outDir));
+  const parts = relative(source, output).split(sep);
+  const standard = output === resolve(source, 'dist');
+  const taskBuild = parts.length >= 3 && parts[0] === 'outputs' && parts.at(-1) === 'build';
+  const external = !contains(source, output) && !contains(output, source);
+  if (!standard && !taskBuild && !external) {
+    throw new Error('Build output must not overwrite sources: use dist, outputs/<task>/build, or a separate external directory.');
+  }
+}
 
 function safePath(root, name) {
   if (typeof name !== 'string' || !name || name.includes('\\') || name.split('/').some(part => !part || part === '.' || part === '..') || isAbsolute(name)) {
@@ -28,7 +64,7 @@ export function activeSources(root, entries) {
     visited.add(name);
     const source = readFileSync(path, 'utf8');
     const imports = name.endsWith('.js')
-      ? [...source.matchAll(/(?:import\s*(?:[^;\n]*?\sfrom\s*)?|import\s*\()\s*['"]([^'"]+)['"]/g)].map(match => match[1])
+      ? [...source.matchAll(/\b(?:import|export)\s*(?:[^;'"`]*?\sfrom\s*)?['"]([^'"]+)['"]|\bimport\s*\(\s*['"]([^'"]+)['"]/g)].map(match => match[1] || match[2])
       : name.endsWith('.html')
         ? [...source.matchAll(/(?:src|href)=['"]([^'"]+\.(?:js|css))['"]/g)].map(match => match[1])
         : [...source.matchAll(/@import\s+['"]([^'"]+)['"]/g)].map(match => match[1]);
@@ -89,18 +125,13 @@ export function activeAssetsPlugin() {
     apply: 'build',
     configResolved(value) {
       config = value;
-      const output = resolve(config.root, config.build.outDir);
-      const publicRoot = resolve(config.root, 'public');
-      const publicRelative = relative(publicRoot, output);
-      const rootRelative = relative(output, config.root);
-      if (!publicRelative || (!publicRelative.startsWith(`..${sep}`) && publicRelative !== '..' && !isAbsolute(publicRelative)) || !rootRelative || (!rootRelative.startsWith(`..${sep}`) && rootRelative !== '..' && !isAbsolute(rootRelative))) {
-        throw new Error('Build output must not overwrite public assets or contain the source root.');
-      }
+      validateBuildDestination(config.root, config.build.outDir);
     },
     buildStart() { inventory = inspectActiveAssets(config.root); },
     buildEnd(error) { failed = Boolean(error); },
     closeBundle() {
       if (failed) return;
+      validateBuildDestination(config.root, config.build.outDir);
       const output = resolve(config.root, config.build.outDir);
       const publicRoot = resolve(config.root, 'public');
       // Revalidate before copying if an asset changed during the build.

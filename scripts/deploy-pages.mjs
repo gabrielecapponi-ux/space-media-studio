@@ -96,8 +96,10 @@ function publish(sourceRef) {
       run("git", ["init", "-b", "gh-pages"], directory);
       run("git", ["remote", "add", "origin", remote], directory);
     }
-    run("git", ["config", "user.name", read("git", ["config", "user.name"])], directory);
-    run("git", ["config", "user.email", read("git", ["config", "user.email"])], directory);
+    const identity = read("git", ["var", "GIT_COMMITTER_IDENT"]).match(/^(.+) <([^>]+)> \d+ [+-]\d+$/);
+    if (!identity) throw new Error("Unable to resolve the current Git committer identity.");
+    run("git", ["config", "user.name", identity[1]], directory);
+    run("git", ["config", "user.email", identity[2]], directory);
     replaceProductionBundle(resolve(sourceDirectory, "dist"), directory);
     run("git", ["add", "--all"], directory);
     const changes = spawnSync("git", ["diff", "--cached", "--quiet"], { cwd: directory });
