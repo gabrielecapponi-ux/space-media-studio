@@ -3,13 +3,10 @@ const ORDER = ['classic-smash-menu', 'chicken-burger-menu', 'menu-birra', 'class
 const escapeHTML = value => String(value).replace(/[&<>"']/g, char => ({'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'}[char]));
 const money = value => `€ ${Number(value).toFixed(2).replace('.', ',')}`;
 const GROUP_SIZE = 3;
-const FLAP_MS = 1400;
-const ROW_STAGGER_MS = 300;
-const GLYPH_STAGGER_MS = 300;
-const GROUP_TURN_MS = FLAP_MS + ROW_STAGGER_MS * (GROUP_SIZE - 1) + GLYPH_STAGGER_MS;
-const READING_MS = 12000;
-const SCROLL_SETTLE_MS = 900;
-const PASSES_PER_VISIT = 2;
+const GROUP_TURN_MS = 500;
+const TURNS = 4;
+const FLAP_MS = GROUP_TURN_MS / TURNS;
+const WHEEL = ' ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789%&';
 
 function tile(character) {
   const char = escapeHTML(character);
@@ -62,10 +59,11 @@ export function mountMenuBoard({root, reducedMotion, paused = false} = {}) {
   const art = root.querySelector('[data-menu-board-art]'), film = root.querySelector('[data-menu-board-film]');
   const removers = [], originalFilmState = film && {src:film.getAttribute('src'), ready:film.getAttribute('data-ready')};
   let disposed = false, manualPaused = Boolean(paused), observer = null, bodyObserver = null;
-  let groupTimer = null, nextGroupAt = 0, groupActive = false;
-  let readingPasses = PASSES_PER_VISIT, lastScrollAt = -Infinity;
+  const groups = Array.from({length:Math.ceil(rows.length/GROUP_SIZE)},(_,index) => ({
+    rows:rows.slice(index*GROUP_SIZE,(index+1)*GROUP_SIZE),played:false,
+  }));
+  let groupTimer = null, activeGroup = null, scrollFrame = null;
   const originalPhase = root.getAttribute('data-menu-board-phase');
-  const now = () => view.performance?.now?.() ?? Date.now();
   const clearGroupTimer = () => {view.clearTimeout(groupTimer);groupTimer=null;};
   const phase = value => {root.dataset.menuBoardPhase=value;};
   const scheduleGroup = (callback,delay) => {
@@ -92,81 +90,83 @@ export function mountMenuBoard({root, reducedMotion, paused = false} = {}) {
   function flipTile(row, glyph, revision) {
     const top=glyph.querySelector('.menu-board__top'), bottom=glyph.querySelector('.menu-board__bottom');
     const flapTop=glyph.querySelector('.menu-board__flap-top'), flapBottom=glyph.querySelector('.menu-board__flap-bottom');
-    if(!top || !bottom || typeof flapTop?.animate!=='function' || typeof flapBottom?.animate!=='function')return;
+    if(!top || !bottom || typeof flapTop?.animate!=='function' || typeof flapBottom?.animate!=='function')return null;
     const final=glyph.dataset.final;
-    const current = () => !disposed && revision===row.revision && row.visible && !blocked();
-    function turn() {
-      if(!current()){finalTile(glyph);return;}
-      // A single mechanical turn, with the real letter on every surface.
-      // The readable label never cycles through unrelated characters.
-      top.dataset.char=bottom.dataset.char=flapTop.dataset.char=flapBottom.dataset.char=final;
-      glyph.dataset.flipping='true';
-      let pair=[];
-      try {
-        // Two physical half-flaps rotate around the same horizontal spindle.
-        // The old upper half falls first; the new lower half lands second.
-        pair.push(flapTop.animate([{transform:'rotateX(0deg)'},{transform:'rotateX(-90deg)',offset:.5},{transform:'rotateX(-90deg)'}],{duration:FLAP_MS,easing:'cubic-bezier(.45,0,.55,1)',fill:'forwards'}));
-        pair.push(flapBottom.animate([{transform:'rotateX(90deg)'},{transform:'rotateX(90deg)',offset:.5},{transform:'rotateX(0deg)'}],{duration:FLAP_MS,easing:'cubic-bezier(.45,0,.55,1)',fill:'forwards'}));
-      } catch {
-        pair.forEach(animation=>{Promise.resolve(animation.finished).catch(()=>{});animation.cancel();});finalTile(glyph);return;
-      }
-      pair.forEach(animation=>row.animations.add(animation));
-      Promise.all(pair.map(animation=>animation.finished)).then(()=>{
-        pair.forEach(animation=>{row.animations.delete(animation);animation.cancel();});
-        if(!current())return;
-        finalTile(glyph);
-      },()=>{
-        pair.forEach(animation=>{row.animations.delete(animation);animation.cancel();});
-        if(revision===row.revision)finalTile(glyph);
-      });
+    const letter=final.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase();
+    const position=Math.max(0,WHEEL.indexOf(letter));
+    const characters=Array.from({length:TURNS},(_,step)=>WHEEL[(position-TURNS+step+WHEEL.length)%WHEEL.length]);
+    characters.push(final);
+    const paintTurn = step => {
+      if(disposed || revision!==row.revision || blocked())return;
+      // The old top falls away, exposing the next upper half; its lower half
+      // lands on the old bottom. Intermediate letters are actual wheel glyphs.
+      top.dataset.char=flapBottom.dataset.char=characters[step+1];
+      bottom.dataset.char=flapTop.dataset.char=characters[step];
+    };
+    paintTurn(0);glyph.dataset.flipping='true';
+    const pair=[];
+    try {
+      const timing={duration:FLAP_MS,iterations:TURNS,easing:'linear',fill:'forwards'};
+      pair.push(flapTop.animate([{transform:'rotateX(0deg)'},{transform:'rotateX(-90deg)',offset:.5},{transform:'rotateX(-90deg)'}],timing));
+      pair.push(flapBottom.animate([{transform:'rotateX(90deg)'},{transform:'rotateX(90deg)',offset:.5},{transform:'rotateX(0deg)'}],timing));
+      pair.forEach(animation=>{row.animations.add(animation);Promise.resolve(animation.finished).catch(()=>{});});
+    } catch {
+      pair.forEach(animation=>{Promise.resolve(animation.finished).catch(()=>{});animation.cancel();});
+      finalTile(glyph);return null;
     }
-    turn();
+    return paintTurn;
   }
-  function flutter(row,rowDelay=0) {
-    if (row.played || !row.visible || !row.label || blocked()) return;
-    row.played = true;
+  function flutter(row) {
+    if(row.played || !row.label || blocked())return;
+    row.played=true;
     if(row.original==null)row.original=row.label.innerHTML;
-    // Supports a page generated before this enhancement, too.
     if(!row.label.querySelector('.menu-board__glyph'))row.label.innerHTML=tiles(row.label.textContent);
-    const glyphs = [...row.label.querySelectorAll('.menu-board__glyph')];
     const revision=++row.revision;
     row.element.setAttribute('data-menu-board-turning','true');
-    for(let index=0;index<glyphs.length;index++) {
-      const glyph=glyphs[index],delay=rowDelay+Math.min(index*20,GLYPH_STAGGER_MS);
-      if(!delay){flipTile(row,glyph,revision);continue;}
-      const timer=view.setTimeout(()=>{row.timers.delete(timer);if(revision===row.revision)flipTile(row,glyph,revision);},delay);
+    const turns=[...row.label.querySelectorAll('.menu-board__glyph')].map(glyph=>flipTile(row,glyph,revision)).filter(Boolean);
+    // Three clocks per row, rather than a timer for each letter. Every row in
+    // this fixed block starts together and reaches its final text at 500 ms.
+    for(let step=1;step<TURNS;step++) {
+      const timer=view.setTimeout(()=>{
+        row.timers.delete(timer);
+        if(revision===row.revision)turns.forEach(paintTurn=>paintTurn(step));
+      },step*FLAP_MS);
       row.timers.add(timer);
     }
   }
-  function startGroup() {
-    if(blocked() || disposed || readingPasses===0)return;
-    const first=rows.find(row=>row.visible && !row.played);
-    if(!first){phase('idle');return;}
-    const group=rows.filter(row=>row.group===first.group && row.visible && !row.played);
-    phase('turning');groupActive=true;readingPasses--;
-    group.forEach((row,index)=>flutter(row,index*ROW_STAGGER_MS));
-    nextGroupAt=now()+GROUP_TURN_MS+READING_MS;
-    scheduleGroup(()=>{
-      group.forEach(settle);groupActive=false;phase('reading');
-      scheduleGroup(sync,READING_MS);
-    },GROUP_TURN_MS);
+  function finishGroup() {
+    clearGroupTimer();
+    activeGroup?.rows.forEach(settle);
+    activeGroup=null;phase('idle');
+  }
+  function groupInReadingArea(group) {
+    if(group.played || !group.rows.some(row=>row.visible))return false;
+    const first=group.rows[0].element.getBoundingClientRect();
+    const last=group.rows.at(-1).element.getBoundingClientRect();
+    const readingBottom=(view.innerHeight || doc.documentElement.clientHeight)*.85;
+    // Usually all three rows fit together. Short landscape screens and a
+    // quick scroll into the middle of a group still get one complete reveal.
+    return last.bottom<=readingBottom || first.top<0 || last.bottom-first.top>readingBottom;
+  }
+  function startGroup(group) {
+    group.played=true;activeGroup=group;phase('turning');
+    scheduleGroup(()=>{finishGroup();sync();},GROUP_TURN_MS);
+    group.rows.forEach(flutter);
   }
   function syncGroups() {
     if(typeof root.animate!=='function'){phase('idle');return;}
-    if(!rows.some(row=>row.visible)) {clearGroupTimer();groupActive=false;phase('idle');return;}
-    if(groupTimer!=null)return;
-    if(readingPasses===0 || !rows.some(row=>row.visible && !row.played)){phase('idle');return;}
-    const remaining=Math.max(nextGroupAt-now(),SCROLL_SETTLE_MS-(now()-lastScrollAt));
-    if(remaining>0){phase('reading');scheduleGroup(sync,remaining);return;}
-    startGroup();
+    if(activeGroup) {
+      if(activeGroup.rows.some(row=>row.visible))return;
+      finishGroup();
+    }
+    const group=groups.find(groupInReadingArea);
+    if(group)startGroup(group);
   }
   function noteScroll() {
-    // A gesture grants at most two groups; repeated scroll events replace this
-    // allowance rather than queueing a long automatic procession of rows.
-    if(!rows.some(row=>row.visible)){sync();return;}
-    readingPasses=PASSES_PER_VISIT;lastScrollAt=now();
-    if(!groupActive)clearGroupTimer();
-    sync();
+    // Follow native scrolling on the next frame, without waiting for the
+    // gesture to end. Completed blocks stay consumed for this page visit.
+    if(scrollFrame!=null)return;
+    scrollFrame=view.requestAnimationFrame(()=>{scrollFrame=null;sync();});
   }
   function releaseFilm() {
     if(!film)return;
@@ -197,7 +197,7 @@ export function mountMenuBoard({root, reducedMotion, paused = false} = {}) {
   function sync() {
     if(disposed)return;
     if(blocked()) {
-      clearGroupTimer();groupActive=false;phase('idle');
+      finishGroup();
       rows.forEach(settle);
       if(attempted)releaseFilm();
       return;
@@ -222,23 +222,15 @@ export function mountMenuBoard({root, reducedMotion, paused = false} = {}) {
   if(typeof view.IntersectionObserver==='function') {
     observer=new view.IntersectionObserver(entries => {
       if(disposed)return;
-      const wasInView=rows.some(row=>row.visible);
-      let changed=false;
       for(const entry of entries) {
         if(entry.target===art){filmVisible=entry.isIntersecting && entry.intersectionRatio>=.2;if(!filmVisible && attempted)releaseFilm();continue;}
         const row=rows.find(item=>item.element===entry.target);if(!row)continue;
         const visible=entry.isIntersecting && entry.intersectionRatio>=.2;
-        changed ||= visible!==row.visible;row.visible=visible;
+        row.visible=visible;
         if(!row.visible)settle(row);
       }
-      // A complete departure arms a fresh visit. Crossing between nearby rows
-      // never restarts letters that the customer is still reading.
-      if(wasInView && !rows.some(row=>row.visible)) {
-        rows.forEach(row=>{row.played=false;});
-        nextGroupAt=0;readingPasses=PASSES_PER_VISIT;
-        if(!filmVisible){attempted=false;filmDone=false;}
-      }
-      if(changed)noteScroll();else sync();
+      // Leaving the board never resets a completed block or its characters.
+      sync();
     },{threshold:[0,.2]});
     rows.forEach(row=>observer.observe(row.element));if(art)observer.observe(art);
   }
@@ -250,7 +242,9 @@ export function mountMenuBoard({root, reducedMotion, paused = false} = {}) {
   return {
     setPaused(value){if(!disposed){manualPaused=Boolean(value);sync();}},
     dispose(){
-      if(disposed)return;disposed=true;clearGroupTimer();observer?.disconnect();bodyObserver?.disconnect();
+      if(disposed)return;disposed=true;clearGroupTimer();
+      if(scrollFrame!=null)view.cancelAnimationFrame(scrollFrame);
+      observer?.disconnect();bodyObserver?.disconnect();
       removers.forEach(remove=>remove());rows.forEach(row=>{settle(row);if(row.original!=null)row.label.innerHTML=row.original;});
       releaseFilm();
       if(originalPhase==null)root.removeAttribute('data-menu-board-phase');else root.setAttribute('data-menu-board-phase',originalPhase);

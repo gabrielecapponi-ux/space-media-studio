@@ -9,6 +9,10 @@ npm run build
 npm run preview
 ```
 
+## Tabellone ferroviario
+
+Il tabellone compone i nomi in blocchi fissi di tre righe, più l’ultima riga singola. Quando un blocco entra nella zona di lettura durante lo scorrimento, le tessere attraversano quattro caratteri in 500 ms e si fermano sul nome corretto. Non attende la fine del gesto e non riparte tornando indietro nella stessa pagina. Se la riproduzione viene interrotta, il nome viene completato subito; con movimento ridotto resta statico. Testo accessibile, prezzi e ordine sono presenti nell’HTML anche senza JavaScript.
+
 ## Dati strutturati
 
 Il prebuild esegue `scripts/build-structured-data.mjs --write` e aggiorna un unico blocco JSON-LD nelle sei pagine. Le tre homepage descrivono il ristorante, il menù, tre sezioni e dieci prodotti. Le pagine del sacchetto descrivono il locale e collegano il menù senza dichiarare prodotti assenti dal loro contenuto.
