@@ -9,7 +9,7 @@
     "preview": "vite preview --host 127.0.0.1",
     "deploy": "node scripts/deploy-pages.mjs",
     "test": "npm run test:atelier",
-    "test:atelier": "node scripts/check-atelier-entry.mjs && node scripts/check-atelier-cinema.mjs",
+    "test:atelier": "node scripts/check-atelier-entry.mjs && node scripts/check-atelier-cinema.mjs && node scripts/check-funding-journey.mjs",
     "test:legacy": "node scripts/check-cinematic-main.mjs && node scripts/check-cinematic-objects.mjs && node scripts/check-cinematic-scene.mjs"
   },
   "keywords": [],

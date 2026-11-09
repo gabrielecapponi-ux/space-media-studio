@@ -1,5 +1,13 @@
 # Provenienza dei materiali — Space Media Studio
 
+## Riordino del 9 novembre 2026
+
+- Ripristinato lo studio come caricamento a schermo intero fino al 100%, usando la geometria Blender e il film mobile originali già documentati. Nessuna nuova attribuzione di produzione.
+- La hero desktop seleziona sempre `flagship-water-desktop.mp4`, master fotografico nativo 3840×2160 a 24 fps, 9 s, 7.519.280 byte. Il portrait usa `flagship-water-mobile.mp4`, taglio 1080×1350 ricavato dal negativo UHD, 2.529.669 byte. Provenienza Film Composite/Pexels in `ASSET-WATER.md`. Le fasce specchiate sono state rimosse, l’inquadratura conserva le proporzioni.
+- “Progetti e bandi” torna all’animazione SVG originale di Space Media in `src/funding-journey.js`, linea nera sul giallo. Poster `public/images/funding-journey{,-mobile}.svg`. I film Blender dei bandi restano archivio e non sono più referenziati dalla homepage.
+- I quattro servizi video mantengono i film `director-*` ed `elegant-*` della precedente consegna, con le risoluzioni documentate sotto. Il 4K della hero non descrive i film QHD LUMA e SHIFT.
+
+
 ## Rifinitura desktop del 9 novembre 2026
 
 LUMA e la campagna SHIFT usano i film `elegant-product` ed `elegant-campaign`, da dieci secondi a 2560×1440 e 60 fps. LUMA usa la geometria Blender originale e fotografie Cycles da 2880×1620 per una nuova traiettoria e un riflesso che attraversa l’ottica. La campagna ricompone a risoluzione doppia i tre supporti e le loro rotazioni. Le versioni leggere sono 1280×720 a 30 fps, con il medesimo montaggio. Copertine e miniature derivano dai nuovi film. I tagli portrait usano i master dedicati dell’edizione Director.

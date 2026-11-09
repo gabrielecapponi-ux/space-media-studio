@@ -179,22 +179,26 @@ export function createAtelierEntry({ signal, video, poster, drawScreen, prepareV
       // The download indicator follows preparation; the architectural move
       // has its own uninterrupted clock once the model is ready. A slow film
       // must not freeze the room halfway through its assembly.
-      displayed = staticPresentation() ? target : Math.min(target, displayed + delta * .03);
-      if (settled && displayed > 98.98) displayed = 99;
-      if (sceneReady && !staticPresentation()) assemblyTime = Math.min(2650, assemblyTime + delta);
+      const constructionReady = sceneReady || records.get('room').value === 1;
+      if (constructionReady && !staticPresentation()) assemblyTime = Math.min(2650, assemblyTime + delta);
       const sceneProgress = staticPresentation() ? 1 : assemblyTime / 2650;
+      // Preparing and building the studio are one visible progression. Cached
+      // assets must not take the counter to 99 before the room is assembled.
+      const productionTarget = staticPresentation() ? target : Math.min(target, 18 + sceneProgress * 81);
+      displayed = staticPresentation() ? productionTarget : Math.min(productionTarget, displayed + delta * .03);
       const label = phases.reduce((result, [at, value]) => sceneProgress * 100 >= at ? value : result, phases[0][1]);
       shell.update(displayed, label);
       room?.setProgress(sceneProgress);
       // When preparation is actually complete, the cosmetic counter must not
       // add another wait after the room has finished assembling.
-      if (settled && (!sceneReady || staticPresentation() || sceneProgress === 1)) {
+      if (settled && (staticPresentation() || sceneProgress === 1)) {
         shell.update(100, 'Il tuo spazio è pronto');
-        if (staticPresentation() || !sceneReady) return finish('ready', staticPresentation());
+        if (staticPresentation()) return finish('ready', true);
         phase = 'arrival'; phaseTime = 0;
         shell.root.dataset.ready = 'true';
       }
-    } else if (phase === 'arrival' && phaseTime >= 90) {
+    } else if (phase === 'arrival' && phaseTime >= 420) {
+      if (!sceneReady) return finish('ready');
       phase = 'zoom'; phaseTime = 0;
       shell.setState('zoom'); html.dataset.entryState = 'zoom';
     } else if (phase === 'zoom') {
@@ -202,7 +206,7 @@ export function createAtelierEntry({ signal, video, poster, drawScreen, prepareV
       room?.setZoom(zoom);
       if (zoom === 1) return finish('ready');
     }
-    if (phase !== 'loading' || displayed < target || (sceneReady && assemblyTime < 2650)) request();
+    if (phase !== 'loading' || displayed < target || (records.get('room').value === 1 && assemblyTime < 2650)) request();
     else lastTime = 0;
   }
 

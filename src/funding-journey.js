@@ -98,6 +98,7 @@ export function installFundingJourney({ signal, menu } = {}) {
   if (!root) return { dispose() {} };
   const canvas = root.querySelector('[data-journey-canvas]');
   const button = root.querySelector('[data-journey-toggle]');
+  const replay = root.querySelector('[data-journey-replay]');
   const heading = root.querySelector('[data-journey-heading]');
   const step = root.querySelector('[data-journey-step]');
   const rail = [...root.querySelectorAll('[data-journey-phase]')];
@@ -109,15 +110,18 @@ export function installFundingJourney({ signal, menu } = {}) {
   let svg, camera, paths, l, frame = 0, time = 0, previous = 0;
   let visible = false, userPaused = false, manual = false, disposed = false, suspended = false, phase = -1;
   const automatic = () => !reduced.matches && !connection?.saveData;
-  const pageReady = () => !document.hidden && !suspended && !menu?.open && !document.documentElement.classList.contains('entry-pending');
+  const pageReady = () => !document.hidden && !suspended && !menu?.open
+    && !document.documentElement.classList.contains('entry-pending')
+    && !document.documentElement.classList.contains('cinema-open');
   const allowed = () => !disposed && visible && pageReady() && !userPaused && (automatic() || manual);
 
   function control() {
     const playing = !!frame;
     button.hidden = false;
+    if (replay) replay.hidden = false;
+    root.dataset.journeyPlaying = String(playing);
     button.setAttribute('aria-pressed', String(playing));
     button.setAttribute('aria-label', `${playing ? 'Metti in pausa' : 'Riproduci'} il percorso dall’idea al progetto`);
-    button.querySelector('[data-journey-symbol]').textContent = playing ? 'Ⅱ' : '▷';
   }
   function paint(at, staticFrame = false) {
     const fade = staticFrame ? 1 : 1 - ease((at - 21.1) / .9);
@@ -169,6 +173,7 @@ export function installFundingJourney({ signal, menu } = {}) {
   }
   function policyChanged() {
     manual = false;
+    userPaused = false;
     if (!automatic()) { time = 0; paint(DURATION - 1, true); }
     sync();
   }
@@ -177,12 +182,34 @@ export function installFundingJourney({ signal, menu } = {}) {
     else { userPaused = false; manual = true; }
     sync();
   }, { signal: life.signal });
-  const observer = new IntersectionObserver(([entry]) => {
-    visible = entry.isIntersecting && entry.intersectionRatio > .14;
+  function restart(fromControl = false) {
+    time = 0; previous = 0; userPaused = false; manual = fromControl;
+    paint(time, !automatic() && !manual);
     sync();
-  }, { threshold: [0, .14, .5, 1] });
+  }
+  replay?.addEventListener('click', () => restart(true), { signal: life.signal });
+  // A new visit starts a new drawing. Tiny scroll movements at the viewport
+  // edge do not continually reset the scene, and a pause remains in force
+  // for the current visit (including opening the menu or changing tabs).
+  const observer = new IntersectionObserver(([entry]) => {
+    const next = entry.isIntersecting && entry.intersectionRatio > (visible ? .025 : .14);
+    if (next && !visible) {
+      visible = true;
+      restart();
+      return;
+    }
+    visible = next;
+    sync();
+  }, { threshold: [0, .025, .14, .5, 1] });
   observer.observe(root);
   build();
+  // pointerover exposes the actual hit target, so entering through a transport
+  // button does not start playback immediately before that button toggles it.
+  root.addEventListener('pointerover', event => {
+    if (!visible || !automatic() || !['mouse', 'pen'].includes(event.pointerType)
+      || root.contains(event.relatedTarget) || event.target.closest?.('button')) return;
+    restart();
+  }, { signal: life.signal });
   reduced.addEventListener('change', policyChanged, { signal: life.signal });
   connection?.addEventListener?.('change', policyChanged, { signal: life.signal });
   portrait.addEventListener('change', build, { signal: life.signal });

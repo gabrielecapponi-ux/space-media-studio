@@ -1,75 +1,187 @@
-// The phone's native decoder shows the Blender assembly inside the water
-// aperture. Text, navigation and scroll belong to the real page throughout.
-export function createMobileStudio({ stage, controls, base, preference, portrait, prepareWater, onComplete }) {
+import { createEntryShell } from './entry-shell.js';
+
+// The native phone decoder renders the Blender studio inside a true loading
+// screen. Only completed construction and a decoded hero frame reach 100%.
+export function createMobileStudio({ signal: parentSignal, video: water, base, preference, prepareWater, onComplete }) {
+  if (parentSignal?.aborted) return { ready: Promise.resolve({ status: 'disposed' }), dispose() {} };
+  const shell = createEntryShell();
+  shell.root.classList.add('studio-entry--film');
   const lifetime = new AbortController();
   const { signal } = lifetime;
+  const html = document.documentElement;
+  const focusBefore = document.activeElement;
+  const overflowBefore = html.style.overflow;
+  const underlay = [...document.body.children].filter(node => node !== shell.root);
+  const previousInert = new Map(underlay.map(node => [node, node.inert]));
+  const connection = navigator.connection;
   const video = document.createElement('video');
-  video.className = 'director-studio-film';
+  video.className = 'entry-studio-film';
   video.autoplay = true;
   video.defaultMuted = true;
   video.muted = true;
   video.playsInline = true;
+  video.setAttribute('muted', '');
+  video.setAttribute('playsinline', '');
   video.setAttribute('aria-hidden', 'true');
   video.preload = 'auto';
   video.poster = base + 'images/director-studio-mobile.webp';
-  video.src = base + 'films/director-studio-mobile.mp4';
-  const skip = document.createElement('button');
-  skip.type = 'button';
-  skip.className = 'flagship-transport director-entry-skip';
-  skip.textContent = 'Entra subito ↗';
-  controls.prepend(skip);
-  stage.append(video);
-  const state = document.documentElement.dataset;
-  state.entryState = 'inline';
-  const visibility = new IntersectionObserver(([item]) => {
-    if (!item.isIntersecting) finish('skipped');
-  });
-  let timer = setTimeout(() => finish('timeout'), 2300);
+  let frame = 0;
+  let lastTime = 0;
+  let elapsed = 0;
+  let fallbackTime = 0;
+  let loadedTime = 0;
+  let readyTime = 0;
+  let exitTime = 0;
+  let playbackRequested = false;
+  let constructing = false;
+  let constructed = false;
+  let fallback = false;
+  let waterPrepared = false;
+  let waterUnavailable = false;
+  let waterRequested = false;
+  let disposed = false;
+  let phase = 'loading';
+  let progress = 0;
+  let resolveReady;
+  const ready = new Promise(resolve => { resolveReady = resolve; });
+  shell.sceneHost.append(video);
+  html.dataset.entryState = 'loading';
+  html.classList.add('entry-pending');
+  html.style.overflow = 'hidden';
+  underlay.forEach(node => { node.inert = true; });
+  shell.root.tabIndex = -1;
+  shell.root.focus({ preventScroll: true });
+  water?.pause();
 
-  function finish(reason) {
-    if (signal.aborted) return;
+  const staticPresentation = () => preference?.matches || Boolean(connection?.saveData);
+  const request = () => {
+    if (!frame && !disposed && !document.hidden) frame = requestAnimationFrame(tick);
+  };
+  function finish(status) {
+    if (disposed) return;
+    disposed = true;
+    cancelAnimationFrame(frame); frame = 0;
     lifetime.abort();
-    clearTimeout(timer);
-    visibility.disconnect();
-    const hadFocus = document.activeElement === skip;
-    skip.remove();
+    parentSignal?.removeEventListener('abort', dispose);
     video.pause();
-    video.remove();
     video.removeAttribute('src');
     video.load();
-    state.entryState = reason;
-    if (reason !== 'disposed') {
-      onComplete();
-      if (hadFocus) controls.querySelector('#atelier-film-toggle')?.focus({ preventScroll: true });
+    shell.dispose();
+    underlay.forEach(node => { if (node.isConnected) node.inert = previousInert.get(node); });
+    html.classList.remove('entry-pending');
+    if (html.style.overflow === 'hidden') html.style.overflow = overflowBefore;
+    html.dataset.entryState = status;
+    const destination = focusBefore?.isConnected && focusBefore !== document.body
+      ? focusBefore : document.querySelector('#main') || document.querySelector('main');
+    destination?.focus({ preventScroll: true });
+    const result = { status, degraded: fallback || waterUnavailable || status === 'timeout', videoPrepared: waterPrepared };
+    resolveReady(result);
+    if (status !== 'disposed') onComplete?.(result);
+  }
+  function prepare() {
+    if (waterRequested || disposed || staticPresentation()) return;
+    waterRequested = true;
+    prepareWater?.();
+    checkWater();
+  }
+  function checkWater() {
+    if (disposed || !waterRequested || waterUnavailable) return;
+    if (!water) { waterPrepared = true; return; }
+    water.pause();
+    if (water.readyState < 1) return;
+    if (water.currentTime > .04) { try { water.currentTime = 0; } catch {} return; }
+    if (!water.seeking && water.readyState >= 2) {
+      waterPrepared = true;
+      water.dataset.entryPreparedAt = '0';
     }
   }
-
-  visibility.observe(stage);
-  video.addEventListener('playing', () => {
-    clearTimeout(timer);
-    timer = setTimeout(() => finish('timeout'), 4100);
-    prepareWater();
-  }, { once: true, signal });
-  video.addEventListener('ended', () => finish('ready'), { signal });
-  video.addEventListener('error', () => finish('unavailable'), { signal });
-  skip.addEventListener('click', () => finish('skipped'), { signal });
-  document.addEventListener('keydown', event => {
-    if (event.key === 'Escape') finish('skipped');
+  function useFallback() {
+    if (disposed || constructed || fallback) return;
+    fallback = true;
+    video.pause();
+    shell.sceneHost.dataset.scene = 'fallback';
+    prepare();
+    request();
+  }
+  function playStudio() {
+    if (disposed || document.hidden || fallback || constructed || playbackRequested || video.readyState < 2) return;
+    shell.sceneHost.dataset.scene = 'ready';
+    loadedTime = elapsed;
+    playbackRequested = true;
+    try {
+      Promise.resolve(video.play()).catch(() => {
+        if (!document.hidden) useFallback();
+      }).finally(() => { playbackRequested = false; });
+    } catch { playbackRequested = false; useFallback(); }
+  }
+  function tick(time) {
+    frame = 0;
+    if (disposed || document.hidden) return;
+    const delta = lastTime ? Math.min(100, time - lastTime) : 16;
+    lastTime = time;
+    elapsed += delta;
+    if (elapsed >= 12000) return finish('timeout');
+    if (phase === 'ready') {
+      readyTime += delta;
+      if (readyTime >= 420) { phase = 'exiting'; shell.setState('exiting'); }
+    } else if (phase === 'exiting') {
+      exitTime += delta;
+      if (exitTime >= 220) return finish('ready');
+    } else {
+      // Data waiting is not construction progress. Native autoplay rejection
+      // uses the architectural fallback rather than a blank or locked screen.
+      if (!fallback && !constructing && ((video.readyState >= 2 && elapsed - loadedTime > 1800) || elapsed > 6000)) useFallback();
+      if (fallback) {
+        fallbackTime += delta;
+        constructed = fallbackTime >= 2650;
+      }
+      const duration = Number.isFinite(video.duration) && video.duration > 0 ? video.duration : 2.8;
+      const construction = fallback ? Math.min(1, fallbackTime / 2650) : Math.min(1, video.currentTime / duration);
+      const target = (video.readyState >= 2 || fallback ? 18 : 0) + construction * 72 + (waterPrepared || waterUnavailable ? 9 : 0);
+      progress = Math.max(progress, Math.min(99, target));
+      const label = constructed ? 'Prepariamo il primo fotogramma' : construction < .25 ? 'Le pareti prendono forma'
+        : construction < .55 ? 'Prepariamo le postazioni' : construction < .8 ? 'Accendiamo le connessioni' : 'Benvenuto in Space';
+      shell.update(progress, label);
+      if (constructed && (waterPrepared || waterUnavailable)) {
+        phase = 'ready';
+        shell.root.dataset.ready = 'true';
+        shell.update(100, 'Il tuo spazio è pronto');
+      }
+    }
+    request();
+  }
+  function dispose() { finish('disposed'); }
+  video.addEventListener('loadeddata', () => { prepare(); playStudio(); }, { signal });
+  video.addEventListener('canplay', playStudio, { signal });
+  video.addEventListener('playing', () => { constructing = true; prepare(); }, { signal });
+  video.addEventListener('ended', () => { constructed = true; prepare(); }, { signal });
+  video.addEventListener('error', useFallback, { signal });
+  water?.addEventListener('play', () => { if (!disposed) water.pause(); }, { signal });
+  for (const event of ['loadstart', 'emptied']) water?.addEventListener(event, () => {
+    waterPrepared = false;
+    waterUnavailable = false;
+  }, { signal });
+  for (const event of ['loadedmetadata', 'loadeddata', 'canplay', 'seeked']) water?.addEventListener(event, checkWater, { signal });
+  water?.addEventListener('error', () => { waterUnavailable = true; }, { signal });
+  shell.skip.addEventListener('click', () => finish('skipped'), { signal });
+  shell.root.addEventListener('keydown', event => {
+    if (event.key === 'Escape') { event.preventDefault(); finish('skipped'); }
+    else if (event.key === 'Tab') { event.preventDefault(); shell.skip.focus({ preventScroll: true }); }
   }, { signal });
   document.addEventListener('visibilitychange', () => {
-    if (document.hidden) finish('skipped');
+    if (document.hidden) {
+      cancelAnimationFrame(frame); frame = 0; lastTime = 0;
+      video.pause(); water?.pause();
+    } else { playStudio(); request(); }
   }, { signal });
-  document.querySelector('.atelier-mobile-menu').addEventListener('toggle', event => {
-    if (event.currentTarget.open) finish('skipped');
-  }, { signal });
-  window.addEventListener('pagehide', () => finish('skipped'), { signal });
-  window.addEventListener('hashchange', () => finish('skipped'), { signal });
-  portrait.addEventListener('change', () => finish('skipped'), { signal });
-  preference.addEventListener('change', () => finish('skipped'), { signal });
-  navigator.connection?.addEventListener?.('change', () => {
-    if (navigator.connection.saveData) finish('skipped');
-  }, { signal });
-  // Let inline autoplay select the first decoded frame. An imperative play()
-  // before the frame exists can be rejected on a cold WebKit navigation.
-  return { dispose: () => finish('disposed') };
+  const policyChanged = () => { if (staticPresentation()) finish('ready'); };
+  preference?.addEventListener('change', policyChanged, { signal });
+  connection?.addEventListener?.('change', policyChanged, { signal });
+  parentSignal?.addEventListener('abort', dispose, { once: true });
+  if (staticPresentation()) finish('ready');
+  else {
+    video.src = base + 'films/director-studio-mobile.mp4';
+    request();
+  }
+  return { ready, dispose };
 }

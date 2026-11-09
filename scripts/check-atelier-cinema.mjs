@@ -536,8 +536,8 @@ await test('Both HTML entries keep responsive lazy picture fallbacks, compact in
   for (const filename of ['index.html', 'atelier.html']) {
     const html = await readFile(new URL(`../${filename}`, import.meta.url), 'utf8');
     const films = [...html.matchAll(/<figure\b[^>]*data-service-film="([^"]+)"[^>]*>([\s\S]*?)<\/figure>/g)];
-    assert.equal(films.length, 5, filename);
-    assert.equal([...html.matchAll(/class="atelier-film-surface"/g)].length, 5, filename);
+    assert.equal(films.length, 4, filename);
+    assert.equal([...html.matchAll(/class="atelier-film-surface"/g)].length, 4, filename);
     for (const [, asset, body] of films) {
       const surface = body.match(/<div class="atelier-film-surface">([\s\S]*?)<\/div>/)?.[1];
       assert.ok(surface, `${filename}/${asset} surface`);

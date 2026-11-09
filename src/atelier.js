@@ -5,7 +5,7 @@ import { createAtelierEntry } from './atelier-entry.js';
 import { installAtelierCinema } from './atelier-cinema.js';
 import './atelier-cinema.css';
 import { installWebReel } from './web-reel.js';
-import { installFundingFilm } from './funding-film.js';
+import { installFundingJourney } from './funding-journey.js';
 import { installOskenMotion } from './atelier-osken-motion.js';
 import './funding-journey.css';
 
@@ -22,6 +22,7 @@ const menu = document.querySelector('.atelier-mobile-menu');
 const hero = document.querySelector('.atelier-hero');
 const base = import.meta.env.BASE_URL;
 let entryFinished = false;
+let heroHandoffComplete = false;
 let inHero = !location.hash;
 let userPaused = false;
 let manualPlayback = false;
@@ -35,26 +36,32 @@ let suspended = false;
 let entry;
 installAtelierCinema({ signal, menu });
 installWebReel({ signal });
-installFundingFilm({ signal });
+installFundingJourney({ signal, menu });
 
 installIdeaBriefs({ signal });
 installCinemaViewer({ signal });
 installOskenMotion({ signal, menu });
 document.querySelectorAll('[data-year]').forEach(node => { node.textContent = String(new Date().getFullYear()); });
 const automaticMotion = () => !reduced.matches && !connection?.saveData;
+const scrollRestorationBefore = history.scrollRestoration;
+if (automaticMotion()) {
+  history.scrollRestoration = 'manual';
+  window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+}
 const selectedPoster = () => `${base}images/director-water-${portrait.matches ? 'mobile' : 'desktop'}.webp`;
 film.poster = selectedPoster();
 film.muted = true; film.defaultMuted = true;
 film.playsInline = true; film.autoplay = false;
 
 function selectedProfile() {
-  if (portrait.matches) return document.documentElement.clientWidth <= 520 ? 'phone' : 'mobile';
-  const aperture = stage.getBoundingClientRect();
-  const pixels = Math.min(aperture.width, aperture.height * 16 / 9) * (window.devicePixelRatio || 1);
-  return pixels > 1920 ? 'desktop' : 'hd';
+  // Keep the photographic master on desktop even when the browser window is
+  // smaller than 4K. High-density portrait screens use the native UHD crop.
+  if (portrait.matches) return 'mobile';
+  return matchMedia('(pointer: coarse)').matches ? 'hd' : 'desktop';
 }
 
-function ensureSource(profile = selectedProfile()) {
+const entryProfile = selectedProfile();
+function ensureSource(profile = heroHandoffComplete ? selectedProfile() : entryProfile) {
   if (film.getAttribute('src') && film.dataset.profile === profile) return;
   if (film.readyState >= 1) resumeTime = film.currentTime;
   if (playPending) playInterrupted = true;
@@ -147,6 +154,11 @@ function watchImpact() {
   });
 }
 film.addEventListener('playing', watchImpact, { signal });
+film.addEventListener('playing', () => {
+  if (!entryFinished || heroHandoffComplete) return;
+  heroHandoffComplete = true;
+  scheduleProfileCheck();
+}, { signal });
 film.addEventListener('seeked', watchImpact, { signal });
 film.addEventListener('pause', cancelImpact, { signal });
 film.addEventListener('emptied', cancelImpact, { signal });
@@ -212,6 +224,9 @@ function scheduleProfileCheck() {
   clearTimeout(profileTimer);
   profileTimer = setTimeout(() => {
     film.poster = selectedPoster();
+    // The decoded frame approved by the loader must survive the handoff.
+    // Apply a rotation/resize only after that film has actually started.
+    if (!entryFinished || !heroHandoffComplete) return;
     if (!film.getAttribute('src') || (!mayPlayHero() && (entryFinished || !automaticMotion()))) return;
     const next = selectedProfile();
     if (film.dataset.profile === next) return;
@@ -278,31 +293,20 @@ function drawScreen(ctx, width, height, aspect, poster) {
     const h = poster.naturalHeight * factor;
     const x = aperture.x + (aperture.width - w) / 2;
     const y = aperture.y + (aperture.height - h) / 2;
-    if (!portrait.matches && w < aperture.width) {
-      ctx.save();
-      ctx.beginPath();
-      ctx.rect(aperture.x, aperture.y, aperture.width, aperture.height);
-      ctx.clip();
-      ctx.translate(x, y);
-      ctx.scale(-1, 1);
-      ctx.drawImage(poster, 0, 0, w, h);
-      ctx.drawImage(poster, -2 * w, 0, w, h);
-      ctx.restore();
-    }
     ctx.drawImage(poster, x, y, w, h);
   }
   const brandIcon = document.querySelector('.atelier-symbol').getBoundingClientRect();
   ctx.save();
   ctx.translate(brandIcon.x, brandIcon.y);
   ctx.scale(brandIcon.width / 48, brandIcon.height / 48);
-  ctx.fillStyle = '#efeee8';
+  ctx.fillStyle = '#dfff00';
   ctx.fill(new Path2D('M24 2 30 18 46 24 30 30 24 46 18 30 2 24 18 18Z'));
   ctx.fillStyle = '#090b0b';
   ctx.beginPath(); ctx.arc(24, 24, 5.5, 0, Math.PI * 2); ctx.fill();
   ctx.restore();
   const contact = document.querySelector('.atelier-contact-link').getBoundingClientRect();
   if (contact.width) {
-    ctx.fillStyle = '#efeee8';
+    ctx.fillStyle = '#dfff00';
     ctx.beginPath();
     ctx.roundRect(contact.x, contact.y, contact.width, contact.height, contact.height / 2);
     ctx.fill();
@@ -338,18 +342,24 @@ function drawScreen(ctx, width, height, aspect, poster) {
 
 function revealPage() {
   if (disposed) return;
+  document.documentElement.classList.remove('entry-boot');
+  clearTimeout(window.__spaceEntryWatchdog);
   entryFinished = true;
+  // A deep link still receives the complete entrance, then opens its target.
+  if (location.hash) {
+    try { document.getElementById(decodeURIComponent(location.hash.slice(1)))?.scrollIntoView({ behavior: 'instant' }); } catch {}
+  }
   syncPlayback();
 }
 
 try {
   const touch = matchMedia('(pointer: coarse)').matches;
-  if (!automaticMotion() || location.hash || document.hidden || window.scrollY > 10 || (touch && !portrait.matches)) {
+  if (!automaticMotion()) {
     document.documentElement.dataset.entryState = 'ready';
     revealPage();
-  } else if (portrait.matches) {
+  } else if (portrait.matches || touch) {
     entry = createMobileStudio({
-      stage, controls: document.querySelector('.flagship-film-controls'), base, preference: reduced, portrait,
+      signal, video: film, stage, controls: document.querySelector('.flagship-film-controls'), base, preference: reduced, portrait,
       prepareWater: ensureSource, onComplete: revealPage,
     });
   } else {
@@ -368,6 +378,7 @@ try {
 }
 window.addEventListener('pageshow', () => { suspended = false; syncPlayback(); }, { signal });
 window.addEventListener('pagehide', event => {
+  history.scrollRestoration = scrollRestorationBefore;
   suspended = true;
   if (playPending) playInterrupted = true;
   film.autoplay = false; film.pause();

@@ -45,9 +45,9 @@ export function createEntryShell() {
       <span class="entry-location">PARMA, ITALIA</span>
     </header>
     <footer class="entry-footer entry-chrome">
-      <div class="entry-loading" role="progressbar" aria-label="Caricamento del sito" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+      <div class="entry-loading" role="progressbar" aria-label="Preparazione e costruzione dello studio" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
         <div class="entry-number" aria-hidden="true"><span class="entry-number-value">0</span><span class="entry-number-unit">%</span></div>
-        <div class="entry-progress-copy"><span class="entry-caption">Il tuo prossimo inizio.</span><span class="entry-phase">Prepariamo lo spazio</span></div>
+        <div class="entry-progress-copy"><span class="entry-caption">Costruiamo il nostro studio.</span><span class="entry-phase">Prepariamo lo spazio</span></div>
       </div>
       <button class="entry-skip" type="button"><span>Entra subito</span><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h11m-4-4 4 4-4 4" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
       <div class="entry-progress-track" aria-hidden="true"><span></span></div>
@@ -73,6 +73,8 @@ export function createEntryShell() {
   syncPreference();
   preference.addEventListener('change', syncPreference);
   document.body.append(root);
+  document.documentElement.classList.remove('entry-boot');
+  clearTimeout(window.__spaceEntryWatchdog);
 
   function update(value, label) {
     if (disposed) return;
