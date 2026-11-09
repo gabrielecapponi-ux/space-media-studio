@@ -4,6 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <script>if(location.protocol==='file:')location.replace('https://gabrielecapponi-ux.github.io/space-media-studio/?from=local'+location.hash)</script>
+    <style>html.entry-boot{overflow:hidden}html.entry-boot:before{content:"";z-index:999;background:#090b10;position:fixed;inset:0}</style>
+    <script>
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !navigator.connection?.saveData) {
+        document.documentElement.classList.add('entry-boot');
+        window.__spaceEntryWatchdog = setTimeout(() => document.documentElement.classList.remove('entry-boot'), 12000);
+      }
+    </script>
     <meta name="theme-color" content="#101110" />
     <title>Space Media Studio — Siti web, e-commerce, loghi e video.</title>
     <meta name="description" content="Creiamo siti web, e-commerce, loghi, video e campagne per la tua attività. Space Media Studio, Parma. Progetti e bandi per aziende, APS e ASD." />
@@ -22,8 +29,8 @@
     <script type="application/ld+json">
       {"@context":"https://schema.org","@type":"ProfessionalService","name":"Space Media Studio","url":"https://gabrielecapponi-ux.github.io/space-media-studio/","description":"Studio creativo a Parma. Loghi, branding, siti web, motion design, animazioni 3D, campagne e sviluppo di progetti e candidature a bandi per aziende, APS e ASD.","telephone":"+393479623498","address":{"@type":"PostalAddress","streetAddress":"Stradello Conrad Marca Relli 1","addressLocality":"Parma","addressCountry":"IT"},"founder":[{"@type":"Person","name":"Gabriele Capponi"},{"@type":"Person","name":"Mattia Tanzi"}]}
     </script>
-    <script type="module" crossorigin src="./assets/atelier-BmfkcnpN.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/atelier-BN-OKJPw.css">
+    <script type="module" crossorigin src="./assets/atelier-BziA1o16.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/atelier-DKjEfPNa.css">
   </head>
   <body class="flagship-site">
     <a class="atelier-skip" href="#main">Vai al contenuto</a>
@@ -59,7 +66,7 @@
       <section class="atelier-hero flagship-hero" aria-labelledby="atelier-title">
         <div class="flagship-masthead">
           <p class="atelier-eyebrow flagship-location">Studio creativo indipendente · Parma</p>
-          <h1 id="atelier-title"><span>Brand.</span> <span>Web.</span> <em>Motion.</em></h1>
+          <h1 id="atelier-title"><span>Brand.</span> <span class="flagship-title-web">Web.</span> <em>Motion.</em></h1>
         </div>
         <div class="flagship-water-stage" role="img" aria-label="Una goccia cade sull’acqua. All’impatto si forma una corona, poi dalla superficie risale una colonna sottile.">
           <picture class="flagship-water-poster">
@@ -106,7 +113,7 @@
             <span class="atelier-service-caption"><span class="atelier-service-key">04</span><strong>Social e campagne</strong><span class="atelier-service-arrow" aria-hidden="true">↓</span></span>
           </a>
           <a href="#funding">
-            <span class="atelier-service-thumb atelier-service-thumb--funding" aria-hidden="true"><img src="./images/director-funding-thumb.webp" width="320" height="180" alt="" loading="lazy" decoding="async" fetchpriority="low" /></span>
+            <span class="atelier-service-thumb atelier-service-thumb--funding" aria-hidden="true"><img src="./images/funding-journey.svg" width="320" height="180" alt="" loading="lazy" decoding="async" fetchpriority="low" /></span>
             <span class="atelier-service-caption"><span class="atelier-service-key">05</span><strong>Progetti e bandi</strong><span class="atelier-service-arrow" aria-hidden="true">↓</span></span>
           </a>
         </nav>
@@ -285,17 +292,16 @@
           <h2 id="funding-title">Progetti &amp;<br />bandi.</h2>
           <p>Dalla tua idea al progetto: scrittura, budget e candidatura. Insieme.</p>
         </div>
-        <figure class="funding-journey atelier-service-film atelier-media-stage" data-funding-journey data-service-film="funding" aria-label="Dall’idea al progetto: ideazione, progettazione insieme, candidatura e realizzazione">
-          <div class="atelier-film-surface">
-            <picture class="atelier-film-poster" aria-hidden="true">
-              <source media="(max-width: 760px) and (orientation: portrait)" srcset="images/director-funding-mobile.jpg" />
-              <img src="./images/director-funding.jpg" width="1920" height="1080" alt="" loading="lazy" decoding="async" fetchpriority="low" />
-            </picture>
-            <video id="atelier-funding-video" data-atelier-media data-media-label="il percorso dall’idea al progetto" muted playsinline loop preload="none" data-src-desktop="./films/director-funding.mp4" data-src-compact="./films/director-funding-compact.mp4" data-src-mobile="./films/director-funding-mobile.mp4" data-poster-desktop="./images/director-funding.jpg" data-poster-mobile="./images/director-funding-mobile.jpg" width="1920" height="1080" aria-label="Dall’idea alla candidatura. Il progetto prende forma in un plastico con un padiglione in vetro e rovere."></video>
-          </div>
+        <figure class="funding-journey" data-funding-journey aria-label="Dall’idea al progetto: una linea disegna ideazione, progettazione insieme, candidatura e realizzazione">
+          <picture class="funding-journey-poster" aria-hidden="true">
+            <source media="(max-width: 760px) and (orientation: portrait)" srcset="images/funding-journey-mobile.svg" />
+            <img src="./images/funding-journey.svg" width="1600" height="900" alt="" loading="lazy" decoding="async" fetchpriority="low" />
+          </picture>
+          <div class="funding-journey-canvas" id="funding-journey-canvas" data-journey-canvas aria-hidden="true"></div>
           <figcaption class="funding-journey-caption"><span data-journey-step>SPACE / Progettazione condivisa</span><strong data-journey-heading>Dall’idea alla realtà.</strong></figcaption>
           <ol class="funding-journey-rail" aria-label="Le fasi del progetto"><li data-journey-phase>Idea</li><li data-journey-phase>Insieme</li><li data-journey-phase>Candidatura</li><li data-journey-phase>Prende vita</li></ol>
-          <button class="funding-journey-toggle" type="button" data-media-toggle aria-controls="atelier-funding-video" aria-label="Riproduci il percorso dall’idea al progetto" aria-pressed="false" hidden><span data-media-symbol aria-hidden="true">▷</span><span data-media-label hidden>Riproduci</span></button>
+          <button class="funding-journey-replay" type="button" data-journey-replay aria-controls="funding-journey-canvas" aria-label="Rivedi il percorso dall’inizio" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8a8 8 0 1 1-1 8M5 3v5h5" /></svg></button>
+          <button class="funding-journey-toggle" type="button" data-journey-toggle aria-controls="funding-journey-canvas" aria-label="Riproduci il percorso dall’idea al progetto" aria-pressed="false" hidden><svg viewBox="0 0 24 24" data-journey-play aria-hidden="true"><path d="M8 5l11 7-11 7Z" /></svg><svg viewBox="0 0 24 24" data-journey-pause aria-hidden="true"><path d="M8 5v14M16 5v14" /></svg></button>
         </figure>
         <div class="atelier-funding-content">
           <ol class="atelier-funding-steps">
