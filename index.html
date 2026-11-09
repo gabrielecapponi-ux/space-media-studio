@@ -8,18 +8,7 @@
     <script>
       if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !navigator.connection?.saveData) {
         document.documentElement.classList.add('entry-boot');
-        window.__spaceEntryHash = location.hash;
-        if (location.hash) history.replaceState(history.state, '', location.pathname + location.search);
-        window.__spaceRestoreEntryHash = () => {
-          if (!window.__spaceEntryHash) return;
-          history.replaceState(history.state, '', location.pathname + location.search + window.__spaceEntryHash);
-          window.__spaceEntryHash = '';
-        };
-        window.__spaceEntryWatchdog = setTimeout(() => {
-          document.documentElement.classList.remove('entry-boot');
-          window.__spaceRestoreEntryHash();
-          try { document.getElementById(decodeURIComponent(location.hash.slice(1)))?.scrollIntoView({ behavior: 'instant' }); } catch {}
-        }, 12000);
+        window.__spaceEntryWatchdog = setTimeout(() => document.documentElement.classList.remove('entry-boot'), 12000);
       }
     </script>
     <meta name="theme-color" content="#101110" />
@@ -40,8 +29,8 @@
     <script type="application/ld+json">
       {"@context":"https://schema.org","@type":"ProfessionalService","name":"Space Media Studio","url":"https://gabrielecapponi-ux.github.io/space-media-studio/","description":"Studio creativo a Parma. Loghi, branding, siti web, motion design, animazioni 3D, campagne e sviluppo di progetti e candidature a bandi per aziende, APS e ASD.","telephone":"+393479623498","address":{"@type":"PostalAddress","streetAddress":"Stradello Conrad Marca Relli 1","addressLocality":"Parma","addressCountry":"IT"},"founder":[{"@type":"Person","name":"Gabriele Capponi"},{"@type":"Person","name":"Mattia Tanzi"}]}
     </script>
-    <script type="module" crossorigin src="./assets/atelier-D4HwcUdU.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/atelier-C35dbunm.css">
+    <script type="module" crossorigin src="./assets/atelier-BziA1o16.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/atelier-DKjEfPNa.css">
   </head>
   <body class="flagship-site">
     <a class="atelier-skip" href="#main">Vai al contenuto</a>
@@ -79,13 +68,12 @@
           <p class="atelier-eyebrow flagship-location">Studio creativo indipendente · Parma</p>
           <h1 id="atelier-title"><span>Brand.</span> <span class="flagship-title-web">Web.</span> <em>Motion.</em></h1>
         </div>
-        <div class="flagship-water-stage" role="group" aria-label="Una goccia cade sull’acqua. All’impatto si forma una corona, poi dalla superficie risale una colonna sottile.">
+        <div class="flagship-water-stage" role="img" aria-label="Una goccia cade sull’acqua. All’impatto si forma una corona, poi dalla superficie risale una colonna sottile.">
           <picture class="flagship-water-poster">
             <source media="(max-width: 1024px) and (orientation: portrait)" srcset="images/director-water-mobile.webp" />
             <img src="./images/director-water-desktop.webp" alt="" fetchpriority="high" width="3840" height="2160" />
           </picture>
           <video id="atelier-film" class="atelier-film" muted playsinline loop preload="none"></video>
-          <button type="button" class="flagship-water-start" data-water-start aria-controls="atelier-film" hidden><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5 13 8 4 13.5Z" fill="currentColor"/></svg>Avvia la caduta</button>
         </div>
         <div class="flagship-baseline">
           <p class="atelier-hero-promise">Siti web, e-commerce, loghi e video per la tua attività.</p>
