@@ -13,6 +13,7 @@ import {productPhotoSources} from './product-media.js';
 import {mountAppetiteMotion, holdFoodFrame, clearFoodFrame} from './appetite-motion.js';
 import appetiteMedia from '../data/appetite-media.json';
 import {mountMenuBoard} from './menu-board.js';
+import {selectFoodVideo, recordFoodTransfer} from './food-media-source.js';
 
 const $ = query => document.querySelector(query);
 const $$ = query => [...document.querySelectorAll(query)];
@@ -30,6 +31,7 @@ const dialog = $('.product-dialog');
 const menuRoot = $('#menu');
 const catalog = new Map(products.map(product => [product.id, product]));
 let filmWanted = false, filmInView = false, filmLoaded = false, filmRequest = 0;
+let filmTransferStartedAt = 0;
 let filmRatio = 0, filmVisited = false, filmVisitConsumed = false, filmHovered = false;
 let filmDwell = null, filmEndTimer = null, filmLoadTimer = null, filmFrameRequest = null, filmHeldFrame = null;
 const filmTouch = matchMedia('(hover: none), (pointer: coarse)');
@@ -68,18 +70,23 @@ function finishFilm() {
   filmWanted = false; window.clearTimeout(filmEndTimer); window.clearTimeout(filmLoadTimer);
   filmEndTimer = filmLoadTimer = null; film?.pause(); renderFilmButton();
 }
+function prepareFilm() {
+  if (!film || filmBlocked()) return false;
+  if (filmLoaded) return true;
+  const source = selectFoodVideo(appetiteMedia['classic-smash-burger-triplo'], window, stage.getBoundingClientRect().width)
+    || film.dataset.mobileSrc || film.dataset.desktopSrc;
+  if (!source) return false;
+  filmTransferStartedAt = performance.now();
+  film.preload = 'auto'; film.src = source; filmLoaded = true; film.load();
+  return true;
+}
 function beginFilm() {
   if (!film || disposed || filmBlocked() || !filmInView) return false;
   stopFilm();
   document.dispatchEvent(new CustomEvent('smeet:food-claim',{detail:film}));
   const still = stage?.querySelector('.signature-photo img');
   if (still?.currentSrc) film.poster = still.currentSrc;
-  if (!filmLoaded) {
-    const source = matchMedia('(max-width: 760px)').matches
-      ? film.dataset.mobileSrc || film.dataset.desktopSrc : film.dataset.desktopSrc || film.dataset.mobileSrc;
-    if (!source) return false;
-    film.src = source; filmLoaded = true; film.load();
-  }
+  if (!prepareFilm()) return false;
   filmVisitConsumed = filmVisited = filmWanted = true;
   film.muted = true; film.playsInline = true; film.loop = false;
   try {film.currentTime = 0;} catch { /* A fresh resource already starts at zero. */ }
@@ -106,7 +113,7 @@ function queueFilm() {
       const request = filmRequest;
       still.decode().catch(() => {}).then(() => {if (request === filmRequest && eligible()) beginFilm();});
     } else beginFilm();
-  }, filmTouch.matches ? 320 : 140);
+  }, filmVisited ? (filmTouch.matches ? 90 : 40) : (filmTouch.matches ? 320 : 140));
 }
 function syncFilm() {
   if (!film || disposed) return;
@@ -148,6 +155,8 @@ film?.addEventListener('playing', () => {
   const request = filmRequest;
   filmFrameRequest = film.requestVideoFrameCallback(() => {if (request === filmRequest) showFilmFrame();});
 }, {signal});
+film?.addEventListener('progress', () => recordFoodTransfer(film, window, filmTransferStartedAt), {signal});
+film?.addEventListener('canplaythrough', () => recordFoodTransfer(film, window, filmTransferStartedAt), {signal});
 film?.addEventListener('ended', finishFilm, {signal});
 film?.addEventListener('error', () => {
   if (!filmLoaded) return;
@@ -190,7 +199,7 @@ const filmObserver = film && stage && typeof IntersectionObserver === 'function'
   filmInView = filmRatio > 0;
   if (filmRatio < .3) {
     filmVisitConsumed = false;
-    stopFilm(false, filmRatio > 0);
+    stopFilm(filmRatio === 0, filmRatio > 0);
   }
   syncFilm();
 }, {threshold:[0,.3,.55,1]}) : null;

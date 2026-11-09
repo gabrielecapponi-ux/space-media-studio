@@ -91,7 +91,8 @@ function productCard(product) {
   let picture;
   if (appetite?.motionPosterSmall && appetite?.motionPoster) {
     const still = `srcset="${escapeHTML(appetite.posterSmall)} 640w, ${escapeHTML(appetite.poster)} 960w"`;
-    const first = `srcset="${escapeHTML(appetite.motionPosterSmall)} 320w, ${escapeHTML(appetite.motionPoster)} 640w"`;
+    const retina = appetite.motionPosterRetina ? `, ${escapeHTML(appetite.motionPosterRetina)} 960w` : '';
+    const first = `srcset="${escapeHTML(appetite.motionPosterSmall)} 320w, ${escapeHTML(appetite.motionPoster)} 640w${retina}"`;
     picture = `<picture class="food-film-poster"><source data-food-static media="${staticMedia}" ${still} ${motionSizes} /><img data-appetite-still src="${escapeHTML(appetite.motionPosterSmall)}" ${first} ${motionSizes} ${imageAttributes} width="640" height="640" /></picture>`;
   } else {
     const candidates = appetite ? `${appetite.posterSmall} 640w, ${appetite.poster} 960w` : campaignPhoto ? `${campaignPhoto.replace(/\.webp$/, '-640.webp')} 640w, ${campaignPhoto} ${photoWidth}w` : '';
