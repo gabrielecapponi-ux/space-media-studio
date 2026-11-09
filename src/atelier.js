@@ -8,6 +8,8 @@ import { installWebReel } from './web-reel.js';
 import { installFundingJourney } from './funding-journey.js';
 import { installOskenMotion } from './atelier-osken-motion.js';
 import './funding-journey.css';
+import { installMobileNavigation } from './mobile-navigation.js';
+import './mobile-polish.css';
 
 const lifetime = new AbortController();
 const { signal } = lifetime;
@@ -35,6 +37,7 @@ let resumeTime = 0;
 let disposed = false;
 let suspended = false;
 let entry;
+installMobileNavigation({ signal, menu });
 installAtelierCinema({ signal, menu });
 installWebReel({ signal });
 installFundingJourney({ signal, menu });
@@ -223,18 +226,6 @@ toggle.addEventListener('click', () => {
   syncPlayback();
 }, { signal });
 menu.addEventListener('toggle', syncPlayback, { signal });
-menu.querySelectorAll('a').forEach(link => link.addEventListener('click', () => { menu.open = false; }, { signal }));
-document.addEventListener('keydown', event => {
-  if (event.key !== 'Escape' || !menu.open) return;
-  menu.open = false;
-  menu.querySelector('summary').focus({ preventScroll: true });
-}, { signal });
-document.addEventListener('pointerdown', event => {
-  if (menu.open && !menu.contains(event.target)) menu.open = false;
-}, { signal });
-menu.addEventListener('focusout', event => {
-  if (event.relatedTarget && !menu.contains(event.relatedTarget)) menu.open = false;
-}, { signal });
 film.addEventListener('loadedmetadata', () => {
   if (resumeTime > 0 && Number.isFinite(film.duration)) {
     film.currentTime = Math.min(resumeTime, Math.max(0, film.duration - .05));

@@ -1,0 +1,188 @@
+/* Phone layouts use the same paper, ink, type and uncut film frames as desktop.
+   Keep navigation and transport in their own space; no scroll-driven effects. */
+@media (max-width: 900px) {
+  .flagship-site .atelier-mobile-menu summary {
+    min-width: 96px;
+    min-height: 48px;
+    justify-content: space-between;
+    padding: 8px 12px;
+    border: 1px solid #efeee84d;
+    border-radius: 2px;
+    font-size: 14px;
+  }
+  .flagship-site .atelier-mobile-menu[open] summary {
+    background: var(--yellow);
+    border-color: var(--yellow);
+    color: var(--ink);
+  }
+  .flagship-site .atelier-mobile-menu nav {
+    top: calc(100% + 4px);
+    max-height: calc(100svh - var(--header-height) - var(--safe-top) - var(--safe-bottom) - 16px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 12px 20px;
+    border: 1px solid var(--line);
+    box-shadow: 0 16px 32px #0003;
+  }
+  .flagship-site .atelier-mobile-menu nav a {
+    min-height: 48px;
+    padding-block: 10px;
+    gap: 16px;
+    font-size: 19px;
+    line-height: 1.3;
+  }
+  .flagship-site .atelier-mobile-menu nav a > span { flex: none; }
+  .flagship-site .atelier-mobile-menu nav a:last-child {
+    margin-top: 10px;
+    padding-inline: 12px;
+    background: var(--yellow);
+  }
+  .flagship-site .atelier-mobile-menu[open] nav {
+    animation: space-menu-enter 180ms cubic-bezier(.2,.7,.2,1) both;
+  }
+  .flagship-site .atelier-mobile-menu nav a:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: -3px;
+  }
+  .flagship-site :is(.atelier-eyebrow, .atelier-demo-note, .atelier-concept-note,
+    .atelier-case-chapter .atelier-concept-description > .atelier-deliverables,
+    .atelier-funding-note, .atelier-footer-bottom, .atelier-credits,
+    .atelier-credits summary) {
+    font-size: 12px;
+    line-height: 1.6;
+  }
+  .flagship-site .atelier-concept-note { opacity: .76; }
+  .flagship-site .atelier-demo-note { max-width: 48ch; }
+  .flagship-site .atelier-service-key { font-size: 11px; }
+  .flagship-site .flagship-transport { font-size: 12px; }
+  .flagship-site .atelier-service-index a strong,
+  .flagship-site .atelier-reel-types a strong { font-size: 14px; }
+  .flagship-site .atelier-reel-types a > span:first-child { font-size: 11px; opacity: .75; }
+  .flagship-site .atelier-reel-status { font-size: 11px; line-height: 1.6; }
+  .flagship-site .atelier-funding-heading > p:not(.atelier-eyebrow) { font-size: 16px; max-width: 40ch; }
+  .flagship-site .atelier-funding-sources { font-size: 14px; line-height: 1.65; }
+  .flagship-site .atelier-funding-steps h3 { font-size: 14px; }
+  .flagship-site .atelier-funding-steps li > span { font-size: 11px; }
+  .flagship-site .atelier-brief summary { min-height: 58px; font-size: 15px; }
+  .flagship-site .atelier-brief form { padding: 12px 0 24px; }
+  .flagship-site .atelier-brief label { font-size: 14px; line-height: 1.5; }
+  .flagship-site .atelier-brief textarea { font-size: 16px; line-height: 1.5; padding: 16px; }
+  .flagship-site :is(.idea-help, .idea-status) { font-size: 12px; line-height: 1.6; opacity: .8; }
+  .flagship-site .idea-count { font-size: 11px; opacity: .8; }
+  .flagship-site .atelier-brief button { min-height: 52px; font-size: 14px; justify-content: space-between; }
+  .flagship-site .atelier-footer-details { font-size: 14px; line-height: 1.65; }
+  .flagship-site .atelier-footer-bottom { color: #efeee8bb; }
+  .flagship-site .atelier-credits { color: #efeee8bb; }
+  .flagship-site .atelier-button { font-size: 14px; }
+  .flagship-site :is(.atelier-button, .atelier-brief button, .flagship-transport,
+    .atelier-case-film-toggle, .atelier-cinema-open, .atelier-mobile-menu summary):active {
+    opacity: .75;
+  }
+  .flagship-site .cinema-viewer-header p { font-size: 11px; color: #efeee8bb; }
+  .flagship-site .cinema-viewer-close { min-height: 48px; font-size: 13px; }
+}
+@media (max-width: 700px) {
+  .flagship-site { --header-height: 76px; }
+  .flagship-site .flagship-baseline {
+    grid-template-columns: minmax(0, 1fr) 104px;
+    gap: 12px 18px;
+  }
+  .flagship-site .flagship-baseline .atelier-hero-promise {
+    grid-column: 1;
+    grid-row: 1;
+    font-size: 16px;
+    line-height: 1.4;
+    max-width: none;
+  }
+  .flagship-site .flagship-baseline .atelier-scroll-link {
+    grid-column: 2;
+    grid-row: 1;
+    font-size: 13px;
+    gap: 8px;
+    max-width: 104px;
+  }
+  .flagship-site .flagship-film-controls {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    border-top: 1px solid var(--page-rule);
+    padding-top: 8px;
+  }
+  .flagship-site .flagship-transport { flex: 0 1 auto; min-height: 48px; font-size: 12px; }
+  .flagship-site .flagship-transport :is(svg, [data-film-symbol]) { flex: none; }
+  .flagship-site .atelier-service-index { gap: 18px; }
+  .flagship-site .atelier-service-caption { min-height: 64px; }
+  .flagship-site .atelier-reel-status { display: grid; grid-template-columns: minmax(0,1fr); gap: 4px; }
+  .flagship-site .atelier-reel-status > p { min-height: 3.2em; align-items: flex-start; }
+  .flagship-site .atelier-reel-dot { margin-top: .6em; }
+  .flagship-site .atelier-reel-status > span { margin-left: auto; }
+  .flagship-site .atelier-brief-bottom { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; }
+  .flagship-site .idea-count { justify-self: end; }
+  .flagship-site .atelier-brief button { width: 100%; padding-inline: 16px; }
+  .flagship-site .atelier-contact-actions { width: 100%; }
+  .flagship-site .atelier-button { width: 100%; max-width: 420px; min-height: 56px; gap: 16px; }
+  .flagship-site .atelier-funding-steps { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 14px 20px; }
+  /* All four films have readable actions below the image, including web. */
+  .flagship-site .atelier-case-chapter .atelier-service-film.atelier-media-stage {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: auto auto auto;
+    align-items: center;
+    aspect-ratio: auto;
+    background: #151716;
+  }
+  .flagship-site .atelier-case-chapter .atelier-service-film.atelier-media-stage > .atelier-film-surface {
+    position: relative;
+    grid-area: 1 / 1 / 2 / -1;
+    width: 100%;
+    aspect-ratio: 4/5;
+  }
+  .flagship-site .atelier-service-film .atelier-film-caption {
+    grid-area: 2 / 1 / 3 / -1;
+    min-height: 40px;
+    padding: 12px 20px 4px;
+    font-size: 12px;
+    text-wrap: pretty;
+  }
+  .flagship-site .atelier-case-chapter .atelier-service-film.atelier-media-stage > :is(.atelier-case-film-toggle, .atelier-cinema-open) {
+    position: static;
+    display: flex;
+    justify-content: center;
+    align-self: stretch;
+    width: auto;
+    min-width: 0;
+    min-height: 56px;
+    margin: 6px 8px 10px;
+    padding: 10px 8px;
+    gap: 8px;
+    border: 1px solid #efeee840;
+    border-radius: 2px;
+    background: transparent;
+    color: var(--paper);
+    font-size: 13px;
+    line-height: 1.3;
+  }
+  .flagship-site .atelier-case-chapter .atelier-service-film.atelier-media-stage > .atelier-cinema-open { grid-area: 3 / 1; margin-left: 20px; }
+  .flagship-site .atelier-case-chapter .atelier-service-film.atelier-media-stage > .atelier-case-film-toggle { grid-area: 3 / 2; margin-right: 20px; }
+  .flagship-site .atelier-case-chapter .atelier-service-film.atelier-media-stage :is([data-media-label], .atelier-cinema-open span:last-child) { display: inline; }
+  .flagship-site .atelier-web-reel > :is(.atelier-case-film-toggle, .atelier-cinema-open) { margin-top: 12px; }
+}
+@media (max-width: 900px) and (orientation: landscape) {
+  .flagship-site { --header-height: 64px; }
+  .flagship-site .atelier-mobile-menu nav { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); column-gap: 24px; }
+  .flagship-site .atelier-mobile-menu nav a { font-size: 17px; }
+  .flagship-site .atelier-mobile-menu nav a:last-child { margin-top: 0; }
+  .flagship-site .flagship-baseline { flex-wrap: wrap; gap: 12px 24px; }
+}
+@media (max-width: 700px) and (orientation: landscape) {
+  .flagship-site .atelier-case-chapter .atelier-service-film.atelier-media-stage > .atelier-film-surface { aspect-ratio: 16/9; }
+}
+@keyframes space-menu-enter {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .flagship-site .atelier-mobile-menu[open] nav { animation: none; }
+}
