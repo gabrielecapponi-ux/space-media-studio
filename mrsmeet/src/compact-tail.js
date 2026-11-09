@@ -1,5 +1,11 @@
-/** Keep the full board and story accessible from links as well as their summaries. */
-const panels = [...document.querySelectorAll('details[data-tail-disclosure]')];
+/** Keep the story accessible from links; the price board is always visible. */
+// Accept the earlier HTML as well, without allowing mobile layout to fold the
+// main price board away. Newly generated pages contain the panel directly.
+for (const board of document.querySelectorAll('details[data-tail-disclosure="menu-board"]')) {
+  board.open = true;
+  board.querySelector(':scope > summary')?.remove();
+}
+const panels = [...document.querySelectorAll('details[data-tail-disclosure]:not([data-tail-disclosure="menu-board"])')];
 const phone = window.matchMedia('(max-width: 760px)');
 const phoneState = new Map();
 

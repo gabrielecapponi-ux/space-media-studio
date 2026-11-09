@@ -134,7 +134,7 @@ export function mountAppetiteMotion({root = globalThis.document, entries = {}, r
     const direct = available.filter(state => (state.focused && (!touch?.matches || !visibilityObserver || state.ratio >= .30))
       || (!touch?.matches && state.hovered));
     if (direct.length) return direct.sort((a,b) => b.intent-a.intent)[0];
-    if (!touch?.matches || !visibilityObserver) return null;
+    if (!visibilityObserver) return null;
     // At the new compact opening both the hero and first menu row fit on a
     // phone. Give the large Triplo its first pass before auto-playing a card.
     if (signatureIsPrimary()) return null;
@@ -274,12 +274,10 @@ export function mountAppetiteMotion({root = globalThis.document, entries = {}, r
         const state = cards.get(entry.target);
         if (!state) continue;
         const ratio = entry.isIntersecting ? entry.intersectionRatio : 0;
-        if (touch?.matches) {
-          if (ratio < .30) state.viewportArmed = true;
-          if (ratio >= .55 && state.viewportArmed) {
-            if (state.attempted) restartVisit(state);
-            state.viewportArmed = false;
-          }
+        if (ratio < .30) state.viewportArmed = true;
+        if (ratio >= .55 && state.viewportArmed) {
+          if (state.attempted) restartVisit(state);
+          state.viewportArmed = false;
         }
         state.ratio = ratio; state.rect = entry.boundingClientRect || state.link.getBoundingClientRect();
         if (ratio === 0) release(state);
@@ -310,10 +308,10 @@ export function mountAppetiteMotion({root = globalThis.document, entries = {}, r
   listen(doc,'visibilitychange',reconcile);
   listen(win,'pagehide',() => {cancelDwell(); cards.forEach(state => release(state));});
   listen(win,'pageshow',reconcile);
-  // Compact phone rows can all remain 100% visible. Crossing the reading
-  // position still hands playback to the next card without an IO threshold.
+  // Several cards can remain fully visible. Scrolling the reading position
+  // hands playback to the next card on touch screens and desktops alike.
   listen(win,'scroll',() => {
-    if (!touch?.matches || !visibilityObserver || scrollFrame !== null) return;
+    if (!visibilityObserver || scrollFrame !== null) return;
     scrollFrame = win.requestAnimationFrame(() => {
       scrollFrame = null;
       if (blocked()) return;

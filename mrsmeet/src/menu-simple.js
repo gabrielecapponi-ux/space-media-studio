@@ -7,7 +7,6 @@ export function mountSimpleMenu({root, onOpenProduct} = {}) {
   const tools = root.querySelector('.catalog-tools');
   const grid = root.querySelector('#simple-menu-groups');
   const view = root.ownerDocument.defaultView;
-  const desktop = view.matchMedia?.('(min-width: 761px)');
   const productCounts = new Map(groups.map(group => [group.dataset.menuGroup, group.querySelectorAll('[data-menu-product]').length]));
   const productLinks = [...root.querySelectorAll('[data-product-photo]')];
   const controller = new AbortController();
@@ -16,7 +15,7 @@ export function mountSimpleMenu({root, onOpenProduct} = {}) {
     if (category === root.dataset.menuView || (category !== 'all' && !productCounts.has(category))) return;
     // A pinned filter may be activated far down a long list. Start the new
     // category at its first dish. When the first row is in view, keep it still.
-    const previousFirst = announce && desktop?.matches && tools
+    const previousFirst = announce && tools
       ? root.querySelector('.simple-menu-group:not([hidden]) .product-card') : null;
     const barBottom = previousFirst && tools?.getBoundingClientRect().bottom;
     const firstPassed = previousFirst && tools && previousFirst.getBoundingClientRect().bottom < barBottom;
@@ -59,8 +58,9 @@ export function mountSimpleMenu({root, onOpenProduct} = {}) {
     const opened = onOpenProduct(photo.dataset.productPhoto, photo);
     if (opened !== false) event.preventDefault();
   }, {signal:controller.signal});
-  const firstCategory = groups[0]?.dataset.menuGroup;
-  render(firstCategory || 'all',false);
+  // The complete menu is the initial journey: meals, burgers, then sides.
+  // Filters are optional shortcuts and remain selected across dialog visits.
+  render('all',false);
   return {dispose() {
     if (disposed) return;
     disposed = true;

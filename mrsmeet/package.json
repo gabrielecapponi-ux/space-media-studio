@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 127.0.0.1 --port 5176 --strictPort",
+    "prebuild": "node scripts/build-structured-data.mjs --write",
+    "check:schema": "node scripts/build-structured-data.mjs --check && node --test scripts/structured-data.test.mjs",
     "build": "vite build",
     "preview": "vite preview --host 127.0.0.1 --port 5177 --strictPort"
   },

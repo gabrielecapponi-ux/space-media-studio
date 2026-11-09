@@ -96,7 +96,6 @@ function beginFilm() {
 function queueFilm() {
   if (!film || disposed || filmWanted || filmDwell != null || filmBlocked() || filmRatio < .55 || filmVisitConsumed
     || (filmTouch.matches && appetiteMotion?.signatureIsPrimary?.() === false)
-    || (!filmTouch.matches && filmVisited && !filmHovered)
     || document.querySelector('.product-photo[data-appetite-playing]:not([data-appetite-holding])')) return;
   filmDwell = window.setTimeout(() => {
     filmDwell = null;
@@ -190,7 +189,7 @@ const filmObserver = film && stage && typeof IntersectionObserver === 'function'
   filmRatio = entry.isIntersecting ? entry.intersectionRatio : 0;
   filmInView = filmRatio > 0;
   if (filmRatio < .3) {
-    if (filmTouch.matches) filmVisitConsumed = false;
+    filmVisitConsumed = false;
     stopFilm(false, filmRatio > 0);
   }
   syncFilm();
@@ -385,7 +384,7 @@ mapButton?.addEventListener('click', async () => {
     if (status) status.textContent = 'La mappa animata non è disponibile. Puoi usare le indicazioni qui sotto.';
   }
 }, {signal});
-// The order flow starts immediately. The footer can replay the original opening.
+// The original morning and dressing film opens the visit; the footer can replay it.
 intro = mountOriginalOpening({reducedMotion:reduced, onComplete:() => {
   if (disposed) return;
   introActive = false;

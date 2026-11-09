@@ -34,11 +34,9 @@ export function renderMenuBoardSection(products) {
           </li>`;
   });
   return `<section class="menu-board" id="menu-board" aria-labelledby="menu-board-title">
-  <details class="tail-board" data-tail-disclosure="menu-board">
-    <summary class="tail-summary">Il tabellone dei prezzi</summary>
   <div class="menu-board__panel">
     <header class="menu-board__header">
-      <div class="menu-board__heading"><p class="menu-board__eyebrow">MR SMEET · MENÙ</p><h2 id="menu-board-title">IL TABELLONE</h2><p class="menu-board__intro">Tre righe alla volta. Prenditi il tempo di scegliere.</p></div>
+      <div class="menu-board__heading"><p class="menu-board__eyebrow">MR SMEET · MENÙ</p><h2 id="menu-board-title">IL TABELLONE</h2><p class="menu-board__intro">Smash burger, menù e contorni.</p></div>
       <div class="menu-board__art" data-menu-board-art aria-hidden="true">
         <img src="./images/menu-unified/menu-board.webp" srcset="./images/menu-unified/menu-board-640.webp 640w, ./images/menu-unified/menu-board.webp 960w" sizes="(max-width: 600px) 120px, 230px" alt="" width="960" height="540" loading="lazy" decoding="async" />
         <video class="menu-board__film" data-menu-board-film data-src="./films/menu-unified/menu-board.mp4" preload="none" muted playsinline tabindex="-1" aria-hidden="true"></video>
@@ -50,7 +48,6 @@ ${rows.join('\n')}
     </ul>
     <p class="menu-board__note">Promozioni e disponibilità da verificare sul canale scelto. Consegna ed eventuali commissioni escluse.</p>
   </div>
-  </details>
 </section>`;
 }
 
@@ -225,6 +222,7 @@ export function mountMenuBoard({root, reducedMotion, paused = false} = {}) {
   if(typeof view.IntersectionObserver==='function') {
     observer=new view.IntersectionObserver(entries => {
       if(disposed)return;
+      const wasInView=rows.some(row=>row.visible);
       let changed=false;
       for(const entry of entries) {
         if(entry.target===art){filmVisible=entry.isIntersecting && entry.intersectionRatio>=.2;if(!filmVisible && attempted)releaseFilm();continue;}
@@ -232,6 +230,13 @@ export function mountMenuBoard({root, reducedMotion, paused = false} = {}) {
         const visible=entry.isIntersecting && entry.intersectionRatio>=.2;
         changed ||= visible!==row.visible;row.visible=visible;
         if(!row.visible)settle(row);
+      }
+      // A complete departure arms a fresh visit. Crossing between nearby rows
+      // never restarts letters that the customer is still reading.
+      if(wasInView && !rows.some(row=>row.visible)) {
+        rows.forEach(row=>{row.played=false;});
+        nextGroupAt=0;readingPasses=PASSES_PER_VISIT;
+        if(!filmVisible){attempted=false;filmDone=false;}
       }
       if(changed)noteScroll();else sync();
     },{threshold:[0,.2]});

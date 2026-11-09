@@ -50,3 +50,13 @@
 @media(max-width:350px){.menu-board{--tile-size:15px;--board-number:21px;--board-price:69px;--board-gap:6px}.menu-board .menu-board__panel{padding-inline:10px}.menu-board #menu-board-title{font-size:23px}.menu-board .menu-board__art{flex-basis:60px}.menu-board .menu-board__price strong{font-size:16px}.menu-board .menu-board__category{letter-spacing:.04em}}
 @media(prefers-reduced-motion:reduce){.menu-board .menu-board__film,.menu-board .menu-board__number{transition:none}.menu-board .menu-board__glyph[data-flipping]>.menu-board__flap-top,.menu-board .menu-board__glyph[data-flipping]>.menu-board__flap-bottom{display:none;will-change:auto}}
 .motion-paused .menu-board .menu-board__number{transition:none}
+
+/* The mechanical menu is a full section on phones as well as desktop. */
+#menu-board.menu-board .menu-board__header {display:flex;}
+#menu-board.menu-board .tail-board > .tail-summary {display:none;}
+#menu-board.menu-board {scroll-margin-top:100px;}
+@media(max-width:760px){
+ #menu-board.menu-board {padding:24px 12px 40px;}
+ #menu-board.menu-board .menu-board__panel {margin-top:0;}
+ #menu-board.menu-board .menu-board__header {padding-bottom:18px;margin-bottom:20px;}
+}

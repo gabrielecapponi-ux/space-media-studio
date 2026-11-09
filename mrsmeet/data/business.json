@@ -1,0 +1,13 @@
+{
+  "name": "Mr Smeet",
+  "siteUrl": "https://gabrielecapponi-ux.github.io/space-media-studio/mrsmeet/",
+  "officialUrl": "https://mrsmeet.it/",
+  "email": "Mrsmeetburger@gmail.com",
+  "streetAddress": "Via D’Azeglio 84/A",
+  "addressLocality": "Parma",
+  "addressCountry": "IT",
+  "servesCuisine": "Smash burger",
+  "logo": "./images/wordmark-header.webp",
+  "image": "./images/storefront-styled.webp",
+  "instagram": "https://www.instagram.com/mr_smeet/"
+}
