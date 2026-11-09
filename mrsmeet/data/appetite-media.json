@@ -2,81 +2,81 @@
   "classic-smash-burger-doppio": {
     "poster": "./images/menu-unified/classic-smash-burger-doppio.webp",
     "posterSmall": "./images/menu-unified/classic-smash-burger-doppio-640.webp",
-    "video": "./films/brasca-motion/classic-smash-burger-doppio.mp4",
+    "video": "./films/menu-unified/classic-smash-burger-doppio.mp4",
     "full": "./images/menu-unified/classic-smash-burger-doppio-640.webp",
-    "motionPosterSmall": "./images/film-first/classic-smash-burger-doppio-320.webp",
-    "motionPoster": "./images/film-first/classic-smash-burger-doppio-640.webp"
+    "motionPosterSmall": "./images/food-recovered/classic-smash-burger-doppio-320.webp",
+    "motionPoster": "./images/food-recovered/classic-smash-burger-doppio-640.webp"
   },
   "classic-smash-burger-triplo": {
     "poster": "./images/menu-unified/classic-smash-burger-triplo-natural.webp",
     "posterSmall": "./images/menu-unified/classic-smash-burger-triplo-natural-640.webp",
-    "video": "./films/brasca-motion/classic-smash-burger-triplo.mp4",
+    "video": "./films/food-recovered/classic-smash-burger-triplo-v1.mp4",
     "full": "./images/menu-unified/classic-smash-burger-triplo-natural-640.webp",
-    "motionPosterSmall": "./images/film-first/classic-smash-burger-triplo-320.webp",
-    "motionPoster": "./images/film-first/classic-smash-burger-triplo-640.webp"
+    "motionPosterSmall": "./images/food-recovered/classic-smash-burger-triplo-320.webp",
+    "motionPoster": "./images/food-recovered/classic-smash-burger-triplo-640.webp"
   },
   "plant-based-burger-doppio": {
     "poster": "./images/menu-unified/plant-based-burger-doppio-natural.webp",
     "posterSmall": "./images/menu-unified/plant-based-burger-doppio-natural-640.webp",
-    "video": "./films/brasca-motion/plant-based-burger-doppio.mp4",
+    "video": "./films/menu-unified/plant-based-burger-doppio-natural.mp4",
     "full": "./images/menu-unified/plant-based-burger-doppio-natural-640.webp",
-    "motionPosterSmall": "./images/film-first/plant-based-burger-doppio-320.webp",
-    "motionPoster": "./images/film-first/plant-based-burger-doppio-640.webp"
+    "motionPosterSmall": "./images/food-recovered/plant-based-burger-doppio-320.webp",
+    "motionPoster": "./images/food-recovered/plant-based-burger-doppio-640.webp"
   },
   "100-percento-vegano": {
     "poster": "./images/menu-unified/100-percento-vegano-natural.webp",
     "posterSmall": "./images/menu-unified/100-percento-vegano-natural-640.webp",
-    "video": "./films/brasca-motion/100-percento-vegano.mp4",
+    "video": "./films/menu-unified/100-percento-vegano-natural.mp4",
     "full": "./images/menu-unified/100-percento-vegano-natural-640.webp",
-    "motionPosterSmall": "./images/film-first/100-percento-vegano-320.webp",
-    "motionPoster": "./images/film-first/100-percento-vegano-640.webp"
+    "motionPosterSmall": "./images/food-recovered/100-percento-vegano-320.webp",
+    "motionPoster": "./images/food-recovered/100-percento-vegano-640.webp"
   },
   "classic-smash-menu": {
     "poster": "./images/menu-unified/classic-smash-menu-natural.webp",
     "posterSmall": "./images/menu-unified/classic-smash-menu-natural-640.webp",
-    "video": "./films/brasca-motion/classic-smash-menu.mp4",
+    "video": "./films/menu-unified/classic-smash-menu-natural.mp4",
     "full": "./images/menu-unified/classic-smash-menu-natural-640.webp",
-    "motionPosterSmall": "./images/film-first/classic-smash-menu-320.webp",
-    "motionPoster": "./images/film-first/classic-smash-menu-640.webp"
+    "motionPosterSmall": "./images/food-recovered/classic-smash-menu-320.webp",
+    "motionPoster": "./images/food-recovered/classic-smash-menu-640.webp"
   },
   "chicken-burger-menu": {
     "poster": "./images/menu-unified/chicken-burger-menu-natural.webp",
     "posterSmall": "./images/menu-unified/chicken-burger-menu-natural-640.webp",
-    "video": "./films/brasca-motion/chicken-burger-menu.mp4",
+    "video": "./films/menu-unified/chicken-burger-menu-natural.mp4",
     "full": "./images/menu-unified/chicken-burger-menu-natural-640.webp",
-    "motionPosterSmall": "./images/film-first/chicken-burger-menu-320.webp",
-    "motionPoster": "./images/film-first/chicken-burger-menu-640.webp"
+    "motionPosterSmall": "./images/food-recovered/chicken-burger-menu-320.webp",
+    "motionPoster": "./images/food-recovered/chicken-burger-menu-640.webp"
   },
   "menu-birra": {
     "poster": "./images/menu-unified/menu-birra-natural.webp",
     "posterSmall": "./images/menu-unified/menu-birra-natural-640.webp",
-    "video": "./films/brasca-motion/menu-birra.mp4",
+    "video": "./films/menu-unified/menu-birra-natural.mp4",
     "full": "./images/menu-unified/menu-birra-natural-640.webp",
-    "motionPosterSmall": "./images/film-first/menu-birra-320.webp",
-    "motionPoster": "./images/film-first/menu-birra-640.webp"
+    "motionPosterSmall": "./images/food-recovered/menu-birra-320.webp",
+    "motionPoster": "./images/food-recovered/menu-birra-640.webp"
   },
   "classic-fries": {
     "poster": "./images/menu-unified/classic-fries.webp",
     "posterSmall": "./images/menu-unified/classic-fries-640.webp",
-    "video": "./films/fries-natural/classic-fries.mp4",
+    "video": "./films/food-recovered/classic-fries-v2.mp4",
     "full": "./images/menu-unified/classic-fries-640.webp",
-    "motionPosterSmall": "./images/film-first/classic-fries-320.webp",
-    "motionPoster": "./images/film-first/classic-fries-640.webp"
+    "motionPosterSmall": "./images/food-recovered/classic-fries-320.webp",
+    "motionPoster": "./images/food-recovered/classic-fries-640.webp"
   },
   "sweet-fries": {
     "poster": "./images/menu-unified/sweet-fries.webp",
     "posterSmall": "./images/menu-unified/sweet-fries-640.webp",
-    "video": "./films/fries-natural/sweet-fries.mp4",
+    "video": "./films/food-recovered/sweet-fries-v1.mp4",
     "full": "./images/menu-unified/sweet-fries-640.webp",
-    "motionPosterSmall": "./images/film-first/sweet-fries-320.webp",
-    "motionPoster": "./images/film-first/sweet-fries-640.webp"
+    "motionPosterSmall": "./images/food-recovered/sweet-fries-320.webp",
+    "motionPoster": "./images/food-recovered/sweet-fries-640.webp"
   },
   "nuggets-di-pollo": {
     "poster": "./images/menu-unified/nuggets-di-pollo.webp",
     "posterSmall": "./images/menu-unified/nuggets-di-pollo-640.webp",
-    "video": "./films/sides-fall/nuggets-di-pollo.mp4",
+    "video": "./films/food-recovered/nuggets-di-pollo-v1.mp4",
     "full": "./images/menu-unified/nuggets-di-pollo-640.webp",
-    "motionPosterSmall": "./images/film-first/nuggets-di-pollo-320.webp",
-    "motionPoster": "./images/film-first/nuggets-di-pollo-640.webp"
+    "motionPosterSmall": "./images/food-recovered/nuggets-di-pollo-320.webp",
+    "motionPoster": "./images/food-recovered/nuggets-di-pollo-640.webp"
   }
 }

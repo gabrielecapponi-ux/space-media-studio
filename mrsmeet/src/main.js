@@ -10,7 +10,7 @@ import { mountCart, formatCents, productUnitCents, GLOVO_URL, PICKUP_PHONE } fro
 import products from '../data/menu.json';
 import presentation from '../data/menu-presentation.json';
 import {productPhotoSources} from './product-media.js';
-import {mountAppetiteMotion} from './appetite-motion.js';
+import {mountAppetiteMotion, holdFoodFrame, clearFoodFrame} from './appetite-motion.js';
 import appetiteMedia from '../data/appetite-media.json';
 import {mountMenuBoard} from './menu-board.js';
 
@@ -31,7 +31,7 @@ const menuRoot = $('#menu');
 const catalog = new Map(products.map(product => [product.id, product]));
 let filmWanted = false, filmInView = false, filmLoaded = false, filmRequest = 0;
 let filmRatio = 0, filmVisited = false, filmVisitConsumed = false, filmHovered = false;
-let filmDwell = null, filmEndTimer = null, filmLoadTimer = null, filmFrameRequest = null;
+let filmDwell = null, filmEndTimer = null, filmLoadTimer = null, filmFrameRequest = null, filmHeldFrame = null;
 const filmTouch = matchMedia('(hover: none), (pointer: coarse)');
 const filmConnection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
 
@@ -52,7 +52,10 @@ function renderFilmButton() {
   filmButton.textContent = reduced.matches ? 'Foto del burger' : filmConnection?.saveData ? 'Foto · Risparmio dati'
     : running ? 'Ⅱ Ferma il video' : filmVisited ? '▷ Rivedi il burger' : '▷ Anima il burger';
 }
-function stopFilm(release = false) {
+function stopFilm(release = false, preserve = true) {
+  const keep = preserve && !disposed && !document.hidden && filmInView && !reduced.matches && !filmConnection?.saveData;
+  if (keep && stage?.classList.contains('has-video')) filmHeldFrame = holdFoodFrame(film, stage, filmHeldFrame, 'hero-film-frame');
+  if (!keep) filmHeldFrame = clearFoodFrame(filmHeldFrame);
   filmRequest++; filmWanted = false;
   if (filmFrameRequest != null) film?.cancelVideoFrameCallback?.(filmFrameRequest);
   filmFrameRequest = null;
@@ -136,7 +139,9 @@ function showFilmFrame() {
   if (!filmWanted || filmBlocked() || !filmInView) {stopFilm(); renderFilmButton(); return;}
   window.clearTimeout(filmLoadTimer); filmLoadTimer = null;
   stage?.classList.add('has-video');
-  if (filmEndTimer == null) filmEndTimer = window.setTimeout(finishFilm, 5000);
+  filmHeldFrame = clearFoodFrame(filmHeldFrame);
+  const remaining = Number.isFinite(film.duration) && film.duration > 0 ? Math.min(Math.max(0, film.duration-film.currentTime)*1000+250, 12000) : 5000;
+  if (filmEndTimer == null) filmEndTimer = window.setTimeout(finishFilm, remaining);
 }
 film?.addEventListener('playing', () => {
   if (!film.requestVideoFrameCallback) {showFilmFrame(); return;}
@@ -177,7 +182,7 @@ document.addEventListener('playing', event => {
   if (event.target !== film && event.target.matches?.('.appetite-motion-video')) {stopFilm(); renderFilmButton();}
 }, {capture:true,signal});
 document.addEventListener('visibilitychange', syncFilm, {signal});
-window.addEventListener('pagehide', () => stopFilm(true), {signal});
+window.addEventListener('pagehide', () => stopFilm(true, false), {signal});
 reduced.addEventListener('change', syncMotion, {signal});
 filmConnection?.addEventListener?.('change', syncFilm, {signal});
 filmTouch.addEventListener('change', syncFilm, {signal});
@@ -186,7 +191,7 @@ const filmObserver = film && stage && typeof IntersectionObserver === 'function'
   filmInView = filmRatio > 0;
   if (filmRatio < .3) {
     if (filmTouch.matches) filmVisitConsumed = false;
-    stopFilm();
+    stopFilm(false, filmRatio > 0);
   }
   syncFilm();
 }, {threshold:[0,.3,.55,1]}) : null;

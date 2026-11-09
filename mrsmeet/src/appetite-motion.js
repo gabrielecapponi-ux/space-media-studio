@@ -1,7 +1,27 @@
 // One decoder serves the current menu visit. Photos and links stay in the HTML.
+// A paused decoded frame keeps a visible product continuous when the decoder
+// moves to another card. The canvas is bounded and never drives animation.
+export function holdFoodFrame(video, host, previous = null, className = 'appetite-motion-frame') {
+  if (!video || !host || video.readyState < 2 || !video.videoWidth || !video.videoHeight) return previous;
+  const canvas = host.ownerDocument.createElement('canvas');
+  const width = Math.min(640, video.videoWidth);
+  canvas.width = width; canvas.height = Math.max(1, Math.round(width * video.videoHeight / video.videoWidth));
+  try {
+    const context = canvas.getContext('2d', {alpha:false});
+    if (!context) return previous;
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    canvas.className = className; canvas.setAttribute('aria-hidden', 'true');
+    clearFoodFrame(previous);
+    host.append(canvas);
+    return canvas;
+  } catch { return previous; }
+}
+export function clearFoodFrame(canvas) {
+  if (canvas) {canvas.remove(); canvas.width = canvas.height = 0;}
+  return null;
+}
 const PASS_MS = 5000;
 const LOAD_TIMEOUT_MS = 3200;
-const FADE_MS = 160;
 const STATE_ATTRIBUTES = ['data-appetite-motion','data-appetite-playing','data-appetite-holding','data-appetite-poster'];
 
 export function mountAppetiteMotion({root = globalThis.document, entries = {}, reducedMotion, paused = false} = {}) {
@@ -23,7 +43,6 @@ export function mountAppetiteMotion({root = globalThis.document, entries = {}, r
   syncStillPhotos();
   let active = null, owner = null, pending = null, readingCard = null, intent = 0, disposed = false;
   let visibilityObserver, distanceObserver, structureObserver, bodyObserver, scrollFrame = null;
-  const now = () => win.performance?.now?.() ?? Date.now();
   const prefersStatic = () => Boolean(typeof reduced === 'boolean' ? reduced : reduced?.matches) || connection?.saveData;
   const blocked = () => disposed || paused || prefersStatic() || doc.hidden || doc.body?.classList.contains('motion-paused') || Boolean(doc.querySelector('dialog[open]'));
   const hidden = state => !state.link.isConnected || Boolean(state.link.closest('[hidden],[inert]'));
@@ -71,15 +90,13 @@ export function mountAppetiteMotion({root = globalThis.document, entries = {}, r
     state.frameRequest = null;
     win.clearTimeout(state.endTimer); win.clearTimeout(state.loadTimer);
     state.endTimer = state.loadTimer = null;
-    if (state.startedAt !== null) state.spent += Math.max(0, now()-state.startedAt);
-    state.startedAt = null;
-    if (state.spent >= PASS_MS) state.finished = true;
     state.video?.pause();
   }
-  function release(state) {
-    win.clearTimeout(state.retireTimer);
-    state.retireTimer = state.retireAt = null;
+  function release(state, preserve = false) {
+    const keep = preserve && !disposed && !doc.hidden && !prefersStatic() && visible(state);
     const video = state.video;
+    if (keep && state.presented) state.frame = holdFoodFrame(video, state.link, state.frame);
+    if (!keep) state.frame = clearFoodFrame(state.frame);
     if (!video) return;
     stopClock(state);
     state.link.removeAttribute('data-appetite-playing');
@@ -92,21 +109,14 @@ export function mountAppetiteMotion({root = globalThis.document, entries = {}, r
     video.removeAttribute('src'); video.load(); video.remove();
     if (state.attempted) state.finished = true;
   }
-  function hide(state = owner, immediate = false) {
+  function hide(state = owner) {
     if (!state?.video) return;
-    stopClock(state); state.finished = true;
-    state.link.removeAttribute('data-appetite-playing');
-    state.link.removeAttribute('data-appetite-holding');
-    if (active === state) active = null;
-    if (immediate || disposed || doc.hidden || prefersStatic() || !state.presented) release(state);
-    else if (state.retireTimer === null) {
-      state.retireAt = now()+FADE_MS;
-      state.retireTimer = win.setTimeout(() => release(state),FADE_MS);
-    }
+    state.finished = true;
+    release(state, true);
   }
   function restartVisit(state) {
-    release(state);
-    state.finished = false; state.spent = 0; state.attempted = false;
+    release(state, true);
+    state.finished = false; state.attempted = false;
   }
   function recordIntent(state) {
     if (state.finished || (state.attempted && active !== state)) restartVisit(state);
@@ -133,7 +143,7 @@ export function mountAppetiteMotion({root = globalThis.document, entries = {}, r
       return 2*state.ratio-Math.abs(box.top+box.height*.5-win.innerHeight*.48)/Math.max(1,win.innerHeight);
     };
     const best = available.filter(state => state.ratio >= .55).sort((a,b) => score(b)-score(a))[0];
-    if (active && active.ratio >= .30 && !hidden(active) && (!best || score(best)<score(active)+.15)) return active;
+    if (active && active.ratio >= .30 && !hidden(active) && (!best || score(best)<score(active)+.06)) return active;
     return best || null;
   }
   function finish(state, failed = false) {
@@ -141,23 +151,25 @@ export function mountAppetiteMotion({root = globalThis.document, entries = {}, r
     if (!failed && state === active && state.presented && !blocked() && visible(state) && candidate() === state) {
       stopClock(state);
       state.link.setAttribute('data-appetite-holding','true');
-    } else hide(state,failed);
+    } else hide(state);
   }
   function onPlaying(state, video) {
     if (disposed || active !== state || state.video !== video || state.finished || blocked() || hidden(state)) {
       video.pause(); return;
     }
     win.clearTimeout(state.loadTimer); state.loadTimer = null;
-    state.startedAt ??= now(); state.presented = true;
+    state.presented = true;
+    state.frame = clearFoodFrame(state.frame);
     state.link.setAttribute('data-appetite-playing','true');
     win.clearTimeout(state.endTimer);
-    const remaining = PASS_MS-state.spent-Math.max(0,now()-state.startedAt);
+    const remaining = Number.isFinite(video.duration) && video.duration > 0
+      ? Math.min(Math.max(0, video.duration-video.currentTime)*1000+250, 12000) : PASS_MS;
     if (remaining <= 0) finish(state);
     else state.endTimer = win.setTimeout(() => finish(state),remaining);
   }
   function start(state) {
     if (blocked() || state.finished || candidate() !== state || !visible(state)) return;
-    if (owner) release(owner);
+    if (owner) release(owner, true);
     const video = doc.createElement('video');
     video.className = 'appetite-motion-video'; video.preload = 'none';
     video.muted = video.defaultMuted = video.playsInline = true;
@@ -197,18 +209,18 @@ export function mountAppetiteMotion({root = globalThis.document, entries = {}, r
   }
   function reconcile() {
     if (disposed) return;
-    if (blocked()) {cancelDwell(); hide(); return;}
+    if (blocked()) {cancelDwell(); hide(); if (prefersStatic() || doc.hidden) cards.forEach(state => release(state)); return;}
+    for (const item of cards.values()) if (item.frame && hidden(item)) item.frame = clearFoodFrame(item.frame);
     const state = candidate();
     if (owner && owner !== state) hide(owner);
     if (!state || state.finished) {cancelDwell(); return;}
     if (active === state || pending?.state === state) return;
     cancelDwell();
     const dwell = touch?.matches && !state.focused ? 320 : 140;
-    const wait = Math.max(dwell, owner?.retireAt == null ? 0 : owner.retireAt-now());
     pending = {state,timer:win.setTimeout(() => {
       pending = null;
       if (!blocked() && candidate() === state && !state.finished) start(state);
-    },wait)};
+    },dwell)};
   }
   function attachPoster(state, entry, small, article) {
     const poster = doc.createElement('img');
@@ -239,9 +251,9 @@ export function mountAppetiteMotion({root = globalThis.document, entries = {}, r
     const small = mediaURL(entry.posterSmall), posterURL = mediaURL(entry.poster) || small, videoURL = mediaURL(entry.video);
     if (!posterURL && !videoURL) continue;
     const image = link.querySelector('img'), originalURL = mediaURL(image?.currentSrc || image?.getAttribute('src')) || '';
-    const state = {link,image,originalURL,posterURL,videoURL,poster:null,video:null,posterFailed:false,hovered:false,focused:false,
-      intent:0,ratio:0,viewportArmed:true,rect:null,spent:0,startedAt:null,finished:false,attempted:false,token:0,presented:false,
-      endTimer:null,loadTimer:null,retireTimer:null,retireAt:null,mediaCleanups:[],attributes:STATE_ATTRIBUTES.map(name => [name,link.getAttribute(name)])};
+    const state = {link,image,originalURL,posterURL,videoURL,poster:null,video:null,frame:null,posterFailed:false,hovered:false,focused:false,
+      intent:0,ratio:0,viewportArmed:true,rect:null,finished:false,attempted:false,token:0,presented:false,
+      endTimer:null,loadTimer:null,mediaCleanups:[],attributes:STATE_ATTRIBUTES.map(name => [name,link.getAttribute(name)])};
     cards.set(link,state); ids.add(id); link.setAttribute('data-appetite-motion','');
     if (posterURL && posterURL !== originalURL && !image?.hasAttribute('data-appetite-still')) attachPoster(state,entry,small,article);
     listen(link,'pointerenter',event => {
@@ -270,6 +282,7 @@ export function mountAppetiteMotion({root = globalThis.document, entries = {}, r
           }
         }
         state.ratio = ratio; state.rect = entry.boundingClientRect || state.link.getBoundingClientRect();
+        if (ratio === 0) release(state);
       }
       reconcile();
     },{threshold:[0,.30,.55,.8,1]});
@@ -287,15 +300,15 @@ export function mountAppetiteMotion({root = globalThis.document, entries = {}, r
   }
   const onPreference = () => {
     syncStillPhotos();
-    if (prefersStatic()) {cancelDwell(); cards.forEach(release);}
+    if (prefersStatic()) {cancelDwell(); cards.forEach(state => release(state));}
     reconcile();
   };
   watchPreference(reduced,onPreference); watchPreference(touch,reconcile);
   listen(connection,'change',onPreference);
-  listen(doc,'smeet:food-claim',event => {if (event.detail?.id === 'hero-film') {cancelDwell(); hide(owner,true);}});
-  listen(doc,'playing',event => {if (event.target?.id === 'hero-film') {cancelDwell(); hide(owner,true);}},true);
+  listen(doc,'smeet:food-claim',event => {if (event.detail?.id === 'hero-film') {cancelDwell(); hide(owner);}});
+  listen(doc,'playing',event => {if (event.target?.id === 'hero-film') {cancelDwell(); hide(owner);}},true);
   listen(doc,'visibilitychange',reconcile);
-  listen(win,'pagehide',() => {cancelDwell(); cards.forEach(release);});
+  listen(win,'pagehide',() => {cancelDwell(); cards.forEach(state => release(state));});
   listen(win,'pageshow',reconcile);
   // Compact phone rows can all remain 100% visible. Crossing the reading
   // position still hands playback to the next card without an IO threshold.
