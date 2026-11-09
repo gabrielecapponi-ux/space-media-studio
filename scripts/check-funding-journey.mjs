@@ -2,7 +2,8 @@ import { readFile } from 'node:fs/promises';
 import vm from 'node:vm';
 import assert from 'node:assert/strict';
 
-const source = (await readFile(new URL('../src/funding-journey.js', import.meta.url), 'utf8')).replaceAll('export function', 'function');
+const source = (await readFile(process.env.FUNDING_SOURCE || new URL('../src/funding-journey.js', import.meta.url), 'utf8')).replaceAll('export function', 'function');
+let writes = { style: 0, attribute: 0, dataset: 0 };
 class Events {
   constructor() { this.listeners = new Map(); }
   addEventListener(type, fn, { signal } = {}) {
@@ -16,18 +17,19 @@ class Events {
 }
 class Element extends Events {
   constructor() {
-    super(); this.dataset = {}; this.attrs = {}; this.hidden = true; this.textContent = '';
-    this.style = { setProperty(name, value) { this[name] = value; } };
+    super(); this.dataset = new Proxy({}, { set(target, key, value) { writes.dataset++; target[key] = value; return true; } }); this.attrs = {}; this.hidden = true; this.textContent = '';
+    this.style = new Proxy({ setProperty(name, value) { this[name] = value; } }, { set(target, key, value) { writes.style++; target[key] = value; return true; } });
     this.classList = { values: new Set(), contains(name) { return this.values.has(name); } };
   }
-  setAttribute(name, value) { this.attrs[name] = value; }
+  setAttribute(name, value) { writes.attribute++; this.attrs[name] = value; }
   contains(node) { return node === this || node?.parent === this; }
   closest() { return null; }
 }
 function fixture({ reduced = false, saveData = false } = {}) {
   let now = 0, id = 0; const frames = new Map();
   const root = new Element(), button = new Element(), replay = new Element(), symbol = new Element();
-  const heading = new Element(), step = new Element(), canvas = new Element(), camera = new Element();
+  const heading = new Element(), step = new Element(), canvas = new Element(), camera = new Element(), ink = new Element();
+  const scenes = Array.from({ length: 4 }, () => new Element()), guides = Array.from({ length: 4 }, () => new Element()), links = Array.from({ length: 3 }, () => new Element());
   const rail = Array.from({ length: 4 }, () => new Element());
   const html = new Element(), doc = new Events(), win = new Events(), menu = new Events();
   menu.open = false; doc.hidden = false; doc.documentElement = html;
@@ -44,7 +46,10 @@ function fixture({ reduced = false, saveData = false } = {}) {
       const node = new Element(); node.dataset.draw = value; return node;
     });
   } });
-  canvas.querySelector = () => ({ querySelector: () => camera, querySelectorAll: () => paths });
+  canvas.querySelector = () => ({
+    querySelector: selector => selector === '[data-journey-ink]' ? ink : camera,
+    querySelectorAll: selector => selector === '[data-journey-scene]' ? scenes : selector === '[data-journey-guide]' ? guides : selector === '[data-journey-link]' ? links : paths,
+  });
   const pref = new Events(), portrait = new Events(), connection = new Events();
   pref.matches = reduced; portrait.matches = false; connection.saveData = saveData;
   let intersection, mutation, disconnected = 0;
@@ -60,7 +65,8 @@ function fixture({ reduced = false, saveData = false } = {}) {
     now += Math.min(left, 16); const queue = [...frames.values()]; frames.clear(); queue.forEach(fn => fn(now));
   } }
   const enter = ratio => intersection([{ isIntersecting: ratio > 0, intersectionRatio: ratio }]);
-  return { root, button, replay, heading, rail, camera, canvas, pref, portrait, connection, doc, win,
+  return { root, button, replay, heading, rail, camera, ink, scenes, guides, links, canvas, pref, portrait, connection, doc, win,
+    writeCounts: () => ({ ...writes }), resetWrites: () => { writes = { style: 0, attribute: 0, dataset: 0 }; },
     menu, html, api, controller, advance, enter, mutate: () => mutation(), paths: () => paths,
     frameCount: () => frames.size, time: () => Number(root.dataset.journeyTime), disconnected: () => disconnected };
 }
@@ -128,5 +134,41 @@ test('BFCache suspension resumes and abort releases observers and frame work exa
   assert.equal(f.frameCount(), 0); f.win.emit('pageshow'); assert.equal(f.frameCount(), 1);
   f.controller.abort(); assert.equal(f.frameCount(), 0); assert.equal(f.disconnected(), 2);
   f.api.dispose(); assert.equal(f.disconnected(), 2); f.button.emit('click'); assert.equal(f.frameCount(), 0);
+});
+test('Incoming scene is drawn before its title and outgoing scenes leave the close-up', () => {
+  const f = fixture(); f.enter(.8); f.advance(4220);
+  assert.equal(f.root.dataset.journeyPhaseIndex, '1');
+  assert.equal(f.scenes[0].attrs.opacity, '0');
+  assert.ok(Number(f.scenes[1].attrs.opacity) > .95);
+  const head = f.paths().find(path => path.dataset.draw.startsWith('3.25,'));
+  assert.ok(Number(head.style.strokeDashoffset) < .05);
+  f.advance(11300);
+  assert.equal(f.scenes[1].attrs.opacity, '0');
+  assert.equal(f.scenes[3].attrs.opacity, '1');
+  assert.ok(f.links.every(link => link.attrs.opacity === '0'), 'No connector leftovers in the building close-up');
+  f.advance(4000);
+  assert.ok(f.links.every(link => link.attrs.opacity === '1'), 'Connectors restore the complete overview');
+  f.api.dispose();
+});
+test('Loop returns to the same camera without fading the construction guides', () => {
+  const f = fixture(); f.enter(.8); const start = f.camera.attrs.transform;
+  f.advance(21600);
+  assert.equal(f.root.dataset.journeyPhaseIndex, '0');
+  assert.ok(f.rail.every(item => item.style['--journey-progress'] === '0'), 'The returning idea resets the phase rails together');
+  f.advance(400);
+  const a = f.camera.attrs.transform.match(/-?[0-9.]+/g).map(Number), b = start.match(/-?[0-9.]+/g).map(Number);
+  assert.ok(a.every((value, i) => Math.abs(value - b[i]) < .01), 'Camera closes its 22 second loop');
+  assert.equal(f.guides[0].attrs.opacity, '1');
+  assert.equal(f.camera.attrs.opacity, undefined);
+  f.advance(96); assert.ok(Number(f.paths()[0].style.strokeDashoffset) < 1);
+  assert.equal(f.ink.attrs.opacity, '1');
+  f.api.dispose();
+});
+test('Held frames and completed strokes do not repeatedly write the same DOM values', () => {
+  const f = fixture(); f.enter(.8); f.resetWrites(); f.advance(22000);
+  const counts = f.writeCounts(), total = Object.values(counts).reduce((a, b) => a + b, 0);
+  assert.ok(total < 14000, `Unexpected DOM writes per cycle: ${total}`);
+  console.log(JSON.stringify({ simulatedMs: 22000, cadenceMs: 16, paths: f.paths().length, writes: counts, total }));
+  f.api.dispose();
 });
 console.log(JSON.stringify({ groups, browser: false, remoteRequests: false }));

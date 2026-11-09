@@ -1,6 +1,8 @@
-/** Original Space line film. SVG geometry and motion are authored here; no stock assets. */
+/** Original Space line film. Geometry, drawing order and camera are the editable master. */
 const DURATION = 22;
 const NS = 'http://www.w3.org/2000/svg';
+const SCENE_STARTS = [0, 3.1, 7.1, 11.1];
+const SCENE_ENDS = [3.1, 7.1, 11.1, 16.65];
 const clamp = value => Math.max(0, Math.min(1, value));
 const ease = value => { const t = clamp(value); return t * t * t * (10 + t * (-15 + 6 * t)); };
 const phases = [
@@ -10,68 +12,95 @@ const phases = [
   { start: 12, title: 'Per farla diventare reale.', key: '04 / Il progetto' },
 ];
 
-// Each path has its own drawing order: the line becomes a recognisable scene,
-// rather than revealing a complete icon with an opacity crossfade.
+// [path, start seconds, duration seconds, stroke width]. Fine strokes describe
+// materials and perspective; the stronger contours carry the story on a phone.
+// Incoming subjects begin before the camera arrives, so a title never meets an
+// empty stage. These are original drawings, not a collection of stock icons.
 const scenes = [
   [
-    ['M-48 59C-48 20-89 11-89-49C-89-105-49-143 0-143C50-143 89-105 89-49C89 11 48 20 48 59', .35, 1.45],
-    ['M-47 59H47V77H-47V59M-44 89H44M-36 102H36M-21 114Q0 130 21 114', 1.35, .65],
-    ['M-22 57V-12C-22-35-53-44-53-20C-53 7-10 9 0-8C10 9 53 7 53-20C53-44 22-35 22-12V57', 1.9, .75],
-    ['M-122-96L-140-111M-64-165L-71-188M0-179V-203M64-165L71-188M122-96L140-111', 2.4, .5],
-    ['M-127 122C-112 132-97 133-76 133M76 133C97 133 112 132 127 122', 2.8, .45],
+    // A glass bulb, its inner filament and machined socket.
+    ['M-43 65C-44 24-91 10-91-52C-91-105-51-145 0-145C51-145 91-105 91-52C91 10 44 24 43 65', 0, 1.3, 2.8],
+    ['M-44 65H44L38 106L20 118H-20L-38 106L-44 65M-20 118Q0 134 20 118', .75, .8, 2.4],
+    ['M-57-94C-71-80-77-59-72-39M-43-106L-37-109M57-94C68-82 74-67 74-53', 1.05, .65, 1.35],
+    ['M-24 65L-29-12C-33-41-56-42-56-22C-56-4-34 2-17-10L0-27L17-10C34 2 56-4 56-22C56-42 33-41 29-12L24 65', 1.45, .8, 1.8],
+    ['M-27 29H27M-42 79L42 71M-40 91L40 83M-38 103L38 95M-25 115L33 107', 2.05, .55, 1.2],
+    ['M-127-87L-146-96M-79-148L-91-167M0-174V-196M79-148L91-167M127-87L146-96', 2.3, .6, 1.65],
+    ['M-145 139H-60C-37 139-31 131-24 128M24 128C31 131 37 139 60 139H145M-47 151H47', 2.65, .55, 1.35],
   ],
   [
-    ['M-172 90H172M-145 91V133M145 91V133', 4.05, .65],
-    ['M-152-21C-164-53-156-96-127-107C-100-117-71-100-75-72L-65-54L-77-50V-37C-77-19-96-11-112-16M-145-82Q-119-72-78-80M-143-20L-152 2', 4.5, .9],
-    ['M-152 2C-174 25-164 68-155 90M-110-9L-105 14L-61 38L-18 61M-151 22L-119 57L-64 69L-22 69M-74 46L-88 82', 5.15, .75],
-    ['M152-21C164-53 156-96 127-107C100-117 71-100 75-72L65-54L77-50V-37C77-19 96-11 112-16M77-81Q112-115 149-75M143-20L152 2', 5.6, .8],
-    ['M152 2C174 25 164 68 155 90M110-9L105 14L61 38L18 61M151 22L119 57L64 69L22 69M74 46L88 82', 6.1, .7],
-    ['M-63 78L-42 33H39L63 78H-63M-38 39L-20 77M39 39L20 77M-13 62Q-7 54-1 61Q5 68 11 59M-6 46L-28 10M6 46L28 10', 6.6, .8],
-    ['M-43-132C-21-156 20-156 43-132M-23-132L0-111L23-132', 7.2, .45],
+    // Two distinct collaborators, their hands meeting over the same plan.
+    ['M-175 86L135 86L173 103H-139L-175 86M-139 103V146M140 103V146M-165 91V134', 3.05, .85, 2.4],
+    ['M-144-59C-157-69-159-97-147-118C-136-139-103-145-85-124C-73-112-74-95-71-86L-60-70L-73-66V-51C-74-33-95-29-113-38L-116-16M-143-61L-145-26', 3.25, .9, 2.6],
+    ['M-148-91C-138-84-121-89-113-102C-105-89-88-85-74-91M-145-79C-159-86-159-65-146-62M-90-75H-88M-78-53L-91-51', 4.1, .75, 1.4],
+    ['M-145-26L-165-8C-178 7-174 43-161 77M-115-16L-97-7L-80 24L-41 44M-145-9L-122 20L-89 47L-43 59M-158 47L-150 81M-121 34L-112 81', 3.55, .85, 2.4],
+    ['M-41 44L-28 43L-14 49L-18 54L-30 50L-38 53L-28 58L-30 63L-43 59M-123-6L-111 8L-99-5M-154 105L-148 144M-108 104L-112 144', 4.8, .7, 1.6],
+    ['M79-88C59-119 79-145 108-145C143-148 161-126 154-103C166-85 156-51 145-40L146-17M95-37L95-22M81-105C99-103 111-119 114-127C123-108 139-102 151-101', 3.3, .95, 2.6],
+    ['M79-88L70-72L82-68V-54C83-36 103-30 117-39M140-82C153-90 157-69 142-65M92-79H94M85-54L99-52M127-126C140-123 148-114 146-103', 4.6, .7, 1.4],
+    ['M95-22L77-9L61 19L31 42M146-17L164 1C179 20 174 59 161 83M140-2L117 34L84 56L42 62M141 42L130 82M105 44L97 82M111-22L123-6L140-15', 3.7, .85, 2.4],
+    ['M31 42L19 43L8 54L12 58L23 50L33 52L24 59L29 64L42 62M19 46L6 18L11 16L25 44M125 105L122 145M165 106L170 144', 5.2, .7, 1.6],
+    ['M-67 78L-47 59H37L65 78H-67M-33 63H2M-42 70H-4M17 64L30 70L21 75L8 69L17 64M-95 73H-78M77 72H93', 5.45, .8, 1.35],
+    ['M-38-111Q0-131 38-111M28-121L38-111L27-104M-26-102L-37-111L-26-118', 7, .55, 1.3],
   ],
   [
-    ['M-120 15V112H120V15M-120 15L0 88L120 15M-119 110L-40 63M119 110L40 63', 8.05, .8],
-    ['M-81 36V-124H48L81-91V36M48-124V-91H81', 8.65, .8],
-    ['M-50-74H43M-50-52H24M-50-30H43M-50-8H7', 9.35, .8],
-    ['M-21 15L-5 31L26 0', 10.1, .45],
-    ['M-153-87C-156-143-102-180-52-179M122-127C167-104 179-58 164-13', 10.55, .55],
-    ['M122-127L127-104M122-127L145-133M164-13L148-31M164-13L184-26', 11.1, .45],
-    ['M-76 136H76', 11.5, .25],
+    // A structured application: layered dossier, section lines and budget rows.
+    ['M-113-113H-89M-113-113V126H78V108M-100-122H-78M-100-122V114H88V99', 7.05, .75, 1.65],
+    ['M-81-138H46L98-86V100H-81V-138M46-138V-86H98', 7.3, 1.05, 2.7],
+    ['M-53-108H15M-53-95H-6M-53-68H67M-53-55H46', 8.1, .65, 1.45],
+    ['M-53-29H-39V-15H-53V-29M-49-23L-46-20L-42-25M-26-26H65M-26-17H40', 8.7, .65, 1.4],
+    ['M-53 2H-39V16H-53V2M-49 8L-46 11L-42 6M-26 5H65M-26 14H51', 9.25, .65, 1.4],
+    ['M-53 37H25M-53 49H21M-53 61H7M-53 73H15M-10 37V73', 9.75, .65, 1.3],
+    ['M101 39C121 39 136 54 136 74C136 94 121 109 101 109C81 109 66 94 66 74C66 54 81 39 101 39M84 75L96 86L118 62', 10.05, .9, 2.1],
+    ['M125-49L155-79L164-70L134-40L122-37L125-49M153-77L161-70M126-48L133-41M129-52L150-73', 10.55, .65, 1.5],
+    ['M-163-39C-165-84-144-121-128-135M-139-133L-128-135L-128-123M126 127H159M-143 145H120', 11, .6, 1.3],
   ],
   [
-    ['M-176 129H176', 12.15, .5],
-    ['M-112 127V-49L0-111L112-49V127M-112-49H112M-125-43L0-130L125-43', 12.6, 1.05],
-    ['M-22 127V51H22V127M-77-23H-42V14H-77V-23M42-23H77V14H42V-23M-77 51H-42V88H-77V51M42 51H77V88H42V51', 13.5, 1.1],
-    ['M-23-53Q0-80 23-53Q0-29-23-53M0-67V-39', 14.2, .6],
-    ['M-150 125V36M-150 79C-191 69-192 43-167 33C-191 7-164-16-150-3C-132-21-105 9-128 29C-103 49-121 73-150 79', 14.75, .7],
-    ['M131 129L134 96Q143 82 151 96L155 129M136 77A9 9 0 1 1 154 77A9 9 0 1 1 136 77M129 104L111 112M158 103L174 93', 15.2, .65],
-    ['M-55 128Q-61 109-51 97Q-44 90-36 98L-29 128M-54 81A9 9 0 1 1-36 81A9 9 0 1 1-54 81M-58 104L-72 96', 15.75, .65],
-    ['M-35-165L-19-181M0-177V-201M35-165L51-181', 16.2, .45],
+    // A civic building in perspective: an idea becomes a shared, inhabited place.
+    ['M-181 143H181M-122 128L33 148L146 117M-122 119L33 139L146 108', 11.05, .75, 1.45],
+    ['M-114 117V-56L26-105L26 136M26-105L131-63V112M-114-56L-123-64L25-119L142-72L131-63M-114-45L26-92L131-51', 11.3, 1, 2.6],
+    ['M-121-64V-78L25-133L142-86V-72M-105-81L25-128L127-88', 12.05, .75, 1.4],
+    ['M-96-34L-72-42V-6L-96 2V-34M-54-48L-30-56V-20L-54-12V-48M-12-62L11-70V-34L-12-26V-62M-84-38V-2M-42-52V-16M0-66V-30', 12.55, .95, 1.65],
+    ['M45-77L68-68V-32L45-41V-77M88-60L112-51V-15L88-24V-60M56-73V-37M100-56V-20', 13.05, .8, 1.65],
+    ['M-96 25L-72 17V56L-96 63V25M-54 11L-30 3V42L-54 50V11M-96 38L-72 30M-54 24L-30 16M45-15L68-6V29L45 20V-15M88 2L112 11V47L88 38V2', 13.5, .95, 1.55],
+    ['M-17 130V44C-17 25 11 16 11 35V134M-3 32V132M1 79V88M43 134V64L68 73V126M55 69V130M84 119V80L112 91V112', 14.1, .8, 1.9],
+    ['M-165 135V49M-165 86C-187 83-196 68-185 55C-202 37-187 11-169 20C-157 0-133 11-135 29C-113 33-116 59-134 63C-129 80-146 89-165 86M-165 68L-178 55M-165 62L-149 43', 14.55, .9, 1.75],
+    ['M151 112L154 83Q160 75 168 83L172 108M157 68A7 7 0 1 1 171 68A7 7 0 1 1 157 68M154 88L141 97M168 90L179 82M158 113L156 132M167 110L172 129', 15, .85, 1.9],
+    ['M-64 125L-61 98Q-55 90-48 98L-44 126M-59 83A7 7 0 1 1-45 83A7 7 0 1 1-59 83M-61 103L-73 111M-47 104L-35 96M-59 127L-62 140M-49 127L-44 142', 15.35, .85, 1.8],
+    ['M-93 92L-80 88M-78 100L-65 96M55-150V-168M70-141L83-154M34-148L24-160', 15.8, .7, 1.25],
   ],
 ];
 
 function layout(portrait) {
   return portrait
-    ? { width: 800, height: 1000, points: [[220, 370], [580, 370], [220, 700], [580, 700]], zoom: 1.95, sceneScale: .85 }
-    : { width: 1600, height: 900, points: [[230, 470], [610, 470], [990, 470], [1370, 470]], zoom: 2, sceneScale: 1 };
+    ? { width: 800, height: 1000, points: [[220, 370], [580, 370], [220, 690], [580, 690]], zoom: 1.9, sceneScale: .85, focusY: 580 }
+    : { width: 1600, height: 900, points: [[230, 470], [610, 470], [990, 470], [1370, 470]], zoom: 2, sceneScale: 1, focusY: 522 };
 }
 function connector(a, b, vertical, scale) {
-  if (vertical) return `M${a[0] + 130 * scale} ${a[1] + 133 * scale}C770 ${a[1] + 133 * scale} 775 500 700 500H120Q20 500 20 600V720Q20 ${b[1] + 90 * scale} ${b[0] - 172 * scale} ${b[1] + 90 * scale}`;
-  return `M${a[0] + 127 * scale} ${a[1] + 133 * scale}C${a[0] + 190 * scale} ${a[1] + 133 * scale} ${b[0] - 210 * scale} ${b[1] + 90 * scale} ${b[0] - 172 * scale} ${b[1] + 90 * scale}`;
+  if (vertical) return `M${a[0] + 173 * scale} ${a[1] + 103 * scale}C780 ${a[1] + 103 * scale} 780 535 695 535H126Q33 535 33 612V764Q33 ${b[1] + 145 * scale} ${b[0] - 143 * scale} ${b[1] + 145 * scale}`;
+  return `M${a[0] + 145 * scale} ${a[1] + 139 * scale}C${a[0] + 195 * scale} ${a[1] + 139 * scale} ${b[0] - 210 * scale} ${b[1] + 143 * scale} ${b[0] - 175 * scale} ${b[1] + 143 * scale}`;
 }
 export function fundingJourneySvg(portrait = false, poster = false) {
   const l = layout(portrait);
   let markup = `<svg xmlns="${NS}" viewBox="0 0 ${l.width} ${l.height}" width="${l.width}" height="${l.height}" fill="none" stroke="#101110" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect width="100%" height="100%" fill="#dfff00" stroke="none"/><g data-journey-camera>`;
-  for (let i = 0; i < scenes.length; i++) {
-    const point = l.points[i];
-    markup += `<g data-journey-scene="${i}" transform="translate(${point.join(' ')}) scale(${l.sceneScale})">`;
-    scenes[i].forEach(([d, start, duration]) => {
-      markup += `<path d="${d}" pathLength="1" data-draw="${start},${duration}"/>`;
+  // Four quiet construction outlines keep the camera's route legible during
+  // drawing and the continuous return. The finished ink has the full detail.
+  if (!poster) {
+    markup += '<g data-journey-guides opacity=".13" stroke-width="1.15">';
+    scenes.forEach((scene, i) => {
+      const contour = i === 1 ? [scene[0], scene[1], scene[5]] : i === 2 ? [scene[1]] : i === 3 ? [scene[1]] : [scene[0], scene[1]];
+      markup += `<path data-journey-guide="${i}" transform="translate(${l.points[i].join(' ')}) scale(${l.sceneScale})" d="${contour.map(path => path[0]).join('')}"/>`;
     });
     markup += '</g>';
-    if (i < scenes.length - 1) markup += `<path d="${connector(point, l.points[i + 1], portrait && i === 1, l.sceneScale)}" data-journey-connector="${i}" pathLength="1" data-draw="${3.35 + i * 4},1.05" stroke-width="1.5"/>`;
   }
-  markup += '</g></svg>';
+  markup += '<g data-journey-ink>';
+  for (let i = 0; i < scenes.length; i++) {
+    markup += `<g data-journey-scene="${i}" transform="translate(${l.points[i].join(' ')}) scale(${l.sceneScale})">`;
+    scenes[i].forEach(([d, start, duration, width]) => {
+      markup += `<path d="${d}" stroke-width="${width}" pathLength="1" data-draw="${start},${duration}"/>`;
+    });
+    markup += '</g>';
+    if (i < scenes.length - 1) markup += `<g data-journey-link="${i}"><path d="${connector(l.points[i], l.points[i + 1], portrait && i === 1, l.sceneScale)}" data-journey-connector="${i}" pathLength="1" data-draw="${2.8 + i * 4},1.4" stroke-width="1.2"/></g>`;
+  }
+  markup += `</g></g><rect width="100%" height="${portrait ? 180 : 150}" fill="#dfff00" stroke="none"/><rect y="${portrait ? 855 : 820}" width="100%" height="${portrait ? 145 : 80}" fill="#dfff00" stroke="none"/></svg>`;
   if (poster) markup = markup.replaceAll(/ data-[a-z-]+(?:="[^"]*")?/g, '');
   return markup;
 }
@@ -79,18 +108,19 @@ export function fundingJourneySvg(portrait = false, poster = false) {
 function cameraAt(time, l) {
   const centres = l.points;
   const frames = [
-    [0, ...centres[0], l.zoom], [3.15, ...centres[0], l.zoom],
-    [4.55, ...centres[1], l.zoom], [7.15, ...centres[1], l.zoom],
-    [8.55, ...centres[2], l.zoom], [11.15, ...centres[2], l.zoom],
-    [12.55, ...centres[3], l.zoom], [16.65, ...centres[3], l.zoom],
-    [18.5, l.width / 2, l.height / 2, 1], [DURATION, l.width / 2, l.height / 2, 1],
+    [0, ...centres[0], l.zoom, l.focusY], [3.1, ...centres[0], l.zoom, l.focusY],
+    [4.4, ...centres[1], l.zoom, l.focusY], [7.1, ...centres[1], l.zoom, l.focusY],
+    [8.4, ...centres[2], l.zoom, l.focusY], [11.1, ...centres[2], l.zoom, l.focusY],
+    [12.4, ...centres[3], l.zoom, l.focusY], [16.65, ...centres[3], l.zoom, l.focusY],
+    [18.5, l.width / 2, l.height / 2, 1, l.height / 2],
+    [20.2, l.width / 2, l.height / 2, 1, l.height / 2],
+    [DURATION, ...centres[0], l.zoom, l.focusY],
   ];
   let i = 0;
   while (i < frames.length - 2 && time > frames[i + 1][0]) i++;
   const a = frames[i], b = frames[i + 1], p = ease((time - a[0]) / (b[0] - a[0]));
-  const x = a[1] + (b[1] - a[1]) * p, y = a[2] + (b[2] - a[2]) * p, z = a[3] + (b[3] - a[3]) * p;
-  const screenY = l.height * (.58 - .08 * ease((time - 16.65) / 1.85));
-  return `translate(${l.width / 2} ${screenY}) scale(${z}) translate(${-x} ${-y})`;
+  const value = index => Number((a[index] + (b[index] - a[index]) * p).toFixed(3));
+  return `translate(${l.width / 2} ${value(4)}) scale(${value(3)}) translate(${-value(1)} ${-value(2)})`;
 }
 
 export function installFundingJourney({ signal, menu } = {}) {
@@ -107,7 +137,9 @@ export function installFundingJourney({ signal, menu } = {}) {
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const portrait = matchMedia('(max-width: 760px) and (orientation: portrait)');
   const connection = navigator.connection;
-  let svg, camera, paths, l, frame = 0, time = 0, previous = 0;
+  let svg, camera, ink, paths, sceneNodes, guides, links, l, frame = 0, time = 0, previous = 0;
+  let cameraValue, inkValue, clockValue, playingValue;
+  const railValues = [];
   let visible = false, userPaused = false, manual = false, disposed = false, suspended = false, phase = -1;
   const automatic = () => !reduced.matches && !connection?.saveData;
   const pageReady = () => !document.hidden && !suspended && !menu?.open
@@ -119,20 +151,49 @@ export function installFundingJourney({ signal, menu } = {}) {
     const playing = !!frame;
     button.hidden = false;
     if (replay) replay.hidden = false;
-    root.dataset.journeyPlaying = String(playing);
-    button.setAttribute('aria-pressed', String(playing));
-    button.setAttribute('aria-label', `${playing ? 'Metti in pausa' : 'Riproduci'} il percorso dall’idea al progetto`);
+    if (playing !== playingValue) {
+      root.dataset.journeyPlaying = String(playing);
+      button.setAttribute('aria-pressed', String(playing));
+      button.setAttribute('aria-label', `${playing ? 'Metti in pausa' : 'Riproduci'} il percorso dall’idea al progetto`);
+      playingValue = playing;
+    }
   }
   function paint(at, staticFrame = false) {
-    const fade = staticFrame ? 1 : 1 - ease((at - 21.1) / .9);
-    camera.setAttribute('opacity', fade.toFixed(4));
-    camera.setAttribute('transform', staticFrame ? '' : cameraAt(at, l));
-    paths.forEach(({ element, start, duration }) => {
-      const amount = staticFrame ? 1 : ease((at - start) / duration);
-      element.style.strokeDashoffset = String(1 - amount);
-      element.style.opacity = amount > 0 ? '1' : '0';
+    // Avoid repeated SVG/style invalidation for the many held frames and paths
+    // that are still waiting or already complete. Geometry quality is unchanged.
+    const transform = staticFrame ? '' : cameraAt(at, l);
+    if (transform !== cameraValue) { camera.setAttribute('transform', transform); cameraValue = transform; }
+    const opacity = staticFrame ? '1' : String(Number((1 - ease((at - 20.2) / 1.35)).toFixed(4)));
+    if (opacity !== inkValue) { ink.setAttribute('opacity', opacity); inkValue = opacity; }
+    paths.forEach(path => {
+      const amount = staticFrame ? 1 : ease((at - path.start) / path.duration);
+      const offset = String(Number((1 - amount).toFixed(4)));
+      if (offset !== path.offset) { path.element.style.strokeDashoffset = offset; path.offset = offset; }
+      const visibility = amount > 0 ? '1' : '0';
+      if (visibility !== path.visibility) { path.element.style.opacity = visibility; path.visibility = visibility; }
     });
-    const next = staticFrame || at >= 18.5 ? 4 : Math.min(3, Math.floor(at / 4));
+    sceneNodes.forEach((node, i) => {
+      // Only the current story and its incoming neighbour occupy the close-up.
+      // All four return for the overview; previous scenes cannot cross a title.
+      const focus = i === 0 ? 1 - ease((at - SCENE_ENDS[i]) / 1.1)
+        : ease((at - SCENE_STARTS[i] + .35) / .8) * (1 - ease((at - SCENE_ENDS[i]) / 1.1));
+      const overview = ease((at - 16.65) / 1.85) * (1 - ease((at - 20.2) / 1.2));
+      const returning = i === 0 ? ease((at - 20.2) / 1.2) : 0;
+      const value = staticFrame ? '1' : String(Number(Math.max(focus, overview, returning).toFixed(4)));
+      if (value !== node.value) {
+        node.element.setAttribute('opacity', value);
+        guides[i]?.setAttribute('opacity', value);
+        node.value = value;
+      }
+    });
+    links.forEach((node, i) => {
+      const departure = SCENE_ENDS[i];
+      const passing = ease((at - departure + .1) / .5) * (1 - ease((at - departure - .55) / .65));
+      const overview = ease((at - 16.65) / 1.85) * (1 - ease((at - 20.2) / 1.2));
+      const value = staticFrame ? '1' : String(Number(Math.max(passing, overview).toFixed(4)));
+      if (value !== node.value) { node.element.setAttribute('opacity', value); node.value = value; }
+    });
+    const next = staticFrame || (at >= 18.5 && at < 21.2) ? 4 : at >= 21.2 ? 0 : Math.min(3, Math.floor(at / 4));
     if (next !== phase) {
       phase = next;
       if (heading) heading.textContent = next === 4 ? 'Dall’idea alla realtà.' : phases[next].title;
@@ -140,19 +201,30 @@ export function installFundingJourney({ signal, menu } = {}) {
       rail.forEach((item, i) => item.dataset.state = next === 4 || i < next ? 'done' : i === next ? 'active' : 'waiting');
       root.dataset.journeyPhaseIndex = String(next);
     }
-    rail.forEach((item, i) => item.style.setProperty('--journey-progress', staticFrame ? '1' : clamp((at - i * 4) / 4).toFixed(4)));
-    root.dataset.journeyTime = at.toFixed(2);
+    rail.forEach((item, i) => {
+      const progress = staticFrame ? '1' : at >= 21.2 ? '0' : String(Number(clamp((at - i * 4) / 4).toFixed(4)));
+      if (progress !== railValues[i]) { item.style.setProperty('--journey-progress', progress); railValues[i] = progress; }
+    });
+    // This diagnostic attribute is not a render clock. Ten updates per second
+    // are sufficient for inspection and avoid a mutation on every display frame.
+    const clock = (Math.floor(at * 10) / 10).toFixed(1);
+    if (clock !== clockValue) { root.dataset.journeyTime = clock; clockValue = clock; }
   }
   function build() {
     l = layout(portrait.matches);
     canvas.innerHTML = fundingJourneySvg(portrait.matches);
     svg = canvas.querySelector('svg');
     camera = svg.querySelector('[data-journey-camera]');
+    ink = svg.querySelector('[data-journey-ink]');
+    sceneNodes = [...svg.querySelectorAll('[data-journey-scene]')].map(element => ({ element }));
+    guides = [...svg.querySelectorAll('[data-journey-guide]')];
+    links = [...svg.querySelectorAll('[data-journey-link]')].map(element => ({ element }));
     paths = [...svg.querySelectorAll('[data-draw]')].map(element => {
       const [start, duration] = element.dataset.draw.split(',').map(Number);
       element.style.strokeDasharray = '1';
       return { element, start, duration };
     });
+    cameraValue = inkValue = undefined;
     phase = -1;
     root.dataset.journeyReady = 'true';
     paint(time, !automatic() && !manual);

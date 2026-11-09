@@ -33,12 +33,18 @@ class Events {
 }
 class Node extends Events {
   constructor() {
-    super(); this.attrs = new Map(); this.dataset = {}; this.hidden = true;
+    super(); this.writes = []; this.attrs = new Map();
+    this.dataset = new Proxy({}, { set: (target, key, value) => {
+      this.writes.push({ type: 'dataset', key, value }); target[key] = value; return true;
+    } });
+    let hidden = true, textContent = '';
+    Object.defineProperty(this, 'hidden', { get: () => hidden, set: value => { this.writes.push({ type: 'hidden', value }); hidden = value; } });
+    Object.defineProperty(this, 'textContent', { get: () => textContent, set: value => { this.writes.push({ type: 'text', value }); textContent = value; } });
     this.style = { transform: '', setProperty(name, value) { this[name] = value; } };
     const classes = new Set(); this.classList = { contains: value => classes.has(value), add: value => classes.add(value), remove: value => classes.delete(value) };
   }
   getAttribute(name) { return this.attrs.get(name) ?? null; }
-  setAttribute(name, value) { this.attrs.set(name, String(value)); }
+  setAttribute(name, value) { this.writes.push({ type: 'attribute', name, value }); this.attrs.set(name, String(value)); }
 }
 function fixture({ reduced = false, saveData = false, portrait = false, entry = false, signal, playerCount = 1, decode = true } = {}) {
   const pref = new Events(); pref.matches = reduced;
@@ -65,10 +71,14 @@ function fixture({ reduced = false, saveData = false, portrait = false, entry = 
     let src = ''; Object.defineProperty(video, 'src', { get: () => src, set: value => { src = value; video.setAttribute('src', value); } });
     let poster = ''; video.posterAssignments = [];
     Object.defineProperty(video, 'poster', { get: () => poster, set: value => { poster = value; video.posterAssignments.push(value); video.setAttribute('poster', value); } });
-    video.readyState = 0; video.currentTime = 0;
+    let currentTime = 0, autoplay = false;
+    video.seeks = [];
+    Object.defineProperty(video, 'currentTime', { get: () => currentTime, set: value => { video.seeks.push(value); currentTime = value; } });
+    Object.defineProperty(video, 'autoplay', { get: () => autoplay, set: value => { video.writes.push({ type: 'autoplay', value }); autoplay = value; } });
+    video.readyState = 0;
     video.paused = true; video.ended = false; video.muted = false; video.loads = 0; video.plays = 0; video.pauses = 0;
     video.mode = 'resolve'; let pendingResolve, pendingReject;
-    video.load = () => { video.loads++; if (decode) video.readyState = 2; };
+    video.load = () => { video.loads++; currentTime = 0; video.paused = true; video.readyState = decode ? 2 : 0; };
     video.pause = () => { video.pauses++; const changed = !video.paused; video.paused = true; if (changed) video.emit('pause'); };
     video.play = () => {
       video.plays++;
@@ -76,9 +86,13 @@ function fixture({ reduced = false, saveData = false, portrait = false, entry = 
       if (video.mode === 'abort-once') { video.mode = 'resolve'; video.paused = true; const error = new Error('Play interrupted'); error.name = 'AbortError'; return Promise.reject(error); }
       video.paused = false; video.emit('play');
       if (video.mode === 'pending') return new Promise((resolve, reject) => { pendingResolve = resolve; pendingReject = reject; });
+      if (!video.paused && video.readyState >= 2) video.emit('playing');
       return Promise.resolve();
     };
-    return { stage, button, symbol, label, video, posterImage, resolvePlay: () => pendingResolve?.(),
+    return { stage, button, symbol, label, video, posterImage, resolvePlay: () => {
+      if (!video.paused && video.readyState >= 2) video.emit('playing');
+      pendingResolve?.();
+    },
       rejectPlay: () => { const error = new Error('Play interrupted by pause'); error.name = 'AbortError'; pendingReject?.(error); } };
   });
   shots.push(...media.map(item => item.stage));
@@ -247,7 +261,7 @@ await test('Phone autoplay waits for a decoded frame while a manual tap retains 
   assert.equal(manual.video.plays, 1);
   manual.api.dispose();
 });
-await test('Portrait choice selects portrait media initially and retains an already loaded source during rotation', async () => {
+await test('Portrait choice selects portrait media initially and retains an already played source during rotation', async () => {
   const f = fixture({ portrait: true });
   assert.equal(f.video.poster, ''); assert.equal(f.stage.dataset.mediaFormat, 'portrait');
   await f.show(); assert.match(f.video.poster, /type-mobile\.jpg$/); assert.match(f.video.src, /type-mobile\.mp4$/);
@@ -410,7 +424,7 @@ await test('A native play event cannot start an offscreen film or bypass explici
   await f.video.play(); assert.equal(f.video.paused, true);
   f.api.dispose();
 });
-await test('Phone warms just the selected poster; a rotation before playback picks the wide source', async () => {
+await test('Phone prepares one nearby film; a rotation before playback replaces its unseen source and paired poster', async () => {
   const f = fixture({ portrait: true, playerCount: 5 });
   f.api.refresh(); f.doc.emit('visibilitychange');
   f.media.forEach(item => { f.warmObserver.fire(item.stage, false, 0); f.visibleObserver.fire(item.stage, false, 0); });
@@ -420,11 +434,79 @@ await test('Phone warms just the selected poster; a rotation before playback pic
   f.warmObserver.fire(target.stage); f.warmObserver.fire(target.stage); f.api.refresh(); await f.flush();
   assert.deepEqual(target.video.posterAssignments, ['https://example.test/space/images/type-mobile.jpg']);
   assert.ok(f.media.filter(item => item !== target).every(item => item.video.posterAssignments.length === 0));
-  assert.equal(target.video.loads, 0);
+  assert.equal(target.video.loads, 1); assert.equal(target.video.plays, 0); assert.equal(target.video.autoplay, false);
   f.orientation.matches = false; f.orientation.emit('change'); await f.flush();
   assert.deepEqual(target.video.posterAssignments, ['https://example.test/space/images/type-mobile.jpg', 'https://example.test/space/images/type-desktop.jpg']);
   assert.match(target.video.src, /desktop\.mp4$/);
+  assert.equal(target.video.loads, 2); assert.equal(target.video.plays, 0);
   assert.ok(f.media.filter(item => item !== target).every(item => item.video.posterAssignments.length === 0 && item.video.loads === 0));
+  f.api.dispose();
+});
+await test('Portrait prewarm keeps one slot across repeated events and advances only after a visit or leaving its warm range', async () => {
+  const f = fixture({ portrait: true, playerCount: 5 }), [first, second, third] = f.media;
+  f.media.forEach(item => f.warmObserver.fire(item.stage));
+  for (let i = 0; i < 20; i++) {
+    f.api.refresh();
+    f.media.forEach(item => { f.warmObserver.fire(item.stage); item.video.emit('canplay'); });
+  }
+  await f.flush();
+  assert.equal(f.media.reduce((sum, item) => sum + item.video.loads, 0), 1);
+  assert.equal(first.video.loads, 1);
+  assert.ok(f.media.every(item => item.video.paused && item.video.autoplay === false));
+  f.visibleObserver.fire(first.stage, true, .8); await f.flush();
+  assert.equal(first.video.paused, false); assert.equal(second.video.loads, 1);
+  assert.equal(f.media.reduce((sum, item) => sum + item.video.loads, 0), 2);
+  f.api.refresh(); f.visibleObserver.fire(first.stage, true, .5); await f.flush();
+  assert.equal(f.media.reduce((sum, item) => sum + item.video.loads, 0), 2);
+  f.warmObserver.fire(second.stage, false, 0); await f.flush();
+  assert.equal(third.video.loads, 1);
+  assert.equal(f.media.filter(item => !item.video.paused).length, 1);
+  assert.ok(f.media.slice(1).every(item => item.video.autoplay === false));
+  f.api.dispose();
+});
+await test('Portrait preparation is gated by entry, menu, hidden tab, cinema and static policies', async () => {
+  for (const gate of ['entry', 'menu', 'hidden', 'cinema', 'reduced', 'saveData']) {
+    const f = fixture({ portrait: true, playerCount: 3, entry: gate === 'entry', reduced: gate === 'reduced', saveData: gate === 'saveData' });
+    if (gate === 'menu') f.menu.open = true;
+    if (gate === 'hidden') f.doc.hidden = true;
+    if (gate === 'cinema') f.root.classList.add('cinema-open');
+    f.media.forEach(item => f.warmObserver.fire(item.stage));
+    f.api.refresh(); await f.flush();
+    assert.ok(f.media.every(item => item.video.loads === 0 && item.video.plays === 0), gate);
+    f.root.classList.remove('entry-pending'); f.root.classList.remove('cinema-open');
+    f.menu.open = false; f.doc.hidden = false; f.pref.matches = false; f.connection.saveData = false;
+    f.api.refresh(); await f.flush();
+    assert.equal(f.media.reduce((sum, item) => sum + item.video.loads, 0), 1, gate);
+    assert.ok(f.media.every(item => item.video.paused && item.video.autoplay === false), gate);
+    f.api.dispose();
+  }
+});
+await test('Stable refreshes and readiness events perform no DOM writes or zero-time seeks', async () => {
+  const f = fixture({ portrait: true, playerCount: 3 }); await f.show();
+  const nodes = f.media.flatMap(item => [item.video, item.stage, item.button, item.symbol, item.label]);
+  const count = () => nodes.reduce((sum, node) => sum + node.writes.length, 0);
+  const before = count();
+  for (let i = 0; i < 20; i++) {
+    f.api.refresh(); f.visibleObserver.fire(f.stage, true, .8);
+    f.video.emit('loadeddata'); f.video.emit('canplay'); f.video.emit('playing');
+  }
+  await f.flush();
+  assert.equal(count(), before);
+  assert.deepEqual(f.video.seeks, []);
+  f.video.dataset.mediaLabel = 'il film aggiornato'; f.api.refresh(); await f.flush();
+  assert.equal(f.button.getAttribute('aria-label'), 'Metti in pausa il film aggiornato');
+  const changed = count(); f.api.refresh(); await f.flush(); assert.equal(count(), changed);
+  f.api.dispose();
+});
+await test('Reentry avoids seeking an existing zero frame but seeks once for a real replay', async () => {
+  const f = fixture({ portrait: true }); await f.show();
+  assert.deepEqual(f.video.seeks, []);
+  f.visibleObserver.fire(f.stage, false, 0); f.visibleObserver.fire(f.stage, true, .8); await f.flush();
+  assert.deepEqual(f.video.seeks, []);
+  f.video.currentTime = 2.4; const before = f.video.seeks.length;
+  f.visibleObserver.fire(f.stage, false, 0); f.visibleObserver.fire(f.stage, true, .8); await f.flush();
+  assert.deepEqual(f.video.seeks.slice(before), [0]);
+  assert.equal(f.video.paused, false); assert.equal(f.video.loads, 1);
   f.api.dispose();
 });
 await test('Static policies prepare only nearby posters; offscreen rotation waits until warming again', async () => {

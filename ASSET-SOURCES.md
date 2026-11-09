@@ -1,5 +1,11 @@
 # Provenienza dei materiali — Space Media Studio
 
+## Fluidità mobile e disegno dei bandi — 9 novembre 2026
+
+Il percorso dei bandi conserva palette, testi e durata di 22 secondi. Il master originale `src/funding-journey.js` contiene ora un filamento più dettagliato, due persone che progettano insieme, un dossier di candidatura e un edificio civico in prospettiva. Le geometrie sono SVG originali Space Media. `node scripts/export-funding-journey.mjs` riproduce entrambi i poster attivi dallo stesso master e genera il manifest con dimensioni e SHA-256 in `outputs/iphone-funding-20261109/funding/asset-manifest.json`. La versione precedente resta nella cronologia Git e nella copia locale `funding/before/`.
+
+Questa revisione non ricodifica né sostituisce i film: conserva i 19 MP4 del manifest attivo, inclusi studio, acqua UHD e tagli portrait. L'ottimizzazione riguarda preparazione del prossimo film e aggiornamenti dell'interfaccia. Il confronto degli hash è in `outputs/iphone-funding-20261109/`; le ricevute storiche sotto continuano a descrivere le rispettive versioni.
+
 ## Riordino del 9 novembre 2026
 
 - Ripristinato lo studio come caricamento a schermo intero fino al 100%, usando la geometria Blender e il film mobile originali già documentati. Quando la policy mobile blocca il film, il caricamento usa la stessa mesh Blender in WebGL. Nessuna nuova attribuzione di produzione.

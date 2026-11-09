@@ -50,7 +50,11 @@ if (automaticMotion()) {
   window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
 }
 const selectedPoster = () => `${base}images/director-water-${portrait.matches ? 'mobile' : 'desktop'}.webp`;
-film.poster = selectedPoster();
+function syncPoster() {
+  const next = new URL(selectedPoster(), document.baseURI).href;
+  if (film.poster !== next) film.poster = next;
+}
+syncPoster();
 film.muted = true; film.defaultMuted = true;
 film.playsInline = true; film.autoplay = false;
 
@@ -76,13 +80,19 @@ function syncControl() {
   const failed = Boolean(film.error);
   const playing = !failed && !film.paused && !film.ended;
   const loading = !failed && playPending && film.readyState < 2;
-  toggle.hidden = !entryFinished;
-  replay.hidden = !entryFinished;
-  if (startFilm) startFilm.hidden = !entryFinished || !autoplayBlocked || playing;
-  toggle.setAttribute('aria-label', failed ? 'Riprova a riprodurre il film' : loading ? 'Interrompi il caricamento del film' : playing ? 'Metti in pausa il film' : 'Riproduci il film');
-  toggle.setAttribute('aria-pressed', String(playing));
-  toggle.querySelector('[data-film-symbol]').textContent = failed ? '↻' : playing || loading ? 'Ⅱ' : '▷';
-  toggle.querySelector('[data-film-label]').textContent = failed ? 'Riprova' : loading ? 'Attendi' : playing ? 'Pausa' : 'Riproduci';
+  if (toggle.hidden !== !entryFinished) toggle.hidden = !entryFinished;
+  if (replay.hidden !== !entryFinished) replay.hidden = !entryFinished;
+  const startHidden = !entryFinished || !autoplayBlocked || playing;
+  if (startFilm && startFilm.hidden !== startHidden) startFilm.hidden = startHidden;
+  const label = failed ? 'Riprova a riprodurre il film' : loading ? 'Interrompi il caricamento del film' : playing ? 'Metti in pausa il film' : 'Riproduci il film';
+  if (toggle.getAttribute('aria-label') !== label) toggle.setAttribute('aria-label', label);
+  if (toggle.getAttribute('aria-pressed') !== String(playing)) toggle.setAttribute('aria-pressed', String(playing));
+  const symbol = toggle.querySelector('[data-film-symbol]');
+  const caption = toggle.querySelector('[data-film-label]');
+  const nextSymbol = failed ? '↻' : playing || loading ? 'Ⅱ' : '▷';
+  const nextCaption = failed ? 'Riprova' : loading ? 'Attendi' : playing ? 'Pausa' : 'Riproduci';
+  if (symbol.textContent !== nextSymbol) symbol.textContent = nextSymbol;
+  if (caption.textContent !== nextCaption) caption.textContent = nextCaption;
 }
 
 const mayPlayHero = () => !disposed && entryFinished && !suspended && !document.hidden && inHero
@@ -92,7 +102,8 @@ const mayPlayHero = () => !disposed && entryFinished && !suspended && !document.
 async function syncPlayback() {
   if (disposed) return;
   const permitted = mayPlayHero();
-  film.autoplay = permitted && automaticMotion() && !autoplayBlocked && !film.error;
+  const autoplay = Boolean(permitted && automaticMotion() && !autoplayBlocked && !film.error);
+  if (film.autoplay !== autoplay) film.autoplay = autoplay;
   if (!permitted) {
     if (playPending) playInterrupted = true;
     film.pause(); syncControl(); return;
@@ -129,7 +140,8 @@ film.addEventListener('play', () => {
 }, { signal });
 for (const type of ['pause', 'ended']) film.addEventListener(type, syncControl, { signal });
 for (const type of ['loadeddata', 'canplay']) film.addEventListener(type, () => {
-  hero.dataset.frame = String(film.readyState >= 2 && !film.error);
+  const ready = String(film.readyState >= 2 && !film.error);
+  if (hero.dataset.frame !== ready) hero.dataset.frame = ready;
   syncPlayback();
 }, { signal });
 for (const type of ['emptied', 'error']) film.addEventListener(type, () => {
@@ -147,7 +159,7 @@ function cancelImpact() {
   impactCallback = 0;
 }
 function markImpact(time) {
-  if (time + .001 >= impactTime && entryFinished && automaticMotion()) hero.dataset.impact = 'true';
+  if (time + .001 >= impactTime && entryFinished && automaticMotion() && hero.dataset.impact !== 'true') hero.dataset.impact = 'true';
 }
 function watchImpact() {
   if (impactCallback || !film.requestVideoFrameCallback || !automaticMotion() ||
@@ -181,7 +193,7 @@ function restartHero(manual = false) {
   if (film.error) film.load();
   ensureSource();
   resumeTime = 0;
-  if (film.readyState >= 1) film.currentTime = 0;
+  if (film.readyState >= 1 && film.currentTime !== 0) film.currentTime = 0;
   syncPlayback();
 }
 replay.addEventListener('click', () => restartHero(true), { signal });
@@ -233,7 +245,7 @@ let profileTimer = 0;
 function scheduleProfileCheck() {
   clearTimeout(profileTimer);
   profileTimer = setTimeout(() => {
-    film.poster = selectedPoster();
+    syncPoster();
     // The decoded frame approved by the loader must survive the handoff.
     // Apply a rotation/resize only after that film has actually started.
     if (!entryFinished || !heroHandoffComplete) return;
