@@ -71,7 +71,11 @@ export function installMobileNavigation({ menu, signal } = {}) {
     if (event.relatedTarget && !menu.contains(event.relatedTarget)) close();
   }, { signal: life.signal });
   window.addEventListener('scroll', () => {
-    if (menu.open && openedAt !== undefined && Math.abs(window.scrollY - openedAt) > 4) close();
+    if (!menu.open || openedAt === undefined || Math.abs(window.scrollY - openedAt) <= 4) return;
+    // Safari may scroll a focused link even while its panel is still visible.
+    // Only an entirely offscreen panel should keep no playback gate open.
+    const panel = menu.querySelector('nav')?.getBoundingClientRect();
+    if (panel && (panel.bottom <= 0 || panel.top >= window.innerHeight)) close();
   }, { passive: true, signal: life.signal });
   mobile.addEventListener('change', syncState, { signal: life.signal });
   window.addEventListener('pagehide', () => close(), { signal: life.signal });
