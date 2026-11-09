@@ -1,0 +1,64 @@
+import assert from 'node:assert/strict';
+import { existsSync, mkdtempSync, mkdirSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { activeAssetsPlugin, inspectActiveAssets } from './active-assets.mjs';
+
+const current = inspectActiveAssets();
+assert(current.files > 0 && current.bytes > 0);
+assert(current.manifest.files.includes('fonts/DMMono-OFL.txt'));
+assert(current.manifest.files.includes('fonts/SpaceGrotesk-OFL.txt'));
+assert(current.manifest.files.includes('licenses/three-MIT.txt'));
+assert(current.manifest.files.includes('films/flagship-water-hd.mp4'));
+assert(current.manifest.files.includes('showcase/phase-01/hero.webp'));
+
+const root = mkdtempSync(join(tmpdir(), 'space-active-assets-test-'));
+try {
+  for (const dir of ['config', 'src', 'public/images']) mkdirSync(join(root, dir), { recursive: true });
+  writeFileSync(join(root, 'index.html'), '<script type="module" src="/src/app.js"></script>');
+  writeFileSync(join(root, 'src/app.js'), 'import("./lazy.js");');
+  writeFileSync(join(root, 'src/lazy.js'), 'const poster = "/images/active.webp";');
+  writeFileSync(join(root, 'public/images/active.webp'), 'active');
+  writeFileSync(join(root, 'public/images/old.webp'), 'history preserved');
+  const manifest = { version: 1, entrypoints: ['index.html'], dynamicReferences: [], files: ['images/active.webp'] };
+  const save = () => writeFileSync(join(root, 'config/agency-assets.json'), JSON.stringify(manifest));
+  save();
+  assert.equal(inspectActiveAssets(root).files, 1);
+  assert(inspectActiveAssets(root).sources.includes('src/lazy.js'));
+  const plugin = activeAssetsPlugin();
+  plugin.configResolved({ root, build: { outDir: 'build' } });
+  plugin.buildStart();
+  plugin.buildEnd();
+  plugin.closeBundle();
+  assert.equal(readFileSync(join(root, 'build/images/active.webp'), 'utf8'), 'active');
+  assert(!existsSync(join(root, 'build/images/old.webp')));
+  assert.equal(readFileSync(join(root, 'public/images/old.webp'), 'utf8'), 'history preserved');
+  assert.throws(() => activeAssetsPlugin().configResolved({ root, build: { outDir: 'public' } }), /must not overwrite/);
+  assert.throws(() => activeAssetsPlugin().configResolved({ root, build: { outDir: root } }), /must not overwrite/);
+  manifest.files = [];
+  save();
+  assert.throws(() => inspectActiveAssets(root), /missing from manifest/);
+  manifest.files = ['images/active.webp', 'images/missing.webp'];
+  save();
+  assert.throws(() => inspectActiveAssets(root), /ENOENT/);
+  manifest.files = ['../index.html'];
+  save();
+  assert.throws(() => inspectActiveAssets(root), /Unsafe asset path/);
+  symlinkSync(join(root, 'index.html'), join(root, 'public/images/link.webp'));
+  manifest.files = ['images/link.webp'];
+  save();
+  assert.throws(() => inspectActiveAssets(root), /Symlink/);
+  manifest.files = ['images/active.webp'];
+  writeFileSync(join(root, 'src/lazy.js'), 'const poster = `images/${profile}.webp`;');
+  save();
+  assert.throws(() => inspectActiveAssets(root), /Unreviewed dynamic/);
+  manifest.dynamicReferences = [{ source: 'src/lazy.js', expression: 'images/${profile}.webp', files: ['images/active.webp'] }];
+  save();
+  assert.equal(inspectActiveAssets(root).files, 1);
+  manifest.dynamicReferences[0].files.push('images/missing.webp');
+  save();
+  assert.throws(() => inspectActiveAssets(root), /Dynamic asset variants missing/);
+  console.log(`PASS active asset delivery: ${current.files} files (${(current.bytes / 1024 / 1024).toFixed(2)} MiB); imports, missing assets, traversal, symlinks and dynamic variants verified.`);
+} finally {
+  rmSync(root, { recursive: true, force: true });
+}

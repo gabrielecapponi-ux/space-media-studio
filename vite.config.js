@@ -1,9 +1,12 @@
 import { defineConfig } from "vite";
 import { fileURLToPath } from "node:url";
+import { activeAssetsPlugin } from "./scripts/active-assets.mjs";
 
 export default defineConfig({
   base: "./",
+  plugins: [activeAssetsPlugin()],
   build: {
+    copyPublicDir: false,
     rolldownOptions: {
       input: {
         main: fileURLToPath(new URL("./index.html", import.meta.url)),

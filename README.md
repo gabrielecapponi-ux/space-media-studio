@@ -16,7 +16,7 @@ npm run dev
 npm test
 npm run build
 npm run preview
-npm run deploy
+npm run deploy -- --ref <commit-sorgenti-gia-inviato>
 ```
 
 La suite comprende **69 gruppi, 21 per l’ingresso, 40 per i media e 8 per il percorso dei progetti**. I controlli storici di Launch Room rimangono separati in `npm run test:legacy` e non attestano la homepage attuale.
@@ -24,6 +24,8 @@ La suite comprende **69 gruppi, 21 per l’ingresso, 40 per i media e 8 per il p
 La build statica è in `dist/`; `main` conserva i sorgenti e GitHub Pages pubblica `gh-pages`. `scripts/deploy-pages.mjs` sostituisce soltanto le radici Space dichiarate, inclusa `models/`, preservando le altre cartelle e configurazioni del ramo. Il contratto di copia è stato provato in directory temporanee con `mrsmeet/` e `CNAME` conservati, senza pubblicare. Porte configurate: dev 5174, preview 5175; le anteprime isolate della lavorazione usano 5208 e 5209, da verificare prima di aprirle.
 
 ## Percorso e offerta
+
+La [guida della cartella](docs/WORKSPACE.md) distingue file attivi, archivi, memoria locale e siti cliente. `npm run assets:check` verifica i 56 asset del manifest di consegna; `npm test` comprende anche le verifiche di asset e pubblicazione. `npm run context:backup` conserva una copia verificata della memoria locale. Il deploy usa esclusivamente un commit già presente su `main` remoto, costruito e testato in una cartella temporanea: le modifiche locali non entrano nel rilascio.
 
 Cinque miniature collegano direttamente ai servizi. Ogni capitolo mantiene un titolo esplicito, una frase e una riga di formati; le immagini mostrano concept non commissionati, senza presentarli come clienti o risultati reali.
 

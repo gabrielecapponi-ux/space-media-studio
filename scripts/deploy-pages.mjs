@@ -1,7 +1,7 @@
 import { execFileSync, spawnSync } from "node:child_process";
-import { cpSync, mkdtempSync, readdirSync, rmSync, writeFileSync } from "node:fs";
+import { cpSync, mkdirSync, mkdtempSync, readdirSync, realpathSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { join, resolve } from "node:path";
+import { isAbsolute, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
@@ -28,8 +28,14 @@ function validateBundleTree(directory) {
 }
 
 export function replaceProductionBundle(bundleDirectory, destinationDirectory) {
-  if (resolve(bundleDirectory) === resolve(destinationDirectory)) {
-    throw new Error("The production bundle and publishing checkout must be separate directories.");
+  const source = realpathSync(bundleDirectory);
+  const destination = realpathSync(destinationDirectory);
+  const contains = (parent, child) => {
+    const path = relative(parent, child);
+    return path === "" || (!isAbsolute(path) && path !== ".." && !path.startsWith(`..${sep}`));
+  };
+  if (contains(source, destination) || contains(destination, source)) {
+    throw new Error("The production bundle and publishing checkout must be separate, non-nested directories.");
   }
   const entries = readdirSync(bundleDirectory, { withFileTypes: true });
   if (!entries.some((entry) => entry.name === "index.html" && entry.isFile())) {
@@ -54,34 +60,58 @@ export function replaceProductionBundle(bundleDirectory, destinationDirectory) {
   writeFileSync(join(destinationDirectory, ".nojekyll"), "");
 }
 
-function publish() {
-  // Publish only Space Media's production paths; preserve the source checkout,
-  // other deployed sites and deployment history. Never copy credentials.
-  run("npm", ["run", "build"]);
-  const directory = mkdtempSync(join(tmpdir(), "space-media-pages-"));
+export function parseReleaseArgs(args) {
+  if (args.length !== 2 || args[0] !== "--ref" || !args[1] || args[1].startsWith("-")) {
+    throw new Error("Usage: npm run deploy -- --ref <committed-and-pushed-source-ref>");
+  }
+  return args[1];
+}
+
+function publish(sourceRef) {
+  // Resolve once before network work. Never build the mutable working folder.
+  const commit = read("git", ["rev-parse", "--verify", "--end-of-options", `${sourceRef}^{commit}`]);
+  const release = mkdtempSync(join(tmpdir(), "space-media-release-"));
+  const sourceRepository = join(release, "repository");
+  const sourceDirectory = join(release, "source");
+  const directory = join(release, "pages");
   try {
+    run("git", ["clone", "--no-checkout", "--single-branch", "--branch", "main", remote, sourceRepository]);
+    const publishedSource = spawnSync("git", ["merge-base", "--is-ancestor", commit, "refs/remotes/origin/main"], { cwd: sourceRepository });
+    if (publishedSource.status !== 0) {
+      throw new Error(`Source ${commit} is not available on remote main. Push the intended source commit before deploying.`);
+    }
+    mkdirSync(sourceDirectory);
+    const archive = join(release, "source.tar");
+    run("git", ["archive", "--format=tar", `--output=${archive}`, commit], sourceRepository);
+    run("tar", ["-xf", archive, "-C", sourceDirectory]);
+    rmSync(archive);
+    run("npm", ["ci"], sourceDirectory);
+    run("npm", ["test"], sourceDirectory);
+    run("npm", ["run", "build"], sourceDirectory);
     const exists = read("git", ["ls-remote", "--heads", remote, "refs/heads/gh-pages"]);
     if (exists) {
       run("git", ["clone", "--depth", "1", "--single-branch", "--branch", "gh-pages", remote, directory]);
     } else {
+      mkdirSync(directory);
       run("git", ["init", "-b", "gh-pages"], directory);
       run("git", ["remote", "add", "origin", remote], directory);
     }
     run("git", ["config", "user.name", read("git", ["config", "user.name"])], directory);
     run("git", ["config", "user.email", read("git", ["config", "user.email"])], directory);
-    replaceProductionBundle(resolve(root, "dist"), directory);
+    replaceProductionBundle(resolve(sourceDirectory, "dist"), directory);
     run("git", ["add", "--all"], directory);
     const changes = spawnSync("git", ["diff", "--cached", "--quiet"], { cwd: directory });
     if (changes.status === 1) {
-      run("git", ["commit", "-m", "Publish production website"], directory);
+      run("git", ["commit", "-m", `Publish Space Media from ${commit}`], directory);
       run("git", ["push", "origin", "gh-pages"], directory);
     } else if (changes.status !== 0) {
       throw new Error("Unable to inspect the production bundle.");
     }
-    console.log(`Published bundle: https://github.com/${repository}/tree/gh-pages`);
+    console.log(`Pages branch updated from source ${commit}: https://github.com/${repository}/tree/gh-pages`);
+    console.log("Verify the GitHub Pages job and public URL before recording a publication time.");
   } finally {
-    rmSync(directory, { recursive: true, force: true });
+    rmSync(release, { recursive: true, force: true });
   }
 }
 
-if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) publish();
+if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) publish(parseReleaseArgs(process.argv.slice(2)));

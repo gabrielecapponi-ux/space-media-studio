@@ -14,3 +14,13 @@ STUDIO-SKILLS.md
 __pycache__/
 
 .playwright-cli/
+
+# Local cross-client coordination. Preserve with npm run context:backup.
+# These documents include private project context and are not public sources.
+/.agency/
+/AGENTS.md
+/LINK-SITES.md
+
+# Separate client projects: their own source repositories publish them.
+/farmacia-2/
+/volpi-2/
