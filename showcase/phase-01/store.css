@@ -71,3 +71,16 @@
 
 .phase-buy, .phase-editions button { touch-action: manipulation; }
 .phase-buy:active, .phase-editions button:active { opacity: .8; }
+
+@media (max-width: 760px) {
+  .capture .phase-hero { display: flex; height: calc(100svh - var(--nav)); min-height: 0; }
+  .capture .phase-intro { padding: 18px 32px 22px; }
+  .capture .phase-intro h1 { font-size: clamp(50px, 9.2vw, 68px); margin: 12px 0; }
+  .capture .phase-description { font-size: 16px; max-width: 52ch; }
+  .capture .phase-editions { margin-top: 14px; }
+  .capture .phase-bundle { min-height: 1.4em; }
+  .capture .phase-buy { margin-top: 12px; min-height: 48px; }
+  .capture .phase-photo { flex: 1; min-height: 0; }
+  .capture .phase-photo img { width: 100%; height: 100%; aspect-ratio: auto; object-fit: contain; }
+  .capture .phase-details { display: none; }
+}
