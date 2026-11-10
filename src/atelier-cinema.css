@@ -50,7 +50,7 @@
 .atelier-concept-web .atelier-brief button,.atelier-concept-motion .atelier-brief button{background:var(--yellow);color:var(--ink)}
 
 /* The website film leads directly into five working demos. */
-.atelier-concept.atelier-concept-web .atelier-web-reel{background:#111411;border:1px solid #efeee824}
+.atelier-concept.atelier-concept-web .atelier-web-reel{background:#111411;border:0}
 .atelier-reel-caption{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
 .atelier-web-reel .atelier-case-film-toggle:focus-visible{outline-color:var(--yellow)}
 .atelier-reel-explore{margin-top:18px}

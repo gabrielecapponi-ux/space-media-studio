@@ -1,5 +1,11 @@
 # Provenienza dei materiali — Space Media Studio
 
+## Rifinitura cinematografica — 10 novembre 2026
+
+Il nuovo disegno dei bandi sostituisce le persone con tavole di progetto e un padiglione esploso. Il master vettoriale editabile è `src/artwork/funding-planning-master.svg`, generato tramite Higgsfield, modello GPT Image 2.6, job `f1b1dc02-899c-42be-a98e-599cced4491f`. Non è una mesh 3D né un film: è un'illustrazione SVG in prospettiva animata nel browser. Prompt, ricevuta e master ricevuto sono conservati in `outputs/cinematic-polish-20261110/higgsfield/`; l'adattamento conserva la linea sul giallo, i quattro titoli e la durata di 22 secondi. `scripts/export-funding-journey.mjs` riproduce il modulo di geometria e i due poster. Lampadina e dossier riutilizzano il disegno originale Space Media. Nessuna persona del percorso precedente resta nelle nuove tavole.
+
+Cinque miniature WebP da 480 px (54.400 byte totali) riutilizzano le immagini delle demo SHIFT, VELA, NOVA, BASILICO e OLTRE. Ricetta: `scripts/export-demo-previews.py`; manifest di sorgenti, hash e dimensioni in `outputs/cinematic-polish-20261110/demo-previews-manifest.json`. Gli originali e tutti i 19 MP4 attivi restano identici: nessuna ricodifica, interpolazione o riduzione della qualità video. I materiali e le ricevute delle versioni precedenti sotto restano storici.
+
 ## Fluidità mobile e disegno dei bandi — 9 novembre 2026
 
 Il percorso dei bandi conserva palette, testi e durata di 22 secondi. Il master originale `src/funding-journey.js` contiene ora un filamento più dettagliato, due persone che progettano insieme, un dossier di candidatura e un edificio civico in prospettiva. Le geometrie sono SVG originali Space Media. `node scripts/export-funding-journey.mjs` riproduce entrambi i poster attivi dallo stesso master e genera il manifest con dimensioni e SHA-256 in `outputs/iphone-funding-20261109/funding/asset-manifest.json`. La versione precedente resta nella cronologia Git e nella copia locale `funding/before/`.
@@ -117,7 +123,7 @@ Il compositing evita la grana della trasparenza stocastica e gli errori di ordin
 
 [OSKEN 1.0.0](https://horizonx.so/explore/osken) è stato acquisito dalla Premium Library HorizonX il 5 novembre, su approvazione dell’utente. La ricevuta `outputs/horizon-osken-20261105/ACQUISITION.json` registra versione, integrità dello ZIP, hash, consumo di un posto personale giornaliero e uno premium mensile, e licenza commerciale per uso/adattamento del progetto. I residui annotati descrivono il momento dell’acquisizione, non un saldo corrente garantito.
 
-`src/atelier-osken-motion.js/.css` adattano scala/profondità di `ProjectDeck` e prospettiva separata al solo ingresso della superficie poster/video. `src/cinema-viewer.js/.css` adattano l’espansione di `Showreel` alla vista cinema esplicita di 460 ms. Nessun deck di articoli da 600 vh, slideshow, immagine, font, marchio o dipendenza React/Motion/Lenis è importato. Testi, gerarchia HTML, accessibilità e politica autoplay restano nel controller Space. Il port è documentato in `ADAPTATION.md`.
+L’adattamento iniziale di `ProjectDeck` usava scala e prospettiva. Dal 10 novembre `src/atelier-osken-motion.js/.css` mantengono la superficie poster/video aderente alla cornice, con un ingresso di sola opacità in 420 ms, per eliminare i margini scoperti. `src/cinema-viewer.js/.css` adattano l’espansione di `Showreel` alla vista cinema esplicita di 460 ms. Nessun deck di articoli da 600 vh, slideshow, immagine, font, marchio o dipendenza React/Motion/Lenis è importato. Testi, gerarchia HTML, accessibilità e politica autoplay restano nel controller Space. Il port è documentato in `ADAPTATION.md`.
 
 La membership consente l’adattamento commerciale del progetto e vieta la redistribuzione del sorgente/template originale. ZIP e copia raw restano in `outputs/horizon-osken-20261105/source/`, esclusi dal repository pubblico e dalla build. Halvane AR, Cyber Jackets e CoverFlow rimangono ricerca non acquisita; non condividono la ricevuta OSKEN.
 

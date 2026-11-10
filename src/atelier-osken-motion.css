@@ -1,11 +1,9 @@
-/* A separate perspective for each film. Controls and captions stay on the
-   page plane, and the perspective is released as soon as the entrance ends. */
-@media (min-width: 992px) and (min-height: 560px) and (prefers-reduced-motion: no-preference) {
-  .osken-motion-frame { perspective: 1400px; perspective-origin: 50% 44%; }
-  .osken-motion-frame > .atelier-film-surface,
-  .osken-motion-frame > video { transform-origin: 50% 54%; backface-visibility: hidden; }
+/* The aperture stays fixed and full-bleed during the exposure entrance.
+   A shared dark backing also keeps poster/video handoffs visually consistent. */
+.flagship-site .atelier-concept.atelier-case-chapter .atelier-service-film.atelier-media-stage {
+  background: #151716;
 }
 @media (prefers-reduced-motion: reduce) {
   .osken-motion-frame > .atelier-film-surface,
-  .osken-motion-frame > video { transform: none !important; }
+  .osken-motion-frame > video { opacity: 1 !important; }
 }

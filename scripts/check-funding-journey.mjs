@@ -1,8 +1,12 @@
 import { readFile } from 'node:fs/promises';
 import vm from 'node:vm';
 import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
+import { fundingArtwork } from '../src/funding-artwork.js';
+import { fundingJourneySvg } from '../src/funding-journey.js';
 
-const source = (await readFile(process.env.FUNDING_SOURCE || new URL('../src/funding-journey.js', import.meta.url), 'utf8')).replaceAll('export function', 'function');
+const source = `const fundingArtwork = ${JSON.stringify(fundingArtwork)};\n` + (await readFile(process.env.FUNDING_SOURCE || new URL('../src/funding-journey.js', import.meta.url), 'utf8'))
+  .replace(/import \{ fundingArtwork \} from ['"][^'"]+['"];?/, '').replaceAll('export function', 'function');
 let writes = { style: 0, attribute: 0, dataset: 0 };
 class Events {
   constructor() { this.listeners = new Map(); }
@@ -42,8 +46,10 @@ function fixture({ reduced = false, saveData = false } = {}) {
   root.querySelectorAll = () => rail;
   let paths = [];
   Object.defineProperty(canvas, 'innerHTML', { set(markup) {
-    paths = [...markup.matchAll(/data-draw="([^"]+)"/g)].map(([, value]) => {
-      const node = new Element(); node.dataset.draw = value; return node;
+    paths = [...markup.matchAll(/<(?:path|ellipse)\b[^>]*data-draw="[^"]+"[^>]*>/g)].map(([tag]) => {
+      const node = new Element();
+      for (const [, key, value] of tag.matchAll(/data-([a-z-]+)="([^"]*)"/g)) node.dataset[key.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase())] = value;
+      return node;
     });
   } });
   canvas.querySelector = () => ({
@@ -140,8 +146,8 @@ test('Incoming scene is drawn before its title and outgoing scenes leave the clo
   assert.equal(f.root.dataset.journeyPhaseIndex, '1');
   assert.equal(f.scenes[0].attrs.opacity, '0');
   assert.ok(Number(f.scenes[1].attrs.opacity) > .95);
-  const head = f.paths().find(path => path.dataset.draw.startsWith('3.25,'));
-  assert.ok(Number(head.style.strokeDashoffset) < .05);
+  const outline = f.paths().find(path => path.dataset.drawRole === 'planning-outline');
+  assert.ok(outline && Number(outline.style.strokeDashoffset) < .05, 'The planning board is recognisable when its title arrives');
   f.advance(11300);
   assert.equal(f.scenes[1].attrs.opacity, '0');
   assert.equal(f.scenes[3].attrs.opacity, '1');
@@ -170,5 +176,26 @@ test('Held frames and completed strokes do not repeatedly write the same DOM val
   assert.ok(total < 14000, `Unexpected DOM writes per cycle: ${total}`);
   console.log(JSON.stringify({ simulatedMs: 22000, cadenceMs: 16, paths: f.paths().length, writes: counts, total }));
   f.api.dispose();
+});
+test('Architectural fills reveal progressively and reset with the same drawing clock', () => {
+  const f = fixture(); f.enter(.8); f.advance(3330);
+  const face = f.paths().find(path => path.dataset.artwork === 'blueprint-0');
+  assert.ok(face && Number(face.style.fillOpacity) > 0 && Number(face.style.fillOpacity) < 1);
+  f.advance(1000); assert.equal(face.style.fillOpacity, '1');
+  f.replay.emit('click'); assert.equal(face.style.fillOpacity, '0');
+  f.pref.matches = true; f.pref.emit('change');
+  assert.ok(f.paths().filter(path => path.dataset.fill != null).every(path => Number(path.style.fillOpacity) === Number(path.dataset.fill)));
+  f.api.dispose();
+});
+const savedArtwork = await readFile(new URL('../src/artwork/funding-planning-master.svg', import.meta.url), 'utf8');
+const posters = await Promise.all(['funding-journey.svg', 'funding-journey-mobile.svg'].map(name => readFile(new URL(`../public/images/${name}`, import.meta.url), 'utf8')));
+test('Saved artwork and posters reproduce the declared native vector source', () => {
+  assert.equal(createHash('sha256').update(savedArtwork).digest('hex'), fundingArtwork.sourceSha256);
+  assert.equal(fundingArtwork.jobId, 'f1b1dc02-899c-42be-a98e-599cced4491f');
+  assert.ok(!/<(?:script|foreignObject|image|use|filter)\b|\bon[a-z]+\s*=|(?:href|url\s*\()/i.test(savedArtwork));
+  posters.forEach((poster, i) => {
+    assert.equal(poster.trim(), fundingJourneySvg(i === 1, true));
+    assert.ok(!/data-|<script|<image|<filter/.test(poster));
+  });
 });
 console.log(JSON.stringify({ groups, browser: false, remoteRequests: false }));

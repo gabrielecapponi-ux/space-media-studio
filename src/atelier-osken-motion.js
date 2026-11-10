@@ -2,13 +2,12 @@ import './atelier-osken-motion.css';
 
 // Adapted for Space from the licensed OSKEN ProjectDeck / Showreel, v1.0.0.
 // Source and acquisition receipt: outputs/horizon-osken-20261105/.
-// The media stays on its original plane after a short, composited entrance.
+// The frame stays on its original plane throughout a short exposure entrance.
 export function installOskenMotion({ signal, menu } = {}) {
   if (signal?.aborted) return;
   const life = new AbortController();
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const desktop = matchMedia('(min-width: 992px) and (min-height: 560px)');
-  const pointer = matchMedia('(hover: hover) and (pointer: fine)');
   const connection = navigator.connection;
   const shots = [...document.querySelectorAll('[data-atelier-media]')].map(video => ({
     surface: video.closest('.atelier-film-surface') || video,
@@ -32,22 +31,19 @@ export function installOskenMotion({ signal, menu } = {}) {
     animation?.cancel();
     release(shot);
   }
-  function enter(shot, hover = false) {
+  function enter(shot) {
     if (disposed || !allowed() || !available() || !shot.visible
       || shot.stage.contains(document.activeElement) || !shot.surface.animate) return;
-    // A pointer arriving during the viewport reveal should not restart it.
-    if (hover && shot.animation) return;
     stop(shot);
     shot.pendingEntrance = false;
     shot.stage.classList.add('osken-motion-frame');
-    shot.surface.style.willChange = 'transform';
-    const from = hover
-      ? 'translate3d(0, 0, -14px) rotateX(.7deg)'
-      : 'translate3d(0, 22px, -62px) rotateX(3.8deg)';
+    // Keep every pixel of the composition against the aperture. Depth belongs
+    // to the film; moving its rectangular surface would expose the backing.
+    shot.surface.style.willChange = 'opacity';
     const animation = shot.surface.animate([
-      { transform: from },
-      { transform: 'none' },
-    ], { duration: hover ? 280 : 620, easing: 'cubic-bezier(.2,.72,.18,1)', fill: 'none' });
+      { opacity: .88 },
+      { opacity: 1 },
+    ], { duration: 420, easing: 'cubic-bezier(.2,.72,.18,1)', fill: 'none' });
     shot.animation = animation;
     const finish = () => {
       if (shot.animation !== animation) return;
@@ -75,9 +71,8 @@ export function installOskenMotion({ signal, menu } = {}) {
   }, { threshold: [0, .025, .14] });
   shots.forEach(shot => {
     observer.observe(shot.stage);
-    shot.stage.addEventListener('pointerenter', event => {
-      if (pointer.matches && event.pointerType !== 'touch') enter(shot, true);
-    }, { signal: life.signal });
+    // Hover replay is owned by atelier-cinema; it must not dim or move the
+    // surface again while the visitor is already looking at this film.
     shot.stage.addEventListener('focusin', () => {
       shot.pendingEntrance = false;
       stop(shot);

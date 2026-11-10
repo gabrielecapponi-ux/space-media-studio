@@ -6,7 +6,7 @@ const scenes = {
       <section class="phase-hero" aria-labelledby="site-title">
         <div class="phase-intro"><p class="phase-label"><i></i>CAMPIONATORE STEREO</p><h1 id="site-title">PHASE <span>01</span></h1><p class="phase-description">Campiona, taglia, suona. Sedici pad sotto le dita e una ruota per trovare il punto esatto di ogni suono.</p>
           <fieldset class="phase-editions"><legend>Configurazione</legend><button type="button" data-edition="Studio" aria-pressed="true">Studio</button><button type="button" data-edition="Live" aria-pressed="false">Live</button></fieldset>
-          <p class="phase-bundle" data-bundle>Strumento e alimentatore</p>
+          <p class="phase-bundle" data-bundle aria-live="polite">Strumento e alimentatore</p>
           <button class="phase-buy" data-buy type="button"><span>Aggiungi al carrello</span><span data-price>€690</span></button>
         </div>
         <figure class="phase-photo"><img src="./phase-01/hero.webp" alt="Sampler SHIFT PHASE 01 in alluminio, con sedici pad ambra, display di forma d’onda e ruota di controllo." width="1800" height="1350" fetchpriority="high" /></figure>
@@ -56,7 +56,19 @@ const editions = {
 let selectedEdition = 'Studio';
 const cart = new Map();
 const escape = text => String(text).replace(/[&<>"']/g, ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
-function open(title, html) { dialogTitle.textContent=title;dialogContent.innerHTML=html;dialog.showModal(); }
+let dialogTrigger;
+function open(title, html, trigger) {
+  dialogTrigger = trigger;
+  dialogTitle.textContent = title;
+  dialogContent.innerHTML = html;
+  dialog.showModal();
+  dialog.querySelector('.dialog-close').focus({ preventScroll: true });
+}
+dialog.addEventListener('close', () => {
+  const trigger = dialogTrigger;
+  dialogTrigger = undefined;
+  if (trigger?.isConnected) trigger.focus({ preventScroll: true });
+});
 function cartContent() {
   if (!cart.size) return '<p>Il carrello demo è vuoto. Aggiungi il prodotto per provare il percorso.</p>';
   const rows = [...cart.entries()].map(([edition, quantity]) => {
@@ -82,17 +94,22 @@ document.addEventListener('click', event => {
    cart.set(edition, (cart.get(edition) || 0) + 1);
    const quantity = [...cart.values()].reduce((total, count) => total + count, 0);
    document.querySelectorAll('.cart-count').forEach(el => el.textContent = String(quantity));
-   open('È nella tua demo.', cartContent());
+   open('È nella tua demo.', cartContent(), button);
  }
- if(button.matches('[data-cart]'))open('Il tuo carrello.',cartContent());
- if(button.matches('[data-consult]'))open('Un momento per te.',formContent('consult'));
- if(button.matches('[data-book]'))open('Ci vediamo a tavola.',formContent('book'));
- if(button.matches('[data-join]'))open('Facciamo spazio alle persone.',formContent('join'));
+ if(button.matches('[data-cart]'))open('Il tuo carrello.',cartContent(),button);
+ if(button.matches('[data-consult]'))open('Un momento per te.',formContent('consult'),button);
+ if(button.matches('[data-book]'))open('Ci vediamo a tavola.',formContent('book'),button);
+ if(button.matches('[data-join]'))open('Facciamo spazio alle persone.',formContent('join'),button);
  if(button.matches('.dialog-close'))dialog.close();
  if(button.matches('[data-finish]')){dialog.close();status.textContent='Percorso demo completato. Nessun acquisto effettuato.';}
 });
 dialog.addEventListener('click',event=>{if(event.target===dialog){const r=dialog.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)dialog.close();}});
-dialog.addEventListener('submit',event=>{if(!event.target.matches('[data-demo-form]'))return;event.preventDefault();dialogContent.innerHTML='<p class="demo-confirmation">Il percorso funziona.<br /><strong>Il prossimo può essere il tuo.</strong></p><a class="dialog-primary" href="../#atelier-idea-web">Parlane con Space Media Studio ↗</a>';});
+dialog.addEventListener('submit',event=>{
+  if(!event.target.matches('[data-demo-form]'))return;
+  event.preventDefault();
+  dialogContent.innerHTML='<p class="demo-confirmation" tabindex="-1">Il percorso funziona.<br /><strong>Il prossimo può essere il tuo.</strong></p><a class="dialog-primary" href="../#atelier-idea-web">Parlane con Space Media Studio ↗</a>';
+  dialogContent.querySelector('.demo-confirmation').focus({ preventScroll: true });
+});
 if (document.body.classList.contains('capture')) {
   document.querySelectorAll('#demo img[loading=lazy]').forEach(image => { image.loading = 'eager'; });
 }

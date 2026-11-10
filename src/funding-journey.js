@@ -1,4 +1,5 @@
-/** Original Space line film. Geometry, drawing order and camera are the editable master. */
+/** Space line film. Original bulb/dossier and Higgsfield vector architecture share one authored timeline. */
+import { fundingArtwork } from './funding-artwork.js';
 const DURATION = 22;
 const NS = 'http://www.w3.org/2000/svg';
 const SCENE_STARTS = [0, 3.1, 7.1, 11.1];
@@ -15,7 +16,7 @@ const phases = [
 // [path, start seconds, duration seconds, stroke width]. Fine strokes describe
 // materials and perspective; the stronger contours carry the story on a phone.
 // Incoming subjects begin before the camera arrives, so a title never meets an
-// empty stage. These are original drawings, not a collection of stock icons.
+// empty stage. The saved SVG and export recipe document the architectural source.
 const scenes = [
   [
     // A glass bulb, its inner filament and machined socket.
@@ -27,20 +28,7 @@ const scenes = [
     ['M-127-87L-146-96M-79-148L-91-167M0-174V-196M79-148L91-167M127-87L146-96', 2.3, .6, 1.65],
     ['M-145 139H-60C-37 139-31 131-24 128M24 128C31 131 37 139 60 139H145M-47 151H47', 2.65, .55, 1.35],
   ],
-  [
-    // Two distinct collaborators, their hands meeting over the same plan.
-    ['M-175 86L135 86L173 103H-139L-175 86M-139 103V146M140 103V146M-165 91V134', 3.05, .85, 2.4],
-    ['M-144-59C-157-69-159-97-147-118C-136-139-103-145-85-124C-73-112-74-95-71-86L-60-70L-73-66V-51C-74-33-95-29-113-38L-116-16M-143-61L-145-26', 3.25, .9, 2.6],
-    ['M-148-91C-138-84-121-89-113-102C-105-89-88-85-74-91M-145-79C-159-86-159-65-146-62M-90-75H-88M-78-53L-91-51', 4.1, .75, 1.4],
-    ['M-145-26L-165-8C-178 7-174 43-161 77M-115-16L-97-7L-80 24L-41 44M-145-9L-122 20L-89 47L-43 59M-158 47L-150 81M-121 34L-112 81', 3.55, .85, 2.4],
-    ['M-41 44L-28 43L-14 49L-18 54L-30 50L-38 53L-28 58L-30 63L-43 59M-123-6L-111 8L-99-5M-154 105L-148 144M-108 104L-112 144', 4.8, .7, 1.6],
-    ['M79-88C59-119 79-145 108-145C143-148 161-126 154-103C166-85 156-51 145-40L146-17M95-37L95-22M81-105C99-103 111-119 114-127C123-108 139-102 151-101', 3.3, .95, 2.6],
-    ['M79-88L70-72L82-68V-54C83-36 103-30 117-39M140-82C153-90 157-69 142-65M92-79H94M85-54L99-52M127-126C140-123 148-114 146-103', 4.6, .7, 1.4],
-    ['M95-22L77-9L61 19L31 42M146-17L164 1C179 20 174 59 161 83M140-2L117 34L84 56L42 62M141 42L130 82M105 44L97 82M111-22L123-6L140-15', 3.7, .85, 2.4],
-    ['M31 42L19 43L8 54L12 58L23 50L33 52L24 59L29 64L42 62M19 46L6 18L11 16L25 44M125 105L122 145M165 106L170 144', 5.2, .7, 1.6],
-    ['M-67 78L-47 59H37L65 78H-67M-33 63H2M-42 70H-4M17 64L30 70L21 75L8 69L17 64M-95 73H-78M77 72H93', 5.45, .8, 1.35],
-    ['M-38-111Q0-131 38-111M28-121L38-111L27-104M-26-102L-37-111L-26-118', 7, .55, 1.3],
-  ],
+  [], // Planning is derived from the saved Higgsfield vector artwork below.
   [
     // A structured application: layered dossier, section lines and budget rows.
     ['M-113-113H-89M-113-113V126H78V108M-100-122H-78M-100-122V114H88V99', 7.05, .75, 1.65],
@@ -53,30 +41,79 @@ const scenes = [
     ['M125-49L155-79L164-70L134-40L122-37L125-49M153-77L161-70M126-48L133-41M129-52L150-73', 10.55, .65, 1.5],
     ['M-163-39C-165-84-144-121-128-135M-139-133L-128-135L-128-123M126 127H159M-143 145H120', 11, .6, 1.3],
   ],
-  [
-    // A civic building in perspective: an idea becomes a shared, inhabited place.
-    ['M-181 143H181M-122 128L33 148L146 117M-122 119L33 139L146 108', 11.05, .75, 1.45],
-    ['M-114 117V-56L26-105L26 136M26-105L131-63V112M-114-56L-123-64L25-119L142-72L131-63M-114-45L26-92L131-51', 11.3, 1, 2.6],
-    ['M-121-64V-78L25-133L142-86V-72M-105-81L25-128L127-88', 12.05, .75, 1.4],
-    ['M-96-34L-72-42V-6L-96 2V-34M-54-48L-30-56V-20L-54-12V-48M-12-62L11-70V-34L-12-26V-62M-84-38V-2M-42-52V-16M0-66V-30', 12.55, .95, 1.65],
-    ['M45-77L68-68V-32L45-41V-77M88-60L112-51V-15L88-24V-60M56-73V-37M100-56V-20', 13.05, .8, 1.65],
-    ['M-96 25L-72 17V56L-96 63V25M-54 11L-30 3V42L-54 50V11M-96 38L-72 30M-54 24L-30 16M45-15L68-6V29L45 20V-15M88 2L112 11V47L88 38V2', 13.5, .95, 1.55],
-    ['M-17 130V44C-17 25 11 16 11 35V134M-3 32V132M1 79V88M43 134V64L68 73V126M55 69V130M84 119V80L112 91V112', 14.1, .8, 1.9],
-    ['M-165 135V49M-165 86C-187 83-196 68-185 55C-202 37-187 11-169 20C-157 0-133 11-135 29C-113 33-116 59-134 63C-129 80-146 89-165 86M-165 68L-178 55M-165 62L-149 43', 14.55, .9, 1.75],
-    ['M151 112L154 83Q160 75 168 83L172 108M157 68A7 7 0 1 1 171 68A7 7 0 1 1 157 68M154 88L141 97M168 90L179 82M158 113L156 132M167 110L172 129', 15, .85, 1.9],
-    ['M-64 125L-61 98Q-55 90-48 98L-44 126M-59 83A7 7 0 1 1-45 83A7 7 0 1 1-59 83M-61 103L-73 111M-47 104L-35 96M-59 127L-62 140M-49 127L-44 142', 15.35, .85, 1.8],
-    ['M-93 92L-80 88M-78 100L-65 96M55-150V-168M70-141L83-154M34-148L24-160', 15.8, .7, 1.25],
-  ],
+  [], // The final pavilion uses the same architecture, with no human figures.
 ];
+
+
+// The same drafting object appears first as a plan/plinth and later as a complete
+// exploded pavilion. Transforms recompose the saved vector groups without tracing,
+// rasterising or discarding their detail. Time is always the film's single clock.
+const artworkScenes = {
+  1: {
+    transform: 'translate(-244.4 -300.8) scale(.47)',
+    parts: [
+      { name: 'blueprint', start: 3.05, spread: 2.15, duration: .7, guides: [1, 8] },
+      { name: 'floor', transform: 'translate(0 -140)', start: 3.15, spread: 2, duration: .75, guides: [1] },
+      { name: 'details', start: 4.5, spread: 1.8, duration: .65, guides: [] },
+    ],
+  },
+  3: {
+    transform: 'translate(-228.8 -233.2) scale(.44)',
+    parts: [
+      { name: 'blueprint', start: 11.05, spread: 1.35, duration: .65, guides: [1] },
+      { name: 'floor', start: 11.3, spread: 1.5, duration: .75, guides: [1] },
+      { name: 'facade', start: 11.65, spread: 2.4, duration: .85, guides: [0] },
+      { name: 'roof', start: 12.05, spread: 2.4, duration: .8, guides: [0] },
+      { name: 'details', start: 14.2, spread: 1.5, duration: .6, guides: [] },
+    ],
+  },
+};
+function architecturalScene(index, guide = false) {
+  const scene = artworkScenes[index];
+  let markup = `<g transform="${scene.transform}"${guide ? '' : ' data-artwork-source="higgsfield"'}>`;
+  for (const part of scene.parts) {
+    const shapes = fundingArtwork.groups[part.name];
+    markup += `<g${part.transform ? ` transform="${part.transform}"` : ''}>`;
+    shapes.forEach((shape, i) => {
+      if (guide && !part.guides.includes(i)) return;
+      const attrs = { ...shape.attrs };
+      // Source artwork is 1024 square; these compensations keep fine details
+      // legible after composing it beside the bulb and dossier on a phone.
+      attrs['stroke-width'] = guide ? '2.4' : String(Number(Math.max(1.4, Number(attrs['stroke-width'] || 1) * 1.75).toFixed(3)));
+      if (guide) { attrs.fill = 'none'; delete attrs['fill-opacity']; }
+      const attributes = Object.entries(attrs).map(([key, value]) => ` ${key}="${value}"`).join('');
+      const start = Number((part.start + part.spread * i / Math.max(1, shapes.length - 1)).toFixed(3));
+      const role = index === 1 && part.name === 'blueprint' && i === 1 ? ' data-draw-role="planning-outline"' : '';
+      const fill = !guide && attrs.fill && attrs.fill !== 'none' ? ` data-fill="${attrs['fill-opacity'] || 1}"` : '';
+      const draw = guide ? '' : ` pathLength="1" data-artwork="${part.name}-${i}" data-draw="${start},${part.duration}"${role}${fill}`;
+      // Group opacity preserves the source's hierarchy when the draw controller
+      // temporarily hides an individual shape. Fills themselves reveal gently.
+      markup += `${!guide && shape.opacity < 1 ? `<g opacity="${shape.opacity}">` : ''}<${shape.tag}${attributes}${draw}/>${!guide && shape.opacity < 1 ? '</g>' : ''}`;
+    });
+    markup += '</g>';
+  }
+  return `${markup}</g>`;
+}
 
 function layout(portrait) {
   return portrait
     ? { width: 800, height: 1000, points: [[220, 370], [580, 370], [220, 690], [580, 690]], zoom: 1.9, sceneScale: .85, focusY: 580 }
     : { width: 1600, height: 900, points: [[230, 470], [610, 470], [990, 470], [1370, 470]], zoom: 2, sceneScale: 1, focusY: 522 };
 }
-function connector(a, b, vertical, scale) {
-  if (vertical) return `M${a[0] + 173 * scale} ${a[1] + 103 * scale}C780 ${a[1] + 103 * scale} 780 535 695 535H126Q33 535 33 612V764Q33 ${b[1] + 145 * scale} ${b[0] - 143 * scale} ${b[1] + 145 * scale}`;
-  return `M${a[0] + 145 * scale} ${a[1] + 139 * scale}C${a[0] + 195 * scale} ${a[1] + 139 * scale} ${b[0] - 210 * scale} ${b[1] + 143 * scale} ${b[0] - 175 * scale} ${b[1] + 143 * scale}`;
+// Connection points belong to the actual illustrated ground planes. In
+// particular the blueprint plinth ends above the old people/table baseline.
+const scenePorts = [
+  { out: [145, 139] },
+  { in: [-174.4, 105.3], out: [143.4, 121.3] },
+  { in: [-143, 145], out: [120, 145] },
+  { in: [-163.2, 147] },
+];
+function connector(a, b, index, vertical, scale) {
+  const from = scenePorts[index].out, to = scenePorts[index + 1].in;
+  const x1 = a[0] + from[0] * scale, y1 = a[1] + from[1] * scale;
+  const x2 = b[0] + to[0] * scale, y2 = b[1] + to[1] * scale;
+  if (vertical) return `M${x1} ${y1}C780 ${y1} 780 535 695 535H126Q33 535 33 612V764Q33 ${y2} ${x2} ${y2}`;
+  return `M${x1} ${y1}C${x1 + 50 * scale} ${y1} ${x2 - 45 * scale} ${y2} ${x2} ${y2}`;
 }
 export function fundingJourneySvg(portrait = false, poster = false) {
   const l = layout(portrait);
@@ -86,19 +123,21 @@ export function fundingJourneySvg(portrait = false, poster = false) {
   if (!poster) {
     markup += '<g data-journey-guides opacity=".13" stroke-width="1.15">';
     scenes.forEach((scene, i) => {
-      const contour = i === 1 ? [scene[0], scene[1], scene[5]] : i === 2 ? [scene[1]] : i === 3 ? [scene[1]] : [scene[0], scene[1]];
-      markup += `<path data-journey-guide="${i}" transform="translate(${l.points[i].join(' ')}) scale(${l.sceneScale})" d="${contour.map(path => path[0]).join('')}"/>`;
+      const transform = `translate(${l.points[i].join(' ')}) scale(${l.sceneScale})`;
+      const contour = i === 2 ? [scene[1]] : scene.slice(0, 2);
+      markup += `<g data-journey-guide="${i}" transform="${transform}">${artworkScenes[i] ? architecturalScene(i, true) : `<path d="${contour.map(path => path[0]).join('')}"/>`}</g>`;
     });
     markup += '</g>';
   }
   markup += '<g data-journey-ink>';
   for (let i = 0; i < scenes.length; i++) {
     markup += `<g data-journey-scene="${i}" transform="translate(${l.points[i].join(' ')}) scale(${l.sceneScale})">`;
-    scenes[i].forEach(([d, start, duration, width]) => {
-      markup += `<path d="${d}" stroke-width="${width}" pathLength="1" data-draw="${start},${duration}"/>`;
+    if (artworkScenes[i]) markup += architecturalScene(i);
+    else scenes[i].forEach(([d, start, duration, width]) => {
+      markup += `<path d="${d}" stroke-width="${Number((width * .86).toFixed(3))}" pathLength="1" data-draw="${start},${duration}"/>`;
     });
     markup += '</g>';
-    if (i < scenes.length - 1) markup += `<g data-journey-link="${i}"><path d="${connector(l.points[i], l.points[i + 1], portrait && i === 1, l.sceneScale)}" data-journey-connector="${i}" pathLength="1" data-draw="${2.8 + i * 4},1.4" stroke-width="1.2"/></g>`;
+    if (i < scenes.length - 1) markup += `<g data-journey-link="${i}"><path d="${connector(l.points[i], l.points[i + 1], i, portrait && i === 1, l.sceneScale)}" data-journey-connector="${i}" pathLength="1" data-draw="${2.8 + i * 4},1.4" stroke-width="1.2"/></g>`;
   }
   markup += `</g></g><rect width="100%" height="${portrait ? 180 : 150}" fill="#dfff00" stroke="none"/><rect y="${portrait ? 855 : 820}" width="100%" height="${portrait ? 145 : 80}" fill="#dfff00" stroke="none"/></svg>`;
   if (poster) markup = markup.replaceAll(/ data-[a-z-]+(?:="[^"]*")?/g, '');
@@ -171,6 +210,10 @@ export function installFundingJourney({ signal, menu } = {}) {
       if (offset !== path.offset) { path.element.style.strokeDashoffset = offset; path.offset = offset; }
       const visibility = amount > 0 ? '1' : '0';
       if (visibility !== path.visibility) { path.element.style.opacity = visibility; path.visibility = visibility; }
+      if (path.fill != null) {
+        const fill = String(Number((path.fill * (staticFrame ? 1 : ease((amount - .08) / .86))).toFixed(4)));
+        if (fill !== path.fillValue) { path.element.style.fillOpacity = fill; path.fillValue = fill; }
+      }
     });
     sceneNodes.forEach((node, i) => {
       // Only the current story and its incoming neighbour occupy the close-up.
@@ -222,7 +265,8 @@ export function installFundingJourney({ signal, menu } = {}) {
     paths = [...svg.querySelectorAll('[data-draw]')].map(element => {
       const [start, duration] = element.dataset.draw.split(',').map(Number);
       element.style.strokeDasharray = '1';
-      return { element, start, duration };
+      const fill = element.dataset.fill == null ? null : Number(element.dataset.fill);
+      return { element, start, duration, fill };
     });
     cameraValue = inkValue = undefined;
     phase = -1;

@@ -10,6 +10,7 @@ import { installOskenMotion } from './atelier-osken-motion.js';
 import './funding-journey.css';
 import { installMobileNavigation } from './mobile-navigation.js';
 import './mobile-polish.css';
+import './cinematic-polish.css';
 
 const lifetime = new AbortController();
 const { signal } = lifetime;
