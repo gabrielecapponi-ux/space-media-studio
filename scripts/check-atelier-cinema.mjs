@@ -658,7 +658,7 @@ await test('Both HTML entries keep responsive lazy picture fallbacks, compact in
       assert.equal(image.loading, 'lazy'); assert.equal(image.decoding, 'async'); assert.equal(image.fetchpriority, 'low'); assert.equal(image.alt, '');
       assert.match(body.slice(body.indexOf('</div>') + 6), /<figcaption/);
       assert.match(body.slice(body.indexOf('</div>') + 6), /data-media-toggle/);
-      const thumb = html.match(new RegExp(`<img[^>]+src="/images/(?:director|elegant)-${asset}-thumb\\.webp"[^>]+>`));
+      const thumb = html.match(new RegExp(`<img[^>]+src="/images/(?:director|elegant|cinematic)-${asset}(?:-[0-9]{8})?-thumb\\.webp"[^>]+>`));
       assert.ok(thumb, `${filename}/${asset} thumbnail`);
       const small = attrs(thumb[0]); assert.equal(small.width, '320'); assert.equal(small.height, '180'); assert.equal(small.fetchpriority, 'low');
       const bytes = await readFile(new URL(`../public${small.src}`, import.meta.url));

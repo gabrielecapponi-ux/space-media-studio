@@ -1,5 +1,17 @@
 # Provenienza dei materiali — Space Media Studio
 
+## Campagne e demo Web — revisione successiva del 10 novembre 2026
+
+I film attivi `cinematic-web-20261110*` e `cinematic-campaign-20261110*` sostituiscono nella build i rispettivi film precedenti, conservati senza modifiche nell’archivio e in `public/`. Entrambi offrono master nativi QHD 2560×1440/60 fps, HD 1920×1080/60, compact 1280×720/30 e regia portrait 720×900/30, dieci secondi. Non sono esportazioni 4K né frame interpolati. La ripresa UHD dell’acqua rimane invariata.
+
+La campagna SHIFT riutilizza le fotografie originali Cycles del campionatore con nuovi artwork nero/arancio e tre supporti grafite. Il materiale avorio dei bordi è stato sostituito nel disegno dei pannelli; non è nascosto ritagliando il film. Due master Blender editabili contengono le texture incorporate e le camere calibrate. La consegna usa un renderer proiettivo delle geometrie e delle fotografie, non una nuova sequenza path-traced di 600 frame. Ricette in `scripts/campaign-polish-20261110/`, master e manifest con hash, cadenza, loop e verifiche in `outputs/campaign-web-revision-20261110/campaign/`.
+
+Lo showreel Web usa catture delle cinque pagine funzionanti PHASE 01, CACAO ATELIER, LUMA, BASILICO e OLTRE a doppia densità. Camera, superfici grafite e raccordi sono originali; macro e fotografie PHASE 01 provengono dai master Cycles già documentati. Le demo sostituiscono VELA/NOVA e la vecchia OLTRE conservando le chiavi di navigazione. Ricette e manifest delle catture: `scripts/web-reel-polish-20261110/` e `outputs/campaign-web-revision-20261110/web/`. Nessun asset di un sito esterno viene incorporato.
+
+La scultura in rame OLTRE è una geometria originale Blender di 24.576 vertici, render Cycles trasparente 1200×1200 a 128 campioni; ricetta `public/showcase/oltre/build-artwork.py`, master e ricevute in `outputs/campaign-web-revision-20261110/showcase/orbit-final/`. Solo `orbit.webp` è incluso nella build. CACAO/LUMA riusano i prodotti Blender originali; BASILICO conserva il visual gastronomico AI preesistente. Eventi, prenotazioni, prodotti e prezzi delle demo sono esempi locali, senza invii, pagamenti o commesse reali dichiarate.
+
+Le cinque nuove miniature totalizzano 62.146 byte. `scripts/export-demo-previews.py` e il manifest in `outputs/campaign-web-revision-20261110/` ne registrano sorgenti e hash. Il nuovo titolo sulla goccia è HTML/CSS, senza ricodificare l’acqua. Le sezioni seguenti descrivono le revisioni storiche: i loro conteggi e file non identificano automaticamente la consegna attiva.
+
 ## Rifinitura cinematografica — 10 novembre 2026
 
 Il nuovo disegno dei bandi sostituisce le persone con tavole di progetto e un padiglione esploso. Il master vettoriale editabile è `src/artwork/funding-planning-master.svg`, generato tramite Higgsfield, modello GPT Image 2.6, job `f1b1dc02-899c-42be-a98e-599cced4491f`. Non è una mesh 3D né un film: è un'illustrazione SVG in prospettiva animata nel browser. Prompt, ricevuta e master ricevuto sono conservati in `outputs/cinematic-polish-20261110/higgsfield/`; l'adattamento conserva la linea sul giallo, i quattro titoli e la durata di 22 secondi. `scripts/export-funding-journey.mjs` riproduce il modulo di geometria e i due poster. Lampadina e dossier riutilizzano il disegno originale Space Media. Nessuna persona del percorso precedente resta nelle nuove tavole.

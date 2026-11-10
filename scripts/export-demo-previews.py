@@ -10,10 +10,10 @@ import subprocess
 ROOT = Path(__file__).resolve().parents[1]
 SOURCES = {
     'shift': 'showcase/phase-01/hero.webp',
-    'vela': 'images/reel-lamp.jpg',
-    'nova': 'images/reel-skincare.jpg',
+    'cacao': 'images/director-brand.jpg',
+    'luma': 'images/elegant-product.webp',
     'basilico': 'images/reel-food.jpg',
-    'oltre': 'images/atelier-campaign-detail.jpg',
+    'oltre-culture': 'showcase/oltre/orbit.webp',
 }
 rows = []
 for name, source in SOURCES.items():
@@ -25,7 +25,7 @@ for name, source in SOURCES.items():
                  'sourceSha256': hashlib.sha256(src.read_bytes()).hexdigest(),
                  'outputSha256': hashlib.sha256(dst.read_bytes()).hexdigest(),
                  'bytes': dst.stat().st_size, 'width': 480})
-out = ROOT / 'outputs' / 'cinematic-polish-20261110'
+out = ROOT / 'outputs' / 'campaign-web-revision-20261110'
 out.mkdir(parents=True, exist_ok=True)
 (out / 'demo-previews-manifest.json').write_text(json.dumps(rows, indent=2) + '\n')
 print(f'{len(rows)} previews, {sum(row["bytes"] for row in rows):,} bytes. Originals preserved.')

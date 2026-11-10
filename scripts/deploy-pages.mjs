@@ -1,8 +1,9 @@
-import { execFileSync, spawnSync } from "node:child_process";
-import { cpSync, mkdirSync, mkdtempSync, readdirSync, realpathSync, rmSync, writeFileSync } from "node:fs";
+import { execFileSync, spawn, spawnSync } from "node:child_process";
+import { cpSync, mkdirSync, mkdtempSync, readdirSync, realpathSync, renameSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { isAbsolute, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
+import { pipeline } from "node:stream/promises";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const repository = "gabrielecapponi-ux/space-media-studio";
@@ -67,27 +68,73 @@ export function parseReleaseArgs(args) {
   return args[1];
 }
 
-function publish(sourceRef) {
+export async function extractCommittedSource(repositoryDirectory, commit, sourceDirectory) {
+  // Own only a newly created directory. Never clean up a caller's existing path.
+  mkdirSync(sourceDirectory);
+  let archive;
+  let extract;
+  const observe = (child, label) => {
+    let stderr = "";
+    let spawnError;
+    child.stderr.on("data", (chunk) => { stderr = (stderr + chunk.toString()).slice(-65536); });
+    child.on("error", (error) => { spawnError = error; });
+    return new Promise((resolveResult) => {
+      child.on("close", (code, signal) => resolveResult(
+        spawnError || code !== 0
+          ? new Error(`${label} failed (${spawnError?.message || signal || code}): ${stderr.trim()}`)
+          : null,
+      ));
+    });
+  };
+  try {
+    if (!/^[a-f0-9]{40}$/.test(commit)) throw new Error("The source archive requires an immutable commit SHA.");
+    archive = spawn("git", ["archive", "--format=tar", commit], {
+      cwd: repositoryDirectory, stdio: ["ignore", "pipe", "pipe"],
+    });
+    const archiveResult = observe(archive, "git archive");
+    extract = spawn("tar", ["-xf", "-", "-C", sourceDirectory], {
+      cwd: repositoryDirectory, stdio: ["pipe", "ignore", "pipe"],
+    });
+    const extractResult = observe(extract, "tar extraction");
+    const streamResult = pipeline(archive.stdout, extract.stdin).then(() => null, (error) => {
+      archive.kill();
+      extract.kill();
+      return error;
+    });
+    const errors = (await Promise.all([archiveResult, extractResult, streamResult])).filter(Boolean);
+    if (errors.length) throw new AggregateError(errors, `Source extraction failed: ${errors.map((error) => error.message).join("; ")}`);
+  } catch (error) {
+    archive?.kill();
+    extract?.kill();
+    rmSync(sourceDirectory, { recursive: true, force: true });
+    throw error;
+  }
+}
+
+async function publish(sourceRef) {
   // Resolve once before network work. Never build the mutable working folder.
   const commit = read("git", ["rev-parse", "--verify", "--end-of-options", `${sourceRef}^{commit}`]);
   const release = mkdtempSync(join(tmpdir(), "space-media-release-"));
-  const sourceRepository = join(release, "repository");
   const sourceDirectory = join(release, "source");
+  const bundleDirectory = join(release, "bundle");
   const directory = join(release, "pages");
   try {
-    run("git", ["clone", "--no-checkout", "--single-branch", "--branch", "main", remote, sourceRepository]);
-    const publishedSource = spawnSync("git", ["merge-base", "--is-ancestor", commit, "refs/remotes/origin/main"], { cwd: sourceRepository });
+    // Verify remote main, then archive the immutable commit already in this
+    // repository. Dirty workspace files and other clients' local edits are never
+    // copied. This avoids duplicating the complete media history on a small disk.
+    const remoteHead = read("git", ["ls-remote", "--heads", remote, "refs/heads/main"]).split(/\s+/)[0];
+    if (!/^[a-f0-9]{40}$/.test(remoteHead)) throw new Error("Remote main could not be resolved.");
+    run("git", ["fetch", "--no-tags", remote, remoteHead]);
+    const publishedSource = spawnSync("git", ["merge-base", "--is-ancestor", commit, remoteHead], { cwd: root });
     if (publishedSource.status !== 0) {
       throw new Error(`Source ${commit} is not available on remote main. Push the intended source commit before deploying.`);
     }
-    mkdirSync(sourceDirectory);
-    const archive = join(release, "source.tar");
-    run("git", ["archive", "--format=tar", `--output=${archive}`, commit], sourceRepository);
-    run("tar", ["-xf", archive, "-C", sourceDirectory]);
-    rmSync(archive);
+    await extractCommittedSource(root, commit, sourceDirectory);
     run("npm", ["ci"], sourceDirectory);
     run("npm", ["test"], sourceDirectory);
     run("npm", ["run", "build"], sourceDirectory);
+    renameSync(join(sourceDirectory, "dist"), bundleDirectory);
+    rmSync(sourceDirectory, { recursive: true, force: true });
     const exists = read("git", ["ls-remote", "--heads", remote, "refs/heads/gh-pages"]);
     if (exists) {
       run("git", ["clone", "--depth", "1", "--single-branch", "--branch", "gh-pages", remote, directory]);
@@ -100,7 +147,7 @@ function publish(sourceRef) {
     if (!identity) throw new Error("Unable to resolve the current Git committer identity.");
     run("git", ["config", "user.name", identity[1]], directory);
     run("git", ["config", "user.email", identity[2]], directory);
-    replaceProductionBundle(resolve(sourceDirectory, "dist"), directory);
+    replaceProductionBundle(bundleDirectory, directory);
     run("git", ["add", "--all"], directory);
     const changes = spawnSync("git", ["diff", "--cached", "--quiet"], { cwd: directory });
     if (changes.status === 1) {
@@ -116,4 +163,4 @@ function publish(sourceRef) {
   }
 }
 
-if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) publish(parseReleaseArgs(process.argv.slice(2)));
+if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) await publish(parseReleaseArgs(process.argv.slice(2)));

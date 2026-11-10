@@ -1,8 +1,9 @@
 import assert from "node:assert/strict";
-import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
-import { join } from "node:path";
+import { execFileSync } from "node:child_process";
+import { chmodSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
+import { delimiter, join } from "node:path";
 import { tmpdir } from "node:os";
-import { parseReleaseArgs, replaceProductionBundle } from "./deploy-pages.mjs";
+import { extractCommittedSource, parseReleaseArgs, replaceProductionBundle } from "./deploy-pages.mjs";
 
 let groups = 0;
 function test(name, check) {
@@ -80,5 +81,70 @@ test("Requires an explicit source ref and rejects extra options", () => {
     assert.throws(() => parseReleaseArgs(args), /Usage:/);
   }
 });
+
+const archiveRoot = mkdtempSync(join(tmpdir(), "space-archive-test-"));
+try {
+  const repository = join(archiveRoot, "repository");
+  mkdirSync(repository);
+  const git = (...args) => execFileSync("git", args, { cwd: repository, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }).trim();
+  git("init", "-b", "main");
+  writeFileSync(join(repository, "index.html"), "committed home");
+  git("add", "index.html");
+  git("-c", "user.name=Deploy Test", "-c", "user.email=deploy@example.test", "commit", "-m", "Initial fixture");
+  const commit = git("rev-parse", "HEAD");
+  writeFileSync(join(repository, "later.txt"), "later commit");
+  git("add", "later.txt");
+  git("-c", "user.name=Deploy Test", "-c", "user.email=deploy@example.test", "commit", "-m", "Later fixture");
+  writeFileSync(join(repository, "index.html"), "dirty home");
+  writeFileSync(join(repository, "private.txt"), "untracked local content");
+  const status = git("status", "--porcelain");
+  const destination = join(archiveRoot, "extracted");
+  await extractCommittedSource(repository, commit, destination);
+  assert.equal(readFileSync(join(destination, "index.html"), "utf8"), "committed home");
+  for (const excluded of ["later.txt", "private.txt", ".git"]) assert.equal(existsSync(join(destination, excluded)), false);
+  assert.equal(readFileSync(join(repository, "index.html"), "utf8"), "dirty home");
+  assert.equal(git("status", "--porcelain"), status);
+  groups += 1;
+  console.log("PASS Streams the exact immutable commit and preserves dirty/untracked source files");
+
+  const invalidDestination = join(archiveRoot, "invalid");
+  let continued = false;
+  await assert.rejects(async () => {
+    await extractCommittedSource(repository, "f".repeat(40), invalidDestination);
+    continued = true;
+  }, (error) => error instanceof AggregateError && error.errors.some((cause) => /git archive failed/.test(cause.message)));
+  assert.equal(continued, false);
+  assert.equal(existsSync(invalidDestination), false);
+  assert.equal(git("status", "--porcelain"), status);
+  groups += 1;
+  console.log("PASS Rejects a missing commit, prevents continuation and cleans partial extraction");
+
+  await assert.rejects(() => extractCommittedSource(repository, commit, destination), /EEXIST/);
+  assert.equal(readFileSync(join(destination, "index.html"), "utf8"), "committed home");
+  groups += 1;
+  console.log("PASS Never replaces or cleans an existing extraction directory");
+
+  const toolDirectory = join(archiveRoot, "tools");
+  mkdirSync(toolDirectory);
+  const failingTar = join(toolDirectory, "tar");
+  writeFileSync(failingTar, `#!${process.execPath}\nconst fs = require("node:fs");\nconst path = require("node:path");\nfs.writeFileSync(path.join(process.argv.at(-1), "partial.txt"), "partial");\nprocess.stderr.write("intentional extractor failure");\nprocess.exit(23);\n`);
+  chmodSync(failingTar, 0o755);
+  const failingDestination = join(archiveRoot, "failed-extraction");
+  const originalPath = process.env.PATH;
+  try {
+    process.env.PATH = `${toolDirectory}${delimiter}${originalPath || ""}`;
+    await assert.rejects(() => extractCommittedSource(repository, commit, failingDestination),
+      (error) => error instanceof AggregateError && error.errors.some((cause) => /tar extraction failed.*intentional extractor failure/.test(cause.message)));
+  } finally {
+    if (originalPath === undefined) delete process.env.PATH;
+    else process.env.PATH = originalPath;
+  }
+  assert.equal(existsSync(failingDestination), false);
+  assert.equal(git("status", "--porcelain"), status);
+  groups += 1;
+  console.log("PASS Propagates extractor failure and cleans partially written files");
+} finally {
+  rmSync(archiveRoot, { recursive: true, force: true });
+}
 
 console.log(JSON.stringify({ groups, browser: false, remoteRequests: false }));

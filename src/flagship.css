@@ -1,4 +1,4 @@
-/* A masthead, a projection aperture and a single strip of transport controls. */
+/* The headline sits on the photographic aperture; transport stays below it. */
 .flagship-site {
   --stage-ink: #090b0b;
   --header-height: clamp(66px, 9svh, 88px);
@@ -33,12 +33,17 @@
   margin-bottom: clamp(8px, 1.2vh, 14px);
 }
 .flagship-hero #atelier-title {
+  position: absolute;
+  top: clamp(18px, 4cqh, 36px);
+  left: clamp(16px, 2.4cqw, 32px);
+  margin: 0;
   width: max-content;
-  max-width: 100%;
+  max-width: calc(100% - clamp(32px, 4.8cqw, 64px));
   font-weight: 500;
-  font-size: clamp(40px, 10.2vw, 196px);
-  line-height: .89;
+  font-size: clamp(20px, min(9.6cqw, 15cqh), 160px);
+  line-height: .94;
   letter-spacing: -.079em;
+  text-shadow: 0 2px 16px #0006;
   transform-origin: left center;
   transition: transform 1.15s cubic-bezier(.16,.75,.15,1);
 }
@@ -56,6 +61,17 @@
 }
 /* The aperture follows the native film. No repeated banks or optical crop. */
 .flagship-water-stage { container-type: size; }
+.flagship-water-stage { --title-film-ratio: 1.777777778; --title-film-inverse: .5625; }
+.flagship-title-frame {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  width: min(100%, calc(100cqh * var(--title-film-ratio)));
+  height: min(100%, calc(100cqw * var(--title-film-inverse)));
+  margin: auto;
+  container-type: size;
+  pointer-events: none;
+}
 .flagship-water-stage .flagship-water-poster,
 .flagship-water-stage img,
 .flagship-water-stage .atelier-film {
@@ -170,7 +186,7 @@
   }
   .flagship-masthead { padding-top: 12px; }
   .flagship-location { margin-bottom: 8px; }
-  .flagship-hero #atelier-title { font-size: min(10.2vw, 11svh, 196px); }
+  .flagship-hero #atelier-title { font-size: min(9.6cqw, 15cqh, 11svh, 160px); }
   .flagship-water-stage { aspect-ratio: auto; background: var(--stage-ink); }
 }
 @media (min-width: 992px) {
@@ -208,10 +224,10 @@
 @media (max-width: 1024px) and (orientation: portrait) {
   .flagship-hero.atelier-hero { height: auto; gap: 14px; padding-bottom: max(24px, var(--safe-bottom)); }
   .flagship-masthead { container-type: inline-size; }
-  .flagship-hero #atelier-title { font-size: 11.5cqw; }
+  .flagship-hero #atelier-title { font-size: 9.6cqw; }
   .flagship-masthead { padding-top: 15px; }
   .flagship-location { margin-bottom: 12px; }
-  .flagship-water-stage { margin-inline: calc(-1 * var(--gutter)); aspect-ratio: 4 / 5; }
+  .flagship-water-stage { margin-inline: calc(-1 * var(--gutter)); aspect-ratio: 4 / 5; --title-film-ratio: .8; --title-film-inverse: 1.25; }
   .flagship-baseline { grid-template-columns: 1fr 1fr; gap: 3px 8px; }
   .flagship-baseline .atelier-hero-promise { grid-column: 1 / -1; max-width: 37ch; font-size: 15px; }
   .flagship-film-controls { gap: 10px; white-space: nowrap; }
@@ -254,7 +270,7 @@
   .flagship-hero.atelier-hero { height: auto; gap: 10px; }
   .flagship-location { margin-bottom: 4px; }
   .flagship-masthead { padding-top: 4px; }
-  .flagship-hero #atelier-title { font-size: 11svh; }
+  .flagship-hero #atelier-title { font-size: min(11svh, 9.6cqw); }
   .flagship-baseline { display: flex; justify-content: space-between; }
   .flagship-baseline .atelier-hero-promise { max-width: 30ch; font-size: 12px; }
   .flagship-site .atelier-mobile-menu nav {
@@ -269,6 +285,14 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .flagship-hero[data-impact] #atelier-title { transform: none; }
+}
+/* A playing film keeps its source on rotation. Follow that exact image plane,
+   while the static poster continues to follow the responsive media query. */
+.flagship-hero[data-frame="true"] .flagship-water-stage:has(video:is([data-profile="mobile"], [data-profile="phone"])) {
+  --title-film-ratio: .8; --title-film-inverse: 1.25;
+}
+.flagship-hero[data-frame="true"] .flagship-water-stage:has(video:is([data-profile="desktop"], [data-profile="hd"])) {
+  --title-film-ratio: 1.777777778; --title-film-inverse: .5625;
 }
 
 /* Same aperture and optical centre on either side of the monitor handoff. */
