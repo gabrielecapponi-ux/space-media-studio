@@ -49,6 +49,9 @@ export function createStudioRoom(container, { reduced = false, drawScreen, model
   const cameraUp = new THREE.Vector3().crossVectors(direction, cameraRight).normalize();
   const corner = new THREE.Vector3();
   let secondaryScreen;
+  let blackbox = false;
+  const turnAxis = new THREE.Vector3(0, 1, 0);
+  const turn = new THREE.Quaternion();
 
   function state(value) {
     container.dataset.scene = value;
@@ -95,6 +98,11 @@ export function createStudioRoom(container, { reduced = false, drawScreen, model
   function frameCamera() {
     const aspect = width / height;
     camera.aspect = aspect;
+    if (blackbox) {
+      camera.fov = aspect < .8 ? 2 * Math.atan(16 / 38) * 180 / Math.PI : 2 * Math.atan(18 / 40 / Math.min(aspect, 16 / 9)) * 180 / Math.PI;
+      camera.updateProjectionMatrix();
+      return;
+    }
     const tan = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
     let distance = 0;
     for (const x of [-4.95, 4.95]) for (const y of [-.35, 4.05]) for (const z of [-3.2, 3.4]) {
@@ -113,6 +121,23 @@ export function createStudioRoom(container, { reduced = false, drawScreen, model
   }
 
   function cameraPose() {
+    if (blackbox) {
+      const q = smooth(progress / .73);
+      const close = smooth((progress - .73) / .27);
+      const vertical = width / height < .8;
+      start.set(...(vertical ? [-3.2, 3.3, 8.1] : [-3.8, 3.4, 7.5]));
+      end.set(...(vertical ? [5.1, 3.55, 10.8] : [4.8, 3.5, 9.1]));
+      camera.position.lerpVectors(start, end, q);
+      end.set(...(vertical ? [4.4, 3, 9.9] : [3.5, 2.65, 6.4]));
+      camera.position.lerp(end, close);
+      start.set(-.72, 2.65, .85);
+      end.set(...(vertical ? [.55, 1.95, -.7] : [.30, 1.85, -.9]));
+      look.lerpVectors(start, end, q);
+      end.set(...(vertical ? [1.55, 1.90, -.6] : [1.15, 1.90, -.6]));
+      look.lerp(end, close);
+      camera.lookAt(look);
+      return;
+    }
     const t = reduced ? (zoom === 1 ? 1 : 0) : smooth(zoom);
     // Constant apparent magnification through the push. Linear translation
     // otherwise bunches most of the visual acceleration against the display.
@@ -126,9 +151,15 @@ export function createStudioRoom(container, { reduced = false, drawScreen, model
     if (!model || disposed || failed) return;
     for (const item of tracks) {
       const t = phase(progress, item.from, item.to);
-      item.object.visible = t > .0001;
+      item.object.visible = item.always || t > .0001;
       item.object.position.copy(item.position);
       item.object.scale.copy(item.scale);
+      item.object.quaternion.copy(item.quaternion);
+      if (item.always && !reduced) {
+        item.object.scale.multiplyScalar(1 + (item.scaleFrom - 1) * (1 - t));
+        turn.setFromAxisAngle(turnAxis, item.rotationY * (1 - t));
+        item.object.quaternion.premultiply(turn);
+      }
       if (!reduced) item.object.position.addScaledVector(item.offset, 1 - t);
       if (item.axis) item.object.scale[item.axis] *= Math.max(.001, t);
     }
@@ -217,11 +248,11 @@ export function createStudioRoom(container, { reduced = false, drawScreen, model
   try {
     renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'low-power' });
     renderer.outputColorSpace = THREE.SRGBColorSpace;
-    renderer.toneMapping = THREE.NeutralToneMapping;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.05;
-    renderer.setClearColor(0x090b10, 0);
+    renderer.setClearColor(0x050706, 1);
     renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFShadowMap;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.shadowMap.autoUpdate = false;
     renderer.domElement.className = 'studio-room-canvas';
     renderer.domElement.setAttribute('aria-hidden', 'true');
@@ -233,19 +264,22 @@ export function createStudioRoom(container, { reduced = false, drawScreen, model
     environment = pmrem.fromScene(roomEnvironment, .04);
     roomEnvironment.dispose(); pmrem.dispose();
     scene.environment = environment.texture;
-    scene.environmentIntensity = .45;
-    scene.add(new THREE.HemisphereLight(0xf7f1e2, 0x363d36, .8));
-    const key = new THREE.DirectionalLight(0xfff4db, 2.7);
+    scene.environmentIntensity = .32;
+    scene.add(new THREE.HemisphereLight(0xf8f5e8, 0x070a08, .32));
+    const key = new THREE.DirectionalLight(0xfff7e6, 3.4);
     key.position.set(-3.8, 8, 7.5); key.target.position.set(0, .8, -.4);
     key.castShadow = true;
     const compact = matchMedia('(max-width: 760px)').matches;
-    key.shadow.mapSize.set(compact ? 512 : 1024, compact ? 512 : 1024);
+    key.shadow.mapSize.set(compact ? 1024 : 2048, compact ? 1024 : 2048);
     Object.assign(key.shadow.camera, { left: -7, right: 7, top: 7, bottom: -5, near: .5, far: 24 });
     key.shadow.normalBias = .025; key.shadow.bias = -.0001;
     key.shadow.radius = 3;
     scene.add(key, key.target);
-    const fill = new THREE.DirectionalLight(0xc8dce5, .65);
+    const fill = new THREE.DirectionalLight(0xf5ffe1, 1.15);
     fill.position.set(6, 4, -2); scene.add(fill);
+    const rim = new THREE.SpotLight(0xdfff00, 75, 15, Math.PI / 3, .8, 2);
+    rim.position.set(-3.6, 3.6, -2.4); rim.target.position.set(-.5, 2, -2.6);
+    scene.add(rim, rim.target);
     const groundGeo = new THREE.PlaneGeometry(40, 40); geometries.add(groundGeo);
     const groundMat = new THREE.ShadowMaterial({ opacity: .2 }); materials.add(groundMat);
     const ground = new THREE.Mesh(groundGeo, groundMat);
@@ -254,17 +288,20 @@ export function createStudioRoom(container, { reduced = false, drawScreen, model
     observer = new ResizeObserver(resize); observer.observe(container);
     document.addEventListener('visibilitychange', visibility);
     resize();
-    const url = new URL(`${import.meta.env.BASE_URL}models/studio-space-20261105.glb`, document.baseURI).href;
+    const url = new URL(`${import.meta.env.BASE_URL}models/studio-blackbox-20261112.glb`, document.baseURI).href;
     const loader = new GLTFLoader();
     const modelReady = modelBytes ? loader.parseAsync(modelBytes, new URL('.', url).href) : loader.loadAsync(url);
     modelReady.then(gltf => {
       if (disposed || failed) { releaseModel(gltf.scene); return; }
       try {
         model = gltf.scene;
+        blackbox = Boolean(model.getObjectByName('SPACE_Studio')?.userData.entryEdition);
         model.traverse(object => {
           if (object.isMesh) { object.castShadow = true; object.receiveShadow = true; }
           if (Number.isFinite(object.userData.entryFrom)) {
             tracks.push({ object, position: object.position.clone(), scale: object.scale.clone(),
+              quaternion: object.quaternion.clone(), always: Boolean(object.userData.entryAlways),
+              rotationY: object.userData.entryRotationY || 0, scaleFrom: object.userData.entryScaleFrom || 1,
               from: object.userData.entryFrom, to: object.userData.entryTo,
               offset: new THREE.Vector3(...object.userData.entryOffset), axis: object.userData.entryScaleAxis });
           }
@@ -287,7 +324,7 @@ export function createStudioRoom(container, { reduced = false, drawScreen, model
         secondary.material = new THREE.MeshBasicMaterial({ map: identity, toneMapped: false });
         materials.add(secondary.material);
         replacedDisplays.forEach(material => material.dispose());
-        scene.add(model); repaintHero();
+        scene.add(model); frameCamera(); repaintHero();
         renderer.shadowMap.needsUpdate = true;
         pose();
       } catch { useFallback(); }

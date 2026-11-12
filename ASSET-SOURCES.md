@@ -1,5 +1,15 @@
 # Provenienza dei materiali — Space Media Studio
 
+## Blackbox, CACAO e campagne — 12 novembre 2026
+
+La nuova apertura riutilizza il master originale dello studio e aggiunge una scultura Space con foro reale, struttura luminosa in titanio, monitor audio, console rotativa e campioni di materiale. Architettura, finiture, fondale continuo, illuminazione e camera sono rifatti in nero, bianco e giallo. Non sono acquisiti nuovi modelli, HDR o film generativi. L’acqua e LUMA sui monitor sono immagini originali già documentate, incorporate nei master. Il GLB contiene geometria e metadati di diciannove gruppi; il runtime Three.js riproduce la costruzione se il film non può avviarsi.
+
+Il film Blackbox ha 288 fotogrammi nativi QHD 60 e 144 nativi portrait 1080×1920/30; dura 4,8 secondi, con HD derivato. CACAO e SHIFT hanno ciascuno 480 fotogrammi QHD 60 e 240 portrait 1080×1350/30, durata 8 secondi, più HD 60 e compact 30 derivati. Sono render Blender Cycles con denoise, senza interpolazione o ingrandimento artificiale; nessuna dichiarazione 4K. I fotogrammi iniziali reali alimentano i poster. Le tre scene mantengono master, ricette, firme dei chunk e manifest con hash; gli export si verificano per decodifica completa, cadenza, unicità e faststart.
+
+CACAO riutilizza il cofanetto originale, con coperchio sulla cerniera, sei tavolette animate, materiali carta/lamina/cioccolato e camera macro dedicata. SHIFT riutilizza la geometria del campionatore PHASE 01: jog wheel e pad sono animati fisicamente; tre pannelli grafite portano artwork stampati nero/arancio. I pannelli sono veri oggetti tridimensionali con lati e dorsi scuri. Restano concept dimostrativi, non lavori commissionati o risultati di clienti reali.
+
+Ricette e manifest: `scripts/studio-cinema-20261112/`, `scripts/cacao-cinema-20261112/`, `scripts/campaign-cinema-20261112/`. Master privati, prove e QA nelle corrispondenti cartelle `outputs/`; registro pubblico degli asset attivi in `ASSET-TRILOGY-CINEMA-20261112.json`. Il materiale storico rimane recuperabile; `director-brand.jpg` è conservato per la demo CACAO. Questa produzione non modifica LUMA, Web, bandi o la ripresa UHD dell’acqua.
+
 ## Hero e meccanica LUMA — 12 novembre 2026
 
 La nuova hero «La tua idea. Prende forma.» è una composizione originale HTML/CSS. Riutilizza la ripresa UHD dell’acqua e l’introduzione dello studio già approvate. Titolo e proposta commerciale rimangono fuori dal film; il monitor desktop ricava righe, spazi e colori dalla pagina effettiva. Nessuna nuova risorsa Horizon è acquisita: l’adattamento OSKEN esistente rimane conservato.
@@ -12,7 +22,7 @@ La scena eredita Arial e Arial Bold di macOS, già incorporati nel master origin
 
 ## Campagne e demo Web — revisione successiva del 10 novembre 2026
 
-I film attivi `cinematic-web-20261110*` e `cinematic-campaign-20261110*` sostituiscono nella build i rispettivi film precedenti, conservati senza modifiche nell’archivio e in `public/`. Entrambi offrono master nativi QHD 2560×1440/60 fps, HD 1920×1080/60, compact 1280×720/30 e regia portrait 720×900/30, dieci secondi. Non sono esportazioni 4K né frame interpolati. La ripresa UHD dell’acqua rimane invariata.
+I film dell’edizione del 10 novembre `cinematic-web-20261110*` e `cinematic-campaign-20261110*` sostituiscono nella build i rispettivi film precedenti, conservati senza modifiche nell’archivio e in `public/`. Entrambi offrono master nativi QHD 2560×1440/60 fps, HD 1920×1080/60, compact 1280×720/30 e regia portrait 720×900/30, dieci secondi. Non sono esportazioni 4K né frame interpolati. La ripresa UHD dell’acqua rimane invariata.
 
 La campagna SHIFT riutilizza le fotografie originali Cycles del campionatore con nuovi artwork nero/arancio e tre supporti grafite. Il materiale avorio dei bordi è stato sostituito nel disegno dei pannelli; non è nascosto ritagliando il film. Due master Blender editabili contengono le texture incorporate e le camere calibrate. La consegna usa un renderer proiettivo delle geometrie e delle fotografie, non una nuova sequenza path-traced di 600 frame. Ricette in `scripts/campaign-polish-20261110/`, master e manifest con hash, cadenza, loop e verifiche in `outputs/campaign-web-revision-20261110/campaign/`.
 

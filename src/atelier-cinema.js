@@ -12,7 +12,7 @@ export function installAtelierCinema({ signal, menu } = {}) {
     video, stage: video.closest('.atelier-media-stage'),
     button: document.querySelector(`[data-media-toggle][aria-controls="${video.id}"]`),
     visible: false, ratio: 0, warm: false, userPaused: false, manual: false, pending: false,
-    interrupted: false, blocked: false, restart: false, visit: 0,
+    interrupted: false, blocked: false, buffering: false, restart: false, visit: 0,
     sourcePortrait: undefined, hasPlayed: false, controlState: '',
   }));
   let frame = 0;
@@ -78,18 +78,22 @@ export function installAtelierCinema({ signal, menu } = {}) {
       if (!limitedFilmBandwidth()) players.forEach(player => { if (player.warm) source(player); });
       return;
     }
+    const foreground = foregroundPlayer();
+    if (foreground?.video.dataset.startBufferMobile && foreground.sourcePortrait
+      && bufferedAhead(foreground) < foreground.video.duration - foreground.video.currentTime - .1) return;
     // One unseen portrait film can prepare ahead of the viewport. Keep that
     // slot until it is visited or leaves the warm range, rather than walking
     // through every neighbour on successive readiness/observer callbacks.
     if (warmPlayer && (!warmPlayer.warm || warmPlayer.visible || warmPlayer.hasPlayed)) warmPlayer = undefined;
-    if (!warmPlayer) warmPlayer = players.find(player => player.warm && !player.visible && !player.hasPlayed && !player.userPaused);
+    if (!warmPlayer) warmPlayer = players.find(player => player.warm && !player.visible && !player.hasPlayed && !player.userPaused
+      && player.stage.getBoundingClientRect().top >= 0);
     if (warmPlayer) source(warmPlayer);
   }
   function control(player) {
     if (!player.button) return;
     const failed = Boolean(player.video.error);
     const playing = !failed && !player.video.paused && !player.video.ended;
-    const loading = !failed && player.pending && player.video.readyState < 2;
+    const loading = !failed && (player.buffering || player.pending && player.video.readyState < 2);
     const subject = player.video.dataset.mediaLabel || 'il film 3D';
     const state = `${failed}/${playing}/${loading}/${subject}`;
     if (player.controlState === state) return;
@@ -113,6 +117,19 @@ export function installAtelierCinema({ signal, menu } = {}) {
     return players.reduce((winner, player) => eligible(player) && (!winner || player.ratio > winner.ratio) ? player : winner, undefined);
   }
   const mayPlay = player => !disposed && pageAvailable() && player === foregroundPlayer();
+
+  function bufferedAhead(player) {
+    const video = player.video;
+    for (let i = 0; i < (video.buffered?.length || 0); i++) {
+      if (video.buffered.start(i) <= video.currentTime + .05 && video.buffered.end(i) > video.currentTime)
+        return video.buffered.end(i) - video.currentTime;
+    }
+    return 0;
+  }
+  function startupBuffered(player) {
+    const seconds = player.sourcePortrait ? Number(player.video.dataset.startBufferMobile) || 0 : 0;
+    return !seconds || player.hasPlayed || bufferedAhead(player) >= Math.min(seconds, player.video.duration || seconds) - .05;
+  }
 
   function rewind(player) {
     if (!player.restart || player.video.readyState < 1) return;
@@ -141,13 +158,16 @@ export function installAtelierCinema({ signal, menu } = {}) {
     const permitted = mayPlay(player);
     // Keep the native inline autoplay hint in step with our foreground policy.
     // This also lets WebKit resume an eligible muted film when decoding starts.
-    autoplay(player, permitted && motionAllowed() && !player.blocked && !player.video.error);
+    autoplay(player, permitted && motionAllowed() && !player.blocked && !player.video.error && startupBuffered(player));
     if (!permitted) {
+      player.buffering = false;
       if (player.pending) player.interrupted = true;
       player.video.pause(); control(player); return;
     }
     source(player);
     rewind(player);
+    player.buffering = !startupBuffered(player);
+    if (player.buffering) { autoplay(player, false); player.video.pause(); control(player); return; }
     // Wait for the decoded, visible picture on desktop too. Calling play()
     // during metadata discovery can turn a cold arrival into a policy refusal.
     if (!player.manual && player.video.readyState < 2) { control(player); return; }
@@ -234,7 +254,10 @@ export function installAtelierCinema({ signal, menu } = {}) {
     player.video.playsInline = true; autoplay(player, false);
     control(player);
     warmObserver.observe(player.stage); videoObserver.observe(player.stage);
-    player.stage.addEventListener('pointerenter', event => {
+    // A visit belongs to the picture. Entering a transport button must not
+    // rewind/seek the film immediately before that button toggles playback.
+    const hoverTarget = player.stage.querySelector('.atelier-film-surface') || player.stage;
+    hoverTarget.addEventListener('pointerenter', event => {
       if (!['mouse', 'pen'].includes(event.pointerType) || !motionAllowed() || !pageAvailable()) return;
       // A pointer over the picture identifies the intended film even when
       // another chapter occupies more of the viewport.
@@ -244,7 +267,7 @@ export function installAtelierCinema({ signal, menu } = {}) {
       newVisit(player);
       syncPlayers();
     }, { signal: life.signal });
-    player.stage.addEventListener('pointerleave', () => {
+    hoverTarget.addEventListener('pointerleave', () => {
       if (hoveredPlayer !== player) return;
       hoveredPlayer = undefined;
       syncPlayers();
@@ -257,7 +280,7 @@ export function installAtelierCinema({ signal, menu } = {}) {
     player.button?.addEventListener('click', () => {
       // WebKit can leave paused=false after a failed resource and a rejected
       // play promise. The first explicit retry must reload, not toggle pause.
-      if (!player.video.error && (!player.video.paused || player.pending)) { player.userPaused = true; player.manual = false; }
+      if (!player.video.error && (!player.video.paused || player.pending || player.buffering)) { player.userPaused = true; player.manual = false; }
       else {
         player.userPaused = false; player.manual = true;
         player.blocked = false;
@@ -268,7 +291,7 @@ export function installAtelierCinema({ signal, menu } = {}) {
       syncPlayers();
     }, { signal: life.signal });
     player.video.addEventListener('play', () => {
-      if (!mayPlay(player)) player.video.pause();
+      if (!mayPlay(player) || !startupBuffered(player)) player.video.pause();
       else rewind(player);
       presentation(player);
       control(player);
@@ -279,6 +302,7 @@ export function installAtelierCinema({ signal, menu } = {}) {
       ready(player, false); control(player);
     }, { signal: life.signal }));
     player.video.addEventListener('loadedmetadata', () => rewind(player), { signal: life.signal });
+    player.video.addEventListener('progress', () => { sync(player); prepareNearby(); }, { signal: life.signal });
     ['loadeddata', 'canplay', 'playing'].forEach(type => player.video.addEventListener(type, () => {
       if (type === 'playing' && !player.video.paused && mayPlay(player)) player.hasPlayed = true;
       presentation(player); sync(player);

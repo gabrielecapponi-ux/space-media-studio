@@ -1,7 +1,6 @@
 import { installIdeaBriefs } from './idea-briefs.js';
 import { installCinemaViewer } from './cinema-viewer.js';
 import { createMobileStudio } from './atelier-mobile-entry.js';
-import { createAtelierEntry } from './atelier-entry.js';
 import { installAtelierCinema } from './atelier-cinema.js';
 import './atelier-cinema.css';
 import { installWebReel } from './web-reel.js';
@@ -384,24 +383,14 @@ function revealPage() {
 }
 
 try {
-  const touch = matchMedia('(pointer: coarse)').matches;
   if (!automaticMotion()) {
     document.documentElement.dataset.entryState = 'ready';
     revealPage();
-  } else if (portrait.matches || touch) {
-    entry = createMobileStudio({
-      signal, video: film, stage, controls: document.querySelector('.flagship-film-controls'), base, preference: reduced, portrait,
-      prepareWater: ensureSource, onComplete: revealPage,
-    });
   } else {
-    entry = createAtelierEntry({
-      signal, video: film, startAt: 0, drawScreen, prepareVideo: ensureSource,
-      poster: `${base}images/flagship-water-entry-desktop.jpg`, onComplete: revealPage,
-      async loadModel(signal) {
-        const response = await fetch(`${base}models/studio-space-20261105.glb`, { signal });
-        if (!response.ok) throw new Error('Studio model unavailable');
-        return response.arrayBuffer();
-      },
+    entry = createMobileStudio({
+      signal, video: film, base, preference: reduced, drawScreen,
+      profile: entryProfile === 'mobile' ? 'portrait' : entryProfile,
+      prepareWater: ensureSource, onComplete: revealPage,
     });
   }
 } catch {

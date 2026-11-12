@@ -1,0 +1,539 @@
+{
+  "title": "SPACE Blackbox \u2014 cinematic studio construction",
+  "date": "2026-11-12",
+  "source": {
+    "file": "outputs/studio-blender-20261105/space-studio-master.blend",
+    "sha256": "5a7c15b400a85f7828af5f0b1f461bc2284e5ad82a5f0866c721f683e3112a43"
+  },
+  "origin": "Original Space architecture, emblem and production props. Native Blender Cycles; existing original water and LUMA artwork packed into monitors. No stock or AI film.",
+  "masters": [
+    {
+      "file": "outputs/studio-cinema-20261112/studio-cinema-desktop.blend",
+      "sha256": "2c8f0df2dd5dcc5f92c56d240424ead912040a13605c59265074eb8a1350bf81",
+      "bytes": 802636
+    },
+    {
+      "file": "outputs/studio-cinema-20261112/studio-cinema-portrait.blend",
+      "sha256": "c8abeabfe103f30efa97037e0b60351cbf951bde00fca186215599514a5fa3ff",
+      "bytes": 746773
+    }
+  ],
+  "recipes": [
+    {
+      "file": "scripts/studio-cinema-20261112/build.py",
+      "sha256": "4cbd0da64694edd2578f5c8b1380583747edd726000fb83b93b7750c690722ae"
+    },
+    {
+      "file": "scripts/studio-cinema-20261112/export.py",
+      "sha256": "8a14ec9fe60068320e9688dc4eea6f628560ceb00234656e0483ff549f1d8107"
+    },
+    {
+      "file": "scripts/studio-cinema-20261112/finish-pipeline.py",
+      "sha256": "bdfd8ee86574883993eca4fe3506cf6a9b2ac5bd87fdf45c07c88141297425fc"
+    },
+    {
+      "file": "scripts/studio-cinema-20261112/render-master.py",
+      "sha256": "afeb5ea398e19b3d78a46d7b081344d4f4dbd36275864b3449c2036b7e666273"
+    },
+    {
+      "file": "scripts/studio-cinema-20261112/validate.py",
+      "sha256": "e777d0a5afd53eb28257d1e6a8606468a7816be86a5eff46105fd9ef35608ea1"
+    }
+  ],
+  "geometry_validation": [
+    {
+      "profile": "desktop",
+      "sha256": "2c8f0df2dd5dcc5f92c56d240424ead912040a13605c59265074eb8a1350bf81",
+      "resolution": [
+        2560,
+        1440
+      ],
+      "frames": 288,
+      "fps": 60,
+      "groups": 19,
+      "objects": 49,
+      "samples": 24,
+      "opening_framing": [
+        {
+          "frame": 1,
+          "mark_bounds": [
+            0.3230110704898834,
+            0.6272667050361633,
+            0.046586696058511734,
+            0.9685351848602295
+          ],
+          "camera": [
+            -3.799999952316284,
+            -7.5,
+            3.4000000953674316
+          ]
+        },
+        {
+          "frame": 144,
+          "mark_bounds": [
+            0.2949216663837433,
+            0.5903505682945251,
+            0.375051885843277,
+            0.9081975221633911
+          ],
+          "camera": [
+            2.7502048015594482,
+            -8.718643188476562,
+            3.476165294647217
+          ]
+        },
+        {
+          "frame": 288,
+          "mark_bounds": [
+            0.17079119384288788,
+            0.48078611493110657,
+            0.40623408555984497,
+            1.0041320323944092
+          ],
+          "camera": [
+            3.5,
+            -6.400000095367432,
+            2.6500000953674316
+          ]
+        }
+      ],
+      "image_dependencies": [
+        {
+          "name": "director-water-desktop.webp",
+          "packed": true,
+          "sha256": "d6ac9433ea1848ebb6f223c28636a13be4bfc9bf74013d93823e3fc9baaa0f8c"
+        },
+        {
+          "name": "luma-mechanics-20261112-desktop.webp",
+          "packed": true,
+          "sha256": "bc98c87e9ec9842e230aa205e5bfa3d7eb734f00d8b77117204cf8994c3ec26d"
+        },
+        {
+          "name": "SPACE authored walnut grain",
+          "packed": true,
+          "sha256": "8091eea529d99f8be923048fd48b49d7a428272ad2b245a441284fc0cce15e60"
+        }
+      ]
+    },
+    {
+      "profile": "portrait",
+      "sha256": "c8abeabfe103f30efa97037e0b60351cbf951bde00fca186215599514a5fa3ff",
+      "resolution": [
+        1080,
+        1920
+      ],
+      "frames": 144,
+      "fps": 30,
+      "groups": 19,
+      "objects": 49,
+      "samples": 24,
+      "opening_framing": [
+        {
+          "frame": 1,
+          "mark_bounds": [
+            0.13779953122138977,
+            0.767393946647644,
+            0.23701418936252594,
+            0.7694201469421387
+          ],
+          "camera": [
+            -3.200000047683716,
+            -8.100000381469727,
+            3.299999952316284
+          ]
+        },
+        {
+          "frame": 72,
+          "mark_bounds": [
+            0.12846355140209198,
+            0.6227300763130188,
+            0.4262941777706146,
+            0.7074450254440308
+          ],
+          "camera": [
+            3.0957248210906982,
+            -10.1480073928833,
+            3.4896302223205566
+          ]
+        },
+        {
+          "frame": 144,
+          "mark_bounds": [
+            -0.037073370069265366,
+            0.39473390579223633,
+            0.4596506357192993,
+            0.7155571579933167
+          ],
+          "camera": [
+            4.400000095367432,
+            -9.899999618530273,
+            3.0
+          ]
+        }
+      ],
+      "image_dependencies": [
+        {
+          "name": "director-water-desktop.webp",
+          "packed": true,
+          "sha256": "d6ac9433ea1848ebb6f223c28636a13be4bfc9bf74013d93823e3fc9baaa0f8c"
+        },
+        {
+          "name": "luma-mechanics-20261112-desktop.webp",
+          "packed": true,
+          "sha256": "bc98c87e9ec9842e230aa205e5bfa3d7eb734f00d8b77117204cf8994c3ec26d"
+        },
+        {
+          "name": "SPACE authored walnut grain",
+          "packed": true,
+          "sha256": "8091eea529d99f8be923048fd48b49d7a428272ad2b245a441284fc0cce15e60"
+        }
+      ]
+    },
+    {
+      "glb": "public/models/studio-blackbox-20261112.glb",
+      "sha256": "ae34cec7af23d07df710ba259707746bbd2f89a786b1e25a899f5193b7cc29b2",
+      "objects": 43,
+      "tracks": 19,
+      "fresh_reimport": "pass"
+    }
+  ],
+  "assets": [
+    {
+      "file": "public/films/studio-cinema-20261112-desktop.mp4",
+      "sha256": "081c6b1c0e902f5307b8cc5df91085b8d73e70055a850ef65d332f36d9dfd2f7",
+      "bytes": 5034038,
+      "resolution": [
+        2560,
+        1440
+      ],
+      "fps": 60,
+      "frames": 288,
+      "unique_frames": 288,
+      "seconds": 4.8,
+      "native_render": true,
+      "interpolation": false,
+      "upscaled": false,
+      "faststart": true,
+      "decode": "pass",
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "mime_codec_string": "avc1.640033",
+            "width": 2560,
+            "height": 1440,
+            "coded_width": 2560,
+            "coded_height": 1440,
+            "has_b_frames": 2,
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "16:9",
+            "pix_fmt": "yuv420p",
+            "level": 51,
+            "color_range": "tv",
+            "color_space": "bt709",
+            "color_transfer": "iec61966-2-1",
+            "color_primaries": "bt709",
+            "chroma_location": "left",
+            "field_order": "progressive",
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "60/1",
+            "avg_frame_rate": "60/1",
+            "time_base": "1/15360",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 73728,
+            "duration": "4.800000",
+            "bit_rate": "8382698",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "288",
+            "extradata_size": 51,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "encoder": "Lavc62.28.102 libx264"
+            }
+          }
+        ],
+        "format": {
+          "filename": "/Users/gabrielecapponi/Documents/ChatGPT/Sito Space media/public/films/studio-cinema-20261112-desktop.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "4.800000",
+          "size": "5034038",
+          "bit_rate": "8390063",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf62.12.102"
+          }
+        }
+      }
+    },
+    {
+      "file": "public/films/studio-cinema-20261112-hd.mp4",
+      "sha256": "4064f5365208161f445992547ec3841f968c59630853ac61f74e4b774af2f89c",
+      "bytes": 2791710,
+      "resolution": [
+        1920,
+        1080
+      ],
+      "fps": 60,
+      "frames": 288,
+      "unique_frames": 288,
+      "seconds": 4.8,
+      "native_render": false,
+      "interpolation": false,
+      "upscaled": false,
+      "faststart": true,
+      "decode": "pass",
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "mime_codec_string": "avc1.64002a",
+            "width": 1920,
+            "height": 1080,
+            "coded_width": 1920,
+            "coded_height": 1080,
+            "has_b_frames": 2,
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "16:9",
+            "pix_fmt": "yuv420p",
+            "level": 42,
+            "color_range": "tv",
+            "color_space": "bt709",
+            "color_transfer": "iec61966-2-1",
+            "color_primaries": "bt709",
+            "chroma_location": "left",
+            "field_order": "progressive",
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "60/1",
+            "avg_frame_rate": "60/1",
+            "time_base": "1/15360",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 73728,
+            "duration": "4.800000",
+            "bit_rate": "4645538",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "288",
+            "extradata_size": 51,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "encoder": "Lavc62.28.102 libx264"
+            }
+          }
+        ],
+        "format": {
+          "filename": "/Users/gabrielecapponi/Documents/ChatGPT/Sito Space media/public/films/studio-cinema-20261112-hd.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "4.800000",
+          "size": "2791710",
+          "bit_rate": "4652850",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf62.12.102"
+          }
+        }
+      }
+    },
+    {
+      "file": "public/films/studio-cinema-20261112-portrait.mp4",
+      "sha256": "725bec3ca786f26e6dfe56d2730a1eeae2f18ae3dffed1ef4241ed0e0d0ee9b2",
+      "bytes": 2232625,
+      "resolution": [
+        1080,
+        1920
+      ],
+      "fps": 30,
+      "frames": 144,
+      "unique_frames": 144,
+      "seconds": 4.8,
+      "native_render": true,
+      "interpolation": false,
+      "upscaled": false,
+      "faststart": true,
+      "decode": "pass",
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "mime_codec_string": "avc1.64002a",
+            "width": 1080,
+            "height": 1920,
+            "coded_width": 1080,
+            "coded_height": 1920,
+            "has_b_frames": 2,
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "9:16",
+            "pix_fmt": "yuv420p",
+            "level": 42,
+            "color_range": "tv",
+            "color_space": "bt709",
+            "color_transfer": "iec61966-2-1",
+            "color_primaries": "bt709",
+            "chroma_location": "left",
+            "field_order": "progressive",
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "30/1",
+            "avg_frame_rate": "30/1",
+            "time_base": "1/15360",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 73728,
+            "duration": "4.800000",
+            "bit_rate": "3716636",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "144",
+            "extradata_size": 51,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "encoder": "Lavc62.28.102 libx264"
+            }
+          }
+        ],
+        "format": {
+          "filename": "/Users/gabrielecapponi/Documents/ChatGPT/Sito Space media/public/films/studio-cinema-20261112-portrait.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "4.800000",
+          "size": "2232625",
+          "bit_rate": "3721041",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf62.12.102"
+          }
+        }
+      }
+    },
+    {
+      "file": "public/images/studio-cinema-20261112-desktop.webp",
+      "sha256": "4e5465d6cbf913cef80d93c3e8275cc66e67eded715c3849937d409b12912e7b",
+      "bytes": 30258,
+      "origin": "outputs/studio-cinema-20261112/review-desktop/0001.png"
+    },
+    {
+      "file": "public/images/studio-cinema-20261112-portrait.webp",
+      "sha256": "9acf6ae7322786d70d11edf2f295f4ba4a0835042c55d891d43f530aab00b9dd",
+      "bytes": 22148,
+      "origin": "outputs/studio-cinema-20261112/review-portrait/0001.png"
+    },
+    {
+      "file": "public/models/studio-blackbox-20261112.glb",
+      "sha256": "ae34cec7af23d07df710ba259707746bbd2f89a786b1e25a899f5193b7cc29b2",
+      "bytes": 1095536,
+      "role": "live fallback with named assembly groups and metadata"
+    }
+  ],
+  "publication": "Local production; website release recorded separately."
+}

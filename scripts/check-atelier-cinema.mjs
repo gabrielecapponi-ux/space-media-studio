@@ -217,7 +217,7 @@ await test('Photographic motion is absolute, scroll events coalesce, and live st
 });
 await test('Wide screens on a measured 4 Mbit connection fetch only the visible compact film', async () => {
   const f = fixture();
-  f.win.performance = { getEntriesByType: () => [{ name: 'https://example.test/models/studio-space-20261105.glb',
+  f.win.performance = { getEntriesByType: () => [{ name: 'https://example.test/models/studio-blackbox-20261112.glb',
     transferSize: 635800, encodedBodySize: 635496, responseStart: 500, responseEnd: 1770 }] };
   f.video.dataset.srcCompact = './films/type-compact.mp4';
   f.warmObserver.fire(f.stage); await f.flush();
@@ -675,5 +675,29 @@ await test('Both HTML entries keep responsive lazy picture fallbacks, compact in
     assert.equal(water.preload, 'none'); assert.equal(water.src, undefined); assert.equal(water.poster, undefined);
     assert.match(html, /id="atelier-film-replay"[^>]+aria-controls="atelier-film"/);
   }
+});
+await test('Portrait startup buffering is cancellable and cannot silently bypass explicit pause', async () => {
+  const f = fixture({ portrait: true }); let end = 1;
+  f.video.dataset.startBufferMobile = '3'; f.video.duration = 8;
+  f.video.buffered = { length: 1, start: () => 0, end: () => end };
+  await f.show(); assert.equal(f.video.plays, 0); assert.equal(f.video.autoplay, false);
+  assert.equal(f.label.textContent, 'Caricamento…');
+  f.button.emit('click'); await f.flush(); end = 3.5; f.video.emit('progress'); await f.flush();
+  assert.equal(f.video.plays, 0); assert.equal(f.label.textContent, 'Riproduci');
+  f.button.emit('click'); await f.flush(); assert.equal(f.video.plays, 1); assert.equal(f.video.paused, false);
+  f.video.currentTime = 2; f.video.emit('progress'); await f.flush();
+  assert.equal(f.video.paused, false); assert.equal(f.video.loads, 1); f.api.dispose();
+});
+await test('Cold portrait playback gets bandwidth before an unseen neighbour or a skipped earlier chapter', async () => {
+  const f = fixture({ portrait: true, playerCount: 2 }), [first, next] = f.media; let end = 1;
+  first.video.dataset.startBufferMobile = '3'; first.video.duration = 8;
+  first.video.buffered = { length: 1, start: () => 0, end: () => end };
+  first.stage.getBoundingClientRect = () => ({ top: -500, height: 400 });
+  f.warmObserver.fire(first.stage); await f.flush(); assert.equal(first.video.loads, 0);
+  first.stage.getBoundingClientRect = () => ({ top: 200, height: 400 });
+  f.visibleObserver.fire(first.stage, true, .9); f.warmObserver.fire(next.stage); await f.flush();
+  assert.equal(first.video.loads, 1); assert.equal(next.video.loads, 0);
+  end = 8; first.video.emit('progress'); await f.flush();
+  assert.equal(first.video.paused, false); assert.equal(next.video.loads, 1); f.api.dispose();
 });
 console.log(JSON.stringify({ groups: groups.length, source: 'actual src/atelier-cinema.js', browser: false, externalRequests: false }, null, 2));

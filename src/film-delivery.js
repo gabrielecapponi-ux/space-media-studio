@@ -6,7 +6,7 @@ export function limitedFilmBandwidth(minimumMbps = 6) {
   if (connection?.saveData || ['slow-2g', '2g', '3g'].includes(connection?.effectiveType)) return true;
   if (studioMbps === undefined) {
     const sample = window.performance?.getEntriesByType('resource').find(entry =>
-      entry.name.endsWith('/models/studio-space-20261105.glb') &&
+      (entry.name.endsWith('/models/studio-blackbox-20261112.glb') || entry.name.endsWith('/models/studio-space-20261105.glb')) &&
       entry.transferSize > 1000 && entry.encodedBodySize >= 300000 && entry.responseEnd >= entry.responseStart);
     if (sample) studioMbps = sample.encodedBodySize * .008 / Math.max(1, sample.responseEnd - sample.responseStart);
   }

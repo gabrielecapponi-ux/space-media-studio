@@ -1,0 +1,379 @@
+{
+  "edition": "SPACE Blackbox, CACAO Atelier and SHIFT campaign cinema",
+  "date": "2026-11-12",
+  "origin": "Original editable Blender geometry and previously authored artwork; no new external model or generated film.",
+  "baseline_source_commit": "9936a48f568f5c0bb2abd06c142a13758837a640",
+  "production_manifests": [
+    {
+      "manifest": "scripts/studio-cinema-20261112/asset-manifest.json",
+      "sha256": "63fee90be2abc9586a39135988ee499fce00a72afb2b7a47964b991a5253ef03",
+      "source": {
+        "file": "outputs/studio-blender-20261105/space-studio-master.blend",
+        "sha256": "5a7c15b400a85f7828af5f0b1f461bc2284e5ad82a5f0866c721f683e3112a43"
+      },
+      "masters": [
+        {
+          "file": "outputs/studio-cinema-20261112/studio-cinema-desktop.blend",
+          "sha256": "2c8f0df2dd5dcc5f92c56d240424ead912040a13605c59265074eb8a1350bf81",
+          "bytes": 802636
+        },
+        {
+          "file": "outputs/studio-cinema-20261112/studio-cinema-portrait.blend",
+          "sha256": "c8abeabfe103f30efa97037e0b60351cbf951bde00fca186215599514a5fa3ff",
+          "bytes": 746773
+        }
+      ]
+    },
+    {
+      "manifest": "scripts/cacao-cinema-20261112/asset-manifest.json",
+      "sha256": "fe2662b0da0e8882354f0cd408ea1594e430037229ccb4976a32541531c63354",
+      "source": {
+        "file": "outputs/flagship-20261106/brand/desktop/brand-macro-desktop.blend",
+        "sha256": "e40ff94f888c107836f172519c1523a95b45f31cba1971afe226203faa9c31c9"
+      },
+      "masters": [
+        {
+          "file": "outputs/cacao-cinema-20261112/cacao-cinema-desktop.blend",
+          "sha256": "365776e5b96933a97333e24e825ac15c457f5cb70bfe8e5e642b79509082b363",
+          "bytes": 1182802
+        },
+        {
+          "file": "outputs/cacao-cinema-20261112/cacao-cinema-portrait.blend",
+          "sha256": "7e4f191b915300c7c5b1f180b095d52fedac1a658fbb35190833c275cdf39e0b",
+          "bytes": 1079758
+        }
+      ]
+    },
+    {
+      "manifest": "scripts/campaign-cinema-20261112/asset-manifest.json",
+      "sha256": "3a4baac0fad9fa469866146b42dd16d657ace81309af961138dbe0da8c812604",
+      "source": {
+        "file": "outputs/flagship-20261106/shift/phase-01.blend",
+        "sha256": "a5811b51d699595705ea5df6de84494eae2591c088445981a442477f639e7aa7"
+      },
+      "masters": [
+        {
+          "file": "outputs/campaign-cinema-20261112/campaign-cinema-desktop.blend",
+          "sha256": "24d778102cf0867f717d88c2798f233d0fee54ea1f4a6ab925bff3d14be2fc28",
+          "bytes": 6690797
+        },
+        {
+          "file": "outputs/campaign-cinema-20261112/campaign-cinema-portrait.blend",
+          "sha256": "220251c47b82ac59da8d0f45687ee741c9bba71c64f11fa54fdb322fb72fd93b",
+          "bytes": 6507396
+        }
+      ]
+    }
+  ],
+  "assets": [
+    {
+      "file": "public/films/studio-cinema-20261112-desktop.mp4",
+      "sha256": "081c6b1c0e902f5307b8cc5df91085b8d73e70055a850ef65d332f36d9dfd2f7",
+      "bytes": 5034038,
+      "resolution": [
+        2560,
+        1440
+      ],
+      "fps": 60,
+      "frames": 288,
+      "unique_frames": 288,
+      "seconds": 4.8,
+      "native_render": true,
+      "interpolation": false,
+      "upscaled": false,
+      "faststart": true,
+      "decode": "pass"
+    },
+    {
+      "file": "public/films/studio-cinema-20261112-hd.mp4",
+      "sha256": "4064f5365208161f445992547ec3841f968c59630853ac61f74e4b774af2f89c",
+      "bytes": 2791710,
+      "resolution": [
+        1920,
+        1080
+      ],
+      "fps": 60,
+      "frames": 288,
+      "unique_frames": 288,
+      "seconds": 4.8,
+      "native_render": false,
+      "interpolation": false,
+      "upscaled": false,
+      "faststart": true,
+      "decode": "pass"
+    },
+    {
+      "file": "public/films/studio-cinema-20261112-portrait.mp4",
+      "sha256": "725bec3ca786f26e6dfe56d2730a1eeae2f18ae3dffed1ef4241ed0e0d0ee9b2",
+      "bytes": 2232625,
+      "resolution": [
+        1080,
+        1920
+      ],
+      "fps": 30,
+      "frames": 144,
+      "unique_frames": 144,
+      "seconds": 4.8,
+      "native_render": true,
+      "interpolation": false,
+      "upscaled": false,
+      "faststart": true,
+      "decode": "pass"
+    },
+    {
+      "file": "public/images/studio-cinema-20261112-desktop.webp",
+      "sha256": "4e5465d6cbf913cef80d93c3e8275cc66e67eded715c3849937d409b12912e7b",
+      "bytes": 30258,
+      "origin": "outputs/studio-cinema-20261112/review-desktop/0001.png"
+    },
+    {
+      "file": "public/images/studio-cinema-20261112-portrait.webp",
+      "sha256": "9acf6ae7322786d70d11edf2f295f4ba4a0835042c55d891d43f530aab00b9dd",
+      "bytes": 22148,
+      "origin": "outputs/studio-cinema-20261112/review-portrait/0001.png"
+    },
+    {
+      "file": "public/models/studio-blackbox-20261112.glb",
+      "sha256": "ae34cec7af23d07df710ba259707746bbd2f89a786b1e25a899f5193b7cc29b2",
+      "bytes": 1095536,
+      "role": "live fallback with named assembly groups and metadata"
+    },
+    {
+      "file": "public/films/cacao-cinema-20261112-desktop.mp4",
+      "sha256": "fef81d905c61f4383b2f185411338c2193695ea551ec2e7c54f1f0ee2c72fa1e",
+      "bytes": 9827227,
+      "resolution": [
+        2560,
+        1440
+      ],
+      "fps": 60,
+      "frames": 480,
+      "unique_frames": 480,
+      "seconds": 8,
+      "codec": "h264",
+      "profile": "High",
+      "level": 51,
+      "decode": "pass",
+      "faststart": true,
+      "native_render": true,
+      "derived_from": null,
+      "interpolation": false,
+      "upscaled": false
+    },
+    {
+      "file": "public/films/cacao-cinema-20261112-hd.mp4",
+      "sha256": "c0ab7030095fca65a5a3ad5187e124fd374270736143e56ddbd9cf7d20389c09",
+      "bytes": 5017340,
+      "resolution": [
+        1920,
+        1080
+      ],
+      "fps": 60,
+      "frames": 480,
+      "unique_frames": 480,
+      "seconds": 8,
+      "codec": "h264",
+      "profile": "High",
+      "level": 42,
+      "decode": "pass",
+      "faststart": true,
+      "native_render": false,
+      "derived_from": "public/films/cacao-cinema-20261112-desktop.mp4",
+      "interpolation": false,
+      "upscaled": false
+    },
+    {
+      "file": "public/films/cacao-cinema-20261112-compact.mp4",
+      "sha256": "3e4a473d9d2491ac52aa90aa60df694c52c6d8f53fea5a115c05d56bd888d681",
+      "bytes": 2295748,
+      "resolution": [
+        1280,
+        720
+      ],
+      "fps": 30,
+      "frames": 240,
+      "unique_frames": 240,
+      "seconds": 8,
+      "codec": "h264",
+      "profile": "High",
+      "level": 40,
+      "decode": "pass",
+      "faststart": true,
+      "native_render": false,
+      "derived_from": "public/films/cacao-cinema-20261112-desktop.mp4",
+      "interpolation": false,
+      "upscaled": false
+    },
+    {
+      "file": "public/films/cacao-cinema-20261112-portrait.mp4",
+      "sha256": "1c139dfdd9ee731804def390c958607275dcf845063d379163629f557180b374",
+      "bytes": 2918702,
+      "resolution": [
+        1080,
+        1350
+      ],
+      "fps": 30,
+      "frames": 240,
+      "unique_frames": 240,
+      "seconds": 8,
+      "codec": "h264",
+      "profile": "High",
+      "level": 42,
+      "decode": "pass",
+      "faststart": true,
+      "native_render": true,
+      "derived_from": null,
+      "interpolation": false,
+      "upscaled": false
+    },
+    {
+      "file": "public/images/cacao-cinema-20261112-desktop.webp",
+      "sha256": "4cddf6b88d35a8a43d8b2e4a8d7dd0fd7e5efe2dc0da8ca73ebfcd2431a630a4",
+      "bytes": 58946,
+      "origin": "outputs/cacao-cinema-20261112/review-desktop/0001.png"
+    },
+    {
+      "file": "public/images/cacao-cinema-20261112-portrait.webp",
+      "sha256": "9ab06d04dbc82714c171de16c0e8357422ab1847722a7b87db5859033279a8ee",
+      "bytes": 20694,
+      "origin": "outputs/cacao-cinema-20261112/review-portrait/0001.png"
+    },
+    {
+      "file": "public/images/cacao-cinema-20261112-thumb.webp",
+      "sha256": "b4da4a61389e8ed6d778808ab60f6a08d2288f8efb18d1d6ac674c2c0745c6d8",
+      "bytes": 7992,
+      "resolution": [
+        320,
+        180
+      ],
+      "origin": "outputs/cacao-cinema-20261112/review-desktop/0241.png"
+    },
+    {
+      "file": "public/films/campaign-cinema-20261112-desktop.mp4",
+      "sha256": "a9b458d4171e6db1371221d33bea5e98e9798a68c39d6cdb50cb6ecec3c4f373",
+      "bytes": 11639294,
+      "resolution": [
+        2560,
+        1440
+      ],
+      "fps": 60,
+      "frames": 480,
+      "unique_frames": 480,
+      "seconds": 8,
+      "codec": "h264",
+      "profile": "High",
+      "level": 51,
+      "decode": "pass",
+      "faststart": true,
+      "native_render": true,
+      "derived_from": null,
+      "interpolation": false,
+      "upscaled": false
+    },
+    {
+      "file": "public/films/campaign-cinema-20261112-hd.mp4",
+      "sha256": "1bd5bb2e9ccc2064ff061f39fb28695d979c5ad570af560b116b21a484551b74",
+      "bytes": 5732630,
+      "resolution": [
+        1920,
+        1080
+      ],
+      "fps": 60,
+      "frames": 480,
+      "unique_frames": 480,
+      "seconds": 8,
+      "codec": "h264",
+      "profile": "High",
+      "level": 42,
+      "decode": "pass",
+      "faststart": true,
+      "native_render": false,
+      "derived_from": "public/films/campaign-cinema-20261112-desktop.mp4",
+      "interpolation": false,
+      "upscaled": false
+    },
+    {
+      "file": "public/films/campaign-cinema-20261112-compact.mp4",
+      "sha256": "86e673c32367c2d959ed46f1c26e681c3b82afcc6499fe447e1867aac5bd28ee",
+      "bytes": 2474172,
+      "resolution": [
+        1280,
+        720
+      ],
+      "fps": 30,
+      "frames": 240,
+      "unique_frames": 240,
+      "seconds": 8,
+      "codec": "h264",
+      "profile": "High",
+      "level": 40,
+      "decode": "pass",
+      "faststart": true,
+      "native_render": false,
+      "derived_from": "public/films/campaign-cinema-20261112-desktop.mp4",
+      "interpolation": false,
+      "upscaled": false
+    },
+    {
+      "file": "public/films/campaign-cinema-20261112-portrait.mp4",
+      "sha256": "722a0011cbf83aef2a46c92254bfda5ae9692686e31e31cc0678ac1515350b70",
+      "bytes": 5016029,
+      "resolution": [
+        1080,
+        1350
+      ],
+      "fps": 30,
+      "frames": 240,
+      "unique_frames": 240,
+      "seconds": 8,
+      "codec": "h264",
+      "profile": "High",
+      "level": 42,
+      "decode": "pass",
+      "faststart": true,
+      "native_render": true,
+      "derived_from": null,
+      "interpolation": false,
+      "upscaled": false
+    },
+    {
+      "file": "public/images/campaign-cinema-20261112-desktop.webp",
+      "sha256": "9033ded2dc074cb113ab74436e426e544527a3e5df5065bdd1beac5c79c40fb2",
+      "bytes": 136954,
+      "resolution": [
+        2560,
+        1440
+      ],
+      "codec": "webp",
+      "decode": "pass",
+      "origin": "outputs/campaign-cinema-20261112/review-desktop/0001.png"
+    },
+    {
+      "file": "public/images/campaign-cinema-20261112-portrait.webp",
+      "sha256": "0daaa6a3d7548607c025e1c505bf8451c114416c1e3ce5c4e7abc05ca2cdbc7a",
+      "bytes": 81092,
+      "resolution": [
+        1080,
+        1350
+      ],
+      "codec": "webp",
+      "decode": "pass",
+      "origin": "outputs/campaign-cinema-20261112/review-portrait/0001.png"
+    },
+    {
+      "file": "public/images/campaign-cinema-20261112-thumb.webp",
+      "sha256": "382c61f0390e491605b984d8d7f60af04777c47ea1ef52c381398524fab985e1",
+      "bytes": 7760,
+      "resolution": [
+        320,
+        180
+      ],
+      "codec": "webp",
+      "decode": "pass",
+      "origin": "outputs/campaign-cinema-20261112/review-desktop/0241.png"
+    }
+  ],
+  "asset_count": 20,
+  "bytes": 56440895,
+  "validation": "All installed files match production SHA-256 and the active agency manifest. Native/derived dimensions, decode and cadence are recorded in each production manifest. Browser observations and publication are separate."
+}

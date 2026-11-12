@@ -1,0 +1,555 @@
+{
+  "encoders": {
+    "ffmpeg": "ffmpeg version 8.1.2 Copyright (c) 2000-2026 the FFmpeg developers",
+    "cwebp": "1.4.0\nlibsharpyuv: 0.4.0"
+  },
+  "title": "CACAO Cinema",
+  "font_dependencies": [
+    {
+      "type": "font",
+      "name": "Arial Bold",
+      "file": "//../../../../../../../System/Library/Fonts/Supplemental/Arial Bold.ttf",
+      "packed": true,
+      "packed_sha256": "d72db21f9242aedd6b917d8549ad5921766b24d5f8d0becfda2ff4c620b3c2e0"
+    },
+    {
+      "type": "font",
+      "name": "Arial Regular",
+      "file": "//../../../../../../../System/Library/Fonts/Supplemental/Arial.ttf",
+      "packed": true,
+      "packed_sha256": "525979822591a3447cfc49d943d6f7683508e25543407871c0ed8fed05fd2bd9"
+    },
+    {
+      "type": "font",
+      "name": "Bfont Regular",
+      "file": "<builtin>",
+      "packed": false,
+      "packed_sha256": null
+    }
+  ],
+  "validation_report": "outputs/cacao-cinema-20261112/geometry-validation.json",
+  "date": "2026-11-12",
+  "origin": "Original Space Media CACAO geometry, procedural chocolate/paper/foil materials and native Cycles motion; no external imagery or AI video",
+  "source": {
+    "file": "outputs/flagship-20261106/brand/desktop/brand-macro-desktop.blend",
+    "sha256": "e40ff94f888c107836f172519c1523a95b45f31cba1971afe226203faa9c31c9"
+  },
+  "master": [
+    {
+      "file": "outputs/cacao-cinema-20261112/cacao-cinema-desktop.blend",
+      "sha256": "365776e5b96933a97333e24e825ac15c457f5cb70bfe8e5e642b79509082b363",
+      "bytes": 1182802
+    },
+    {
+      "file": "outputs/cacao-cinema-20261112/cacao-cinema-portrait.blend",
+      "sha256": "7e4f191b915300c7c5b1f180b095d52fedac1a658fbb35190833c275cdf39e0b",
+      "bytes": 1079758
+    }
+  ],
+  "recipes": [
+    {
+      "file": "scripts/cacao-cinema-20261112/build.py",
+      "sha256": "b005dd714e2b995a0b5fec6a6b7752d99555b5c39c2817975381019ce8c14f46"
+    },
+    {
+      "file": "scripts/cacao-cinema-20261112/contact-sheets.py",
+      "sha256": "0eb574e6a30b19dc9d737e5848ebf0b65537d0b46caac4ece3a0490b9e9a7891"
+    },
+    {
+      "file": "scripts/cacao-cinema-20261112/export.py",
+      "sha256": "387eddf5c593f30fbb7461ff2ef729e3219dd65bbd5959f40a8831ac5585e8a0"
+    },
+    {
+      "file": "scripts/cacao-cinema-20261112/inspect-scene.py",
+      "sha256": "3afeb23377b86fec8f1e92df32d7d86a8fdb46a29093c0f959c20de378708c72"
+    },
+    {
+      "file": "scripts/cacao-cinema-20261112/proof-master.py",
+      "sha256": "6d4150d94e0f00565f61f2bf5f11728429e13ce2fc8d2cd2fa4be3a580c5411e"
+    },
+    {
+      "file": "scripts/cacao-cinema-20261112/render-master.py",
+      "sha256": "4897587d88ceebfc6bee51aa3cd812afffec837b2b374841c8974ac1d5d1c485"
+    },
+    {
+      "file": "scripts/cacao-cinema-20261112/temporal-qa.py",
+      "sha256": "663ec03881d44277fb221cf0d9ad1e2ddbfca9e4cd1a15d7942152be5ae7fab2"
+    },
+    {
+      "file": "scripts/cacao-cinema-20261112/validate-master.py",
+      "sha256": "97005ae45c30e80d21b1341751f79cd20f3832476cfdaf492b63cfeba4a76c55"
+    }
+  ],
+  "mechanisms": [
+    "physical rear lid hinge",
+    "six independent chocolate tablets",
+    "whole package turn",
+    "macro camera dolly",
+    "travelling studio light"
+  ],
+  "assets": [
+    {
+      "file": "public/films/cacao-cinema-20261112-desktop.mp4",
+      "sha256": "fef81d905c61f4383b2f185411338c2193695ea551ec2e7c54f1f0ee2c72fa1e",
+      "bytes": 9827227,
+      "resolution": [
+        2560,
+        1440
+      ],
+      "fps": 60,
+      "frames": 480,
+      "unique_frames": 480,
+      "seconds": 8,
+      "codec": "h264",
+      "profile": "High",
+      "level": 51,
+      "decode": "pass",
+      "faststart": true,
+      "native_render": true,
+      "derived_from": null,
+      "interpolation": false,
+      "upscaled": false,
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "mime_codec_string": "avc1.640033",
+            "width": 2560,
+            "height": 1440,
+            "coded_width": 2560,
+            "coded_height": 1440,
+            "has_b_frames": 2,
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "16:9",
+            "pix_fmt": "yuv420p",
+            "level": 51,
+            "color_range": "tv",
+            "color_space": "bt709",
+            "color_transfer": "iec61966-2-1",
+            "color_primaries": "bt709",
+            "chroma_location": "left",
+            "field_order": "progressive",
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "60/1",
+            "avg_frame_rate": "60/1",
+            "time_base": "1/15360",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 122880,
+            "duration": "8.000000",
+            "bit_rate": "9820468",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "480",
+            "extradata_size": 51,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "encoder": "Lavc62.28.102 libx264"
+            }
+          }
+        ],
+        "format": {
+          "filename": "/Users/gabrielecapponi/Documents/ChatGPT/Sito Space media/public/films/cacao-cinema-20261112-desktop.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "8.000000",
+          "size": "9827227",
+          "bit_rate": "9827227",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf62.12.102"
+          }
+        }
+      }
+    },
+    {
+      "file": "public/films/cacao-cinema-20261112-hd.mp4",
+      "sha256": "c0ab7030095fca65a5a3ad5187e124fd374270736143e56ddbd9cf7d20389c09",
+      "bytes": 5017340,
+      "resolution": [
+        1920,
+        1080
+      ],
+      "fps": 60,
+      "frames": 480,
+      "unique_frames": 480,
+      "seconds": 8,
+      "codec": "h264",
+      "profile": "High",
+      "level": 42,
+      "decode": "pass",
+      "faststart": true,
+      "native_render": false,
+      "derived_from": "public/films/cacao-cinema-20261112-desktop.mp4",
+      "interpolation": false,
+      "upscaled": false,
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "mime_codec_string": "avc1.64002a",
+            "width": 1920,
+            "height": 1080,
+            "coded_width": 1920,
+            "coded_height": 1080,
+            "has_b_frames": 2,
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "16:9",
+            "pix_fmt": "yuv420p",
+            "level": 42,
+            "color_range": "tv",
+            "color_space": "bt709",
+            "color_transfer": "iec61966-2-1",
+            "color_primaries": "bt709",
+            "chroma_location": "left",
+            "field_order": "progressive",
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "60/1",
+            "avg_frame_rate": "60/1",
+            "time_base": "1/15360",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 122880,
+            "duration": "8.000000",
+            "bit_rate": "5010645",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "480",
+            "extradata_size": 51,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "encoder": "Lavc62.28.102 libx264"
+            }
+          }
+        ],
+        "format": {
+          "filename": "/Users/gabrielecapponi/Documents/ChatGPT/Sito Space media/public/films/cacao-cinema-20261112-hd.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "8.000000",
+          "size": "5017340",
+          "bit_rate": "5017340",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf62.12.102"
+          }
+        }
+      }
+    },
+    {
+      "file": "public/films/cacao-cinema-20261112-compact.mp4",
+      "sha256": "3e4a473d9d2491ac52aa90aa60df694c52c6d8f53fea5a115c05d56bd888d681",
+      "bytes": 2295748,
+      "resolution": [
+        1280,
+        720
+      ],
+      "fps": 30,
+      "frames": 240,
+      "unique_frames": 240,
+      "seconds": 8,
+      "codec": "h264",
+      "profile": "High",
+      "level": 40,
+      "decode": "pass",
+      "faststart": true,
+      "native_render": false,
+      "derived_from": "public/films/cacao-cinema-20261112-desktop.mp4",
+      "interpolation": false,
+      "upscaled": false,
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "mime_codec_string": "avc1.640028",
+            "width": 1280,
+            "height": 720,
+            "coded_width": 1280,
+            "coded_height": 720,
+            "has_b_frames": 2,
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "16:9",
+            "pix_fmt": "yuv420p",
+            "level": 40,
+            "color_range": "tv",
+            "color_space": "bt709",
+            "color_transfer": "iec61966-2-1",
+            "color_primaries": "bt709",
+            "chroma_location": "left",
+            "field_order": "progressive",
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "30/1",
+            "avg_frame_rate": "30/1",
+            "time_base": "1/15360",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 122880,
+            "duration": "8.000000",
+            "bit_rate": "2291959",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "240",
+            "extradata_size": 49,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "encoder": "Lavc62.28.102 libx264"
+            }
+          }
+        ],
+        "format": {
+          "filename": "/Users/gabrielecapponi/Documents/ChatGPT/Sito Space media/public/films/cacao-cinema-20261112-compact.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "8.000000",
+          "size": "2295748",
+          "bit_rate": "2295748",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf62.12.102"
+          }
+        }
+      }
+    },
+    {
+      "file": "public/films/cacao-cinema-20261112-portrait.mp4",
+      "sha256": "1c139dfdd9ee731804def390c958607275dcf845063d379163629f557180b374",
+      "bytes": 2918702,
+      "resolution": [
+        1080,
+        1350
+      ],
+      "fps": 30,
+      "frames": 240,
+      "unique_frames": 240,
+      "seconds": 8,
+      "codec": "h264",
+      "profile": "High",
+      "level": 42,
+      "decode": "pass",
+      "faststart": true,
+      "native_render": true,
+      "derived_from": null,
+      "interpolation": false,
+      "upscaled": false,
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "mime_codec_string": "avc1.64002a",
+            "width": 1080,
+            "height": 1350,
+            "coded_width": 1080,
+            "coded_height": 1350,
+            "has_b_frames": 2,
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "4:5",
+            "pix_fmt": "yuv420p",
+            "level": 42,
+            "color_range": "tv",
+            "color_space": "bt709",
+            "color_transfer": "iec61966-2-1",
+            "color_primaries": "bt709",
+            "chroma_location": "left",
+            "field_order": "progressive",
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "30/1",
+            "avg_frame_rate": "30/1",
+            "time_base": "1/15360",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 122880,
+            "duration": "8.000000",
+            "bit_rate": "2914918",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "240",
+            "extradata_size": 52,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "encoder": "Lavc62.28.102 libx264"
+            }
+          }
+        ],
+        "format": {
+          "filename": "/Users/gabrielecapponi/Documents/ChatGPT/Sito Space media/public/films/cacao-cinema-20261112-portrait.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "8.000000",
+          "size": "2918702",
+          "bit_rate": "2918702",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf62.12.102"
+          }
+        }
+      }
+    },
+    {
+      "file": "public/images/cacao-cinema-20261112-desktop.webp",
+      "sha256": "4cddf6b88d35a8a43d8b2e4a8d7dd0fd7e5efe2dc0da8ca73ebfcd2431a630a4",
+      "bytes": 58946,
+      "origin": "outputs/cacao-cinema-20261112/review-desktop/0001.png"
+    },
+    {
+      "file": "public/images/cacao-cinema-20261112-portrait.webp",
+      "sha256": "9ab06d04dbc82714c171de16c0e8357422ab1847722a7b87db5859033279a8ee",
+      "bytes": 20694,
+      "origin": "outputs/cacao-cinema-20261112/review-portrait/0001.png"
+    },
+    {
+      "file": "public/images/cacao-cinema-20261112-thumb.webp",
+      "sha256": "b4da4a61389e8ed6d778808ab60f6a08d2288f8efb18d1d6ac674c2c0745c6d8",
+      "bytes": 7992,
+      "resolution": [
+        320,
+        180
+      ],
+      "origin": "outputs/cacao-cinema-20261112/review-desktop/0241.png"
+    }
+  ],
+  "publication": "Not published by asset subtask; integration and website manifest are separate responsibilities"
+}

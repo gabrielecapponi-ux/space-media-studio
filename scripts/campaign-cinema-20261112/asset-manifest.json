@@ -1,0 +1,574 @@
+{
+  "encoders": {
+    "ffmpeg": "ffmpeg version 8.1.2 Copyright (c) 2000-2026 the FFmpeg developers",
+    "cwebp": "1.4.0\nlibsharpyuv: 0.4.0"
+  },
+  "title": "SHIFT Campaign Cinema",
+  "font_dependencies": [
+    {
+      "type": "font",
+      "name": "DM Mono Regular",
+      "path": "//../../public/fonts/DMMono-Regular.ttf",
+      "packed": true,
+      "packed_sha256": "f98ada968dc3b6b2c08d3f5caaf266977df0bfe0929372b93df5a06cf2ace450"
+    }
+  ],
+  "validation_report": "outputs/campaign-cinema-20261112/geometry-validation.json",
+  "date": "2026-11-12",
+  "origin": "Original Space Media SHIFT sampler geometry and existing authored campaign artwork; native Cycles frames, no AI video or interpolated movement",
+  "source": {
+    "file": "outputs/flagship-20261106/shift/phase-01.blend",
+    "sha256": "a5811b51d699595705ea5df6de84494eae2591c088445981a442477f639e7aa7"
+  },
+  "artwork": [
+    {
+      "file": "outputs/campaign-web-revision-20261110/campaign/prints/banner.png",
+      "sha256": "33f6e594fb5ad6e93caf78423b90133b87753939f2dd7ca4c043631806ae9e5c"
+    },
+    {
+      "file": "outputs/campaign-web-revision-20261110/campaign/prints/square.png",
+      "sha256": "91966eed91a490dc95b6233ebb123ea985cfce8a1fb1d106951d1df96466a3f2"
+    },
+    {
+      "file": "outputs/campaign-web-revision-20261110/campaign/prints/story.png",
+      "sha256": "886f25b1efbbc0efe517d4490f8564b36d8814cc92df626c9b1f8527f164a6ab"
+    }
+  ],
+  "master": [
+    {
+      "file": "outputs/campaign-cinema-20261112/campaign-cinema-desktop.blend",
+      "sha256": "24d778102cf0867f717d88c2798f233d0fee54ea1f4a6ab925bff3d14be2fc28",
+      "bytes": 6690797
+    },
+    {
+      "file": "outputs/campaign-cinema-20261112/campaign-cinema-portrait.blend",
+      "sha256": "220251c47b82ac59da8d0f45687ee741c9bba71c64f11fa54fdb322fb72fd93b",
+      "bytes": 6507396
+    }
+  ],
+  "recipes": [
+    {
+      "file": "scripts/campaign-cinema-20261112/benchmark.py",
+      "sha256": "cc8290d67a95e22b2f594d0549d634e756acbfd866713e84cbb91e542f26e33b"
+    },
+    {
+      "file": "scripts/campaign-cinema-20261112/build.py",
+      "sha256": "0082423225312d9af7a9a38a808d1fb88e93f26699db1e8a4dda23cd3953e5a8"
+    },
+    {
+      "file": "scripts/campaign-cinema-20261112/contact-sheets.py",
+      "sha256": "0d3693746f0e72e7cc85e51026ca2ef2575a96ba7e275a32d33f69bf5595339d"
+    },
+    {
+      "file": "scripts/campaign-cinema-20261112/export.py",
+      "sha256": "190c6f6b3a2a600f2a62d3f42ec74be587663738709909b3d5936b3e11f0b1ec"
+    },
+    {
+      "file": "scripts/campaign-cinema-20261112/finish-pipeline.py",
+      "sha256": "3709fd319618081f5abc8a10a9d5b0397d480a533195d203910b7e96c6f10e60"
+    },
+    {
+      "file": "scripts/campaign-cinema-20261112/inspect-scene.py",
+      "sha256": "5398b6abaea128714cc3220f0307a666a7c83a86d74eb7f32bbfa8c1e9fb9e7c"
+    },
+    {
+      "file": "scripts/campaign-cinema-20261112/render-master.py",
+      "sha256": "7309c48d568682198c340d9b8ac37e94491d4959cdd651e31094be1c3c778efa"
+    },
+    {
+      "file": "scripts/campaign-cinema-20261112/temporal-qa.py",
+      "sha256": "48621aa63b81fd68995f83f8ff25a9ebcfcb83d52f6f6395859b1fc43029d1d5"
+    },
+    {
+      "file": "scripts/campaign-cinema-20261112/validate-master.py",
+      "sha256": "bbc5fabc90705ebc80a323f5ece35471f0a47083b12f999344d7ecad50cec741"
+    }
+  ],
+  "mechanisms": [
+    "sampler body",
+    "main encoder wheel",
+    "sixteen performance pads",
+    "display playhead",
+    "three printed graphite panels",
+    "cinematic camera"
+  ],
+  "assets": [
+    {
+      "file": "public/films/campaign-cinema-20261112-desktop.mp4",
+      "sha256": "a9b458d4171e6db1371221d33bea5e98e9798a68c39d6cdb50cb6ecec3c4f373",
+      "bytes": 11639294,
+      "resolution": [
+        2560,
+        1440
+      ],
+      "fps": 60,
+      "frames": 480,
+      "unique_frames": 480,
+      "seconds": 8,
+      "codec": "h264",
+      "profile": "High",
+      "level": 51,
+      "decode": "pass",
+      "faststart": true,
+      "native_render": true,
+      "derived_from": null,
+      "interpolation": false,
+      "upscaled": false,
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "mime_codec_string": "avc1.640033",
+            "width": 2560,
+            "height": 1440,
+            "coded_width": 2560,
+            "coded_height": 1440,
+            "has_b_frames": 2,
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "16:9",
+            "pix_fmt": "yuv420p",
+            "level": 51,
+            "color_range": "tv",
+            "color_space": "bt709",
+            "color_transfer": "iec61966-2-1",
+            "color_primaries": "bt709",
+            "chroma_location": "left",
+            "field_order": "progressive",
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "60/1",
+            "avg_frame_rate": "60/1",
+            "time_base": "1/15360",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 122880,
+            "duration": "8.000000",
+            "bit_rate": "11632519",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "480",
+            "extradata_size": 51,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "encoder": "Lavc62.28.102 libx264"
+            }
+          }
+        ],
+        "format": {
+          "filename": "/Users/gabrielecapponi/Documents/ChatGPT/Sito Space media/public/films/campaign-cinema-20261112-desktop.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "8.000000",
+          "size": "11639294",
+          "bit_rate": "11639294",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf62.12.102"
+          }
+        }
+      }
+    },
+    {
+      "file": "public/films/campaign-cinema-20261112-hd.mp4",
+      "sha256": "1bd5bb2e9ccc2064ff061f39fb28695d979c5ad570af560b116b21a484551b74",
+      "bytes": 5732630,
+      "resolution": [
+        1920,
+        1080
+      ],
+      "fps": 60,
+      "frames": 480,
+      "unique_frames": 480,
+      "seconds": 8,
+      "codec": "h264",
+      "profile": "High",
+      "level": 42,
+      "decode": "pass",
+      "faststart": true,
+      "native_render": false,
+      "derived_from": "public/films/campaign-cinema-20261112-desktop.mp4",
+      "interpolation": false,
+      "upscaled": false,
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "mime_codec_string": "avc1.64002a",
+            "width": 1920,
+            "height": 1080,
+            "coded_width": 1920,
+            "coded_height": 1080,
+            "has_b_frames": 2,
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "16:9",
+            "pix_fmt": "yuv420p",
+            "level": 42,
+            "color_range": "tv",
+            "color_space": "bt709",
+            "color_transfer": "iec61966-2-1",
+            "color_primaries": "bt709",
+            "chroma_location": "left",
+            "field_order": "progressive",
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "60/1",
+            "avg_frame_rate": "60/1",
+            "time_base": "1/15360",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 122880,
+            "duration": "8.000000",
+            "bit_rate": "5725911",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "480",
+            "extradata_size": 51,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "encoder": "Lavc62.28.102 libx264"
+            }
+          }
+        ],
+        "format": {
+          "filename": "/Users/gabrielecapponi/Documents/ChatGPT/Sito Space media/public/films/campaign-cinema-20261112-hd.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "8.000000",
+          "size": "5732630",
+          "bit_rate": "5732630",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf62.12.102"
+          }
+        }
+      }
+    },
+    {
+      "file": "public/films/campaign-cinema-20261112-compact.mp4",
+      "sha256": "86e673c32367c2d959ed46f1c26e681c3b82afcc6499fe447e1867aac5bd28ee",
+      "bytes": 2474172,
+      "resolution": [
+        1280,
+        720
+      ],
+      "fps": 30,
+      "frames": 240,
+      "unique_frames": 240,
+      "seconds": 8,
+      "codec": "h264",
+      "profile": "High",
+      "level": 40,
+      "decode": "pass",
+      "faststart": true,
+      "native_render": false,
+      "derived_from": "public/films/campaign-cinema-20261112-desktop.mp4",
+      "interpolation": false,
+      "upscaled": false,
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "mime_codec_string": "avc1.640028",
+            "width": 1280,
+            "height": 720,
+            "coded_width": 1280,
+            "coded_height": 720,
+            "has_b_frames": 2,
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "16:9",
+            "pix_fmt": "yuv420p",
+            "level": 40,
+            "color_range": "tv",
+            "color_space": "bt709",
+            "color_transfer": "iec61966-2-1",
+            "color_primaries": "bt709",
+            "chroma_location": "left",
+            "field_order": "progressive",
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "30/1",
+            "avg_frame_rate": "30/1",
+            "time_base": "1/15360",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 122880,
+            "duration": "8.000000",
+            "bit_rate": "2470383",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "240",
+            "extradata_size": 49,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "encoder": "Lavc62.28.102 libx264"
+            }
+          }
+        ],
+        "format": {
+          "filename": "/Users/gabrielecapponi/Documents/ChatGPT/Sito Space media/public/films/campaign-cinema-20261112-compact.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "8.000000",
+          "size": "2474172",
+          "bit_rate": "2474172",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf62.12.102"
+          }
+        }
+      }
+    },
+    {
+      "file": "public/films/campaign-cinema-20261112-portrait.mp4",
+      "sha256": "722a0011cbf83aef2a46c92254bfda5ae9692686e31e31cc0678ac1515350b70",
+      "bytes": 5016029,
+      "resolution": [
+        1080,
+        1350
+      ],
+      "fps": 30,
+      "frames": 240,
+      "unique_frames": 240,
+      "seconds": 8,
+      "codec": "h264",
+      "profile": "High",
+      "level": 42,
+      "decode": "pass",
+      "faststart": true,
+      "native_render": true,
+      "derived_from": null,
+      "interpolation": false,
+      "upscaled": false,
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "mime_codec_string": "avc1.64002a",
+            "width": 1080,
+            "height": 1350,
+            "coded_width": 1080,
+            "coded_height": 1350,
+            "has_b_frames": 2,
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "4:5",
+            "pix_fmt": "yuv420p",
+            "level": 42,
+            "color_range": "tv",
+            "color_space": "bt709",
+            "color_transfer": "iec61966-2-1",
+            "color_primaries": "bt709",
+            "chroma_location": "left",
+            "field_order": "progressive",
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "30/1",
+            "avg_frame_rate": "30/1",
+            "time_base": "1/15360",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 122880,
+            "duration": "8.000000",
+            "bit_rate": "5012213",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "240",
+            "extradata_size": 52,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "encoder": "Lavc62.28.102 libx264"
+            }
+          }
+        ],
+        "format": {
+          "filename": "/Users/gabrielecapponi/Documents/ChatGPT/Sito Space media/public/films/campaign-cinema-20261112-portrait.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "8.000000",
+          "size": "5016029",
+          "bit_rate": "5016029",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf62.12.102"
+          }
+        }
+      }
+    },
+    {
+      "file": "public/images/campaign-cinema-20261112-desktop.webp",
+      "sha256": "9033ded2dc074cb113ab74436e426e544527a3e5df5065bdd1beac5c79c40fb2",
+      "bytes": 136954,
+      "resolution": [
+        2560,
+        1440
+      ],
+      "codec": "webp",
+      "decode": "pass",
+      "origin": "outputs/campaign-cinema-20261112/review-desktop/0001.png"
+    },
+    {
+      "file": "public/images/campaign-cinema-20261112-portrait.webp",
+      "sha256": "0daaa6a3d7548607c025e1c505bf8451c114416c1e3ce5c4e7abc05ca2cdbc7a",
+      "bytes": 81092,
+      "resolution": [
+        1080,
+        1350
+      ],
+      "codec": "webp",
+      "decode": "pass",
+      "origin": "outputs/campaign-cinema-20261112/review-portrait/0001.png"
+    },
+    {
+      "file": "public/images/campaign-cinema-20261112-thumb.webp",
+      "sha256": "382c61f0390e491605b984d8d7f60af04777c47ea1ef52c381398524fab985e1",
+      "bytes": 7760,
+      "resolution": [
+        320,
+        180
+      ],
+      "codec": "webp",
+      "decode": "pass",
+      "origin": "outputs/campaign-cinema-20261112/review-desktop/0241.png"
+    }
+  ],
+  "publication": "Not published by asset subtask; integration and website manifest are separate responsibilities"
+}
