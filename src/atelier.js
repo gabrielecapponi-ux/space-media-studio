@@ -11,6 +11,7 @@ import './funding-journey.css';
 import { installMobileNavigation } from './mobile-navigation.js';
 import './mobile-polish.css';
 import './cinematic-polish.css';
+import './cinematic-hero.css';
 
 const lifetime = new AbortController();
 const { signal } = lifetime;
@@ -325,30 +326,44 @@ function drawScreen(ctx, width, height, aspect, poster) {
     ctx.roundRect(contact.x, contact.y, contact.width, contact.height, contact.height / 2);
     ctx.fill();
   }
-  // Draw individual text runs so the logo and headline use their live spacing.
-  for (const selector of ['.atelier-brand > span', '.atelier-brand small', '.flagship-location',
-    '#atelier-title > *', '.atelier-nav a', '.atelier-contact-link', '.atelier-mobile-menu summary span', '.atelier-hero-promise']) {
+  const primary = document.querySelector('.cinema-hero-cta');
+  if (primary) {
+    const rect = primary.getBoundingClientRect();
+    ctx.fillStyle = getComputedStyle(primary).backgroundColor;
+    ctx.fillRect(rect.x, rect.y, rect.width, rect.height);
+  }
+  // Sample each word from the actual DOM: wrapping, nested yellow accents and
+  // responsive typography remain identical on the studio monitor and page.
+  // This runs only when the monitor texture is created or its viewport changes.
+  for (const selector of ['.atelier-brand > span', '.flagship-location', '#atelier-title',
+    '.cinema-hero-description', '.cinema-hero-cta', '.atelier-nav a', '.atelier-contact-link',
+    '.atelier-mobile-menu summary span', '.atelier-hero-promise', '.atelier-scroll-link']) {
     for (const el of document.querySelectorAll(selector)) {
-      const run = [...el.childNodes].find(node => node.nodeType === Node.TEXT_NODE && node.textContent.trim());
-      if (!run || !el.getClientRects().length) continue;
-      const range = document.createRange();
-      range.selectNodeContents(run);
-      const rects = range.getClientRects();
-      if (rects.length !== 1) continue;
-      const rect = rects[0];
-      const style = getComputedStyle(el);
-      ctx.font = `${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
-      ctx.fillStyle = style.color;
-      ctx.textBaseline = 'alphabetic';
-      const metrics = ctx.measureText(run.textContent.trim());
-      const ascent = metrics.fontBoundingBoxAscent ?? parseFloat(style.fontSize) * .82;
-      const descent = metrics.fontBoundingBoxDescent ?? parseFloat(style.fontSize) * .18;
-      const baseline = rect.y + (rect.height + ascent - descent) / 2;
-      ctx.save();
-      ctx.translate(rect.x, baseline);
-      ctx.scale(rect.width / Math.max(1, metrics.width), 1);
-      ctx.fillText(run.textContent.trim(), 0, 0);
-      ctx.restore();
+      if (!el.getClientRects().length) continue;
+      const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+      let node;
+      while ((node = walker.nextNode())) {
+        const style = getComputedStyle(node.parentElement);
+        if (style.visibility === 'hidden' || style.display === 'none') continue;
+        ctx.font = `${style.fontStyle} ${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+        ctx.fillStyle = style.color;
+        ctx.textBaseline = 'alphabetic';
+        for (const match of node.textContent.matchAll(/\S+/g)) {
+          const range = document.createRange();
+          range.setStart(node, match.index);
+          range.setEnd(node, match.index + match[0].length);
+          const rect = range.getBoundingClientRect();
+          if (!rect.width || !rect.height) continue;
+          const metrics = ctx.measureText(match[0]);
+          const ascent = metrics.fontBoundingBoxAscent ?? parseFloat(style.fontSize) * .82;
+          const descent = metrics.fontBoundingBoxDescent ?? parseFloat(style.fontSize) * .18;
+          ctx.save();
+          ctx.translate(rect.x, rect.y + (rect.height + ascent - descent) / 2);
+          ctx.scale(rect.width / Math.max(1, metrics.width), 1);
+          ctx.fillText(match[0], 0, 0);
+          ctx.restore();
+        }
+      }
     }
   }
   ctx.restore();

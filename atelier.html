@@ -65,9 +65,13 @@
     </header>
 
     <main id="main" tabindex="-1">
-      <section class="atelier-hero flagship-hero" aria-labelledby="atelier-title">
+      <section class="atelier-hero flagship-hero cinema-hero" aria-labelledby="atelier-title">
         <div class="flagship-masthead">
           <p class="atelier-eyebrow flagship-location">Studio creativo indipendente · Parma</p>
+        </div>
+        <div class="cinema-hero-story">
+          <h1 id="atelier-title"><span>La tua idea.</span> <span>Prende <em class="space-accent">forma.</em></span></h1>
+          <p class="cinema-hero-description">Ti mostriamo un’anteprima del tuo nuovo sito in poco tempo. Scegliamo insieme come deve apparire e cosa deve fare.</p>
         </div>
         <div class="flagship-water-stage" role="group" aria-label="Una goccia cade sull’acqua. All’impatto si forma una corona, poi dalla superficie risale una colonna sottile.">
           <picture class="flagship-water-poster">
@@ -75,11 +79,13 @@
             <img src="/images/director-water-desktop.webp" alt="" fetchpriority="high" width="3840" height="2160" />
           </picture>
           <video id="atelier-film" class="atelier-film" muted playsinline loop preload="none"></video>
-          <div class="flagship-title-frame"><h1 id="atelier-title"><span>Brand.</span> <span class="flagship-title-web">Web.</span> <em>Motion.</em></h1></div>
           <button type="button" class="flagship-water-start" data-water-start aria-controls="atelier-film" hidden><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5 13 8 4 13.5Z" fill="currentColor"/></svg>Avvia la caduta</button>
         </div>
+        <div class="cinema-hero-actions">
+          <a class="cinema-hero-cta" href="#atelier-idea-web">Partiamo dalla tua idea <span aria-hidden="true">↗</span></a>
+        </div>
         <div class="flagship-baseline">
-          <p class="atelier-hero-promise">Siti web, e-commerce, loghi e video per la tua attività.</p>
+          <p class="atelier-hero-promise">Brand. <span class="space-accent">Web.</span> Motion.</p>
           <div class="flagship-film-controls">
             <button type="button" id="atelier-film-toggle" class="flagship-transport" aria-controls="atelier-film" aria-label="Riproduci il film" aria-pressed="false" hidden>
               <span data-film-symbol aria-hidden="true">▷</span><span data-film-label>Riproduci</span>
@@ -88,7 +94,7 @@
               <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M4 8a6.5 6.5 0 1 1 .7 6M4 3.5V8h4.5"/></svg>Rivedi la caduta
             </button>
           </div>
-          <a class="atelier-scroll-link" href="#concepts">Guarda cosa possiamo creare <span aria-hidden="true">↓</span></a>
+          <a class="atelier-scroll-link" href="#concepts">Esplora le possibilità <span aria-hidden="true">↓</span></a>
         </div>
       </section>
 
@@ -108,7 +114,7 @@
             <span class="atelier-service-caption"><span class="atelier-service-key">02</span><strong>Loghi e identità</strong><span class="atelier-service-arrow" aria-hidden="true">↓</span></span>
           </a>
           <a href="#motion">
-            <span class="atelier-service-thumb atelier-service-thumb--motion" aria-hidden="true"><img src="/images/elegant-product-thumb.webp" width="320" height="180" alt="" loading="lazy" decoding="async" fetchpriority="low" /></span>
+            <span class="atelier-service-thumb atelier-service-thumb--motion" aria-hidden="true"><img src="/images/luma-mechanics-20261112-thumb.webp" width="320" height="180" alt="" loading="lazy" decoding="async" fetchpriority="low" /></span>
             <span class="atelier-service-caption"><span class="atelier-service-key">03</span><strong>Video e 3D</strong><span class="atelier-service-arrow" aria-hidden="true">↓</span></span>
           </a>
           <a href="#campaign">
@@ -127,10 +133,11 @@
             <div class="atelier-concept-caption atelier-web-offer">
               <div class="atelier-concept-heading">
                 <p class="atelier-eyebrow">01 / Digitale</p>
-                <h3 id="web-title">Siti web &amp;<br />e-commerce.</h3>
+                <h3 id="web-title">Siti <span class="space-accent">web</span> &amp;<br />e-commerce.</h3>
               </div>
               <div class="atelier-concept-description">
-                <p>Il tuo prodotto, il tuo servizio, il tuo mondo. Online.</p>
+                <p>Un’anteprima da vedere presto. Una direzione da scegliere insieme.</p>
+                <p class="atelier-web-preview">Partiamo dalla tua idea e ti mostriamo una prima proposta. Poi scegliamo insieme stile, navigazione e funzioni: dalla vetrina al negozio online, fino a prenotazioni ed esperienze 3D.</p>
                 <p class="atelier-deliverables">Vendita online · Prenotazioni · Esperienze 3D</p>
               </div>
             </div>
@@ -213,20 +220,20 @@
             <div class="atelier-concept-caption">
               <div class="atelier-concept-heading">
                 <p class="atelier-eyebrow">03 / Motion</p>
-                <h3 id="ora-title">Video &amp;<br />animazioni 3D.</h3>
+                <h3 id="ora-title">Video &amp;<br />animazioni <span class="space-accent">3D.</span></h3>
               </div>
               <div class="atelier-concept-description">
-                <p>Il tuo prodotto diventa il protagonista.</p>
+                <p>Il tuo prodotto. Da ogni prospettiva.</p>
                 <p class="atelier-deliverables">Spot · CGI · Loghi animati</p>
               </div>
             </div>
             <figure class="atelier-concept-visual atelier-service-film atelier-media-stage" data-service-film="product">
               <div class="atelier-film-surface">
                 <picture class="atelier-film-poster" aria-hidden="true">
-                  <source media="(max-width: 760px) and (orientation: portrait)" srcset="/images/director-product-mobile.jpg" />
-                  <img src="/images/elegant-product.webp" width="1920" height="1080" alt="" loading="lazy" decoding="async" fetchpriority="low" />
+                  <source media="(max-width: 760px) and (orientation: portrait)" srcset="/images/luma-mechanics-20261112-portrait.webp" />
+                  <img src="/images/luma-mechanics-20261112-desktop.webp" width="2560" height="1440" alt="" loading="lazy" decoding="async" fetchpriority="low" />
                 </picture>
-                <video id="atelier-product-video" data-atelier-media data-media-label="il film di prodotto LUMA" muted playsinline loop preload="none" data-src-desktop="./films/elegant-product.mp4" data-src-hd="./films/elegant-product-hd.mp4" data-src-compact="./films/elegant-product-compact.mp4" data-src-mobile="./films/director-product-mobile.mp4" data-poster-desktop="./images/elegant-product.webp" data-poster-mobile="./images/director-product-mobile.jpg" width="1920" height="1080" aria-label="Film LUMA: una fotocamera di design con metallo satinato, comandi lavorati e diaframma e ghiere in dettaglio"></video>
+                <video id="atelier-product-video" data-atelier-media data-media-label="il film di prodotto LUMA" muted playsinline loop preload="none" data-src-desktop="./films/luma-mechanics-20261112-desktop.mp4" data-src-hd="./films/luma-mechanics-20261112-hd.mp4" data-src-compact="./films/luma-mechanics-20261112-compact.mp4" data-src-mobile="./films/luma-mechanics-20261112-portrait.mp4" data-poster-desktop="./images/luma-mechanics-20261112-desktop.webp" data-poster-mobile="./images/luma-mechanics-20261112-portrait.webp" width="2560" height="1440" aria-label="Film LUMA: il corpo ruota, l’obiettivo si estende, le nove lamelle del diaframma si aprono e i selettori girano"></video>
               </div>
               <figcaption class="atelier-film-caption"><span>LUMA / Film di prodotto</span><span>Spot di lancio / CGI prodotto.</span></figcaption>
               <button type="button" class="atelier-case-film-toggle" data-media-toggle aria-controls="atelier-product-video" aria-label="Riproduci il film di prodotto LUMA" aria-pressed="false" hidden><span data-media-symbol aria-hidden="true">▷</span><span data-media-label>Riproduci</span></button>

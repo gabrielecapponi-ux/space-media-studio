@@ -1,5 +1,15 @@
 # Provenienza dei materiali — Space Media Studio
 
+## Hero e meccanica LUMA — 12 novembre 2026
+
+La nuova hero «La tua idea. Prende forma.» è una composizione originale HTML/CSS. Riutilizza la ripresa UHD dell’acqua e l’introduzione dello studio già approvate. Titolo e proposta commerciale rimangono fuori dal film; il monitor desktop ricava righe, spazi e colori dalla pagina effettiva. Nessuna nuova risorsa Horizon è acquisita: l’adattamento OSKEN esistente rimane conservato.
+
+I nuovi film `luma-mechanics-20261112-*` derivano dal modello editabile originale `outputs/flagship-20261106/luma/luma-optical-bench.blend`. Il corpo, tre gruppi ottici coassiali, nove lamelle su perni, tre selettori incisi e il pulsante di scatto sono animati nella geometria. Vetri e materiali metallici vengono renderizzati da Blender Cycles, 20 campioni massimi, sette rimbalzi, denoise OIDN su Metal e motion blur. Non vengono usate fotografie proiettate per il nuovo movimento, immagini esterne o frame interpolati.
+
+Due master editabili producono QHD 2560×1440/60 e portrait 1080×1350/30 nativi, entrambi da dieci secondi. HD 1920×1080/60 e compact 1280×720/30 sono derivati del QHD; nessun file LUMA è dichiarato 4K. Il portrait ha camera e fondale curvo dedicati. I poster WebP provengono dal primo fotogramma di ciascun profilo; la miniatura 320×180 usa il fotogramma desktop 0301, con il prodotto frontale e più leggibile. Il manifest pubblico `ASSET-LUMA-MECHANICS-20261112.json` registra master, ricette, font di sistema, hash e caratteristiche degli export. Ricette in `scripts/luma-mechanics-20261112/`; master, prove scartate, controlli e manifest completo in `outputs/luma-mechanics-20261112/`.
+
+La scena eredita Arial e Arial Bold di macOS, già incorporati nel master originale e conservati nei master privati. Percorsi e hash sono documentati; nessun file di font separato viene pubblicato. La riapertura dei master non richiede texture esterne o librerie Blender collegate. I film LUMA precedenti vengono esclusi dal manifest attivo, conservando la fotografia `elegant-product.webp` ancora usata dalla demo. Il materiale storico resta recuperabile da Git; questa lavorazione non elimina file degli altri progetti o ripristina cancellazioni locali preesistenti.
+
 ## Campagne e demo Web — revisione successiva del 10 novembre 2026
 
 I film attivi `cinematic-web-20261110*` e `cinematic-campaign-20261110*` sostituiscono nella build i rispettivi film precedenti, conservati senza modifiche nell’archivio e in `public/`. Entrambi offrono master nativi QHD 2560×1440/60 fps, HD 1920×1080/60, compact 1280×720/30 e regia portrait 720×900/30, dieci secondi. Non sono esportazioni 4K né frame interpolati. La ripresa UHD dell’acqua rimane invariata.

@@ -1,0 +1,173 @@
+/* An editorial opening beside an unobstructed photographic aperture. */
+.space-accent { color: var(--yellow); }
+.cinema-hero.flagship-hero.atelier-hero {
+  height: auto;
+  min-height: 100svh;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto auto auto auto auto;
+  gap: 24px;
+  padding-bottom: max(28px, var(--safe-bottom));
+}
+.cinema-hero .flagship-masthead { padding-top: 16px; }
+.cinema-hero .flagship-location { margin: 0; font-size: 11px; }
+.cinema-hero-story { min-width: 0; align-self: end; }
+.cinema-hero #atelier-title {
+  position: static;
+  width: auto;
+  max-width: none;
+  font-size: clamp(48px, 10vw, 108px);
+  line-height: .96;
+  letter-spacing: -.075em;
+  text-shadow: none;
+  transform: none;
+  transition: none;
+}
+.cinema-hero #atelier-title > span { display: block; }
+.cinema-hero[data-impact] #atelier-title { transform: none; }
+.cinema-hero #atelier-title em { color: var(--yellow); font-style: normal; position: relative; }
+.cinema-hero #atelier-title em::after {
+  content: '';
+  position: absolute;
+  left: .04em;
+  right: .02em;
+  bottom: -.07em;
+  height: 2px;
+  background: currentColor;
+  transform: scaleX(.2);
+  transform-origin: left;
+  opacity: 0;
+  transition: transform 1000ms cubic-bezier(.2,.7,.2,1), opacity 400ms ease;
+}
+.cinema-hero[data-impact="true"] #atelier-title em::after { transform: scaleX(1); opacity: 1; }
+.cinema-hero-description {
+  max-width: 37ch;
+  margin-top: 26px;
+  font-size: clamp(16px, 1.35vw, 20px);
+  line-height: 1.55;
+  color: #bcc2bd;
+  letter-spacing: -.025em;
+}
+.cinema-hero .flagship-water-stage {
+  aspect-ratio: 16 / 9;
+  margin-inline: 0;
+  background: var(--stage-ink);
+}
+.cinema-hero-actions { align-self: start; }
+.cinema-hero-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+  min-height: 52px;
+  padding: 14px 20px;
+  background: var(--yellow);
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.4;
+  font-weight: 500;
+}
+.cinema-hero-cta > span { font-size: 22px; line-height: 1; transition: transform 200ms ease; }
+.cinema-hero-cta:focus-visible { outline: 2px solid var(--paper); outline-offset: 5px; }
+.cinema-hero .flagship-baseline {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 12px 28px;
+  border-top: 1px solid var(--page-rule);
+  padding-top: 18px;
+}
+.cinema-hero .flagship-baseline .atelier-hero-promise {
+  grid-area: auto;
+  font-size: 18px;
+  max-width: none;
+}
+.cinema-hero .flagship-film-controls { grid-area: auto; gap: 18px; }
+.cinema-hero .flagship-baseline .atelier-scroll-link {
+  grid-area: auto;
+  flex-direction: row;
+  text-align: left;
+  max-width: none;
+  justify-self: end;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+}
+.atelier-concept-description > .atelier-web-preview {
+  max-width: 50ch;
+  margin-block: 18px;
+  font-size: clamp(15px, 1.1vw, 18px);
+  line-height: 1.55;
+  color: #b9c1ba;
+}
+@media (min-width: 1100px) {
+  .cinema-hero.flagship-hero.atelier-hero {
+    grid-template-columns: minmax(0, 32fr) minmax(0, 68fr);
+    grid-template-rows: auto 1fr auto auto;
+    column-gap: 2.5vw;
+    row-gap: 26px;
+  }
+  .cinema-hero .flagship-masthead { grid-area: 1 / 1 / 2 / -1; }
+  .cinema-hero-story { grid-area: 2 / 1; padding-top: 32px; }
+  .cinema-hero #atelier-title { font-size: clamp(52px, min(5.45vw, 10.4svh), 106px); }
+  .cinema-hero #atelier-title > span:first-child { white-space: nowrap; }
+  .cinema-hero #atelier-title em { display: block; width: fit-content; }
+  .cinema-hero-description { margin-top: 28px; }
+  .cinema-hero .flagship-water-stage {
+    grid-area: 2 / 2 / 4 / 3;
+    align-self: center;
+    width: 100%;
+  }
+  .cinema-hero-actions { grid-area: 3 / 1; padding-bottom: 30px; }
+  .cinema-hero .flagship-baseline { grid-area: 4 / 1 / 5 / -1; }
+}
+@media (min-width: 1100px) and (min-height: 700px) {
+  .cinema-hero.flagship-hero.atelier-hero { height: 100svh; }
+  .cinema-hero .flagship-water-stage { max-height: calc(100svh - var(--header-height) - var(--safe-top) - 180px); }
+}
+@media (max-width: 1099px) {
+  .cinema-hero .flagship-baseline { grid-template-columns: 1fr auto; }
+  .cinema-hero .flagship-film-controls { grid-area: 2 / 1 / 3 / -1; }
+  .cinema-hero .flagship-baseline .atelier-scroll-link { grid-area: 1 / 2; }
+}
+@media (max-width: 1024px) and (orientation: portrait) {
+  .cinema-hero .flagship-water-stage {
+    aspect-ratio: 4 / 5;
+    margin-inline: calc(-1 * var(--gutter));
+  }
+}
+@media (max-width: 600px) {
+  .cinema-hero.flagship-hero.atelier-hero { gap: 20px; }
+  .cinema-hero .flagship-masthead { padding-top: 12px; }
+  .cinema-hero #atelier-title { font-size: clamp(46px, 13.3vw, 80px); }
+  .cinema-hero-description { font-size: 16px; margin-top: 18px; max-width: 35ch; }
+  .cinema-hero .flagship-water-stage { margin-top: -6px; }
+  .cinema-hero-cta { display: flex; width: 100%; }
+  .cinema-hero .flagship-baseline { gap: 8px 12px; padding-top: 14px; }
+  .cinema-hero .flagship-baseline .atelier-hero-promise { font-size: 16px; }
+  .cinema-hero .flagship-baseline .atelier-scroll-link { font-size: 12px; max-width: 140px; gap: 8px; }
+  .cinema-hero .flagship-film-controls { justify-content: space-between; }
+}
+/* A short landscape phone still opens on the film, beside the story. */
+@media (orientation: landscape) and (min-width: 640px) and (max-width: 1099px) and (max-height: 550px) {
+  .cinema-hero.flagship-hero.atelier-hero {
+    grid-template-columns: minmax(0, 40fr) minmax(0, 60fr);
+    grid-template-rows: auto auto auto auto;
+    gap: 20px;
+  }
+  .cinema-hero .flagship-masthead { grid-area: 1 / 1 / 2 / -1; }
+  .cinema-hero-story { grid-area: 2 / 1; align-self: start; }
+  .cinema-hero #atelier-title { font-size: clamp(36px, 5.2vw, 56px); }
+  .cinema-hero #atelier-title > span:first-child { white-space: nowrap; }
+  .cinema-hero #atelier-title em { display: block; width: fit-content; }
+  .cinema-hero-description { margin-top: 18px; font-size: 15px; line-height: 1.45; }
+  .cinema-hero .flagship-water-stage { grid-area: 2 / 2 / 4 / 3; align-self: center; }
+  .cinema-hero-actions { grid-area: 3 / 1; }
+  .cinema-hero-cta { width: 100%; padding-inline: 14px; gap: 12px; font-size: 14px; }
+  .cinema-hero .flagship-baseline { grid-area: 4 / 1 / 5 / -1; }
+}
+@media (hover: hover) and (pointer: fine) {
+  .cinema-hero-cta:hover > span { transform: translate(2px, -2px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cinema-hero-cta > span { transition: none; transform: none; }
+  .cinema-hero #atelier-title em::after { display: none; }
+}

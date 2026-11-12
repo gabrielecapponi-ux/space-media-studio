@@ -1,0 +1,566 @@
+{
+  "encoders": {
+    "ffmpeg": "ffmpeg version 8.1.2 Copyright (c) 2000-2026 the FFmpeg developers",
+    "cwebp": "1.4.0\nlibsharpyuv: 0.4.0"
+  },
+  "title": "LUMA Mechanics",
+  "font_dependencies": [
+    {
+      "type": "font",
+      "name": "Arial Bold",
+      "path": "/System/Library/Fonts/Supplemental/Arial Bold.ttf",
+      "packed": true,
+      "packed_bytes": 750984,
+      "packed_sha256": "d72db21f9242aedd6b917d8549ad5921766b24d5f8d0becfda2ff4c620b3c2e0",
+      "exists": true,
+      "sha256": "d72db21f9242aedd6b917d8549ad5921766b24d5f8d0becfda2ff4c620b3c2e0"
+    },
+    {
+      "type": "font",
+      "name": "Arial Regular",
+      "path": "/System/Library/Fonts/Supplemental/Arial.ttf",
+      "packed": true,
+      "packed_bytes": 773236,
+      "packed_sha256": "525979822591a3447cfc49d943d6f7683508e25543407871c0ed8fed05fd2bd9",
+      "exists": true,
+      "sha256": "525979822591a3447cfc49d943d6f7683508e25543407871c0ed8fed05fd2bd9"
+    }
+  ],
+  "validation_report": "outputs/luma-mechanics-20261112/geometry-validation.json",
+  "date": "2026-11-12",
+  "origin": "Original Space Media LUMA mesh and procedural materials; no external imagery or generated AI video",
+  "source": {
+    "file": "outputs/flagship-20261106/luma/luma-optical-bench.blend",
+    "sha256": "d69542e9e6b270b4c7e04312f4d61e12e29724a09b21db7ff14e189cb725987b"
+  },
+  "master": [
+    {
+      "file": "outputs/luma-mechanics-20261112/luma-mechanics-desktop.blend",
+      "sha256": "d8535752a0cb0b3a133a0534adfac8cbcb574d68d4fc13e9d0a9f2c400f7a411",
+      "bytes": 2129458
+    },
+    {
+      "file": "outputs/luma-mechanics-20261112/luma-mechanics-portrait.blend",
+      "sha256": "40db2a216c9d34ea50f0d79a22964c59d49b5d1e144cb6cb0f9813c756628e3c",
+      "bytes": 1939919
+    }
+  ],
+  "recipes": [
+    {
+      "file": "scripts/luma-mechanics-20261112/benchmark.py",
+      "sha256": "06cd5970db263e3658ba339769ea981c657f31c2cb30a7b3d4024ea214ef7d3f"
+    },
+    {
+      "file": "scripts/luma-mechanics-20261112/build.py",
+      "sha256": "9c2542aaebca9d830e8fb793d511283334a10f7ef2ab8b1635246175449dde7f"
+    },
+    {
+      "file": "scripts/luma-mechanics-20261112/contact-sheets.py",
+      "sha256": "962f128f614159d75da949a872e6b75795d5614567606877f8e00959e72116ed"
+    },
+    {
+      "file": "scripts/luma-mechanics-20261112/details.py",
+      "sha256": "e60d008136a61b3ce451256f8b738538171cc9555e6dedec54788925b5344eae"
+    },
+    {
+      "file": "scripts/luma-mechanics-20261112/export.py",
+      "sha256": "4c383604b1b4745447b904f2a75ed70c647b278bd395a6e014ddad4353235379"
+    },
+    {
+      "file": "scripts/luma-mechanics-20261112/finish-pipeline.py",
+      "sha256": "307469c8ad069191fdafdbfea36315cc81c9f393b2cd96172ad186807da45c9e"
+    },
+    {
+      "file": "scripts/luma-mechanics-20261112/inspect-scene.py",
+      "sha256": "ab860bd9a8df5abbff978aab3d72d9a3087ed6c1cf631b5b2646862409513509"
+    },
+    {
+      "file": "scripts/luma-mechanics-20261112/portrait-preflight.py",
+      "sha256": "4967bf67860bdc114b495d883008dde8e16527a29a0c389448a21794802c50b3"
+    },
+    {
+      "file": "scripts/luma-mechanics-20261112/render-master.py",
+      "sha256": "de51c74481404ae761600b2da6cfb55e0399d4f7f3f4ff67a82c02a699c6388c"
+    },
+    {
+      "file": "scripts/luma-mechanics-20261112/temporal-qa.py",
+      "sha256": "a554e07cebf10d2847a1a1a6352a75272117b07b199545766baaef705a05ddb1"
+    },
+    {
+      "file": "scripts/luma-mechanics-20261112/validate-master.py",
+      "sha256": "c9e0987c0d95030e429341bf8a917bdee90542c63353f1b0ebde0040418dc49d"
+    }
+  ],
+  "mechanisms": [
+    "body",
+    "three lens groups",
+    "nine pinned iris leaves",
+    "three engraved dials",
+    "shutter"
+  ],
+  "assets": [
+    {
+      "file": "public/films/luma-mechanics-20261112-desktop.mp4",
+      "sha256": "2c55a1d5de3b64e50b8043b4659751daab5e07a4ca2528fdcdb19b22e60892e8",
+      "bytes": 14805677,
+      "resolution": [
+        2560,
+        1440
+      ],
+      "fps": 60,
+      "frames": 600,
+      "unique_frames": 600,
+      "seconds": 10,
+      "codec": "h264",
+      "profile": "High",
+      "level": 51,
+      "decode": "pass",
+      "faststart": true,
+      "native_render": true,
+      "derived_from": null,
+      "interpolation": false,
+      "upscaled": false,
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "mime_codec_string": "avc1.640033",
+            "width": 2560,
+            "height": 1440,
+            "coded_width": 2560,
+            "coded_height": 1440,
+            "has_b_frames": 2,
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "16:9",
+            "pix_fmt": "yuv420p",
+            "level": 51,
+            "color_range": "tv",
+            "color_space": "bt709",
+            "color_transfer": "iec61966-2-1",
+            "color_primaries": "bt709",
+            "chroma_location": "left",
+            "field_order": "progressive",
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "60/1",
+            "avg_frame_rate": "60/1",
+            "time_base": "1/15360",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 153600,
+            "duration": "10.000000",
+            "bit_rate": "11837937",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "600",
+            "extradata_size": 51,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "encoder": "Lavc62.28.102 libx264"
+            }
+          }
+        ],
+        "format": {
+          "filename": "/Users/gabrielecapponi/Documents/ChatGPT/Sito Space media/public/films/luma-mechanics-20261112-desktop.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "10.000000",
+          "size": "14805677",
+          "bit_rate": "11844541",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf62.12.102"
+          }
+        }
+      }
+    },
+    {
+      "file": "public/films/luma-mechanics-20261112-hd.mp4",
+      "sha256": "a11999bb230d09bba16d747b3547e92af3fd481152357f59ee1d140c57fe300c",
+      "bytes": 7197536,
+      "resolution": [
+        1920,
+        1080
+      ],
+      "fps": 60,
+      "frames": 600,
+      "unique_frames": 600,
+      "seconds": 10,
+      "codec": "h264",
+      "profile": "High",
+      "level": 42,
+      "decode": "pass",
+      "faststart": true,
+      "native_render": false,
+      "derived_from": "public/films/luma-mechanics-20261112-desktop.mp4",
+      "interpolation": false,
+      "upscaled": false,
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "mime_codec_string": "avc1.64002a",
+            "width": 1920,
+            "height": 1080,
+            "coded_width": 1920,
+            "coded_height": 1080,
+            "has_b_frames": 2,
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "16:9",
+            "pix_fmt": "yuv420p",
+            "level": 42,
+            "color_range": "tv",
+            "color_space": "bt709",
+            "color_transfer": "iec61966-2-1",
+            "color_primaries": "bt709",
+            "chroma_location": "left",
+            "field_order": "progressive",
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "60/1",
+            "avg_frame_rate": "60/1",
+            "time_base": "1/15360",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 153600,
+            "duration": "10.000000",
+            "bit_rate": "5751492",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "600",
+            "extradata_size": 51,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "encoder": "Lavc62.28.102 libx264"
+            }
+          }
+        ],
+        "format": {
+          "filename": "/Users/gabrielecapponi/Documents/ChatGPT/Sito Space media/public/films/luma-mechanics-20261112-hd.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "10.000000",
+          "size": "7197536",
+          "bit_rate": "5758028",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf62.12.102"
+          }
+        }
+      }
+    },
+    {
+      "file": "public/films/luma-mechanics-20261112-compact.mp4",
+      "sha256": "67c2ceaae237035cc2e69d12c3449066c4a611100a07328cf265dde300d4bcc9",
+      "bytes": 3161015,
+      "resolution": [
+        1280,
+        720
+      ],
+      "fps": 30,
+      "frames": 300,
+      "unique_frames": 300,
+      "seconds": 10,
+      "codec": "h264",
+      "profile": "High",
+      "level": 40,
+      "decode": "pass",
+      "faststart": true,
+      "native_render": false,
+      "derived_from": "public/films/luma-mechanics-20261112-desktop.mp4",
+      "interpolation": false,
+      "upscaled": false,
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "mime_codec_string": "avc1.640028",
+            "width": 1280,
+            "height": 720,
+            "coded_width": 1280,
+            "coded_height": 720,
+            "has_b_frames": 2,
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "16:9",
+            "pix_fmt": "yuv420p",
+            "level": 40,
+            "color_range": "tv",
+            "color_space": "bt709",
+            "color_transfer": "iec61966-2-1",
+            "color_primaries": "bt709",
+            "chroma_location": "left",
+            "field_order": "progressive",
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "30/1",
+            "avg_frame_rate": "30/1",
+            "time_base": "1/15360",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 153600,
+            "duration": "10.000000",
+            "bit_rate": "2525201",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "300",
+            "extradata_size": 49,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "encoder": "Lavc62.28.102 libx264"
+            }
+          }
+        ],
+        "format": {
+          "filename": "/Users/gabrielecapponi/Documents/ChatGPT/Sito Space media/public/films/luma-mechanics-20261112-compact.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "10.000000",
+          "size": "3161015",
+          "bit_rate": "2528812",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf62.12.102"
+          }
+        }
+      }
+    },
+    {
+      "file": "public/films/luma-mechanics-20261112-portrait.mp4",
+      "sha256": "a6c4ccfd74be2504db8d23d08e0feaf30c8bbb8d539229e38278940bebad4912",
+      "bytes": 4872813,
+      "resolution": [
+        1080,
+        1350
+      ],
+      "fps": 30,
+      "frames": 300,
+      "unique_frames": 300,
+      "seconds": 10,
+      "codec": "h264",
+      "profile": "High",
+      "level": 42,
+      "decode": "pass",
+      "faststart": true,
+      "native_render": true,
+      "derived_from": null,
+      "interpolation": false,
+      "upscaled": false,
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "mime_codec_string": "avc1.64002a",
+            "width": 1080,
+            "height": 1350,
+            "coded_width": 1080,
+            "coded_height": 1350,
+            "has_b_frames": 2,
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "4:5",
+            "pix_fmt": "yuv420p",
+            "level": 42,
+            "color_range": "tv",
+            "color_space": "bt709",
+            "color_transfer": "iec61966-2-1",
+            "color_primaries": "bt709",
+            "chroma_location": "left",
+            "field_order": "progressive",
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "30/1",
+            "avg_frame_rate": "30/1",
+            "time_base": "1/15360",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 153600,
+            "duration": "10.000000",
+            "bit_rate": "3894628",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "300",
+            "extradata_size": 52,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "encoder": "Lavc62.28.102 libx264"
+            }
+          }
+        ],
+        "format": {
+          "filename": "/Users/gabrielecapponi/Documents/ChatGPT/Sito Space media/public/films/luma-mechanics-20261112-portrait.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "10.000000",
+          "size": "4872813",
+          "bit_rate": "3898250",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf62.12.102"
+          }
+        }
+      }
+    },
+    {
+      "file": "public/images/luma-mechanics-20261112-desktop.webp",
+      "sha256": "bc98c87e9ec9842e230aa205e5bfa3d7eb734f00d8b77117204cf8994c3ec26d",
+      "bytes": 89128,
+      "origin": "outputs/luma-mechanics-20261112/review-desktop/0001.png"
+    },
+    {
+      "file": "public/images/luma-mechanics-20261112-portrait.webp",
+      "sha256": "41e4a8f340278c124d5cebb9bf6af76eb181387b733e273ca05dc1d46ced7929",
+      "bytes": 38152,
+      "origin": "outputs/luma-mechanics-20261112/review-portrait/0001.png"
+    },
+    {
+      "file": "public/images/luma-mechanics-20261112-thumb.webp",
+      "sha256": "211425381b401a965d0d15e69aa0e10088063cd77f66000241a13c7846684f6d",
+      "bytes": 6180,
+      "resolution": [
+        320,
+        180
+      ],
+      "origin": "outputs/luma-mechanics-20261112/review-desktop/0301.png"
+    }
+  ],
+  "publication": "Not published by asset subtask; integration and website manifest are separate responsibilities"
+}

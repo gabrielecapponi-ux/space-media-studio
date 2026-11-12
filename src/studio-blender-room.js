@@ -24,7 +24,8 @@ export function createStudioRoom(container, { reduced = false, drawScreen, model
   let environment;
   let heroTexture;
   let heroScreen;
-  let screenAspect = 0;
+  let screenViewportWidth = 0;
+  let screenViewportHeight = 0;
   let frames = 0;
   let startDistance = 1, endDistance = 1;
   const sightline = new THREE.Vector3();
@@ -71,8 +72,11 @@ export function createStudioRoom(container, { reduced = false, drawScreen, model
   function repaintHero() {
     if (!heroScreen) return;
     const aspect = width / height;
-    if (heroTexture && Math.abs(aspect - screenAspect) < .005) return;
-    screenAspect = aspect;
+    // A proportional resize can cross a responsive breakpoint without changing
+    // aspect. The monitor must still repaint the incoming page's real layout.
+    if (heroTexture && width === screenViewportWidth && height === screenViewportHeight) return;
+    screenViewportWidth = width;
+    screenViewportHeight = height;
     const previous = heroTexture;
     heroTexture = ownCanvas(2048, 1152, (ctx, w, h) => {
       ctx.fillStyle = '#080909'; ctx.fillRect(0, 0, w, h);
