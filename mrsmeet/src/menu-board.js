@@ -1,4 +1,5 @@
 /** A mechanical split-flap board, with a readable static HTML baseline. */
+import {motionViewport, motionExposure} from './motion-viewport.js';
 const ORDER = ['classic-smash-menu', 'chicken-burger-menu', 'menu-birra', 'classic-smash-burger-triplo', 'classic-smash-burger-doppio', 'plant-based-burger-doppio', '100-percento-vegano', 'sweet-fries', 'classic-fries', 'nuggets-di-pollo'];
 const escapeHTML = value => String(value).replace(/[&<>"']/g, char => ({'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'}[char]));
 const money = value => `€ ${Number(value).toFixed(2).replace('.', ',')}`;
@@ -140,13 +141,14 @@ export function mountMenuBoard({root, reducedMotion, paused = false} = {}) {
     activeGroup=null;phase('idle');
   }
   function groupInReadingArea(group) {
-    if(group.played || !group.rows.some(row=>row.visible))return false;
+    const area=motionViewport(doc,view);
+    if(group.played || !group.rows.some(row=>row.visible && motionExposure(row.element.getBoundingClientRect(),area)>.2))return false;
     const first=group.rows[0].element.getBoundingClientRect();
     const last=group.rows.at(-1).element.getBoundingClientRect();
-    const readingBottom=(view.innerHeight || doc.documentElement.clientHeight)*.85;
+    const readingBottom=area.top+area.height*.85;
     // Usually all three rows fit together. Short landscape screens and a
     // quick scroll into the middle of a group still get one complete reveal.
-    return last.bottom<=readingBottom || first.top<0 || last.bottom-first.top>readingBottom;
+    return last.bottom<=readingBottom || first.top<area.top || last.bottom-first.top>area.height*.85;
   }
   function startGroup(group) {
     group.played=true;activeGroup=group;phase('turning');
@@ -156,7 +158,7 @@ export function mountMenuBoard({root, reducedMotion, paused = false} = {}) {
   function syncGroups() {
     if(typeof root.animate!=='function'){phase('idle');return;}
     if(activeGroup) {
-      if(activeGroup.rows.some(row=>row.visible))return;
+      if(activeGroup.rows.some(row=>row.visible && motionExposure(row.element.getBoundingClientRect(),motionViewport(doc,view))>.2))return;
       finishGroup();
     }
     const group=groups.find(groupInReadingArea);
@@ -218,6 +220,8 @@ export function mountMenuBoard({root, reducedMotion, paused = false} = {}) {
   listen(connection,'change',sync);
   // Catalog filters do not alter this complete list, so they never replay it.
   listen(view,'scroll',noteScroll,{passive:true});
+  listen(view,'resize',noteScroll);
+  listen(view,'smeet:header-resize',noteScroll);
 
   if(typeof view.IntersectionObserver==='function') {
     observer=new view.IntersectionObserver(entries => {

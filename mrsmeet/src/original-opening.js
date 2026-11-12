@@ -1,7 +1,7 @@
 import {mountLoader} from './opening-film.js';
 
 /** The original dressing film starts on entry and remains explicitly replayable. */
-export function mountOriginalOpening({reducedMotion, onComplete} = {}) {
+export function mountOriginalOpening({reducedMotion, onComplete, autoStart = true} = {}) {
   const doc = document;
   const view = doc.defaultView;
   const lifecycle = new view.AbortController();
@@ -15,7 +15,7 @@ export function mountOriginalOpening({reducedMotion, onComplete} = {}) {
     lastCycle = detail.cycle;
     onComplete?.(detail);
   }, {signal:lifecycle.signal});
-  loader.start();
+  if (autoStart) loader.start();
   return {
     replay() {
       if (disposed) return false;

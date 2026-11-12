@@ -3,6 +3,7 @@
 // A paused decoded frame keeps a visible product continuous when the decoder
 // moves to another card. The canvas is bounded and never drives animation.
 import {selectFoodVideo, recordFoodTransfer} from './food-media-source.js';
+import {motionViewport, motionExposure} from './motion-viewport.js';
 
 export function holdFoodFrame(video, host, previous = null, className = 'appetite-motion-frame') {
   if (!video || !host || video.readyState < 2 || !video.videoWidth || !video.videoHeight) return previous;
@@ -24,7 +25,8 @@ export function clearFoodFrame(canvas) {
   return null;
 }
 const PASS_MS = 5000;
-const LOAD_TIMEOUT_MS = 3200;
+const LOAD_IDLE_TIMEOUT_MS = 8000;
+const LOAD_MAX_MS = 30000;
 const WARM_DISTANCE = 600;
 const WARM_DWELL_MS = 150;
 const STATE_ATTRIBUTES = ['data-appetite-motion','data-appetite-playing','data-appetite-holding','data-appetite-poster'];
@@ -56,8 +58,9 @@ export function mountAppetiteMotion({root = globalThis.document, entries = {}, r
   const visible = state => {
     if (hidden(state)) return false;
     const box = state.link.getBoundingClientRect();
-    return box.width > 0 && box.height > 0 && box.bottom > 0 && box.right > 0 && box.top < win.innerHeight && box.left < win.innerWidth;
+    return motionExposure(box,motionViewport(doc,win)) > 0 && box.right > 0 && box.left < win.innerWidth;
   };
+  const readingRatio = state => hidden(state) ? 0 : Math.min(state.ratio, motionExposure(state.link.getBoundingClientRect(),motionViewport(doc,win)));
   const nearby = state => {
     if (hidden(state) || state.near === false) return false;
     const box = state.link.getBoundingClientRect();
@@ -109,6 +112,12 @@ export function mountAppetiteMotion({root = globalThis.document, entries = {}, r
     state.endTimer = state.loadTimer = null;
     state.video?.pause();
   }
+  function watchLoad(state, reset = false) {
+    if (reset) state.loadDeadline = win.performance.now() + LOAD_MAX_MS;
+    win.clearTimeout(state.loadTimer);
+    const remaining = Math.max(0, state.loadDeadline - win.performance.now());
+    state.loadTimer = win.setTimeout(() => finish(state,true), Math.min(LOAD_IDLE_TIMEOUT_MS,remaining));
+  }
   function release(state, preserve = false) {
     const keep = preserve && !disposed && !doc.hidden && !prefersStatic() && visible(state);
     const video = state.video;
@@ -156,25 +165,26 @@ export function mountAppetiteMotion({root = globalThis.document, entries = {}, r
   function signatureIsPrimary() {
     if (!signature) return false;
     const box = signature.getBoundingClientRect();
-    const exposure = Math.max(0,Math.min(box.bottom,win.innerHeight)-Math.max(box.top,0));
-    const heroLeads = win.scrollY < 24 || box.top + box.height*.5 >= win.innerHeight*.25;
-    return heroLeads && box.height > 0 && exposure/box.height >= .55;
+    const area = motionViewport(doc,win);
+    const heroLeads = win.scrollY < 24 || box.top + box.height*.5 >= area.top + area.height*.25;
+    return heroLeads && motionExposure(box,area) >= .55;
   }
   function candidate() {
     const available = [...cards.values()].filter(state => state.videoURL && !hidden(state) && (state.ratio > 0 || visible(state)));
-    const direct = available.filter(state => (state.focused && (!touch?.matches || !visibilityObserver || state.ratio >= .30))
+    const direct = available.filter(state => (state.focused && (!touch?.matches || !visibilityObserver || readingRatio(state) >= .30))
       || (!touch?.matches && state.hovered));
     if (direct.length) return direct.sort((a,b) => b.intent-a.intent)[0];
     if (!visibilityObserver) return null;
     // At the new compact opening both the hero and first menu row fit on a
     // phone. Give the large Triplo its first pass before auto-playing a card.
     if (signatureIsPrimary()) return null;
+    const area = motionViewport(doc,win);
     const score = state => {
       const box = state.link.getBoundingClientRect();
-      return 2*state.ratio-Math.abs(box.top+box.height*.5-win.innerHeight*.48)/Math.max(1,win.innerHeight);
+      return 2*readingRatio(state)-Math.abs(box.top+box.height*.5-area.center)/Math.max(1,area.height);
     };
-    const best = available.filter(state => state.ratio >= .55).sort((a,b) => score(b)-score(a))[0];
-    if (active && active.ratio >= .30 && !hidden(active) && (!best || score(best)<score(active)+.06)) return active;
+    const best = available.filter(state => readingRatio(state) >= .55).sort((a,b) => score(b)-score(a))[0];
+    if (active && readingRatio(active) >= .30 && !hidden(active) && (!best || score(best)<score(active)+.06)) return active;
     return best || null;
   }
   function finish(state, failed = false) {
@@ -239,13 +249,15 @@ export function mountAppetiteMotion({root = globalThis.document, entries = {}, r
       listen(video,'waiting',() => {
         if (active !== state || state.video !== video || !state.playStarted || state.finished) return;
         state.waiting = true;
+        win.clearTimeout(state.endTimer); state.endTimer = null;
         cancelWarmDwell();
         if (warm) release(warm, true);
-        win.clearTimeout(state.loadTimer); state.loadTimer = win.setTimeout(() => finish(state,true),LOAD_TIMEOUT_MS);
+        watchLoad(state,true);
       }),
       ...['progress','canplaythrough'].map(event => listen(video,event,() => {
         if (state.video !== video) return;
         recordFoodTransfer(video, win, state.loadStartedAt);
+        if (active === state && (state.awaitingStart || !state.presented || state.waiting)) watchLoad(state);
         tryStart(state);
         if (active === state) syncWarm();
       })),
@@ -362,17 +374,26 @@ export function mountAppetiteMotion({root = globalThis.document, entries = {}, r
     try {if (video.currentTime !== 0) video.currentTime = 0;} catch { /* Metadata may still be arriving. */ }
     ++state.token;
     active = owner = state; state.attempted = state.awaitingStart = true; state.playStarted = false;
-    state.loadTimer = win.setTimeout(() => finish(state,true),LOAD_TIMEOUT_MS);
+    watchLoad(state,true);
     tryStart(state);
   }
   function reconcile() {
     if (disposed) return;
     if (blocked()) {
       cancelDwell(); cancelWarmDwell(); hide(); if (warm) release(warm, true);
+      readingCard = null;
       if (prefersStatic() || doc.hidden) cards.forEach(state => release(state));
       return;
     }
     for (const item of cards.values()) if (hidden(item)) release(item);
+    for (const item of cards.values()) {
+      const ratio = readingRatio(item);
+      if (ratio < .30) item.viewportArmed = true;
+      if (ratio >= .55 && item.viewportArmed) {
+        if (item.attempted) restartVisit(item);
+        item.viewportArmed = false;
+      }
+    }
     const state = candidate();
     // IO can select the new reading card after the scroll rAF has already
     // run. Re-arm here, at the common reconciliation point, rather than
@@ -448,11 +469,6 @@ export function mountAppetiteMotion({root = globalThis.document, entries = {}, r
         const state = cards.get(entry.target);
         if (!state) continue;
         const ratio = entry.isIntersecting ? entry.intersectionRatio : 0;
-        if (ratio < .30) state.viewportArmed = true;
-        if (ratio >= .55 && state.viewportArmed) {
-          if (state.attempted) restartVisit(state);
-          state.viewportArmed = false;
-        }
         state.ratio = ratio; state.rect = entry.boundingClientRect || state.link.getBoundingClientRect();
         if (ratio === 0) {
           if (state !== warm || !nearby(state)) release(state);
@@ -488,8 +504,9 @@ export function mountAppetiteMotion({root = globalThis.document, entries = {}, r
   watchPreference(reduced,onPreference); watchPreference(touch,reconcile);
   listen(connection,'change',onPreference);
   const yieldToHero = () => {cancelDwell(); cancelWarmDwell(); hide(owner); if (warm) release(warm, true);};
-  listen(doc,'smeet:food-claim',event => {if (event.detail?.id === 'hero-film') yieldToHero();});
-  listen(doc,'playing',event => {if (event.target?.id === 'hero-film') yieldToHero();},true);
+  const isHero = video => video?.id === 'hero-film' || video?.matches?.('.hero-scroll-video');
+  listen(doc,'smeet:food-claim',event => {if (isHero(event.detail)) yieldToHero();});
+  listen(doc,'playing',event => {if (isHero(event.target)) yieldToHero();},true);
   listen(doc,'visibilitychange',reconcile);
   listen(win,'pagehide',() => {cancelDwell(); cancelWarmDwell(); cards.forEach(state => release(state));});
   listen(win,'pageshow',reconcile);
@@ -505,6 +522,8 @@ export function mountAppetiteMotion({root = globalThis.document, entries = {}, r
       reconcile();
     });
   },{passive:true});
+  listen(win,'resize',reconcile);
+  listen(win,'smeet:header-resize',reconcile);
   if (cards.size && win.MutationObserver && doc.body) {
     bodyObserver = new win.MutationObserver(reconcile);
     bodyObserver.observe(doc.body,{attributes:true,attributeFilter:['class']});

@@ -29,7 +29,7 @@ export function openingStatus(date = new Date()) {
 // the glass and wordmark fit the remaining visible area without moving content.
 function mountScrollLogo(doc) {
   const header = doc.querySelector('.route-header');
-  if (!header) return () => {};
+  if (!header || header.hasAttribute('data-persistent-header')) return () => {};
   const view = doc.defaultView;
   let raf = 0, previous = -1, cutoff = 0, pinned = false;
   header.setAttribute('data-scroll-logo', '');

@@ -1,4 +1,5 @@
 /** Cinematic event tour: one player at most, no WebGL or continuous frame loop. */
+import {motionViewport, motionExposure} from './motion-viewport.js';
 export const TOUR_STOPS = Object.freeze([
   {
     id: 'festival',
@@ -52,6 +53,7 @@ export function mountTruckTour({ root, reducedMotion } = {}) {
     external = false,
     local = false,
     visible = false,
+    intersects = false,
     pageAway = false,
     attempted = false,
     video = null,
@@ -61,6 +63,7 @@ export function mountTruckTour({ root, reducedMotion } = {}) {
     remaining = TOUR_INTERVAL,
     loadClock = null,
     pending = null;
+  let scrollFrame = null;
   const now = () => win.performance.now(),
     staticMode = () => Boolean(pref.matches || connection?.saveData);
   const blocked = () =>
@@ -87,7 +90,7 @@ export function mountTruckTour({ root, reducedMotion } = {}) {
     if (!video) return;
     const old = video;
     video = null;
-    old.onplaying = old.onerror = null;
+    old.onplaying = old.onwaiting = old.onerror = null;
     old.pause();
     old.removeAttribute('src');
     old.load();
@@ -109,7 +112,7 @@ export function mountTruckTour({ root, reducedMotion } = {}) {
     v.disablePictureInPicture = true;
     const valid = () => !disposed && video === v && sequence === token;
     const fail = () => {
-      if (valid()) clearVideo();
+      if (valid()) {clearVideo(); sync();}
     };
     v.onerror = fail;
     v.onplaying = () => {
@@ -120,10 +123,19 @@ export function mountTruckTour({ root, reducedMotion } = {}) {
       }
       win.clearTimeout(loadClock);
       v.dataset.playing = '';
+      delete v.dataset.waiting;
+      sync();
+    };
+    v.onwaiting = () => {
+      if (!valid()) return;
+      v.dataset.waiting = '';
+      stopClock();
+      win.clearTimeout(loadClock);
+      loadClock = win.setTimeout(fail, 15000);
     };
     screen.insertBefore(v, screen.querySelector('figcaption'));
     v.src = url('film', TOUR_STOPS[active].id);
-    loadClock = win.setTimeout(fail, 6500);
+    loadClock = win.setTimeout(fail, 15000);
     try {
       v.play().catch(fail);
     } catch {
@@ -132,6 +144,8 @@ export function mountTruckTour({ root, reducedMotion } = {}) {
   }
   function sync() {
     if (disposed) return;
+    const exposure = motionExposure(screen.getBoundingClientRect(),motionViewport(doc,win));
+    visible = intersects && exposure >= (visible ? .30 : .55);
     const locked =
       !canObserve ||
       staticMode() ||
@@ -165,7 +179,9 @@ export function mountTruckTour({ root, reducedMotion } = {}) {
         if (video === v) clearVideo();
       });
     } else startVideo();
-    if (timer === null) {
+    // Give each scene its reading time after playback actually starts;
+    // downloading on a slow phone must not consume the presentation interval.
+    if (timer === null && (!video || (video.dataset.playing !== undefined && video.dataset.waiting === undefined))) {
       started = now();
       timer = win.setTimeout(() => {
         timer = null;
@@ -238,6 +254,13 @@ export function mountTruckTour({ root, reducedMotion } = {}) {
   });
   listen(pref, 'change', sync);
   listen(connection, 'change', sync);
+  const noteScroll = () => {
+    if (scrollFrame !== null) return;
+    scrollFrame = win.requestAnimationFrame(() => {scrollFrame = null; sync();});
+  };
+  listen(win, 'scroll', noteScroll);
+  listen(win, 'resize', noteScroll);
+  listen(win, 'smeet:header-resize', noteScroll);
   listen(doc, 'visibilitychange', sync);
   listen(win, 'pagehide', () => {
     pageAway = true;
@@ -250,10 +273,10 @@ export function mountTruckTour({ root, reducedMotion } = {}) {
   const observer = canObserve
     ? new win.IntersectionObserver(
         ([entry]) => {
-          visible = entry.isIntersecting && entry.intersectionRatio >= 0.25;
+          intersects = entry.isIntersecting;
           sync();
         },
-        { threshold: [0, 0.25] },
+        { threshold: [0, .30, .55, 1] },
       )
     : null;
   observer?.observe(screen);
@@ -275,6 +298,7 @@ export function mountTruckTour({ root, reducedMotion } = {}) {
     dispose() {
       if (disposed) return;
       disposed = true;
+      if (scrollFrame !== null) win.cancelAnimationFrame(scrollFrame);
       stopClock(false);
       pending?.cancel();
       pending = null;

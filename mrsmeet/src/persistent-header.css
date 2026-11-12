@@ -1,0 +1,214 @@
+/* One persistent masthead: ordinary opening hours, brand and real contact links.
+   Load after cinematic.css. Its own height never depends on --header-height. */
+html:has(.persistent-header) {
+  --header-height: calc(108px + env(safe-area-inset-top, 0px));
+  scroll-padding-top: calc(var(--header-height) + 12px);
+}
+.route-header.persistent-header[data-persistent-header] {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 190px minmax(0, 1fr);
+  grid-template-rows: auto 64px;
+  width: 100%;
+  height: auto;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  color: var(--ink, #173e34);
+  background: rgb(255 249 233 / 94%);
+  border: 0;
+  border-bottom: 1px solid #173e3430;
+  box-shadow: 0 4px 15px #173e3408;
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  pointer-events: auto;
+  transform: none;
+}
+.persistent-header .persistent-top {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 16px;
+  min-height: calc(44px + env(safe-area-inset-top, 0px));
+  padding: env(safe-area-inset-top, 0px) max(4vw, calc((100vw - 1280px) / 2)) 0;
+  background: var(--ink, #173e34);
+  color: var(--cream, #fff9e9);
+}
+.persistent-header .route-hours {
+  grid-column: 2;
+  grid-row: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 2px 9px;
+  min-width: 0;
+  min-height: 44px;
+  padding: 5px 0;
+  background: transparent;
+  color: var(--cream, #fff9e9);
+  font: 500 13px/1.3 'Instrument Sans', sans-serif;
+  letter-spacing: 0;
+  text-align: center;
+  text-decoration: none;
+  font-variant-numeric: tabular-nums;
+}
+.persistent-header .route-hours strong {gap: 6px; white-space: nowrap;}
+.persistent-header .route-hours [data-opening-detail] {display: inline; min-width: 0;}
+.persistent-header .route-hours [data-opening-detail]::before {display: none;}
+.persistent-header .route-hours:focus-visible {outline: 2px solid var(--cream, #fff9e9); outline-offset: -3px;}
+.persistent-header .persistent-contact {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 4px 0;
+  color: inherit;
+  font: 500 12px/1.2 'Instrument Sans', sans-serif;
+  text-decoration: none;
+}
+.persistent-header .persistent-contact svg {flex: none; width: 17px; height: 17px;}
+.persistent-header .persistent-contact--phone {grid-column: 1; grid-row: 1; justify-self: start;}
+.persistent-header .persistent-contact--email {grid-column: 3; grid-row: 1; justify-self: end;}
+.persistent-header .persistent-contact-short {display: none;}
+.persistent-header .persistent-contact:focus-visible {outline: 2px solid currentColor; outline-offset: -2px; border-radius: 5px;}
+.persistent-header .route-brand,
+.persistent-header[data-pinned] .route-brand {
+  z-index: 1;
+  grid-column: 2;
+  grid-row: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  justify-self: center;
+  width: 186px;
+  max-width: 100%;
+  height: 64px;
+  min-height: 44px;
+  padding: 2px 0;
+  aspect-ratio: auto;
+}
+.persistent-header .route-brand .persistent-wordmark {flex: 0 1 112px; width: 112px; height: 60px; min-width: 0; object-fit: contain;}
+.persistent-header .route-brand .persistent-mascot {flex: 0 0 63px; width: 63px; height: 54px; object-fit: contain;}
+.persistent-header .persistent-nav {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 190px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  min-height: 64px;
+  padding: 0 max(4vw, calc((100vw - 1280px) / 2));
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+.persistent-header .persistent-nav-main {grid-column: 1; display: flex; align-items: center; gap: clamp(12px, 2.3vw, 30px); min-width: 0;}
+.persistent-header .persistent-nav a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 44px;
+  color: var(--ink, #173e34);
+  font: 500 14px/1.2 DynaPuff, sans-serif;
+  letter-spacing: -.025em;
+  white-space: nowrap;
+  text-decoration: none;
+}
+.persistent-header .persistent-nav .route-header-bag {
+  grid-column: 3;
+  justify-self: end;
+  padding: 8px 13px;
+  border: 1px solid #173e3430;
+  border-radius: 99px;
+  background: var(--pink, #f2bbd1);
+}
+.persistent-header .route-header-bag svg {flex: none; width: 17px; height: 20px;}
+.persistent-header .route-header-bag [data-cart-count] {min-width: 23px; height: 23px; padding-inline: 4px; font-size: 11px;}
+.persistent-header .persistent-nav a:focus-visible {outline: 3px solid var(--ink, #173e34); outline-offset: 2px;}
+.cinematic-experience:has(.persistent-header) #menu .catalog-tools {top: var(--header-height);}
+.cinematic-experience:has(.persistent-header) :is(#menu, #truck, #ordina, #orari, #dove-siamo, #top) {scroll-margin-top: 0;}
+@media (hover: hover) {
+  .persistent-header .persistent-contact:hover,
+  .persistent-header .persistent-nav-main a:hover {text-decoration: underline; text-underline-offset: 4px;}
+  .persistent-header .route-header-bag:hover {background: #ffd2dc;}
+}
+@media (min-width: 761px) and (max-width: 1040px) {
+  .persistent-header .persistent-top {gap: 10px; padding-inline: 3vw;}
+  .persistent-header .persistent-contact {font-size: 11px;}
+  .persistent-header .route-hours {font-size: 12px; gap: 2px 7px;}
+  .persistent-header .persistent-nav {padding-inline: 3vw; gap: 6px;}
+  .persistent-header .persistent-nav a {font-size: 12px;}
+  .persistent-header .persistent-nav-main {gap: 12px;}
+}
+@media (max-width: 760px) {
+  html:has(.persistent-header) {--header-height: calc(140px + env(safe-area-inset-top, 0px));}
+  .route-header.persistent-header[data-persistent-header] {
+    grid-template-columns: 58px minmax(0, 1fr) 58px;
+    grid-template-rows: auto 52px auto;
+  }
+  .persistent-header .persistent-top {display: contents;}
+  .persistent-header .route-hours {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    min-height: calc(44px + env(safe-area-inset-top, 0px));
+    padding: calc(5px + env(safe-area-inset-top, 0px)) 10px 5px;
+    gap: 2px 7px;
+    background: var(--ink, #173e34);
+    font-size: 12px;
+  }
+  .persistent-header .persistent-contact {
+    grid-row: 2;
+    flex-direction: column;
+    justify-content: center;
+    justify-self: center;
+    gap: 2px;
+    width: 44px;
+    padding: 2px;
+    color: var(--ink, #173e34);
+    font: 500 10px/1.1 DynaPuff, sans-serif;
+    letter-spacing: -.02em;
+  }
+  .persistent-header .persistent-contact-long {display: none;}
+  .persistent-header .persistent-contact-short {display: inline;}
+  .persistent-header .route-brand,
+  .persistent-header[data-pinned] .route-brand {
+    grid-column: 2;
+    grid-row: 2;
+    width: 151px;
+    height: 52px;
+    padding: 1px 0;
+    gap: 4px;
+  }
+  .persistent-header .route-brand .persistent-wordmark {flex-basis: 94px; width: 94px; height: 50px;}
+  .persistent-header .route-brand .persistent-mascot {flex-basis: 53px; width: 53px; height: 45px;}
+  .persistent-header .persistent-nav {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    min-height: 44px;
+    padding: 0 12px;
+    border-top: 1px solid #173e3415;
+  }
+  .persistent-header .persistent-nav-main {gap: clamp(12px, 4vw, 24px);}
+  .persistent-header .persistent-nav a {gap: 5px; font-size: 12px;}
+  .persistent-header .persistent-nav .route-header-bag {min-height: 44px; padding: 6px 10px;}
+  .persistent-header .route-header-bag svg {display: none;}
+  .persistent-header .route-header-bag [data-cart-count] {min-width: 20px; height: 20px; padding-inline: 3px; font-size: 10px;}
+}
+@media (max-width: 350px) {
+  .persistent-header .persistent-nav {gap: 5px; padding-inline: 10px;}
+  .persistent-header .persistent-nav-main {gap: 12px;}
+  .persistent-header .persistent-nav a {font-size: 11px;}
+  .persistent-header .persistent-nav .route-header-bag {padding-inline: 8px;}
+}

@@ -1,6 +1,16 @@
 <!doctype html>
 <html lang="it">
 <head>
+  <script>
+    // A deliberate refresh starts at the new hero; ordinary deep links and Back remain usable.
+    if (performance.getEntriesByType('navigation')[0]?.type === 'reload') {
+      history.scrollRestoration = 'manual';
+      history.replaceState(history.state, '', location.pathname + location.search + '#top');
+      window.scrollTo(0, 0);
+      window.addEventListener('pageshow', function () { window.scrollTo({top: 0, behavior: 'instant'}); }, {once: true});
+    }
+  </script>
+
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#39bd9d" />
@@ -41,32 +51,55 @@
 <body class="quick-experience mascot-world directed-experience paper-world variant-a">
   <a class="skip-link" href="#menu">Vai al menu</a>
   <div id="site">
-    <a class="route-hours" href="#orari" data-opening-status title="Vedi gli orari ordinari di Mr Smeet">
-      <strong data-opening-label>Orari di apertura</strong><span data-opening-detail>Consulta gli orari della settimana</span>
-      <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 12 12 4M4 4h8v8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<header class="route-header cinematic-header persistent-header" data-persistent-header>
+  <div class="persistent-top">
+    <a class="persistent-contact persistent-contact--phone" href="tel:+3905211792168" aria-label="Chiama Mr Smeet al 0521 1792168">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m7 3 3 5-3 2a15 15 0 0 0 7 7l2-3 5 3-1 4C10 23 1 14 3 4Z"/></svg>
+      <span class="persistent-contact-long">0521 1792168</span><span class="persistent-contact-short" aria-hidden="true">Chiama</span>
     </a>
-    <header class="route-header cinematic-header">
-      <div class="route-glass">
-        <nav class="route-nav route-nav--left" aria-label="Navigazione principale">
-          <a href="#menu">Il menù <span aria-hidden="true">↙</span></a>
-          <a href="#truck">Collabora con noi</a>
-        </nav>
-        <a class="route-brand" href="#top" aria-label="Mr Smeet, torna all’inizio"><img src="./images/wordmark-header.webp" alt="Mr Smeet" width="480" height="313" /></a>
-        <nav class="route-nav route-nav--right" aria-label="Visita e ordina">
-          <a class="route-visit" href="#dove-siamo">Vieni a trovarci <span aria-hidden="true">↗</span></a>
-          <a class="route-header-bag" href="./ordina-a.html" data-cart-open aria-label="Apri il sacchetto"><svg width="19" height="22" viewBox="0 0 22 24" fill="none" aria-hidden="true"><path d="M4 8h14l2 13H2L4 8Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M7 9V6a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg><span>Sacchetto</span><b data-cart-count>0</b></a>
-        </nav>
-      </div>
-    </header>
+    <a class="route-hours" href="#orari" data-opening-status title="Stato calcolato dagli orari ordinari di Mr Smeet">
+      <strong data-opening-label>Orari di apertura</strong><span data-opening-detail>Consulta gli orari della settimana</span>
+    </a>
+    <a class="persistent-contact persistent-contact--email" href="mailto:Mrsmeetburger@gmail.com" aria-label="Scrivi a Mr Smeet: Mrsmeetburger@gmail.com">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 6 9 7 9-7"/></svg>
+      <span class="persistent-contact-long">Mrsmeetburger@gmail.com</span><span class="persistent-contact-short" aria-hidden="true">Email</span>
+    </a>
+  </div>
+  <a class="route-brand" href="#top" aria-label="Mr Smeet, torna all’inizio">
+    <img class="persistent-wordmark" src="./images/wordmark-header.webp" alt="Mr Smeet" width="480" height="313" />
+    <img class="persistent-mascot" src="./images/mascot-studio.webp" alt="" width="1100" height="840" />
+  </a>
+  <nav class="persistent-nav" aria-label="Navigazione principale">
+    <div class="persistent-nav-main"><a href="#menu">Il menù</a><a href="#truck">Collabora con noi</a></div>
+    <a class="route-header-bag" href="./ordina.html" data-cart-open aria-label="Apri il sacchetto">
+      <svg viewBox="0 0 22 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h14l2 13H2L4 8Z"/><path d="M7 9V6a4 4 0 0 1 8 0v3"/></svg>
+      <span>Sacchetto</span><b data-cart-count>0</b>
+    </a>
+  </nav>
+</header>
+
     <main id="top">
+      <section class="rider-hero" id="rider-hero" aria-labelledby="rider-hero-title">
+        <div class="rider-hero-stage">
+          <div class="rider-hero-heading"><p>Mr Smeet · Smash burger a Parma</p><h1 id="rider-hero-title">Un morso.<br>E si parte.</h1></div>
+          <figure class="rider-hero-scene"><picture><img src="./images/bag-rider/scroll-v2-poster-768.webp" srcset="./images/bag-rider/scroll-v2-poster-768.webp 768w, ./images/bag-rider/scroll-v2-poster-1920.webp 1920w" sizes="(max-width:760px) 119vw, 65vw" width="1920" height="1080" loading="eager" fetchpriority="high" alt="Il burger Mr Smeet prepara il sacchetto accanto allo scooter verde con lo zaino rosa." /></picture></figure>
+          <div class="rider-hero-actions">
+            <p class="rider-hero-caption" data-hero-caption>Il tuo prossimo morso, preparato con cura.</p>
+            <nav class="rider-hero-links" aria-label="Scegli e ordina"><a href="#menu">Scopri il menù <span aria-hidden="true">↘</span></a><a href="./ordina.html" data-cart-open>Apri il sacchetto <b data-cart-count>0</b></a></nav>
+            <div class="rider-hero-follow"><span class="rider-hero-scroll-hint">Scorri e parti con noi ↓</span><span class="rider-hero-static-hint">Il gusto di Mr Smeet.</span><button type="button" data-hero-watch aria-pressed="false">▷ Guarda la scena</button></div>
+            <div class="rider-hero-progress" aria-hidden="true"><i data-hero-progress></i></div>
+          </div>
+        </div>
+      </section>
+
       <section class="signature-section section-pad diner-lead cinematic-lead" id="signature" aria-labelledby="signature-title">
         <div class="signature-copy">
           <p class="hero-kicker">Smash burger <span aria-hidden="true">·</span> Parma</p>
-          <h1 id="signature-title">Un morso.<span>Meetico.</span></h1>
+          <h2 id="signature-title">Un morso.<span>Meetico.</span></h2>
           <a class="lead-address" href="#dove-siamo">Via D’Azeglio 84/A <span aria-hidden="true">↗</span></a>
         </div>
         <div class="signature-visual" id="hero-scene">
-          <a class="signature-photo" href="./ordina-a.html" data-product-photo="classic-smash-burger-triplo" aria-label="Scopri gli ingredienti del Classic Triplo"><picture class="food-film-poster"><source data-food-static media="(prefers-reduced-motion: reduce), (prefers-reduced-data: reduce), (scripting: none)" srcset="./images/menu-unified/classic-smash-burger-triplo-natural-640.webp 640w, ./images/menu-unified/classic-smash-burger-triplo-natural.webp 960w" sizes="(max-width: 760px) min(69vw, 270px), (max-width: 1040px) 48vw, 580px" /><img src="./images/food-unified/classic-smash-burger-triplo-320.webp" srcset="./images/food-unified/classic-smash-burger-triplo-320.webp 320w, ./images/food-unified/classic-smash-burger-triplo-640.webp 640w, ./images/food-unified/classic-smash-burger-triplo-960.webp 960w" sizes="(max-width: 760px) min(69vw, 270px), (max-width: 1040px) 48vw, 580px" alt="Classic Smash Burger Triplo: pane dorato, carne croccante, cheddar e cetrioli" width="640" height="640" loading="eager" fetchpriority="high" /></picture></a>
+          <a class="signature-photo" href="./ordina-a.html" data-product-photo="classic-smash-burger-triplo" aria-label="Scopri gli ingredienti del Classic Triplo"><picture class="food-film-poster"><source data-food-static media="(prefers-reduced-motion: reduce), (prefers-reduced-data: reduce), (scripting: none)" srcset="./images/menu-unified/classic-smash-burger-triplo-natural-640.webp 640w, ./images/menu-unified/classic-smash-burger-triplo-natural.webp 960w" sizes="(max-width: 760px) min(69vw, 270px), (max-width: 1040px) 48vw, 580px" /><img src="./images/food-unified/classic-smash-burger-triplo-320.webp" srcset="./images/food-unified/classic-smash-burger-triplo-320.webp 320w, ./images/food-unified/classic-smash-burger-triplo-640.webp 640w, ./images/food-unified/classic-smash-burger-triplo-960.webp 960w" sizes="(max-width: 760px) min(69vw, 270px), (max-width: 1040px) 48vw, 580px" alt="Classic Smash Burger Triplo: pane dorato, carne croccante, cheddar e cetrioli" width="640" height="640" loading="lazy" decoding="async" /></picture></a>
           <video id="hero-film" muted playsinline preload="none" data-mobile-src="./films/food-unified/classic-smash-burger-triplo-web.mp4" data-desktop-src="./films/food-unified/classic-smash-burger-triplo-web.mp4" aria-hidden="true"></video>
           <button class="film-toggle" id="hero-motion" aria-pressed="false">▷ Anima il burger</button>
         </div>
@@ -347,15 +380,7 @@
   </div>
 </section>
 
-      <section class="bag-section bag-rider" id="ordina" aria-labelledby="bag-title">
-        <header class="bag-rider-copy">
-          <div><h2 id="bag-title">Il tuo <span>sacchetto.</span></h2><p>Mr Smeet lo prepara. Tu scegli il prossimo morso.</p></div>
-          <a class="button green" href="./ordina.html" data-cart-open>Apri il sacchetto <span data-cart-count>0</span></a>
-        </header>
-        <figure class="bag-rider-scene">
-          <picture data-bag-poster><img src="./images/bag-rider/poster-1920.webp" srcset="./images/bag-rider/poster-768.webp 768w, ./images/bag-rider/poster-1920.webp 1920w" sizes="(max-width: 760px) 134vw, (max-width: 1440px) 100vw, 1440px" width="1920" height="1080" loading="lazy" decoding="async" alt="La mascotte burger Mr Smeet prepara il sacchetto al banco, con lo scooter pronto per la partenza." /></picture>
-        </figure>
-      </section>
+      <section class="bag-order-bridge" id="ordina" aria-labelledby="bag-title"><div><h2 id="bag-title">Il tuo sacchetto.</h2><p>Il prossimo morso lo scegli tu.</p></div><a class="button green" href="./ordina.html" data-cart-open>Apri il sacchetto <span data-cart-count>0</span></a></section>
       <section id="truck" class="truck-tour" aria-labelledby="truck-title" data-tour-scene="festival">
         <div class="tour-cover">
           <header class="tour-intro"><h2 id="truck-title">Il food truck<br /><em>al tuo evento.</em></h2><p class="tour-deck">Smash sulla piastra, panini al banco. Per un festival, una fiera o una collaborazione con te.</p></header>

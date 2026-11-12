@@ -111,7 +111,7 @@
   font: 500 16px/1.3 var(--brand-small);
   letter-spacing: -.025em;
 }
-#signature.cinematic-lead .signature-copy h1 {
+#signature.cinematic-lead .signature-copy :is(h1,h2) {
   max-width: 7em;
   margin: 0;
   color: var(--ink);
@@ -119,7 +119,7 @@
   letter-spacing: -.065em;
   text-transform: none;
 }
-#signature.cinematic-lead .signature-copy h1 span {
+#signature.cinematic-lead .signature-copy :is(h1,h2) span {
   display: block;
   color: var(--ink);
   text-shadow: 4px 4px 0 var(--pink);
@@ -272,8 +272,8 @@
   }
   #signature.cinematic-lead .signature-copy { text-align: center; align-self: auto; }
   #signature.cinematic-lead .hero-kicker { justify-content: center; gap: 8px; margin-bottom: 6px; font-size: 12px; }
-  #signature.cinematic-lead .signature-copy h1 { max-width: none; font-size: clamp(46px,12.4vw,61px); line-height: .98; letter-spacing: -.06em; }
-  #signature.cinematic-lead .signature-copy h1 span { text-shadow: 2px 2px 0 var(--pink); }
+  #signature.cinematic-lead .signature-copy :is(h1,h2) { max-width: none; font-size: clamp(46px,12.4vw,61px); line-height: .98; letter-spacing: -.06em; }
+  #signature.cinematic-lead .signature-copy :is(h1,h2) span { text-shadow: 2px 2px 0 var(--pink); }
   #signature.cinematic-lead .lead-address { display: none; }
   .mascot-world.directed-experience.paper-world.cinematic-experience #signature .signature-visual { width: min(69vw,270px); max-width: 270px; justify-self: center; margin: 0; }
   .mascot-world.directed-experience.paper-world.cinematic-experience #signature .signature-visual .film-toggle { right: 50%; bottom: 4px; transform: translateX(50%); min-height: 44px; padding: 8px 12px; font-size: 10px; white-space: nowrap; }
@@ -309,7 +309,7 @@
   .cinematic-header .route-brand { width: 118px; }
   .cinematic-header[data-pinned] .route-glass { grid-template-rows: min(68px,100%) 0px; }
   .cinematic-header[data-pinned] .route-brand { width: 118px; height: min(68px,100%); }
-  #signature.cinematic-lead .signature-copy h1 { font-size: 43px; }
+  #signature.cinematic-lead .signature-copy :is(h1,h2) { font-size: 43px; }
   .mascot-world.directed-experience.paper-world.cinematic-experience #signature .signature-visual { width: min(60vw,220px); }
 }
 @media (prefers-reduced-motion: no-preference) {

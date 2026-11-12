@@ -13,19 +13,24 @@ import {productPhotoSources} from './product-media.js';
 import {mountAppetiteMotion, holdFoodFrame, clearFoodFrame} from './appetite-motion.js';
 import appetiteMedia from '../data/appetite-media.json';
 import {mountMenuBoard} from './menu-board.js';
+import {motionViewport, motionExposure} from './motion-viewport.js';
 import {selectFoodVideo, recordFoodTransfer} from './food-media-source.js';
 import './cinematic.css';
-import {mountBagRider} from './bag-rider.js';
-import './bag-rider.css';
+import {mountRiderHero} from './rider-hero.js';
+import './rider-hero.css';
+import {mountHeaderSize} from './header-size.js';
+import './persistent-header.css';
+import './featured-triplo.css';
 
 const $ = query => document.querySelector(query);
 const $$ = query => [...document.querySelectorAll(query)];
 const reduced = matchMedia('(prefers-reduced-motion: reduce)');
 const lifecycle = new AbortController();
 const {signal} = lifecycle;
-let disposed = false, paused = false, introActive = true, serviceMotion, intro, truckEvents, appetiteMotion, menuBoard, bagRider;
+let disposed = false, paused = false, introActive = !$('#rider-hero'), serviceMotion, intro, truckEvents, appetiteMotion, menuBoard, bagRider;
 const mobileFinish = mountMobileFinish({reducedMotion:reduced});
 const openingHours = mountOpeningHours();
+const headerSize = mountHeaderSize({root:$('[data-persistent-header]')});
 const film = $('#hero-film');
 const stage = $('#hero-scene');
 const filmButton = $('#hero-motion');
@@ -34,14 +39,14 @@ const dialog = $('.product-dialog');
 const menuRoot = $('#menu');
 const catalog = new Map(products.map(product => [product.id, product]));
 let filmWanted = false, filmInView = false, filmLoaded = false, filmRequest = 0;
-let filmTransferStartedAt = 0;
+let filmTransferStartedAt = 0, filmLoadDeadline = 0, filmLoadFail = null, filmViewportRaf = 0;
 let filmRatio = 0, filmVisited = false, filmVisitConsumed = false, filmHovered = false;
 let filmDwell = null, filmEndTimer = null, filmLoadTimer = null, filmFrameRequest = null, filmHeldFrame = null;
 const filmTouch = matchMedia('(hover: none), (pointer: coarse)');
 const filmConnection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
 
-// The original preparation film owns the opening. Menu content stays in HTML;
-// the truck starts automatically on approach after the opening has finished.
+// The scroll-driven rider opens the page; the original preparation film remains
+// available for replay. Menu content stays in HTML throughout.
 const cart = mountCart({products, presentation, reducedMotion:reduced, channels:{
   glovo:{verified:true, url:GLOVO_URL}, pickup:{verified:true, phone:PICKUP_PHONE},
 }});
@@ -61,7 +66,7 @@ function stopFilm(release = false, preserve = true) {
   const keep = preserve && !disposed && !document.hidden && filmInView && !reduced.matches && !filmConnection?.saveData;
   if (keep && stage?.classList.contains('has-video')) filmHeldFrame = holdFoodFrame(film, stage, filmHeldFrame, 'hero-film-frame');
   if (!keep) filmHeldFrame = clearFoodFrame(filmHeldFrame);
-  filmRequest++; filmWanted = false;
+  filmRequest++; filmWanted = false; filmLoadFail = null;
   if (filmFrameRequest != null) film?.cancelVideoFrameCallback?.(filmFrameRequest);
   filmFrameRequest = null;
   window.clearTimeout(filmDwell); window.clearTimeout(filmEndTimer); window.clearTimeout(filmLoadTimer);
@@ -99,7 +104,8 @@ function beginFilm() {
     stopFilm(true); renderFilmButton();
     if (filmButton) filmButton.textContent = '▷ Riprova il video';
   };
-  filmLoadTimer = window.setTimeout(failed, 3200);
+  filmLoadDeadline = performance.now()+30000; filmLoadFail=failed;
+  filmLoadTimer = window.setTimeout(failed, 8000);
   try {Promise.resolve(film.play()).catch(failed);} catch {failed();}
   renderFilmButton(); return true;
 }
@@ -118,7 +124,7 @@ function queueFilm() {
 }
 function syncFilm() {
   if (!film || disposed) return;
-  if (filmBlocked() || !filmInView) stopFilm(reduced.matches || Boolean(filmConnection?.saveData));
+  if (filmBlocked() || !filmInView) {filmVisitConsumed=false;stopFilm(reduced.matches || Boolean(filmConnection?.saveData));}
   else queueFilm();
   renderFilmButton();
 }
@@ -144,7 +150,7 @@ filmButton?.addEventListener('click', () => {
 function showFilmFrame() {
   filmFrameRequest = null;
   if (!filmWanted || filmBlocked() || !filmInView) {stopFilm(); renderFilmButton(); return;}
-  window.clearTimeout(filmLoadTimer); filmLoadTimer = null;
+  window.clearTimeout(filmLoadTimer); filmLoadTimer = null; filmLoadFail=null;
   stage?.classList.add('has-video');
   filmHeldFrame = clearFoodFrame(filmHeldFrame);
   const remaining = Number.isFinite(film.duration) && film.duration > 0 ? Math.min(Math.max(0, film.duration-film.currentTime)*1000+250, 12000) : 5000;
@@ -156,8 +162,19 @@ film?.addEventListener('playing', () => {
   const request = filmRequest;
   filmFrameRequest = film.requestVideoFrameCallback(() => {if (request === filmRequest) showFilmFrame();});
 }, {signal});
-film?.addEventListener('progress', () => recordFoodTransfer(film, window, filmTransferStartedAt), {signal});
+film?.addEventListener('progress', () => {
+  recordFoodTransfer(film, window, filmTransferStartedAt);
+  if (filmLoadFail && filmLoadTimer != null) {window.clearTimeout(filmLoadTimer);filmLoadTimer=window.setTimeout(filmLoadFail,Math.max(0,Math.min(8000,filmLoadDeadline-performance.now())));}
+}, {signal});
 film?.addEventListener('canplaythrough', () => recordFoodTransfer(film, window, filmTransferStartedAt), {signal});
+film?.addEventListener('waiting', () => {
+  if(!filmWanted || filmBlocked())return;
+  window.clearTimeout(filmEndTimer);filmEndTimer=null;
+  const request=filmRequest;
+  filmLoadDeadline=performance.now()+30000;
+  filmLoadFail=()=>{if(request===filmRequest && filmWanted){stopFilm(true);renderFilmButton();}};
+  window.clearTimeout(filmLoadTimer);filmLoadTimer=window.setTimeout(filmLoadFail,8000);
+}, {signal});
 film?.addEventListener('ended', finishFilm, {signal});
 film?.addEventListener('error', () => {
   if (!filmLoaded) return;
@@ -185,7 +202,7 @@ stage?.addEventListener('focusout', event => {
   filmHovered = false; stopFilm(); renderFilmButton();
 }, {signal});
 document.addEventListener('smeet:food-claim', event => {
-  if (event.detail !== film && event.detail?.matches?.('.appetite-motion-video')) {stopFilm(true); renderFilmButton();}
+  if (event.detail !== film && event.detail?.matches?.('.appetite-motion-video, .hero-scroll-video')) {stopFilm(true); renderFilmButton();}
 }, {signal});
 document.addEventListener('playing', event => {
   if (event.target !== film && event.target.matches?.('.appetite-motion-video')) {stopFilm(); renderFilmButton();}
@@ -195,22 +212,26 @@ window.addEventListener('pagehide', () => stopFilm(true, false), {signal});
 reduced.addEventListener('change', syncMotion, {signal});
 filmConnection?.addEventListener?.('change', syncFilm, {signal});
 filmTouch.addEventListener('change', syncFilm, {signal});
-const filmObserver = film && stage && typeof IntersectionObserver === 'function' ? new IntersectionObserver(([entry]) => {
-  filmRatio = entry.isIntersecting ? entry.intersectionRatio : 0;
-  filmInView = filmRatio > 0;
-  if (filmRatio < .3) {
-    filmVisitConsumed = false;
-    stopFilm(filmRatio === 0, filmRatio > 0);
-  }
+function syncFilmVisibility() {
+  filmViewportRaf=0;
+  if(!stage || disposed)return;
+  filmRatio=motionExposure(stage.getBoundingClientRect(),motionViewport(document,window));
+  filmInView=filmRatio>0;
+  if(filmRatio<.3){filmVisitConsumed=false;stopFilm(filmRatio===0,filmRatio>0);}
   syncFilm();
-}, {threshold:[0,.3,.55,1]}) : null;
-if (stage) filmObserver?.observe(stage);
+}
+const filmObserver=film && stage && typeof IntersectionObserver==='function' ? new IntersectionObserver(syncFilmVisibility,{threshold:[0,.3,.55,1]}) : null;
+if(stage)filmObserver?.observe(stage);
+const queueFilmVisibility=()=>{if(!filmViewportRaf)filmViewportRaf=requestAnimationFrame(syncFilmVisibility);};
+window.addEventListener('scroll',queueFilmVisibility,{passive:true,signal});
+window.addEventListener('resize',queueFilmVisibility,{passive:true,signal});
+window.addEventListener('smeet:header-resize',queueFilmVisibility,{signal});
 const modalObserver = typeof MutationObserver === 'function' ? new MutationObserver(syncFilm) : null;
 [dialog, $('#smeet-cart')].filter(Boolean).forEach(modal => modalObserver?.observe(modal,{attributes:true,attributeFilter:['open']}));
 modalObserver?.observe(document.body,{attributes:true,attributeFilter:['class']});
 motionButton?.addEventListener('click', () => {paused = !paused; syncMotion();}, {signal});
 truckEvents = mountTruckTour({root:$('#truck'), reducedMotion:reduced});
-bagRider = mountBagRider({root:$('#ordina'), reducedMotion:reduced});
+bagRider = mountRiderHero({root:$('#rider-hero'), reducedMotion:reduced});
 syncMotion();
 
 // A photographic detail keeps the product, ingredients and purchase together.
@@ -396,19 +417,24 @@ mapButton?.addEventListener('click', async () => {
   }
 }, {signal});
 // The original morning and dressing film opens the visit; the footer can replay it.
-intro = mountOriginalOpening({reducedMotion:reduced, onComplete:() => {
+intro = mountOriginalOpening({reducedMotion:reduced, autoStart:!$('#rider-hero'), onComplete:() => {
   if (disposed) return;
   introActive = false;
   if (motionButton) motionButton.hidden = false;
   if (!serviceMotion) serviceMotion = mountServiceMotion({root:document, reducedMotion:reduced, includeMenuImages:false});
   syncMotion();
 }});
+if (!introActive) {
+  if (motionButton) motionButton.hidden = false;
+  serviceMotion = mountServiceMotion({root:document, reducedMotion:reduced, includeMenuImages:false});
+  syncMotion();
+}
 window.addEventListener('pagehide', event => {
   if (event.persisted) return;
   disposed = true; detailRevision++; lifecycle.abort();
-  stopFilm(true); filmObserver?.disconnect(); modalObserver?.disconnect();
+  cancelAnimationFrame(filmViewportRaf); stopFilm(true); filmObserver?.disconnect(); modalObserver?.disconnect();
   mobileFinish.dispose();
-  openingHours.dispose();
+  openingHours.dispose(); headerSize.dispose();
   detailMotion.dispose();
   ingredientsHeading?.remove(); dialog?.classList.remove('photo-detail-dialog');
   appetiteMotion?.dispose();
