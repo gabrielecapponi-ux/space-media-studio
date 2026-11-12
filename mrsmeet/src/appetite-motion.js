@@ -312,9 +312,9 @@ export function mountAppetiteMotion({root = globalThis.document, entries = {}, r
       syncWarm(next);
     },WARM_DWELL_MS)};
   }
-  function tryStart(state) {
+  function hasStartupBuffer(state) {
     const video = state.video;
-    if (!state.awaitingStart || !video || active !== state || blocked() || state.finished || !visible(state) || candidate() !== state) return;
+    if (!video || video.readyState < 3) return false;
     // Chromium can estimate buffered time from bytes on these VBR clips.
     // Leave enough headroom for their large opening frames and require future
     // decoded data. Keep the still visible and always start the clip at zero.
@@ -330,7 +330,11 @@ export function mountAppetiteMotion({root = globalThis.document, entries = {}, r
         if (video.readyState >= 3 && video.buffered.start(i) <= .02 && video.buffered.end(i) >= required) {ready = true; break;}
       }
     } catch { /* Metadata or buffer ranges may still be unavailable. */ }
-    if (!ready) return;
+    return ready;
+  }
+  function tryStart(state) {
+    const video = state.video;
+    if (!state.awaitingStart || !video || active !== state || blocked() || state.finished || !visible(state) || candidate() !== state || !hasStartupBuffer(state)) return;
     const token = state.token;
     state.awaitingStart = false; state.playStarted = true;
     doc.dispatchEvent(new win.CustomEvent('smeet:food-claim',{detail:video}));
@@ -379,7 +383,9 @@ export function mountAppetiteMotion({root = globalThis.document, entries = {}, r
     }
     if (owner && owner !== state) hide(owner);
     if (!state || state.finished) {cancelDwell(); syncWarm(); return;}
-    const dwell = state.focused ? 0 : !touch?.matches && state.hovered ? 40 : 90;
+    // A prepared replay has already paid the network and decode cost. The
+    // dwell only debounces new requests; do not make a ready clip wait again.
+    const dwell = state.focused || hasStartupBuffer(state) ? 0 : !touch?.matches && state.hovered ? 40 : 90;
     if (active === state || (pending?.state === state && pending.dwell <= dwell)) {syncWarm(); return;}
     cancelDwell();
     cancelWarmDwell();

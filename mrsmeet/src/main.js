@@ -14,13 +14,16 @@ import {mountAppetiteMotion, holdFoodFrame, clearFoodFrame} from './appetite-mot
 import appetiteMedia from '../data/appetite-media.json';
 import {mountMenuBoard} from './menu-board.js';
 import {selectFoodVideo, recordFoodTransfer} from './food-media-source.js';
+import './cinematic.css';
+import {mountStorefrontRider} from './storefront-rider.js';
+import './storefront-rider.css';
 
 const $ = query => document.querySelector(query);
 const $$ = query => [...document.querySelectorAll(query)];
 const reduced = matchMedia('(prefers-reduced-motion: reduce)');
 const lifecycle = new AbortController();
 const {signal} = lifecycle;
-let disposed = false, paused = false, introActive = true, serviceMotion, intro, truckEvents, appetiteMotion, menuBoard;
+let disposed = false, paused = false, introActive = true, serviceMotion, intro, truckEvents, appetiteMotion, menuBoard, storefrontRider;
 const mobileFinish = mountMobileFinish({reducedMotion:reduced});
 const openingHours = mountOpeningHours();
 const film = $('#hero-film');
@@ -108,12 +111,10 @@ function queueFilm() {
     filmDwell = null;
     const eligible = () => filmRatio >= .55 && !filmVisitConsumed && !filmBlocked() && (!filmTouch.matches || appetiteMotion?.signatureIsPrimary?.() !== false);
     if (!eligible()) return;
-    const still = stage?.querySelector('.signature-photo img');
-    if (still && !still.complete && typeof still.decode === 'function') {
-      const request = filmRequest;
-      still.decode().catch(() => {}).then(() => {if (request === filmRequest && eligible()) beginFilm();});
-    } else beginFilm();
-  }, filmVisited ? (filmTouch.matches ? 90 : 40) : (filmTouch.matches ? 320 : 140));
+    // The poster is already high priority. Do not serialize its decode and
+    // the film request on mobile; the film reveals only a decoded frame.
+    beginFilm();
+  }, filmVisited ? (filmTouch.matches ? 60 : 30) : (filmTouch.matches ? 90 : 60));
 }
 function syncFilm() {
   if (!film || disposed) return;
@@ -124,7 +125,7 @@ function syncFilm() {
 function syncMotion() {
   const stopped = paused || reduced.matches || introActive;
   document.body.classList.toggle('motion-paused', stopped);
-  mobileFinish.setPaused(stopped); serviceMotion?.setPaused(stopped); truckEvents?.setPaused(stopped); appetiteMotion?.setPaused(stopped); menuBoard?.setPaused(stopped); syncFilm();
+  mobileFinish.setPaused(stopped); serviceMotion?.setPaused(stopped); truckEvents?.setPaused(stopped); appetiteMotion?.setPaused(stopped); menuBoard?.setPaused(stopped); storefrontRider?.setPaused(stopped); syncFilm();
   if (motionButton) {
     motionButton.setAttribute('aria-pressed', String(stopped));
     motionButton.disabled = reduced.matches;
@@ -209,6 +210,7 @@ const modalObserver = typeof MutationObserver === 'function' ? new MutationObser
 modalObserver?.observe(document.body,{attributes:true,attributeFilter:['class']});
 motionButton?.addEventListener('click', () => {paused = !paused; syncMotion();}, {signal});
 truckEvents = mountTruckTour({root:$('#truck'), reducedMotion:reduced});
+storefrontRider = mountStorefrontRider({root:$('.storefront-frame'), reducedMotion:reduced});
 syncMotion();
 
 // A photographic detail keeps the product, ingredients and purchase together.
@@ -412,6 +414,7 @@ window.addEventListener('pagehide', event => {
   appetiteMotion?.dispose();
   menuBoard?.dispose();
   truckEvents?.dispose();
+  storefrontRider?.dispose();
   if (dialog?.open) dialog.close();
   restoreDetailPage(false);
   intro?.dispose(); serviceMotion?.dispose(); menu.dispose(); cart.dispose();
