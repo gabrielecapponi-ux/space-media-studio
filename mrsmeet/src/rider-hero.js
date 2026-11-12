@@ -15,7 +15,7 @@ export function mountRiderHero({root, reducedMotion} = {}) {
   const caption = root.querySelector('[data-hero-caption]');
   const meter = root.querySelector('[data-hero-progress]');
   const pref = reducedMotion || win.matchMedia('(prefers-reduced-motion: reduce)');
-  const compact = win.matchMedia('(max-height: 560px)');
+  const compact = win.matchMedia('(max-height: 640px), (min-width: 441px) and (max-width: 760px) and (max-height: 720px)');
   const connection = win.navigator.connection || win.navigator.webkitConnection;
   const life = new win.AbortController(), signal = life.signal;
   const state = {progress:0};
@@ -24,18 +24,22 @@ export function mountRiderHero({root, reducedMotion} = {}) {
   let seekTimer = 0, failedOutsideView = false;
   let target = 0, near = false, inView = false, seekingAt = 0, lastFrame = -1;
   let raf = 0, watchdog = 0, refreshFrame = 0, manualScrollY = 0;
+  let locateQueued = false, seekQueued = false;
   const staticMode = () => pref.matches || Boolean(connection?.saveData);
   const blocked = () => disposed || paused || staticMode() || doc.hidden || Boolean(doc.querySelector('dialog[open]'));
   const listen = (node,event,fn,options={}) => node?.addEventListener?.(event,fn,{...options,signal});
   const headerHeight = () => doc.querySelector('[data-persistent-header]')?.getBoundingClientRect().height || 0;
   function render() {
     const p = video?.duration && scene.classList.contains('has-hero-video') ? presentedTime/video.duration : 0;
-    if (meter) meter.style.transform = `scaleX(${Math.max(0,Math.min(1,p))})`;
-    if (caption) caption.textContent = p < .31 ? 'Il tuo prossimo morso, preparato con cura.' : p < .71 ? 'Tutto nel sacchetto. Pronti a partire.' : 'Il gusto prende la sua strada.';
+    const progress = `scaleX(${Math.max(0,Math.min(1,p))})`;
+    const text = p < .31 ? 'Il tuo prossimo morso, preparato con cura.' : p < .71 ? 'Tutto nel sacchetto. Pronti a partire.' : 'Il gusto prende la sua strada.';
+    if (meter && meter.style.transform !== progress) meter.style.transform = progress;
+    if (caption && caption.textContent !== text) caption.textContent = text;
     if (control) {
-      control.hidden = staticMode();
-      control.textContent = manual ? 'Ⅱ Pausa la scena' : failed ? '▷ Riprova la scena' : '▷ Guarda la scena';
-      control.setAttribute('aria-pressed',String(manual));
+      const hidden = staticMode(), label = manual ? 'Ⅱ Pausa la scena' : failed ? '▷ Riprova la scena' : '▷ Guarda la scena';
+      if (control.hidden !== hidden) control.hidden = hidden;
+      if (control.textContent !== label) control.textContent = label;
+      if (control.getAttribute('aria-pressed') !== String(manual)) control.setAttribute('aria-pressed',String(manual));
     }
   }
   function reveal() {
@@ -43,7 +47,7 @@ export function mountRiderHero({root, reducedMotion} = {}) {
     const desired = Math.floor(target * Math.max(0,video.duration-1/24)*24)/24;
     if (!manual && Math.abs(video.currentTime-desired) > 1/24) return;
     presentedTime=video.currentTime;
-    scene.classList.add('has-hero-video');
+    if (!scene.classList.contains('has-hero-video')) scene.classList.add('has-hero-video');
     render();
   }
   function clearSeekDeadline() {
@@ -65,7 +69,6 @@ export function mountRiderHero({root, reducedMotion} = {}) {
     },15000);
   }
   function seek() {
-    raf = 0;
     if (!video || blocked() || manual || manualHold || !near || video.readyState < 1 || !Number.isFinite(video.duration)) return;
     const frame = Math.min(Math.floor(target * (video.duration-1/24)*24), Math.floor(video.duration*24)-1);
     // One outstanding seek, with latest-wins coalescing and native range fetch.
@@ -74,7 +77,19 @@ export function mountRiderHero({root, reducedMotion} = {}) {
     lastFrame = frame; watchSeek();
     try {video.currentTime = frame/24;} catch {clearSeekDeadline();lastFrame = -1;}
   }
-  function queueSeek() {if (!raf && !disposed) raf = win.requestAnimationFrame(seek);}
+  function queueFrame() {
+    if (raf || disposed) return;
+    raf = win.requestAnimationFrame(()=> {
+      // ScrollTrigger and native scroll share one geometry pass. Seek only
+      // after that pass, in the same frame, so visibility and target agree.
+      if (locateQueued) locate();
+      if (seekQueued) {seekQueued=false;seek();}
+      raf=0;
+      if (locateQueued || seekQueued) queueFrame();
+    });
+  }
+  function queueSeek() {seekQueued=true;queueFrame();}
+  function queueLocate() {locateQueued=true;queueFrame();}
   function prepare() {
     if (video || failed || !near || blocked()) return;
     const v = doc.createElement('video'); video = v;
@@ -113,6 +128,7 @@ export function mountRiderHero({root, reducedMotion} = {}) {
     scene.classList.remove('has-hero-video');lastFrame=-1;seekingAt=0;
   }
   function locate() {
+    locateQueued=false;
     const b=root.getBoundingClientRect(), s=scene.getBoundingClientRect();
     near=b.bottom>0 && b.top<win.innerHeight+200;
     inView=motionExposure(s,motionViewport(doc,win)) >= .3;
@@ -129,7 +145,7 @@ export function mountRiderHero({root, reducedMotion} = {}) {
   }
   function update() {
     target=state.progress;
-    if (!manual) {queueSeek();render();}
+    if (!manual) queueSeek();
   }
   function setup() {
     tween?.scrollTrigger?.kill();tween?.kill();tween=null;
@@ -140,7 +156,7 @@ export function mountRiderHero({root, reducedMotion} = {}) {
     tween=gsap.to(state,{progress:1,ease:'none',onUpdate:update,scrollTrigger:{
       trigger:root,start:()=>`top ${headerHeight()}`,
       end:()=>`+=${Math.max(1,root.offsetHeight-root.querySelector('.rider-hero-stage').offsetHeight)}`,
-      scrub:.4,invalidateOnRefresh:true,onUpdate:locate,onRefresh:locate,
+      scrub:.4,invalidateOnRefresh:true,onUpdate:queueLocate,onRefresh:locate,
     }});
     locate();
   }
@@ -158,8 +174,8 @@ export function mountRiderHero({root, reducedMotion} = {}) {
     render();
   });
   listen(win,'scroll',()=> {
-    if ((manual || manualHold) && Math.abs(win.scrollY-manualScrollY)>12) {playVersion++;manual=false;manualHold=false;video?.pause();lastFrame=-1;}
-    locate();
+    if ((manual || manualHold) && Math.abs(win.scrollY-manualScrollY)>12) {playVersion++;manual=false;manualHold=false;video?.pause();lastFrame=-1;render();}
+    queueLocate();
   },{passive:true});
   listen(doc,'visibilitychange',locate);
   listen(pref,'change',setup);listen(compact,'change',setup);listen(connection,'change',setup);

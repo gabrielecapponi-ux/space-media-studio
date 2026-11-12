@@ -59,6 +59,11 @@ Gli asset sono elaborazioni generative illustrative. Non sono riprese del prodot
 
 ## Apertura rider, testata e percorso d’ordine
 
+Rifinitura successiva alla revisione Claude Code: gli eventi di scroll della hero condividono un solo aggiornamento per frame; testi e attributi vengono riscritti solo quando cambiano. Il catalogo misura header e dock una volta per riconciliazione e conserva i punteggi soltanto in quel giro, senza cache persistenti. Dopo il reset richiesto da un refresh viene ripristinata la gestione automatica della cronologia, così «Indietro» può conservare il punto di lettura.
+
+Sugli schermi fino a 440 px di larghezza e 720 px di altezza la hero usa il quadro completo 16:9, titolo e spazi più compatti: a 375 × 667 i controlli rimangono sopra il dock e lo scroll resta sincronizzato. Sotto 640 px di altezza, o nei formati da 441 a 760 px larghi e fino a 720 px alti, la scena diventa statica con riproduzione manuale, per evitare comandi coperti. Gli altri formati mobile conservano il taglio 3:2.
+
+
 La nuova apertura è la scena del rider in `#rider-hero`, seguita dal **Classic Triplo in una fascia compatta**: foto, animazione originale, nome, prezzi approvati, promozione e «Aggiungi» restano disponibili senza una seconda hero a tutta altezza. `src/featured-triplo.css` cambia soltanto la disposizione. Il burger che si veste rimane raggiungibile da «Rivedi l’apertura» nel footer, ma non parte più automaticamente sulle tre homepage.
 
 L’header semitrasparente conserva **orari, logo con mascotte, telefono, email, menù, collaborazione e sacchetto durante tutto lo scroll**. Lo stato di apertura viene calcolato dagli orari ordinari approvati nel fuso Europe/Rome e aggiornato ogni minuto: non è un feed dell’effettiva attività del locale. `src/header-size.js` misura l’altezza reale, inclusa la safe area, aggiorna `--header-height` e invia `smeet:header-resize` per riallineare hero e controlli. DynaPuff coordina titoli e navigazione; Instrument Sans rimane per ingredienti, orari e testi di lettura.
@@ -94,7 +99,7 @@ Se `video.seeking` rimane vero per **15 secondi**, il controller rilascia sorgen
 
 Movimento ridotto e Risparmio dati mantengono il poster, senza video né altezza extra dello scroll. Per finestre alte al massimo 560 px viene rimossa anche la timeline sticky, conservando la visione manuale quando le preferenze consentono il movimento. Sacchetto o dettagli aperti, pausa generale e pagina nascosta sospendono il lavoro. Ridimensionamento dell’header, ritorno alla pagina e cambio orientamento riallineano la geometria senza moltiplicare i trigger.
 
-Le prove della revisione comprendono **Chrome a 320 e 393 px, Chrome desktop e Safari nativo su desktop**; controlli e screenshot sono conservati in `artifacts/scroll-hero-20261112/`. Sono passati **90 controlli logici**: 60 per prodotti/truck/tabellone, 24 per la hero e 6 per il Triplo compatto. Simulano eventi media, clock, preferenze e geometria, mentre i confronti dei file misurano la fedeltà dell’export. Queste prove non attestano fluidità o prestazioni su un **iPhone fisico**. La verifica del rilascio pubblico viene registrata separatamente; questa descrizione non dichiara una pubblicazione già avvenuta.
+Le prove della revisione comprendono **Chrome a 320 e 393 px, Chrome desktop e Safari nativo su desktop**; controlli e screenshot sono conservati in `artifacts/scroll-hero-20261112/`. Sono passati **94 controlli logici**: 60 per prodotti/truck/tabellone, 24 per la hero e 6 per il Triplo compatto. Simulano eventi media, clock, preferenze e geometria, mentre i confronti dei file misurano la fedeltà dell’export. Queste prove non attestano fluidità o prestazioni su un **iPhone fisico**. La verifica del rilascio pubblico viene registrata separatamente; questa descrizione non dichiara una pubblicazione già avvenuta.
 
 ## Archivio — precedente scena del sacchetto
 

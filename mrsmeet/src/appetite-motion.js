@@ -55,12 +55,12 @@ export function mountAppetiteMotion({root = globalThis.document, entries = {}, r
   const prefersStatic = () => Boolean(typeof reduced === 'boolean' ? reduced : reduced?.matches) || connection?.saveData;
   const blocked = () => disposed || paused || prefersStatic() || doc.hidden || doc.body?.classList.contains('motion-paused') || Boolean(doc.querySelector('dialog[open]'));
   const hidden = state => !state.link.isConnected || Boolean(state.link.closest('[hidden],[inert]'));
-  const visible = state => {
+  const visible = (state, area, box) => {
     if (hidden(state)) return false;
-    const box = state.link.getBoundingClientRect();
-    return motionExposure(box,motionViewport(doc,win)) > 0 && box.right > 0 && box.left < win.innerWidth;
+    box ??= state.link.getBoundingClientRect();
+    return motionExposure(box,area ?? motionViewport(doc,win)) > 0 && box.right > 0 && box.left < win.innerWidth;
   };
-  const readingRatio = state => hidden(state) ? 0 : Math.min(state.ratio, motionExposure(state.link.getBoundingClientRect(),motionViewport(doc,win)));
+  const readingRatio = (state, area, box) => hidden(state) ? 0 : Math.min(state.ratio, motionExposure(box ?? state.link.getBoundingClientRect(),area ?? motionViewport(doc,win)));
   const nearby = state => {
     if (hidden(state) || state.near === false) return false;
     const box = state.link.getBoundingClientRect();
@@ -118,8 +118,8 @@ export function mountAppetiteMotion({root = globalThis.document, entries = {}, r
     const remaining = Math.max(0, state.loadDeadline - win.performance.now());
     state.loadTimer = win.setTimeout(() => finish(state,true), Math.min(LOAD_IDLE_TIMEOUT_MS,remaining));
   }
-  function release(state, preserve = false) {
-    const keep = preserve && !disposed && !doc.hidden && !prefersStatic() && visible(state);
+  function release(state, preserve = false, area) {
+    const keep = preserve && !disposed && !doc.hidden && !prefersStatic() && visible(state,area);
     const video = state.video;
     if (keep && state.presented) state.frame = holdFoodFrame(video, state.link, state.frame);
     if (!keep) state.frame = clearFoodFrame(state.frame);
@@ -137,16 +137,16 @@ export function mountAppetiteMotion({root = globalThis.document, entries = {}, r
     video.removeAttribute('src'); video.load(); video.remove();
     if (state.attempted) state.finished = true;
   }
-  function hide(state = owner) {
+  function hide(state = owner, area) {
     if (!state?.video) return;
     state.finished = true;
-    release(state, true);
+    release(state, true, area);
   }
-  function restartVisit(state) {
+  function restartVisit(state, area) {
     // A replay of the same product can seek its retained element. Keep its
     // last decoded frame above the still until the new first frame arrives.
     if (state.video) {
-      if (warm && warm !== state) release(warm, true);
+      if (warm && warm !== state) release(warm, true, area);
       if (state.presented) state.frame = holdFoodFrame(state.video, state.link, state.frame);
       stopClock(state);
       state.link.removeAttribute('data-appetite-playing');
@@ -162,30 +162,37 @@ export function mountAppetiteMotion({root = globalThis.document, entries = {}, r
     if (state.finished || (state.attempted && active !== state)) restartVisit(state);
     state.intent = ++intent;
   }
-  function signatureIsPrimary() {
+  function signatureIsPrimary(area) {
     if (!signature) return false;
     const box = signature.getBoundingClientRect();
-    const area = motionViewport(doc,win);
+    area ??= motionViewport(doc,win);
     const heroLeads = win.scrollY < 24 || box.top + box.height*.5 >= area.top + area.height*.25;
     return heroLeads && motionExposure(box,area) >= .55;
   }
-  function candidate() {
-    const available = [...cards.values()].filter(state => state.videoURL && !hidden(state) && (state.ratio > 0 || visible(state)));
-    const direct = available.filter(state => (state.focused && (!touch?.matches || !visibilityObserver || readingRatio(state) >= .30))
+  function candidate(area = motionViewport(doc,win)) {
+    // Geometry and scores belong only to this selection. Later scroll/media
+    // callbacks must observe the current header, dock and product positions.
+    const readings = new Map();
+    const read = state => {
+      if (!readings.has(state)) {
+        const box = state.link.getBoundingClientRect(), ratio = readingRatio(state,area,box);
+        const score = 2*ratio-Math.abs(box.top+box.height*.5-area.center)/Math.max(1,area.height);
+        readings.set(state,{state,box,ratio,score});
+      }
+      return readings.get(state);
+    };
+    const available = [...cards.values()].filter(state => state.videoURL && !hidden(state) && (state.ratio > 0 || visible(state,area,read(state).box)));
+    const direct = available.filter(state => (state.focused && (!touch?.matches || !visibilityObserver || read(state).ratio >= .30))
       || (!touch?.matches && state.hovered));
     if (direct.length) return direct.sort((a,b) => b.intent-a.intent)[0];
     if (!visibilityObserver) return null;
     // At the new compact opening both the hero and first menu row fit on a
     // phone. Give the large Triplo its first pass before auto-playing a card.
-    if (signatureIsPrimary()) return null;
-    const area = motionViewport(doc,win);
-    const score = state => {
-      const box = state.link.getBoundingClientRect();
-      return 2*readingRatio(state)-Math.abs(box.top+box.height*.5-area.center)/Math.max(1,area.height);
-    };
-    const best = available.filter(state => readingRatio(state) >= .55).sort((a,b) => score(b)-score(a))[0];
-    if (active && readingRatio(active) >= .30 && !hidden(active) && (!best || score(best)<score(active)+.06)) return active;
-    return best || null;
+    if (signatureIsPrimary(area)) return null;
+    const best = available.map(read).filter(item => item.ratio >= .55).sort((a,b) => b.score-a.score)[0];
+    const current = active && read(active);
+    if (current && current.ratio >= .30 && !hidden(active) && (!best || best.score<current.score+.06)) return active;
+    return best?.state || null;
   }
   function finish(state, failed = false) {
     state.finished = true;
@@ -211,10 +218,10 @@ export function mountAppetiteMotion({root = globalThis.document, entries = {}, r
     else state.endTimer = win.setTimeout(() => finish(state),remaining);
     syncWarm();
   }
-  function prepare(state, activation = false) {
+  function prepare(state, activation = false, area) {
     if (blocked() || hidden(state) || !state.videoURL || (state.warmFailed && !activation)) return null;
     if (state.video) return state.video;
-    if (warm) release(warm, true);
+    if (warm) release(warm, true, area);
     const video = doc.createElement('video');
     video.className = 'appetite-motion-video'; video.preload = 'auto';
     video.muted = video.defaultMuted = video.playsInline = true;
@@ -271,15 +278,15 @@ export function mountAppetiteMotion({root = globalThis.document, entries = {}, r
     video.load();
     return video;
   }
-  function syncWarm(maturedCandidate = null) {
-    if (warm && (!nearby(warm) || blocked())) release(warm, true);
+  function syncWarm(maturedCandidate = null, area = motionViewport(doc,win)) {
+    if (warm && (!nearby(warm) || blocked())) release(warm, true, area);
     if (blocked()) {cancelWarmDwell(); return;}
     // The opening owns the available network/decoder budget until it yields.
     // Explicit card intent is prepared by reconcile, without claiming play.
     if (pending) {cancelWarmDwell(); return;}
-    if (!visibilityObserver || signatureIsPrimary() || signatureVideo?.hasAttribute('src')) {
+    if (!visibilityObserver || signatureIsPrimary(area) || signatureVideo?.hasAttribute('src')) {
       cancelWarmDwell();
-      if (warm) release(warm, true);
+      if (warm) release(warm, true, area);
       return;
     }
     if (owner && !owner.finished) {
@@ -299,7 +306,7 @@ export function mountAppetiteMotion({root = globalThis.document, entries = {}, r
       } catch { /* A released or not-yet-decoded element has no headroom. */ }
       if (!owner.presented || owner.waiting || !fullyBuffered) {
         cancelWarmDwell();
-        if (warm) release(warm, true);
+        if (warm) release(warm, true, area);
         return;
       }
     }
@@ -314,9 +321,9 @@ export function mountAppetiteMotion({root = globalThis.document, entries = {}, r
     };
     const ahead = choices.filter(state => distance(state) * scrollDirection > 0);
     const next = (ahead.length ? ahead : owner ? [] : choices).sort((a,b) => Math.abs(distance(a)) - Math.abs(distance(b)) || a.order - b.order)[0];
-    if (warm && warm !== next) release(warm, true);
+    if (warm && warm !== next) release(warm, true, area);
     if (!next || next === warm) {cancelWarmDwell(); return;}
-    if (next === maturedCandidate) {cancelWarmDwell(); prepare(next); return;}
+    if (next === maturedCandidate) {cancelWarmDwell(); prepare(next,false,area); return;}
     if (warming?.state === next) return;
     cancelWarmDwell();
     warming = {state:next,timer:win.setTimeout(() => {
@@ -379,38 +386,39 @@ export function mountAppetiteMotion({root = globalThis.document, entries = {}, r
   }
   function reconcile() {
     if (disposed) return;
+    const area = motionViewport(doc,win);
     if (blocked()) {
-      cancelDwell(); cancelWarmDwell(); hide(); if (warm) release(warm, true);
+      cancelDwell(); cancelWarmDwell(); hide(owner,area); if (warm) release(warm, true, area);
       readingCard = null;
       if (prefersStatic() || doc.hidden) cards.forEach(state => release(state));
       return;
     }
     for (const item of cards.values()) if (hidden(item)) release(item);
     for (const item of cards.values()) {
-      const ratio = readingRatio(item);
+      const ratio = readingRatio(item,area);
       if (ratio < .30) item.viewportArmed = true;
       if (ratio >= .55 && item.viewportArmed) {
-        if (item.attempted) restartVisit(item);
+        if (item.attempted) restartVisit(item,area);
         item.viewportArmed = false;
       }
     }
-    const state = candidate();
+    const state = candidate(area);
     // IO can select the new reading card after the scroll rAF has already
     // run. Re-arm here, at the common reconciliation point, rather than
     // retaining the previous visit's stale reading owner until another scroll.
     if (state !== readingCard) {
-      if (state?.finished) restartVisit(state);
+      if (state?.finished) restartVisit(state,area);
       readingCard = state;
     }
-    if (owner && owner !== state) hide(owner);
-    if (!state || state.finished) {cancelDwell(); syncWarm(); return;}
+    if (owner && owner !== state) hide(owner,area);
+    if (!state || state.finished) {cancelDwell(); syncWarm(null,area); return;}
     // A prepared replay has already paid the network and decode cost. The
     // dwell only debounces new requests; do not make a ready clip wait again.
     const dwell = state.focused || hasStartupBuffer(state) ? 0 : !touch?.matches && state.hovered ? 40 : 90;
-    if (active === state || (pending?.state === state && pending.dwell <= dwell)) {syncWarm(); return;}
+    if (active === state || (pending?.state === state && pending.dwell <= dwell)) {syncWarm(null,area); return;}
     cancelDwell();
     cancelWarmDwell();
-    if (warm && warm !== state) release(warm, true);
+    if (warm && warm !== state) release(warm, true, area);
     pending = {state,dwell,timer:win.setTimeout(() => {
       pending = null;
       if (!blocked() && candidate() === state && !state.finished) start(state);

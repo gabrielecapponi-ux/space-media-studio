@@ -7,7 +7,13 @@
       history.scrollRestoration = 'manual';
       history.replaceState(history.state, '', location.pathname + location.search + '#top');
       window.scrollTo(0, 0);
-      window.addEventListener('pageshow', function () { window.scrollTo({top: 0, behavior: 'instant'}); }, {once: true});
+      window.addEventListener('pageshow', function () {
+        window.scrollTo({top: 0, behavior: 'instant'});
+        requestAnimationFrame(function () {
+          window.scrollTo({top: 0, behavior: 'instant'});
+          history.scrollRestoration = 'auto';
+        });
+      }, {once: true});
     }
   </script>
 

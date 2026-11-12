@@ -172,7 +172,11 @@ film?.addEventListener('waiting', () => {
   window.clearTimeout(filmEndTimer);filmEndTimer=null;
   const request=filmRequest;
   filmLoadDeadline=performance.now()+30000;
-  filmLoadFail=()=>{if(request===filmRequest && filmWanted){stopFilm(true);renderFilmButton();}};
+  filmLoadFail=()=>{
+    if(request!==filmRequest || !filmWanted)return;
+    stopFilm(true);renderFilmButton();
+    if(filmButton)filmButton.textContent='▷ Riprova il video';
+  };
   window.clearTimeout(filmLoadTimer);filmLoadTimer=window.setTimeout(filmLoadFail,8000);
 }, {signal});
 film?.addEventListener('ended', finishFilm, {signal});
@@ -213,7 +217,6 @@ reduced.addEventListener('change', syncMotion, {signal});
 filmConnection?.addEventListener?.('change', syncFilm, {signal});
 filmTouch.addEventListener('change', syncFilm, {signal});
 function syncFilmVisibility() {
-  filmViewportRaf=0;
   if(!stage || disposed)return;
   filmRatio=motionExposure(stage.getBoundingClientRect(),motionViewport(document,window));
   filmInView=filmRatio>0;
@@ -222,7 +225,7 @@ function syncFilmVisibility() {
 }
 const filmObserver=film && stage && typeof IntersectionObserver==='function' ? new IntersectionObserver(syncFilmVisibility,{threshold:[0,.3,.55,1]}) : null;
 if(stage)filmObserver?.observe(stage);
-const queueFilmVisibility=()=>{if(!filmViewportRaf)filmViewportRaf=requestAnimationFrame(syncFilmVisibility);};
+const queueFilmVisibility=()=>{if(!filmViewportRaf)filmViewportRaf=requestAnimationFrame(()=>{filmViewportRaf=0;syncFilmVisibility();});};
 window.addEventListener('scroll',queueFilmVisibility,{passive:true,signal});
 window.addEventListener('resize',queueFilmVisibility,{passive:true,signal});
 window.addEventListener('smeet:header-resize',queueFilmVisibility,{signal});
