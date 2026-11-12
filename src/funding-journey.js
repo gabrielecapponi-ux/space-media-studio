@@ -1,6 +1,7 @@
 /** Space line film. Original bulb/dossier and Higgsfield vector architecture share one authored timeline. */
 import { fundingArtwork } from './funding-artwork.js';
 const DURATION = 22;
+const PLAYBACK_RATE = 1.5;
 const NS = 'http://www.w3.org/2000/svg';
 const SCENE_STARTS = [0, 3.1, 7.1, 11.1];
 const SCENE_ENDS = [3.1, 7.1, 11.1, 16.65];
@@ -165,6 +166,7 @@ function cameraAt(time, l) {
 export function installFundingJourney({ signal, menu } = {}) {
   const root = document.querySelector('[data-funding-journey]');
   if (!root) return { dispose() {} };
+  const section = root.closest('#funding') || root;
   const canvas = root.querySelector('[data-journey-canvas]');
   const button = root.querySelector('[data-journey-toggle]');
   const replay = root.querySelector('[data-journey-replay]');
@@ -179,12 +181,13 @@ export function installFundingJourney({ signal, menu } = {}) {
   let svg, camera, ink, paths, sceneNodes, guides, links, l, frame = 0, time = 0, previous = 0;
   let cameraValue, inkValue, clockValue, playingValue;
   const railValues = [];
-  let visible = false, userPaused = false, manual = false, disposed = false, suspended = false, phase = -1;
+  let entered = false, userPaused = false, manual = false, disposed = false, suspended = false, phase = -1;
   const automatic = () => !reduced.matches && !connection?.saveData;
+  let automaticValue = automatic();
   const pageReady = () => !document.hidden && !suspended && !menu?.open
     && !document.documentElement.classList.contains('entry-pending')
     && !document.documentElement.classList.contains('cinema-open');
-  const allowed = () => !disposed && visible && pageReady() && !userPaused && (automatic() || manual);
+  const allowed = () => !disposed && entered && pageReady() && !userPaused && (automatic() || manual);
 
   function control() {
     const playing = !!frame;
@@ -275,8 +278,10 @@ export function installFundingJourney({ signal, menu } = {}) {
   }
   function tick(now) {
     frame = 0;
+    // Some browsers deliver preference changes after the next animation frame.
+    if (automaticValue !== automatic()) { policyChanged(); return; }
     if (!allowed()) { previous = 0; control(); return; }
-    if (previous) time = (time + Math.min(.06, (now - previous) / 1000)) % DURATION;
+    if (previous) time = (time + Math.min(.06, (now - previous) / 1000) * PLAYBACK_RATE) % DURATION;
     previous = now;
     paint(time);
     frame = requestAnimationFrame(tick);
@@ -288,6 +293,7 @@ export function installFundingJourney({ signal, menu } = {}) {
     control();
   }
   function policyChanged() {
+    automaticValue = automatic();
     manual = false;
     userPaused = false;
     if (!automatic()) { time = 0; paint(DURATION - 1, true); }
@@ -295,37 +301,24 @@ export function installFundingJourney({ signal, menu } = {}) {
   }
   button.addEventListener('click', () => {
     if (frame) { userPaused = true; manual = false; }
-    else { userPaused = false; manual = true; }
+    else { entered = true; userPaused = false; manual = true; }
     sync();
   }, { signal: life.signal });
   function restart(fromControl = false) {
+    entered = true;
     time = 0; previous = 0; userPaused = false; manual = fromControl;
     paint(time, !automatic() && !manual);
     sync();
   }
   replay?.addEventListener('click', () => restart(true), { signal: life.signal });
-  // A new visit starts a new drawing. Tiny scroll movements at the viewport
-  // edge do not continually reset the scene, and a pause remains in force
-  // for the current visit (including opening the menu or changing tabs).
+  // Start when the section heading arrives, then keep one continuous clock.
+  // Scrolling out, back in, or under a stationary pointer cannot pause/rewind it.
+  // Explicit controls and page visibility still own pause and replay.
   const observer = new IntersectionObserver(([entry]) => {
-    const next = entry.isIntersecting && entry.intersectionRatio > (visible ? .025 : .14);
-    if (next && !visible) {
-      visible = true;
-      restart();
-      return;
-    }
-    visible = next;
-    sync();
-  }, { threshold: [0, .025, .14, .5, 1] });
-  observer.observe(root);
+    if (entry.isIntersecting && !entered) { entered = true; sync(); }
+  }, { threshold: 0 });
+  observer.observe(section);
   build();
-  // pointerover exposes the actual hit target, so entering through a transport
-  // button does not start playback immediately before that button toggles it.
-  root.addEventListener('pointerover', event => {
-    if (!visible || !automatic() || !['mouse', 'pen'].includes(event.pointerType)
-      || root.contains(event.relatedTarget) || event.target.closest?.('button')) return;
-    restart();
-  }, { signal: life.signal });
   reduced.addEventListener('change', policyChanged, { signal: life.signal });
   connection?.addEventListener?.('change', policyChanged, { signal: life.signal });
   portrait.addEventListener('change', build, { signal: life.signal });

@@ -81,6 +81,10 @@ La pila di articoli da 600 vh e lo slideshow OSKEN non sono trasferiti. Nessuna 
 
 [ASSET-SOURCES.md](./ASSET-SOURCES.md) documenta le fonti. In `outputs/flagship-20261106/` si trovano i master del 6 novembre, le ricette di produzione, i provini e i risultati dei controlli. Per la sorgente fotografica dell’acqua consultare [ASSET-WATER.md](./ASSET-WATER.md).
 
+## Bandi: avvio anticipato e riproduzione continua
+
+Il percorso finale parte appena entra la sezione “Progetti e bandi”, dal titolo, a velocità 1,5× (ciclo da 22 a circa 14,7 secondi). Scorrere oltre la scena o tornarci non ferma né riavvolge l’animazione; anche il passaggio del contenuto sotto il puntatore lascia proseguire la sequenza. Pausa e replay restano espliciti. Menu, scheda nascosta e preferenze di movimento ridotto conservano i comportamenti accessibili. Grafica vettoriale, asset e risoluzione invariati. Verifiche mirate e pubblicazione: `outputs/funding-flow-20261112/`.
+
 ## Verifiche della trilogia cinema del 12 novembre
 
 CACAO, SHIFT e l’ingresso Blackbox sono ora scene Blender native: cerniera e tavolette in movimento, sampler con controlli fisici e pannelli grafite, studio scuro con il simbolo Space giallo. Esportazioni QHD 60 fps e portrait 1080 nativo, senza interpolazione o upscale. Venti asset nuovi, 56.440.895 byte; manifest attivo di 67 file / 120,37 MiB, consegnati per profilo e su richiesta. Master e prove restano locali; ricette e manifest sono versionati. La goccia UHD e LUMA sono conservati.
